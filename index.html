@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ryu Phoenix — Portfolio</title>
+<meta name="description" content="Personal portfolio of Ryu Phoenix." />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="#home" class="logo">Ryu Phoenix</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero container">
+    <div class="hero-content">
+      <p class="eyebrow">Hello, I'm</p>
+      <h1>Ryu Phoenix</h1>
+      <p class="tagline">Software developer building thoughtful, well-crafted products.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section container">
+    <h2 class="section-title">About Me</h2>
+    <div class="about-grid">
+      <p>
+        I'm a developer who enjoys turning ideas into clean, working software.
+        I care about simple design, readable code, and building things that
+        are genuinely useful to the people who use them. This site is a
+        living space for my projects, skills, and a way to get in touch.
+      </p>
+      <ul class="about-facts">
+        <li><strong>Based in:</strong> Update your location</li>
+        <li><strong>Focus:</strong> Update your specialty</li>
+        <li><strong>Currently:</strong> Update what you're working on</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="skills" class="section container">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>Frontend</h3>
+        <p>HTML, CSS, JavaScript, React</p>
+      </div>
+      <div class="skill-card">
+        <h3>Backend</h3>
+        <p>Node.js, Python, APIs</p>
+      </div>
+      <div class="skill-card">
+        <h3>Tools</h3>
+        <p>Git, Docker, CI/CD</p>
+      </div>
+      <div class="skill-card">
+        <h3>Other</h3>
+        <p>Add your own skills here</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section container">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid">
+      <article class="project-card">
+        <h3>Project One</h3>
+        <p>A short description of this project — what it does and what you used to build it.</p>
+        <div class="project-links">
+          <a href="#">Live Demo</a>
+          <a href="#">Source</a>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>Project Two</h3>
+        <p>A short description of this project — what it does and what you used to build it.</p>
+        <div class="project-links">
+          <a href="#">Live Demo</a>
+          <a href="#">Source</a>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>Project Three</h3>
+        <p>A short description of this project — what it does and what you used to build it.</p>
+        <div class="project-links">
+          <a href="#">Live Demo</a>
+          <a href="#">Source</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" class="section container">
+    <h2 class="section-title">Get In Touch</h2>
+    <p class="contact-intro">Have a question or want to work together? Send a message below.</p>
+    <form class="contact-form" id="contactForm">
+      <div class="form-row">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-row">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-row">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Message</button>
+      <p class="form-status" id="formStatus" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-content">
+    <p>&copy; <span id="year"></span> Ryu Phoenix. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#" aria-label="GitHub">GitHub</a>
+      <a href="#" aria-label="LinkedIn">LinkedIn</a>
+      <a href="#" aria-label="Twitter">Twitter</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
