@@ -50,6 +50,6 @@ const formStatus = document.getElementById('formStatus');
 
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  formStatus.textContent = 'Thanks for reaching out! I\'ll get back to you soon.';
+  formStatus.textContent = 'お問い合わせありがとうございます。追ってご連絡いたします。';
   contactForm.reset();
 });
