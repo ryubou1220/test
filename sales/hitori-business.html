@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ひとりビジネスという選択</title>
+<meta name="description" content="『ひとりビジネスという選択』セールスページ" />
+<link rel="icon" href="data:," />
+<style>
+  :root {
+    --bg: #faf7f2;
+    --bg-alt: #f0ebe1;
+    --ink: #232324;
+    --ink-muted: #5c5a56;
+    --navy: #1f2a3c;
+    --accent: #b8863a;
+    --accent-dark: #9a6f2e;
+    --border: #e0d9c9;
+    --card-bg: #ffffff;
+    --shadow: 0 8px 30px rgba(31, 42, 60, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.85;
+  }
+
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3 { line-height: 1.5; font-weight: 700; }
+
+  a { color: inherit; }
+
+  img, svg { max-width: 100%; }
+
+  /* Top bar */
+  .topbar {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 72px 24px 56px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero .eyebrow {
+    display: inline-block;
+    color: var(--accent-dark);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5.5vw, 3.2rem);
+    margin-bottom: 20px;
+    color: var(--navy);
+  }
+
+  .hero .sub {
+    font-size: 1.15rem;
+    color: var(--ink-muted);
+    max-width: 620px;
+    margin: 0 auto 36px;
+  }
+
+  .price-peek {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 10px 24px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+
+  .price-peek .label { font-size: 0.85rem; color: var(--ink-muted); }
+  .price-peek .amount { font-size: 1.3rem; font-weight: 700; color: var(--accent-dark); }
+
+  /* CTA button */
+  .btn {
+    display: inline-block;
+    padding: 18px 44px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 6px 18px rgba(184, 134, 58, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+  .btn-sub {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+  }
+
+  /* Sections */
+  .section { padding: 72px 24px; }
+  .section.alt { background: var(--bg-alt); }
+
+  .section-title {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 12px;
+    color: var(--navy);
+  }
+
+  .section-lead {
+    text-align: center;
+    color: var(--ink-muted);
+    max-width: 620px;
+    margin: 0 auto 48px;
+  }
+
+  /* Empathy list */
+  .pain-list {
+    list-style: none;
+    max-width: 620px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pain-list li {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: var(--shadow);
+  }
+
+  .pain-list li::before {
+    content: "□";
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .bridge {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--navy);
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 8px 0;
+  }
+
+  /* Offer intro */
+  .offer-box {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .offer-box h3 {
+    font-size: 1.6rem;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .offer-box p { color: var(--ink-muted); }
+
+  .audience-list {
+    text-align: left;
+    max-width: 480px;
+    margin: 24px auto 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .audience-list li::before { content: "✓ "; color: var(--accent-dark); font-weight: 700; }
+
+  /* Benefits grid */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  .benefit-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .benefit-card .num {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 999px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .benefit-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--navy); }
+  .benefit-card p { color: var(--ink-muted); font-size: 0.95rem; }
+
+  /* Curriculum */
+  .curriculum {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .curriculum-item {
+    display: flex;
+    gap: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .curriculum-item .chapter {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--accent-dark);
+    font-size: 0.95rem;
+    min-width: 64px;
+  }
+
+  .curriculum-item h3 { font-size: 1.05rem; margin-bottom: 6px; color: var(--navy); }
+  .curriculum-item p { color: var(--ink-muted); font-size: 0.92rem; }
+
+  /* Profile */
+  .profile {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    box-shadow: var(--shadow);
+  }
+
+  .profile-photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-muted);
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .profile h3 { color: var(--navy); margin-bottom: 8px; }
+  .profile p { color: var(--ink-muted); font-size: 0.95rem; }
+
+  /* Testimonials */
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  .testimonial-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+
+  .testimonial-card .quote {
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .testimonial-card .who {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    font-weight: 600;
+  }
+
+  .testimonial-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    margin-top: 24px;
+  }
+
+  /* Pricing */
+  .pricing-card {
+    max-width: 520px;
+    margin: 0 auto;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 20px;
+    padding: 44px 40px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(31, 42, 60, 0.25);
+  }
+
+  .pricing-card .plan-name {
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    color: #d9c9a6;
+    margin-bottom: 12px;
+  }
+
+  .pricing-card .price {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .pricing-card .price small { font-size: 1rem; font-weight: 500; }
+
+  .pricing-card .price-original {
+    text-decoration: line-through;
+    color: #9aa3b2;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .bonus-list {
+    text-align: left;
+    list-style: none;
+    margin: 24px 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.95rem;
+  }
+
+  .bonus-list li::before { content: "＋ "; color: var(--accent); font-weight: 700; }
+
+  .pricing-card .btn { width: 100%; }
+
+  .guarantee {
+    max-width: 640px;
+    margin: 32px auto 0;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+  }
+
+  /* FAQ */
+  .faq-list {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    padding: 18px 0;
+    font-weight: 700;
+    color: var(--navy);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .faq-item summary::-webkit-details-marker { display: none; }
+
+  .faq-item summary::after {
+    content: "+";
+    color: var(--accent);
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after { content: "−"; }
+
+  .faq-item .answer {
+    padding-bottom: 18px;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  /* Final CTA */
+  .final-cta {
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
+    padding: 80px 24px;
+  }
+
+  .final-cta h2 {
+    font-size: 1.9rem;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .final-cta p {
+    color: var(--ink-muted);
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+
+  /* Footer */
+  .site-footer {
+    background: var(--navy);
+    color: #cfd6e0;
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+
+  .site-footer a { color: #cfd6e0; text-decoration: underline; }
+  .site-footer .copyright { margin-top: 12px; color: #8f99ab; }
+
+  @media (max-width: 640px) {
+    .profile { flex-direction: column; align-items: center; text-align: center; }
+    .section { padding: 56px 20px; }
+    .hero { padding: 56px 20px 44px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  ※これは「ひとりビジネスという選択」のセールスページ雛形です。太字・数字・実績・価格などは仮の内容です。
+</div>
+
+<header class="hero">
+  <div class="container">
+    <p class="eyebrow">CONTENT PRODUCT</p>
+    <h1>ひとりビジネスという選択</h1>
+    <p class="sub">
+      会社に頼らず、自分の力とペースで生きていく。<br />
+      その第一歩を、この一冊から。
+    </p>
+
+    <div class="price-peek">
+      <span class="label">価格</span>
+      <span class="amount">¥○,○○○</span>
+      <span class="label">（税込）</span>
+    </div>
+
+    <div>
+      <a href="#offer" class="btn">今すぐ内容を見る</a>
+      <span class="btn-sub">※ここに購入までの導線（決済リンクなど）を設定してください</span>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">こんなふうに感じたことはありませんか？</h2>
+    <p class="section-lead">一つでも当てはまるなら、このコンテンツがきっと役に立ちます。</p>
+    <ul class="pain-list">
+      <li>会社の給料や評価だけに、自分の人生を委ねるのが不安になってきた</li>
+      <li>「何か始めたい」とは思うけれど、何を売ればいいのか分からない</li>
+      <li>発信やSNSを頑張ってみても、なかなか続かない・成果が出ない</li>
+      <li>特別なスキルも実績もない自分には無理だと感じている</li>
+      <li>会社員のまま、少しずつでも「自分の力で稼ぐ」経験を積みたい</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <p class="bridge">
+      その悩み、特別な才能や大きな資金がなくても、<br />
+      「ひとりビジネス」という考え方ひとつで変えられます。
+    </p>
+  </div>
+</section>
+
+<section id="offer" class="section">
+  <div class="container">
+    <h2 class="section-title">『ひとりビジネスという選択』とは</h2>
+    <div class="offer-box">
+      <h3>ここに商品の一言コンセプトを記入してください</h3>
+      <p>
+        （例）組織に属しながらでも、自分の名前・言葉・時間を使って
+        小さく収入の柱をつくるための考え方と手順をまとめたコンテンツです。
+        大きな元手や特別なスキルは前提にしていません。
+      </p>
+      <ul class="audience-list">
+        <li>会社員を続けながら、自分だけの収入の柱を持ちたい人</li>
+        <li>何を発信・提供すればいいか、方向性から整理したい人</li>
+        <li>無理な自己流ではなく、順を追って進めたい人</li>
+        <li>ここに対象者の項目を追加してください</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">このコンテンツで手に入るもの</h2>
+    <p class="section-lead">読み終えたときに、あなたの手元に残るもの</p>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <span class="num">1</span>
+        <h3>ここにベネフィットの見出しを記入</h3>
+        <p>そのベネフィットが読者にとってどう嬉しいのかを1〜2文で。</p>
+      </div>
+      <div class="benefit-card">
+        <span class="num">2</span>
+        <h3>ここにベネフィットの見出しを記入</h3>
+        <p>そのベネフィットが読者にとってどう嬉しいのかを1〜2文で。</p>
+      </div>
+      <div class="benefit-card">
+        <span class="num">3</span>
+        <h3>ここにベネフィットの見出しを記入</h3>
+        <p>そのベネフィットが読者にとってどう嬉しいのかを1〜2文で。</p>
+      </div>
+      <div class="benefit-card">
+        <span class="num">4</span>
+        <h3>ここにベネフィットの見出しを記入</h3>
+        <p>そのベネフィットが読者にとってどう嬉しいのかを1〜2文で。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">コンテンツの内容</h2>
+    <p class="section-lead">全○章 + 特典で構成されています</p>
+    <div class="curriculum">
+      <div class="curriculum-item">
+        <span class="chapter">第1章</span>
+        <div>
+          <h3>ここに章のタイトルを記入</h3>
+          <p>この章で扱う内容を1〜2文で説明してください。</p>
+        </div>
+      </div>
+      <div class="curriculum-item">
+        <span class="chapter">第2章</span>
+        <div>
+          <h3>ここに章のタイトルを記入</h3>
+          <p>この章で扱う内容を1〜2文で説明してください。</p>
+        </div>
+      </div>
+      <div class="curriculum-item">
+        <span class="chapter">第3章</span>
+        <div>
+          <h3>ここに章のタイトルを記入</h3>
+          <p>この章で扱う内容を1〜2文で説明してください。</p>
+        </div>
+      </div>
+      <div class="curriculum-item">
+        <span class="chapter">第4章</span>
+        <div>
+          <h3>ここに章のタイトルを記入</h3>
+          <p>この章で扱う内容を1〜2文で説明してください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">著者について</h2>
+    <div class="profile">
+      <div class="profile-photo">プロフィール<br />写真</div>
+      <div>
+        <h3>Ryu Phoenix</h3>
+        <p>
+          ここに著者プロフィールを記入してください。経歴、これまでに書いてきたもの、
+          このコンテンツを作った理由などを書くと信頼につながります。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">お客様の声</h2>
+    <p class="section-lead">実際にお読みいただいた方からの感想（サンプル・仮の内容です）</p>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p class="quote">「ここに実際の感想を入れてください。具体的な変化やきっかけがあると伝わりやすいです。」</p>
+        <p class="who">— お客様A様（仮）</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">「ここに実際の感想を入れてください。」</p>
+        <p class="who">— お客様B様（仮）</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">「ここに実際の感想を入れてください。」</p>
+        <p class="who">— お客様C様（仮）</p>
+      </div>
+    </div>
+    <p class="testimonial-note">※実際にいただいた感想に差し替えてください。架空の声をそのまま公開しないようご注意ください。</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">価格について</h2>
+    <div class="pricing-card">
+      <p class="plan-name">『ひとりビジネスという選択』</p>
+      <p class="price-original">通常価格 ¥○,○○○</p>
+      <p class="price">¥○,○○○ <small>（税込）</small></p>
+      <ul class="bonus-list">
+        <li>特典1：ここに特典内容を記入</li>
+        <li>特典2：ここに特典内容を記入</li>
+        <li>特典3：ここに特典内容を記入</li>
+      </ul>
+      <a href="#" class="btn">『ひとりビジネスという選択』を申し込む</a>
+    </div>
+    <p class="guarantee">
+      ※返金保証やサポート内容があれば、ここに記載してください。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">よくある質問</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>会社員でも実践できますか？</summary>
+        <p class="answer">ここに回答を記入してください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>特別なスキルがなくても大丈夫ですか？</summary>
+        <p class="answer">ここに回答を記入してください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>どのくらいの時間で読み終わりますか？</summary>
+        <p class="answer">ここに回答を記入してください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>返金はできますか？</summary>
+        <p class="answer">ここに回答を記入してください。</p>
+      </details>
+      <details class="faq-item">
+        <summary>購入後、どのように受け取れますか？</summary>
+        <p class="answer">ここに回答を記入してください。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <h2>今日が、選び直す日になるかもしれません</h2>
+    <p>
+      ここに最後の後押しとなるメッセージを記入してください。
+      読み手の背中をそっと押すような一文がおすすめです。
+    </p>
+    <a href="#" class="btn">『ひとりビジネスという選択』を申し込む</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>運営者：Ryu Phoenix　|　<a href="#">お問い合わせ</a>　|　<a href="#">特定商取引法に基づく表記</a></p>
+  <p class="copyright">&copy; <span id="year"></span> Ryu Phoenix. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
