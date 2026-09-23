@@ -8,16 +8,18 @@
 <link rel="icon" href="data:," />
 <style>
   :root {
-    --bg: #faf7f2;
-    --bg-alt: #f0ebe1;
-    --ink: #232324;
-    --ink-muted: #5c5a56;
-    --navy: #1f2a3c;
-    --accent: #b8863a;
-    --accent-dark: #9a6f2e;
-    --border: #e0d9c9;
+    --bg: #fffdf7;
+    --bg-alt: #f5f1e4;
+    --ink: #141414;
+    --ink-muted: #55524c;
+    --navy: #141414;
+    --accent: #f5c400;
+    --accent-dark: #8a6a10;
+    --cta: #d1272c;
+    --cta-dark: #ad1f23;
+    --border: #e6e0d0;
     --card-bg: #ffffff;
-    --shadow: 0 8px 30px rgba(31, 42, 60, 0.08);
+    --shadow: 0 8px 30px rgba(20, 20, 20, 0.08);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -92,23 +94,23 @@
   }
 
   .price-peek .label { font-size: 0.85rem; color: var(--ink-muted); }
-  .price-peek .amount { font-size: 1.3rem; font-weight: 700; color: var(--accent-dark); }
+  .price-peek .amount { font-size: 1.3rem; font-weight: 700; color: var(--cta); }
 
   /* CTA button */
   .btn {
     display: inline-block;
     padding: 18px 44px;
     border-radius: 8px;
-    background: var(--accent);
+    background: var(--cta);
     color: #fff;
     text-decoration: none;
     font-weight: 700;
     font-size: 1.1rem;
-    box-shadow: 0 6px 18px rgba(184, 134, 58, 0.35);
+    box-shadow: 0 6px 18px rgba(209, 39, 44, 0.35);
     transition: transform 0.15s ease, background 0.15s ease;
   }
 
-  .btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
+  .btn:hover { background: var(--cta-dark); transform: translateY(-2px); }
 
   .btn-sub {
     display: block;
@@ -158,7 +160,7 @@
 
   .pain-list li::before {
     content: "□";
-    color: var(--accent);
+    color: var(--accent-dark);
     font-weight: 700;
     flex-shrink: 0;
   }
@@ -205,6 +207,52 @@
 
   .audience-list li::before { content: "✓ "; color: var(--accent-dark); font-weight: 700; }
 
+  /* Product details (format / mockup) */
+  .product-details {
+    display: flex;
+    gap: 36px;
+    max-width: 720px;
+    margin: 36px auto 0;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .product-mockup {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mockup-frame {
+    width: 200px;
+    height: 260px;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    background: var(--bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+    padding: 16px;
+  }
+
+  .format-list {
+    flex: 1.4;
+    min-width: 240px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    text-align: left;
+  }
+
+  .format-list strong { color: var(--navy); }
+
   /* Benefits grid */
   .benefits-grid {
     display: grid;
@@ -224,7 +272,7 @@
     display: inline-block;
     font-size: 0.85rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--ink);
     background: var(--accent);
     border-radius: 999px;
     width: 28px;
@@ -236,6 +284,40 @@
 
   .benefit-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--navy); }
   .benefit-card p { color: var(--ink-muted); font-size: 0.95rem; }
+
+  /* Future / transformation gallery */
+  .future-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .future-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .future-photo {
+    aspect-ratio: 4 / 3;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+    padding: 12px;
+  }
+
+  .future-caption {
+    padding: 16px 18px;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
 
   /* Curriculum */
   .curriculum {
@@ -267,7 +349,7 @@
   .curriculum-item h3 { font-size: 1.05rem; margin-bottom: 6px; color: var(--navy); }
   .curriculum-item p { color: var(--ink-muted); font-size: 0.92rem; }
 
-  /* Profile */
+  /* Seller profile */
   .profile {
     max-width: 680px;
     margin: 0 auto;
@@ -296,8 +378,27 @@
     text-align: center;
   }
 
-  .profile h3 { color: var(--navy); margin-bottom: 8px; }
+  .profile h3 { color: var(--navy); margin-bottom: 6px; }
   .profile p { color: var(--ink-muted); font-size: 0.95rem; }
+
+  .profile-tagline {
+    color: var(--accent-dark) !important;
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+
+  .profile-facts {
+    list-style: none;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+  }
+
+  .profile-facts li::before { content: "・"; color: var(--accent); font-weight: 700; }
 
   /* Testimonials */
   .testimonial-grid {
@@ -342,13 +443,13 @@
     border-radius: 20px;
     padding: 44px 40px;
     text-align: center;
-    box-shadow: 0 20px 50px rgba(31, 42, 60, 0.25);
+    box-shadow: 0 20px 50px rgba(38, 37, 43, 0.25);
   }
 
   .pricing-card .plan-name {
     font-size: 0.9rem;
     letter-spacing: 0.1em;
-    color: #d9c9a6;
+    color: var(--accent);
     margin-bottom: 12px;
   }
 
@@ -356,13 +457,14 @@
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 4px;
+    color: var(--accent);
   }
 
   .pricing-card .price small { font-size: 1rem; font-weight: 500; }
 
   .pricing-card .price-original {
     text-decoration: line-through;
-    color: #9aa3b2;
+    color: #9d9a94;
     font-size: 1rem;
     margin-bottom: 20px;
   }
@@ -421,7 +523,7 @@
 
   .faq-item summary::after {
     content: "+";
-    color: var(--accent);
+    color: var(--cta);
     font-size: 1.3rem;
     flex-shrink: 0;
   }
@@ -456,17 +558,18 @@
   /* Footer */
   .site-footer {
     background: var(--navy);
-    color: #cfd6e0;
+    color: #d6d3cc;
     padding: 40px 24px;
     text-align: center;
     font-size: 0.85rem;
   }
 
-  .site-footer a { color: #cfd6e0; text-decoration: underline; }
-  .site-footer .copyright { margin-top: 12px; color: #8f99ab; }
+  .site-footer a { color: #d6d3cc; text-decoration: underline; }
+  .site-footer .copyright { margin-top: 12px; color: #96938c; }
 
   @media (max-width: 640px) {
     .profile { flex-direction: column; align-items: center; text-align: center; }
+    .profile-facts { text-align: left; }
     .section { padding: 56px 20px; }
     .hero { padding: 56px 20px 44px; }
   }
@@ -540,10 +643,48 @@
         <li>ここに対象者の項目を追加してください</li>
       </ul>
     </div>
+
+    <div class="product-details">
+      <div class="product-mockup">
+        <div class="mockup-frame">商品イメージ<br />（表紙・画面写真など）</div>
+      </div>
+      <ul class="format-list">
+        <li><strong>提供形式：</strong>ここに記入してください（例：PDF／Webページ／note記事 など）</li>
+        <li><strong>ボリューム：</strong>ここに記入してください（例：全○ページ、文字数○万字）</li>
+        <li><strong>想定読了時間：</strong>ここに記入してください（例：約○分〜○時間）</li>
+        <li><strong>受け取り方法：</strong>ここに記入してください（例：購入後すぐダウンロード）</li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <section class="section alt">
+  <div class="container">
+    <h2 class="section-title">手に入る未来</h2>
+    <p class="section-lead">このコンテンツを実践した先に待っている、日常の変化</p>
+    <div class="future-grid">
+      <div class="future-card">
+        <div class="future-photo">写真を挿入<br />（例：カフェで作業する様子）</div>
+        <p class="future-caption">場所にとらわれず、好きな場所で仕事ができる自由</p>
+      </div>
+      <div class="future-card">
+        <div class="future-photo">写真を挿入<br />（例：穏やかな表情の写真）</div>
+        <p class="future-caption">会社に依存しない、自分の名前で選べる安心感</p>
+      </div>
+      <div class="future-card">
+        <div class="future-photo">写真を挿入<br />（例：家族との時間）</div>
+        <p class="future-caption">大切な人と過ごす時間が増えるゆとり</p>
+      </div>
+      <div class="future-card">
+        <div class="future-photo">写真を挿入<br />（例：収入の推移グラフなど）</div>
+        <p class="future-caption">小さくても、自分の力で積み上がっていく収入</p>
+      </div>
+    </div>
+    <p class="testimonial-note">※写真は実際の利用シーンやイメージ画像に差し替えてください。</p>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <h2 class="section-title">このコンテンツで手に入るもの</h2>
     <p class="section-lead">読み終えたときに、あなたの手元に残るもの</p>
@@ -572,7 +713,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section alt">
   <div class="container">
     <h2 class="section-title">コンテンツの内容</h2>
     <p class="section-lead">全○章 + 特典で構成されています</p>
@@ -609,23 +750,29 @@
   </div>
 </section>
 
-<section class="section alt">
+<section class="section">
   <div class="container">
-    <h2 class="section-title">著者について</h2>
+    <h2 class="section-title">販売者紹介</h2>
     <div class="profile">
       <div class="profile-photo">プロフィール<br />写真</div>
       <div>
         <h3>Ryu Phoenix</h3>
+        <p class="profile-tagline">ここにキャッチコピーを記入（例：会社員をしながら「ひとりビジネス」を実践・発信）</p>
         <p>
-          ここに著者プロフィールを記入してください。経歴、これまでに書いてきたもの、
-          このコンテンツを作った理由などを書くと信頼につながります。
+          ここに経歴や実績、このコンテンツを作った理由などを記入してください。
+          読み手が「この人から学びたい」と思えるような、具体的なエピソードがあると信頼につながります。
         </p>
+        <ul class="profile-facts">
+          <li>ここに実績・経歴を記入</li>
+          <li>ここに実績・経歴を記入</li>
+          <li>このコンテンツを作った理由</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section alt">
   <div class="container">
     <h2 class="section-title">お客様の声</h2>
     <p class="section-lead">実際にお読みいただいた方からの感想（サンプル・仮の内容です）</p>
@@ -647,7 +794,7 @@
   </div>
 </section>
 
-<section class="section alt">
+<section class="section">
   <div class="container">
     <h2 class="section-title">価格について</h2>
     <div class="pricing-card">
@@ -667,7 +814,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section alt">
   <div class="container">
     <h2 class="section-title">よくある質問</h2>
     <div class="faq-list">
