@@ -84,30 +84,41 @@ ROUTINE=('業務内容打合せ','業務打合せ','『業務処理結果報告�
 def classify(e):
     s=e['cat']+' '+e['det']
     if e['cat'] in ROUTINE or '社内資料' in s: return '第5条'
-    if '検査資料取り纏め' in s: return '第3条第3項(6)'
-    if '定期観測' in s: return '第19条'
+    if re.search('検査資料取り纏め|業務検査|中間検査|業務報告書修正',s): return '第3条第3項(6)'
+    if re.search('定期観測|河口現況確認|井堰',s): return '第19条'
+    if '次期発注' in s: return '第20条'
     if '過積載' in s: return '第3条第3項(1)'
     if '竣工検査' in s or e['cat'].startswith('工事完成下検査') or '完成図書下検査' in s: return '第14条'
-    if re.search('成果品|プロセスチェック|出来形図書|下検査指摘|数量|土量',s): return '第15条'
-    if '初回打合せ' in s: return '第3条第3項(4)'
+    if re.search('成果品|プロセスチェック|出来形図書|下検査指摘|数量|土量|変更設計|変更資料|工事検査打合せ',s): return '第15条'
+    if re.search('初回打合せ|着手前打合せ',s): return '第3条第3項(4)'
     if re.search('地元立会|案内ビラ|着手前|参考計画書',s): return '第16条'
-    if re.search('現場立会|立会議事|立会メモ|追記資料',s): return '第8条'
-    if re.search('設計図書|打合せ事項メモ|現場調査',s): return '第3条第3項(5)'
+    if '進捗状況確認' in s: return '第11条'
+    if re.search('現場立会|確認立会|立会議事|立会メモ|追記資料',s): return '第8条'
+    if re.search('設計図書|打合せ事項メモ|現場調査|現場状況確認',s): return '第3条第3項(5)'
     if re.search('施工計画書|施工体制台帳|再生資源|ASP|修正資料',s): return '第7条'
     UNK.append(f"№{e['no']} {e['date']} {e['time']} {s}"); return '第5条'
 
 def project(e):
     s=e['cat']+' '+e['det']+' '+e['aite']
-    if '定期観測' in s: return '河口・海岸 定期観測'
+    if re.search('定期観測|河口現況確認',s): return '河口・海岸 定期観測'
+    if '井堰' in s: return '宇川 現況既設井堰調査'
+    if '次期発注' in s: return '次期発注予定工事'+('（久美谷川）' if '久美谷川' in s else '')
     if '小西川' in s: return '竹野川（小西川）広域河川改修（補正・防災安全）工事'+('ほか7件' if 'ほか7件' in s else '')
     if '宇川' in s: return '管内一円（宇川）府民協働型インフラ保全工事他３件'
+    if '浅茂川' in s: return '浅茂川海岸なぎさ緊急保全工事'
+    if '久僧' in s and '福田川' in s: return '久僧海岸なぎさ緊急保全工事／管内一円（福田川）府民協働型インフラ保全工事'
+    if '久僧' in s and 'なぎさ' in s: return '久僧海岸なぎさ緊急保全工事'
+    if '海岸なぎさ' in s: return '海岸なぎさ緊急保全工事'
+    if '久住川' in s and '福田川' in s: return '管内一円（久住川他）／（福田川）府民協働型インフラ保全工事'
+    if '久住川' in s or '藤山' in s: return '管内一円（久住川他）府民協働型インフラ保全工事'
+    if '福田川' in s: return '管内一円（福田川）府民協働型インフラ保全工事'
+    if '河梨川' in s or '西田' in s: return '管内一円（河梨川他）府民協働型インフラ保全工事'
     if '川上谷川' in s and '成願寺川' in s: return '川上谷川緊急浚渫推進（河川）工事／管内一円（成願寺川）緊急浚渫推進（砂防）工事'
     if '川上谷川' in s or '小野澤' in s: return '川上谷川緊急浚渫推進（河川）工事'
     if '成願寺川' in s or 'サンキ' in s: return '管内一円（成願寺川）緊急浚渫推進（砂防）工事'+('他' if '成願寺川他' in s else '')
-    if '河梨川' in s or '西田' in s: return '管内一円（河梨川他）府民協働型インフラ保全工事'
     if '竹野川他' in s or '修己' in s: return '竹野川他府民協働型インフラ保全工事'
     if '過積載' in s: return '第２四半期調査'
-    if '検査資料' in s: return '現場技術業務'
+    if re.search('検査資料|業務検査|中間検査|業務報告書',s): return '現場技術業務'
     return '―'
 
 def content(e):
@@ -116,6 +127,7 @@ def content(e):
             return {'書面資料打合せ':'【書面資料打合せ】','河川砂防課':'【河川砂防課】'}.get(e['cat'],'')+e['det']
         if '定期観測' in e['cat']: return e['cat'].replace('　',' ')+'：'+e['det']
         if e['cat'].startswith('工事完成下検査'): return e['cat']
+        if not re.search('府民|保全工事|推進|改修',e['cat']): return e['cat'].replace('\u3000',' ')+'：'+e['det']
         return e['det']
     return e['cat']
 def build(PAGES_IN):
@@ -134,7 +146,7 @@ def build(PAGES_IN):
     def tkey(t):
         m=re.match(r'(AM|PM)(\d+):(\d+)',t); return (int(m[2])%12+(12 if m[1]=='PM' else 0))*60+int(m[3])
     rows.sort(key=lambda r:(ORDER[r['c']],r['date'],tkey(r['time']),r['txt']))
-    if UNK: print('【要確認】振分けルールに該当しない業務（第5条に仮置き）:\n  '+'\n  '.join(UNK))
+    if UNK and not PAGES_IN: print('【要確認】振分けルールに該当しない業務（第5条に仮置き）:\n  '+'\n  '.join(UNK))
 
     wb=Workbook(); wm=wb.active; wm.title='条文マスタ'
     ws=wb.create_sheet('条文別整理表',0); wa=wb.create_sheet('条文別集計',1)
@@ -205,7 +217,7 @@ def build(PAGES_IN):
     ws.freeze_panes=f'A{HR+1}'; ws.print_title_rows=f'{HR}:{HR}'
     ws.page_setup.orientation='landscape'; ws.page_setup.paperSize=9; ws.page_setup.fitToWidth=1; ws.page_setup.fitToHeight=0
     ws.sheet_properties.pageSetUpPr.fitToPage=True; ws.print_area=f'A1:L{r+len(notes)}'
-    ws.oddFooter.center.text='条文別整理表　&P / &N'; ws.page_margins.left=ws.page_margins.right=0.4
+    ws.oddFooter.center.text='条文別整理表　p.&P'; ws.page_setup.firstPageNumber=1; ws.page_setup.useFirstPageNumber=True; ws.page_margins.left=ws.page_margins.right=0.4
 
     # 条文別集計
     dates=sorted({x['date'] for x in rows})
@@ -297,7 +309,7 @@ def build(PAGES_IN):
     for i in range(1,9):
         c=wt.cell(r,i); c.border=BOX; c.fill=SEC; c.font=F(bold=True); c.alignment=CEN
     notes2=['※ 条文番号をクリックすると「条文別整理表」の該当箇所へ移動。件数・実施日数は「条文別集計」から参照。',
-            '※ 「整理表 頁」は条文別整理表をA4横で印刷した際のページ番号（フッター「条文別整理表 p / n」に対応）。',
+            '※ 「整理表 頁」は条文別整理表をA4横で印刷した際のページ番号（フッター「条文別整理表 p.○」に対応）。',
             '※ 日常定型業務（業務内容打合せ・翌日作業打合せ・報告書作成）は第5条に1日1件として計上。']
     for i,t in enumerate(notes2): wt.cell(r+2+i,1,t).font=F(size=9)
     for i,w in enumerate([14,34,6,8,35,35,7,16],1): wt.column_dimensions[L(i)].width=w
