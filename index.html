@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ryu Phoenix — ライター・コンテンツクリエイター</title>
+<meta name="description" content="Ryu Phoenixの個人ポートフォリオサイト" />
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a href="#home" class="logo">Ryu Phoenix</a>
+    <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">ホーム</a></li>
+      <li><a href="#about">自己紹介</a></li>
+      <li><a href="#skills">できること</a></li>
+      <li><a href="#projects">作品・コンテンツ</a></li>
+      <li><a href="#contact">お問い合わせ</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切替">🌙</button>
+  </nav>
+</header>
+
+<main>
+  <section id="home" class="hero container">
+    <div class="hero-content">
+      <p class="eyebrow">はじめまして、</p>
+      <h1>Ryu Phoenix です</h1>
+      <p class="tagline">言葉とコンテンツで、伝えたいことを形にするライター・コンテンツクリエイターです。</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">作品を見る</a>
+        <a href="#contact" class="btn btn-secondary">お問い合わせ</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section container">
+    <h2 class="section-title">自己紹介</h2>
+    <div class="about-grid">
+      <p>
+        文章を書くこと、そしてそれを一つの「コンテンツ商品」として
+        形にすることを大切にしています。読む人にとって分かりやすく、
+        役に立つ言葉を届けること。それが自分の得意なことです。
+        このサイトでは、これまでに書いたもの・作ったコンテンツを
+        紹介し、お仕事のご相談を受け付けています。
+      </p>
+      <ul class="about-facts">
+        <li><strong>得意分野:</strong> 文章作成・コンテンツ商品の企画/制作</li>
+        <li><strong>ジャンル:</strong> ここを編集してください（例：ライフスタイル、ビジネス、学び など）</li>
+        <li><strong>現在取り組んでいること:</strong> ここを編集してください</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="skills" class="section container">
+    <h2 class="section-title">できること</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>文章作成</h3>
+        <p>ブログ記事、コラム、noteなどの執筆</p>
+      </div>
+      <div class="skill-card">
+        <h3>コンテンツ企画</h3>
+        <p>テーマ設計から構成づくりまで</p>
+      </div>
+      <div class="skill-card">
+        <h3>コンテンツ商品づくり</h3>
+        <p>電子書籍、テンプレート、講座資料 など</p>
+      </div>
+      <div class="skill-card">
+        <h3>その他</h3>
+        <p>ここに自分のスキルを追加してください</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section container">
+    <h2 class="section-title">作品・コンテンツ</h2>
+    <div class="projects-grid">
+      <article class="project-card">
+        <h3>作品・商品1</h3>
+        <p>ここに作品やコンテンツ商品の簡単な説明を書いてください（テーマ、誰向けか、どこで公開/販売しているか など）。</p>
+        <div class="project-links">
+          <a href="#">詳しく見る</a>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>作品・商品2</h3>
+        <p>ここに作品やコンテンツ商品の簡単な説明を書いてください（テーマ、誰向けか、どこで公開/販売しているか など）。</p>
+        <div class="project-links">
+          <a href="#">詳しく見る</a>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>作品・商品3</h3>
+        <p>ここに作品やコンテンツ商品の簡単な説明を書いてください（テーマ、誰向けか、どこで公開/販売しているか など）。</p>
+        <div class="project-links">
+          <a href="#">詳しく見る</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" class="section container">
+    <h2 class="section-title">お問い合わせ</h2>
+    <p class="contact-intro">ご質問やお仕事のご相談は、以下のフォームからお気軽にどうぞ。</p>
+    <form class="contact-form" id="contactForm">
+      <div class="form-row">
+        <label for="name">お名前</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-row">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-row">
+        <label for="message">メッセージ</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">送信する</button>
+      <p class="form-status" id="formStatus" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-content">
+    <p>&copy; <span id="year"></span> Ryu Phoenix. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#" aria-label="note">note</a>
+      <a href="#" aria-label="X (Twitter)">X (Twitter)</a>
+      <a href="#" aria-label="Instagram">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

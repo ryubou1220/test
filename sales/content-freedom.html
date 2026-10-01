@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>コンテンツ・フリーダム</title>
+<meta name="description" content="『コンテンツ・フリーダム』セールスページ" />
+<link rel="icon" href="data:," />
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-alt: #F2F2F2;
+    --ink: #141414;
+    --ink-muted: #555555;
+    --navy: #141414;
+    --accent: #F2B705;
+    --accent-dark: #8A6A10;
+    --cta: #D1272C;
+    --cta-dark: #AD1F23;
+    --border: #E0E0E0;
+    --card-bg: #FAFAFA;
+    --shadow: 0 8px 30px rgba(20, 20, 20, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.85;
+  }
+
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3 { line-height: 1.5; font-weight: 700; }
+  a { color: inherit; }
+  img, svg { max-width: 100%; }
+
+  .topbar {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .hero-image-wrap { width: 100%; }
+  .hero-image-wrap img { width: 100%; display: block; }
+
+  .hero-sub {
+    padding: 40px 24px 56px;
+    text-align: center;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-sub p { font-size: 1.1rem; color: var(--ink-muted); max-width: 620px; margin: 0 auto 28px; }
+
+  .btn {
+    display: inline-block;
+    padding: 18px 44px;
+    border-radius: 8px;
+    background: var(--cta);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 6px 18px rgba(209, 39, 44, 0.35);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover { background: var(--cta-dark); transform: translateY(-2px); }
+
+  .section { padding: 72px 24px; }
+  .section.alt { background: var(--bg-alt); }
+  .section.dark { background: var(--navy); color: #fff; }
+
+  .section-title { font-size: 1.8rem; text-align: center; margin-bottom: 12px; color: var(--ink); }
+  .section.dark .section-title { color: #fff; }
+  .section-lead { text-align: center; color: var(--ink-muted); max-width: 620px; margin: 0 auto 48px; }
+  .section.dark .section-lead { color: #B3B3B3; }
+
+  .pain-list { list-style: none; max-width: 620px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .pain-list li {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px 24px; font-size: 1.05rem; font-weight: 600;
+  }
+
+  .bridge {
+    text-align: center; font-size: 1.5rem; font-weight: 900; color: var(--accent);
+    max-width: 680px; margin: 0 auto; font-family: inherit;
+  }
+
+  .offer-box {
+    max-width: 720px; margin: 0 auto; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 40px; box-shadow: var(--shadow); text-align: center;
+  }
+  .offer-box h3 { font-size: 1.5rem; margin-bottom: 16px; }
+  .offer-box p { color: var(--ink-muted); }
+
+  .meaning-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .meaning-card {
+    background: #1F1F1F; border: 1px solid #3A3A3A; border-radius: 16px; padding: 32px;
+  }
+  .meaning-card h3 { color: var(--accent); font-size: 1.5rem; margin-bottom: 12px; }
+  .meaning-card p { color: #B3B3B3; font-size: 0.95rem; }
+
+  .benefits-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .benefit-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .benefit-card .mark {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center; color: var(--ink); font-weight: 900;
+  }
+  .benefit-card p { font-weight: 600; font-size: 1rem; }
+
+  .features-list { display: flex; flex-direction: column; gap: 2px; }
+  .feature-row {
+    display: flex; align-items: center; gap: 20px; padding: 16px 0; border-top: 1px solid var(--border);
+  }
+  .feature-row:last-child { border-bottom: 1px solid var(--border); }
+  .feature-row .num {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: var(--navy);
+    color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 900;
+  }
+  .feature-row p { font-size: 0.98rem; font-weight: 600; }
+
+  .gains-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .gain-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 26px; }
+  .gain-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .gain-card p { font-size: 0.9rem; color: var(--ink-muted); }
+
+  .curriculum { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .curriculum-item {
+    display: flex; gap: 20px; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px;
+  }
+  .curriculum-item .ep { flex-shrink: 0; font-weight: 900; color: var(--accent-dark); min-width: 110px; }
+  .curriculum-item h3 { font-size: 1.05rem; margin-bottom: 4px; }
+  .curriculum-item p { font-size: 0.9rem; color: var(--ink-muted); }
+  .curriculum-item .teaser { font-size: 0.92rem; font-weight: 700; color: var(--cta); margin-top: 8px; }
+  .curriculum-item .soon { display: inline-block; margin-top: 8px; font-size: 0.78rem; font-weight: 700; color: #8C8C8C; background: var(--bg-alt); border-radius: 999px; padding: 3px 12px; }
+
+  .profile {
+    max-width: 700px; margin: 0 auto; display: flex; gap: 28px; align-items: flex-start;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 36px;
+  }
+  .profile-photo {
+    width: 96px; height: 96px; border-radius: 50%; background: var(--bg-alt); border: 1px solid var(--border);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #8C8C8C; font-size: 0.75rem; text-align: center;
+  }
+  .profile h3 { margin-bottom: 8px; }
+  .profile p { color: var(--ink-muted); font-size: 0.95rem; }
+  .profile-note {
+    margin-top: 16px; background: var(--bg-alt); border-radius: 10px; padding: 16px 20px; font-size: 0.9rem; color: var(--ink-muted);
+  }
+
+  .pricing-card {
+    max-width: 520px; margin: 0 auto; background: var(--navy); color: #fff; border-radius: 20px;
+    padding: 44px 40px; text-align: center; box-shadow: 0 20px 50px rgba(20,20,20,0.25);
+  }
+  .pricing-card .plan-name { font-size: 0.9rem; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 12px; }
+  .pricing-card .price { font-size: 3rem; font-weight: 800; margin-bottom: 20px; color: var(--accent); }
+  .pricing-card .btn { width: 100%; }
+
+  .faq-list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 4px 22px; }
+  .faq-item summary { cursor: pointer; padding: 18px 0; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: "+"; color: var(--cta); font-size: 1.3rem; flex-shrink: 0; }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item .answer { padding-bottom: 18px; color: var(--ink-muted); font-size: 0.95rem; }
+
+  .final-cta { text-align: center; padding: 80px 24px; }
+  .final-cta p { color: #B3B3B3; max-width: 560px; margin: 0 auto 32px; }
+
+  .site-footer { background: var(--navy); color: #cfd6e0; padding: 40px 24px; text-align: center; font-size: 0.85rem; }
+  .site-footer a { color: #cfd6e0; text-decoration: underline; }
+  .site-footer .copyright { margin-top: 12px; color: #8f99ab; }
+
+  @media (max-width: 640px) {
+    .meaning-grid, .benefits-grid, .gains-grid { grid-template-columns: 1fr; }
+    .profile { flex-direction: column; align-items: center; text-align: center; }
+    .section { padding: 56px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  ※「コンテンツ・フリーダム」セールスページ。価格はまだ仮の表示です。
+</div>
+
+<div class="hero-image-wrap">
+  <img src="images/content-freedom-header.jpg" alt="コンテンツ・フリーダム ― あなたの知識が、永続的な価値を生む。自由な未来の羅針盤" />
+</div>
+
+<section class="hero-sub">
+  <div class="container">
+    <p>サラリーマン生活35年を経て、2018年からコンテンツ販売の世界へ。その経験をもとにお伝えする、経済的自由への実践プログラムです。</p>
+    <a href="#offer" class="btn">詳細を見る</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">こんなこと、思ったことありませんか？</h2>
+    <ul class="pain-list">
+      <li>「今の収入だけで、この先も大丈夫だろうか？」</li>
+      <li>「定年後に収入源がなくなったらどうしよう？」</li>
+      <li>「副業に興味はあるけど、何をしたらいいかわからない」</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <p class="bridge">結論：コンテンツ販売です。</p>
+    <p class="section-lead" style="margin-top:20px">これまで培ってきた経験や知識を活かせば、今からでも新たな収入源を築くことができます。</p>
+  </div>
+</section>
+
+<section id="offer" class="section">
+  <div class="container">
+    <h2 class="section-title">プログラム「コンテンツ・フリーダム」</h2>
+    <div class="offer-box">
+      <h3>経済的自由への道</h3>
+      <p>コンテンツによって「自由」を得る——あなたの知識・経験・スキルを商品に変え、経済的自由と時間的自由を手にするための実践プログラムです。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="container">
+    <h2 class="section-title">「コンテンツ・フリーダム」に込めた意味</h2>
+    <div class="meaning-grid">
+      <div class="meaning-card">
+        <h3>コンテンツ</h3>
+        <p>知識・情報・スキルを活かした商品（電子書籍、オンライン講座、デジタル商品など）を通じて収益を得ること</p>
+      </div>
+      <div class="meaning-card">
+        <h3>フリーダム</h3>
+        <p>「経済的自由」と「時間的自由」。経済的に自立し、時間や場所にとらわれずに働く自由を手に入れること</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">このプログラムで、あなたの未来はこう変わります</h2>
+    <div class="benefits-grid">
+      <div class="benefit-card"><span class="mark">✓</span><p>毎月の給料以外に、プラスαの収入が入るようになる</p></div>
+      <div class="benefit-card"><span class="mark">✓</span><p>好きなことをビジネスにして、お金を生み出すスキルが手に入る</p></div>
+      <div class="benefit-card"><span class="mark">✓</span><p>時間と場所に縛られず、自由な働き方を選べる</p></div>
+      <div class="benefit-card"><span class="mark">✓</span><p>顔出し不要。プライバシーを守ったまま発信できる</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">プログラムの5つの特徴</h2>
+    <div class="features-list">
+      <div class="feature-row"><span class="num">1</span><p>マインドセットの構築 — 経済的自由を目指す成長マインドセットを確立</p></div>
+      <div class="feature-row"><span class="num">2</span><p>実践的なスキルの習得 — コンテンツ作成、マーケティング、ニッチ市場の選定</p></div>
+      <div class="feature-row"><span class="num">3</span><p>経済的自由への明確なロードマップ — あなた専用の行動計画を提示</p></div>
+      <div class="feature-row"><span class="num">4</span><p>柔軟で革新的なアプローチ — 市場の変化に適応する対応力を養う</p></div>
+      <div class="feature-row"><span class="num">5</span><p>持続的な成功をサポート — 修了後も学び、成長を続けられる体制</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">あなたが得られる成果</h2>
+    <div class="gains-grid">
+      <div class="gain-card"><h3>経済的な自由の実現</h3><p>自分のペースで安定した収入を得られるようになる</p></div>
+      <div class="gain-card"><h3>自己成長の促進</h3><p>成長マインドセットを活用し、スキルアップを実現</p></div>
+      <div class="gain-card"><h3>競争力のあるビジネスの構築</h3><p>高品質なコンテンツとマーケティングで持続可能なビジネスを築く</p></div>
+      <div class="gain-card"><h3>柔軟性と革新性の強化</h3><p>市場の変化に対応する力を養う</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">プログラムの流れ</h2>
+    <p class="section-lead">予告編から、実際に手を動かす段階まで、順を追って進みます</p>
+    <div class="curriculum">
+      <div class="curriculum-item"><span class="ep">予告編</span><div><h3>コンテンツ・フリーダムとは</h3><p>プログラムのコンセプトと、得られる未来を知る</p><p class="teaser">「もし、あと月5万円あったら、何に使いますか？」</p></div></div>
+      <div class="curriculum-item"><span class="ep">導入編</span><div><h3>情報販売の基本</h3><p>情報販売とは何か、副業に合う理由、全体の流れ</p><p class="teaser">経験や知識をまとめて、オンラインで売る。たった3ステップで完結する。</p></div></div>
+      <div class="curriculum-item"><span class="ep">基礎知識編</span><div><h3>コンテンツ販売の土台</h3><p>メリット・デメリット、売れるジャンル、始め方</p><p class="teaser">「あなたの知識が、そのまま商品になる。」</p></div></div>
+      <div class="curriculum-item"><span class="ep">商品作成編</span><div><h3>売れる商品をつくる</h3><p>ターゲットの目線に立つ、わかりやすさ、安心材料</p><p class="teaser">自分都合の情報にしないこと。あくまで「目線に立つ」こと。</p></div></div>
+      <div class="curriculum-item"><span class="ep">商品販売編</span><div><h3>商品を届ける</h3><p>販売ページの作り方、プラットフォームの選び方、実際の販売の進め方</p><span class="soon">詳細は近日公開</span></div></div>
+      <div class="curriculum-item"><span class="ep">集客編</span><div><h3>知ってもらう</h3><p>SNS・ブログ・メルマガなどを使った集客の考え方と進め方</p><span class="soon">詳細は近日公開</span></div></div>
+      <div class="curriculum-item"><span class="ep">フォロー編</span><div><h3>関係を育てる</h3><p>購入後のフォロー、信頼関係づくり、リピートにつなげる方法</p><span class="soon">詳細は近日公開</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2 class="section-title">講師紹介</h2>
+    <div class="profile">
+      <div class="profile-photo">プロフィール<br />写真</div>
+      <div>
+        <h3>りゅう坊</h3>
+        <p>サラリーマン生活35年の後、退職。2018年よりネット市場に参入し、大手ASPからコンテンツ販売を開始。ブログ・コラムの執筆や電子書籍を出版。建設現場監督の経験から、コラム「若手社員向け建設業界の豆知識」を執筆。電子書籍「問題は現場で起きているシリーズ」「捉え方の変換」などを出版。現在は建設関連事業と情報関連事業を兼ね、コンテンツの企画・構成・作成を手掛ける。</p>
+        <p class="profile-note">※顔出しをしていないのは、建設関連の仕事との「二足のわらじ」という事情によるものです。あなたも同じように事情があれば、無理に顔を出す必要はありません。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section dark">
+  <div class="container">
+    <h2 class="section-title">価格について</h2>
+    <div class="pricing-card">
+      <p class="plan-name">『コンテンツ・フリーダム』</p>
+      <p class="price">¥○,○○○ <small style="font-size:1rem; font-weight:500">（税込）</small></p>
+      <a href="#" class="btn">『コンテンツ・フリーダム』に申し込む</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">よくある質問</h2>
+    <div class="faq-list">
+      <details class="faq-item"><summary>会社員でも実践できますか？</summary><p class="answer">はい。講師自身も会社員を続けながら始めた実践者です。本業の合間に進められます。</p></details>
+      <details class="faq-item"><summary>顔出しは必要ですか？</summary><p class="answer">必要ありません。講師自身も顔出しをせずに発信しています。</p></details>
+      <details class="faq-item"><summary>特別なスキルがなくても大丈夫ですか？</summary><p class="answer">大丈夫です。あなたの経験や「あたりまえ」を商品に変える方法からお伝えします。</p></details>
+      <details class="faq-item"><summary>どのくらいの期間で進められますか？</summary><p class="answer">ここに回答を記入してください。</p></details>
+      <details class="faq-item"><summary>購入後、どのように受け取れますか？</summary><p class="answer">ここに回答を記入してください。</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta section dark">
+  <div class="container">
+    <h2 class="section-title">さあ、一緒に一歩を踏み出しましょう</h2>
+    <p>今の収入だけに頼らない、自由な未来への第一歩を。</p>
+    <a href="#" class="btn">『コンテンツ・フリーダム』に申し込む</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p>運営者：りゅう坊　|　<a href="#">お問い合わせ</a>　|　<a href="#">特定商取引法に基づく表記</a></p>
+  <p class="copyright">&copy; <span id="year"></span> Content Freedom. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
