@@ -95,7 +95,7 @@ rows.sort(key=lambda x:(x[0]['date'],tk(x[0]['time'])))
 
 wb=Workbook()
 ws=wb.active; ws.title='現場確認日一覧'
-wt=wb.create_sheet('安全対策（類型別）'); wa=wb.create_sheet('月別集計'); wr=wb.create_sheet('参考（現地か不明）')
+wt=wb.create_sheet('安全対策（類型別）'); wa=wb.create_sheet('月別集計'); wr=wb.create_sheet('参考（現場確認から除外）')
 
 # --- 類型別
 wt['A1']='現場確認業務の類型別 想定される危険と安全対策'; wt['A1'].font=F(size=14,bold=True)
@@ -173,17 +173,17 @@ for i,t in enumerate(notes): wa.cell(9+i,1,t).font=F(size=9)
 for i,w in enumerate([8,9,12,13,12,8,8,8,8,8],1): wa.column_dimensions[L(i)].width=w
 
 # --- 参考
-wr['A1']='参考：現地で実施した可能性があるが、日報からは判断できない業務（一覧・集計には含めていない）'; wr['A1'].font=F(size=12,bold=True)
-for i,h in enumerate(['実施日','報告書№','開始時刻','工事・業務名','内容','担当監督員','受注者等','除外理由'],1):
+wr['A1']='参考：現地での実施か日報から判断できなかった業務 → 実施場所を確認のうえ現場確認から除外（一覧・集計には含めていない）'; wr['A1'].font=F(size=12,bold=True)
+for i,h in enumerate(['実施日','報告書№','開始時刻','工事・業務名','内容','担当監督員','受注者等','実施場所','除外理由'],1):
     c=wr.cell(3,i,h); c.font=F(bold=True); c.fill=HDR; c.border=BOX; c.alignment=CE
 why={'下検査':'工事完成下検査は書面中心と考えられるが、現地確認を含む可能性がある','着手前':'打合せ場所の記載がない','初回':'打合せ場所の記載がない'}
 for k,e in enumerate(sorted(ref,key=lambda e:e['date']),4):
-    s=e['cat']+e['det']; reason=next(v for kk,v in why.items() if kk in s)
-    vals=[datetime.date.fromisoformat(e['date']),e['no'],e['time'].replace('～','').translate(Z),e['cat'],e['det'],e['tanto'],e['aite'] or '―',reason]
+    vals=[datetime.date.fromisoformat(e['date']),e['no'],e['time'].replace('～','').translate(Z),e['cat'],e['det'],e['tanto'],e['aite'] or '―','河川砂防課','実施場所が河川砂防課（事務所内）のため、現場確認に該当しない']
     for i,v in enumerate(vals,1):
         c=wr.cell(k,i,v); c.font=F(size=9); c.border=BOX; c.alignment=CE if i<=3 else WR
     wr.cell(k,1).number_format='m"月"d"日"'; wr.cell(k,2).number_format='"№"0'; wr.row_dimensions[k].height=30
-for i,w in enumerate([9,8,8,34,26,11,13,40],1): wr.column_dimensions[L(i)].width=w
+wr.cell(k+2,1,'※ 実施場所は確認結果により記入（日報本文には記載なし）。').font=F(size=9)
+for i,w in enumerate([9,8,8,34,26,11,13,12,40],1): wr.column_dimensions[L(i)].width=w
 for w_ in (wt,wa,wr):
     w_.page_setup.orientation='landscape'; w_.page_setup.paperSize=9; w_.page_setup.fitToWidth=1; w_.page_setup.fitToHeight=0; w_.sheet_properties.pageSetUpPr.fitToPage=True
 wt.page_setup.fitToHeight=1
