@@ -1,0 +1,6 @@
+lxml
+Pillow
+opencv-python-headless
+scipy
+numpy
+pillow-heif
