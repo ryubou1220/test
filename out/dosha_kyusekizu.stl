@@ -1,0 +1,86 @@
+solid dosha
+  facet normal 0 0 -1
+    outer loop
+      vertex 0 0 0
+      vertex 0 5 0
+      vertex 7 5 0
+    endloop
+  endfacet
+  facet normal 0 0 -1
+    outer loop
+      vertex 0 0 0
+      vertex 7 5 0
+      vertex 7 0 0
+    endloop
+  endfacet
+  facet normal 0 0 1
+    outer loop
+      vertex 1.75 1.5 1
+      vertex 5.25 1.5 1
+      vertex 5.25 3.5 1
+    endloop
+  endfacet
+  facet normal 0 0 1
+    outer loop
+      vertex 1.75 1.5 1
+      vertex 5.25 3.5 1
+      vertex 1.75 3.5 1
+    endloop
+  endfacet
+  facet normal 0 -0.5547 0.83205
+    outer loop
+      vertex 0 0 0
+      vertex 7 0 0
+      vertex 5.25 1.5 1
+    endloop
+  endfacet
+  facet normal 0 -0.5547 0.83205
+    outer loop
+      vertex 0 0 0
+      vertex 5.25 1.5 1
+      vertex 1.75 1.5 1
+    endloop
+  endfacet
+  facet normal 0.496139 -0 0.868243
+    outer loop
+      vertex 7 0 0
+      vertex 7 5 0
+      vertex 5.25 3.5 1
+    endloop
+  endfacet
+  facet normal 0.496139 0 0.868243
+    outer loop
+      vertex 7 0 0
+      vertex 5.25 3.5 1
+      vertex 5.25 1.5 1
+    endloop
+  endfacet
+  facet normal 0 0.5547 0.83205
+    outer loop
+      vertex 7 5 0
+      vertex 0 5 0
+      vertex 1.75 3.5 1
+    endloop
+  endfacet
+  facet normal 0 0.5547 0.83205
+    outer loop
+      vertex 7 5 0
+      vertex 1.75 3.5 1
+      vertex 5.25 3.5 1
+    endloop
+  endfacet
+  facet normal -0.496139 0 0.868243
+    outer loop
+      vertex 0 5 0
+      vertex 0 0 0
+      vertex 1.75 1.5 1
+    endloop
+  endfacet
+  facet normal -0.496139 0 0.868243
+    outer loop
+      vertex 0 5 0
+      vertex 1.75 1.5 1
+      vertex 1.75 3.5 1
+    endloop
+  endfacet
+endsolid dosha

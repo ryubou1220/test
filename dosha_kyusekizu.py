@@ -195,6 +195,63 @@ notes = [
 for i, s in enumerate(notes):
     text((col[0], y - 19 - 6 * i), s, 2.6, ha="left")
 
+# ---- 立体図（等角投影） ------------------------------------------------------
+# 3D 頂点 (m)：下面 1-4、上面 5-8（平面図の番号と同じ）
+V3 = [(0, 0, 0), (L1, 0, 0), (L1, W1, 0), (0, W1, 0),
+      (dx, dy, H), (dx + L2, dy, H), (dx + L2, dy + W2, H), (dx, dy + W2, H)]
+FACES = [(0, 3, 2, 1), (4, 5, 6, 7),                       # 底面・天端
+         (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)]  # 法面 前・右・後・左
+ISO_F = 8.0                     # 立体図の倍率（mm/m、縮尺任意）
+iso_ox, iso_oy = 135, 22        # 下面 1 番の用紙位置
+C30, S30 = 0.8660254, 0.5
+
+
+def iso(p):
+    x, y, z = p
+    return (iso_ox + (x - y) * C30 * ISO_F + W1 * C30 * ISO_F, iso_oy + ((x + y) * S30 + z) * ISO_F)
+
+
+def normal(f):
+    a, b, c = (V3[i] for i in f[:3])
+    u = [b[j] - a[j] for j in range(3)]
+    v = [c[j] - a[j] for j in range(3)]
+    return (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+
+
+VIEW = (-1, -1, 1)              # 視線（観察者の方向）
+shade = {(0, 1, 5, 4): "#c9b48f", (3, 0, 4, 7): "#b39c74", (4, 5, 6, 7): "#e3d6ba"}
+visible_edges = set()
+for f in FACES:
+    n = normal(f)
+    if sum(n[i] * VIEW[i] for i in range(3)) > 0:
+        items.append(("face", "ISO", ([iso(V3[i]) for i in f], shade.get(f, "#d8c8a4"))))
+        for a, b in zip(f, f[1:] + f[:1]):
+            visible_edges.add(frozenset((a, b)))
+all_edges = {frozenset((a, b)) for f in FACES for a, b in zip(f, f[1:] + f[:1])}
+for e in all_edges:
+    a, b = sorted(e)
+    if e in visible_edges:
+        line(iso(V3[a]), iso(V3[b]), "ISO", lw=0.35)
+    else:
+        line(iso(V3[a]), iso(V3[b]), "ISO-HIDDEN", style="--", lw=0.18)
+cen = iso((L1 / 2, W1 / 2, H / 2))
+for i, p in enumerate(V3, 1):
+    q = iso(p)
+    ux, uy = q[0] - cen[0], q[1] - cen[1]
+    ln = (ux * ux + uy * uy) ** 0.5 or 1
+    r = 3.0 if i <= 4 else 2.2         # 頂点から外側へずらして番号を置く
+    text((q[0] + ux / ln * r, q[1] + uy / ln * r), str(i), 2.2, "ISO")
+
+
+def mid(a, b):
+    return ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+
+
+text(mid(iso(V3[0]), iso(V3[1])), f"a1={L1:.3f}", 2.4, "DIM", ha="left", va="top", rot=30)
+text(mid(iso(V3[0]), iso(V3[3])), f"b1={W1:.3f}", 2.4, "DIM", ha="right", va="top", rot=-30)
+text((iso_ox - 20, iso_oy + 30), "立　体　図", 4.5)
+text((iso_ox - 20, iso_oy + 23), "（縮尺任意）", 2.6)
+
 # ---- 出力：PDF / PNG -------------------------------------------------------
 STYLE = {"-": "-", "--": (0, (4, 2))}
 
@@ -208,7 +265,8 @@ def render_pdf():
     ax.set_aspect("equal")
     ax.axis("off")
     pt = 72 / 25.4
-    colours = {"DIM": "#1f4fbf", "OUTLINE": "black", "FRAME": "black", "TEXT": "black"}
+    colours = {"DIM": "#1f4fbf", "OUTLINE": "black", "FRAME": "black", "TEXT": "black",
+               "ISO": "black", "ISO-HIDDEN": "#666666"}
     for kind, layer, d in items:
         c = colours.get(layer, "black")
         if kind == "line":
@@ -217,6 +275,9 @@ def render_pdf():
                     solid_capstyle="butt")
         elif kind == "solid":
             ax.fill([p[0] for p in d], [p[1] for p in d], color=c, lw=0)
+        elif kind == "face":
+            pts, fc = d
+            ax.fill([p[0] for p in pts], [p[1] for p in pts], color=fc, lw=0)
         elif kind == "text":
             p, s, h, ha, va, rot = d
             ax.text(p[0], p[1], s, fontproperties=fp, fontsize=h * pt * 1.15, color=c,
@@ -229,7 +290,8 @@ def render_pdf():
 def render_dxf():
     doc = ezdxf.new("R2018", setup=True)
     doc.styles.new("JP", dxfattribs={"font": "msgothic.ttc"})
-    colours = {"DIM": 5, "OUTLINE": 7, "FRAME": 7, "TEXT": 7}
+    colours = {"DIM": 5, "OUTLINE": 7, "FRAME": 7, "TEXT": 7, "ISO": 7, "ISO-HIDDEN": 8,
+               "ISO-FACE": 254}
     for name, c in colours.items():
         doc.layers.add(name, color=c)
     msp = doc.modelspace()
@@ -238,9 +300,17 @@ def render_dxf():
     for kind, layer, d in items:
         if kind == "line":
             p, q, _st, lw = d
-            msp.add_line(p, q, dxfattribs={"layer": layer, "lineweight": int(lw * 100)})
+            at = {"layer": layer, "lineweight": int(lw * 100)}
+            if _st == "--":
+                at["linetype"] = "HIDDEN"
+            msp.add_line(p, q, dxfattribs=at)
         elif kind == "solid":
             msp.add_solid([d[0], d[1], d[2]], dxfattribs={"layer": layer})
+        elif kind == "face":
+            pts, fc = d
+            h = msp.add_hatch(dxfattribs={"layer": "ISO-FACE",
+                                          "true_color": ezdxf.colors.rgb2int(tuple(int(fc[i:i + 2], 16) for i in (1, 3, 5)))})
+            h.paths.add_polyline_path(pts, is_closed=True)
         elif kind == "text":
             p, s, h, ha, va, rot = d
             t = msp.add_text(s, height=h, rotation=rot, dxfattribs={"layer": layer, "style": "JP"})
@@ -248,7 +318,44 @@ def render_dxf():
     doc.saveas(OUT + ".dxf")
 
 
+def render_3d():
+    """3D モデル（実寸 m）：3D DXF（3DFACE）と STL。"""
+    doc = ezdxf.new("R2018")
+    doc.layers.add("DOSHA-3D", color=33)
+    msp = doc.modelspace()
+    for f in FACES:
+        msp.add_3dface([V3[i] for i in f], dxfattribs={"layer": "DOSHA-3D"})
+    doc.saveas(OUT + "_3d.dxf")
+    with open(OUT + ".stl", "w") as fp:
+        fp.write("solid dosha\n")
+        for f in FACES:
+            for tri in ((f[0], f[1], f[2]), (f[0], f[2], f[3])):
+                a, b, c = (V3[i] for i in tri)
+                u = [b[j] - a[j] for j in range(3)]
+                v = [c[j] - a[j] for j in range(3)]
+                n = (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+                ln = sum(x * x for x in n) ** 0.5
+                fp.write("  facet normal %g %g %g\n    outer loop\n" % tuple(x / ln for x in n))
+                for p in (a, b, c):
+                    fp.write("      vertex %g %g %g\n" % p)
+                fp.write("    endloop\n  endfacet\n")
+        fp.write("endsolid dosha\n")
+
+
+def mesh_volume():
+    """閉じたメッシュの体積（発散定理）— オベリスク公式の検算用。"""
+    vol = 0.0
+    for f in FACES:
+        for tri in ((f[0], f[1], f[2]), (f[0], f[2], f[3])):
+            a, b, c = (V3[i] for i in tri)
+            vol += (a[0] * (b[1] * c[2] - b[2] * c[1]) - a[1] * (b[0] * c[2] - b[2] * c[0])
+                    + a[2] * (b[0] * c[1] - b[1] * c[0])) / 6
+    return vol
+
+
 if __name__ == "__main__":
     render_pdf()
     render_dxf()
+    render_3d()
+    print(f"mesh volume check = {mesh_volume():.3f} m3")
     print(f"A1={A1:.3f} A2={A2:.3f} V={V:.3f} (両端断面平均 {V_avg:.3f})")
