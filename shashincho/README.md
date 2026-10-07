@@ -30,3 +30,9 @@ python shashincho.py paste 写真帳.xlsx 写真/ -o 写真帳_完成.xlsx --rep
 
 xlsx は ZIP 内の XML を直接編集するので、矢印・丸・番号ラベルなどの図形や書式はそのまま残る。
 写真は長辺 1024px の JPEG に縮小して貼る。
+
+## 印刷用の撮影アングル帳
+```
+python checklist_pdf.py 写真帳.xlsx 撮影アングル帳.pdf
+```
+A4 縦に 6 枚ずつ、番号・キャプション・貼付先・撮影済チェック欄付きで出力する（現場ごとに改ページ）。
