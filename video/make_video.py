@@ -32,7 +32,8 @@ def font(size):
 def wrap(text, f, width, draw):
     lines, cur = [], ""
     for ch in text:
-        if draw.textlength(cur + ch, font=f) > width:
+        # 句読点・閉じ括弧で行が始まらないよう、はみ出しても前の行に付ける
+        if draw.textlength(cur + ch, font=f) > width and ch not in "、。！？」）!?)":
             lines.append(cur)
             cur = ch
         else:
@@ -75,142 +76,181 @@ def board(d, x, y, w, h, label=None):
 # ---- 各シーンの描画 ----
 
 def s_title():
-    img = Image.new("RGB", (W, H), BG)
+    img = Image.new("RGB", (W, H), (70, 50, 35))
     d = ImageDraw.Draw(img)
-    d.rectangle([0, 0, W, H], fill=(70, 50, 35))
-    d.text((80, 120), "【大工用語】", font=font(48), fill=(255, 210, 160))
-    d.text((80, 200), "同じ木材でも呼び方いろいろ！", font=font(64), fill="white")
-    d.text((80, 300), "桟木・垂木・胴縁のちがいを解説", font=font(44), fill=(255, 235, 210))
-    for i, (w, h) in enumerate([(160, 30), (90, 90), (160, 36)]):
-        board(d, 120 + i * 260, 430 + (90 - h) // 2, w, h)
+    d.text((80, 110), "【大工用語 第３弾‼】", font=font(48), fill=(255, 210, 160))
+    d.text((80, 190), "同じ木材でも呼び方いろいろ⁉", font=font(64), fill="white")
+    d.text((80, 290), "桟木・垂木・胴縁のちがいを解説", font=font(44), fill=(255, 235, 210))
+    for i, (w, h) in enumerate([(160, 30), (90, 90), (160, 30)]):
+        board(d, 120 + i * 260, 410 + (90 - h) // 2, w, h)
     for i, n in enumerate(["桟木", "垂木", "胴縁"]):
-        d.text((150 + i * 260, 540), n, font=font(36), fill="white")
+        d.text((150 + i * 260, 520), n, font=font(36), fill="white")
     return img
 
 
-def s_intro():
-    img, d = base("ホームセンターの木材売り場で…")
-    d.text((80, 150), "こんな経験ありませんか？", font=font(40), fill=INK)
-    for i, t in enumerate(["見た目はほとんど同じ細長い木材", "なのに「桟木」「垂木」「胴縁」と名前がバラバラ", "どれを買えばいいの？ → “わけわかめ”!(^^)"]):
-        d.text((110, 240 + i * 70), "・" + t, font=font(34), fill=INK)
+def s_shadow():
+    img, d = base("どれも家を支える「影の主役」")
+    for i, (h, b) in enumerate([("構造材", "骨組みとして使う"), ("下地材", "支えになる土台として使う")]):
+        x = 100 + i * 560
+        d.rounded_rectangle([x, 140, x + 500, 290], 20, fill="white", outline=ACCENT, width=4)
+        d.text((x + 30, 160), h, font=font(44), fill=ACCENT)
+        d.text((x + 30, 225), b, font=font(32), fill=INK)
+    d.text((100, 350), "表に出ない“脇役”だけど…", font=font(40), fill=INK)
+    d.text((100, 420), "一軒の家にとっては重要な骨組み ＝ 影の主役!(^^)!", font=font(40), fill=ACCENT)
     return img
 
 
-def s_point():
-    img, d = base("ポイントは2つ")
-    for i, (h, b) in enumerate([("① 使う場所（用途）", "屋根に使う？ 壁に使う？ 仮設に使う？"),
-                                ("② 断面の形（厚い・薄い）", "薄い板状か、角材に近いか")]):
-        y = 160 + i * 190
-        d.rounded_rectangle([80, y, W - 80, y + 150], 20, fill="white", outline=ACCENT, width=4)
-        d.text((120, y + 25), h, font=font(42), fill=ACCENT)
-        d.text((120, y + 90), b, font=font(32), fill=INK)
+def s_ryubou():
+    img, d = base("りゅう坊のお仕事では…")
+    rows = [("桟木", "よく使う", ACCENT), ("胴縁", "よく使う", ACCENT), ("垂木", "ほとんど使わない", (130, 120, 110))]
+    for i, (n, t, c) in enumerate(rows):
+        y = 140 + i * 100
+        d.text((120, y), n, font=font(44), fill=INK)
+        d.rounded_rectangle([300, y - 5, 300 + d.textlength(t, font=font(36)) + 40, y + 55], 15, fill=c)
+        d.text((320, y + 4), t, font=font(36), fill="white")
+    d.rounded_rectangle([760, 170, 1200, 330], 30, fill="white", outline=INK, width=3)
+    d.polygon([(800, 330), (780, 380), (850, 330)], fill="white", outline=INK)
+    d.line([(803, 329), (847, 329)], fill="white", width=4)
+    d.text((790, 200), "ちょ、ちょっと待って！", font=font(32), fill=INK)
+    d.text((790, 255), "なんのこっちゃぁ～⁉", font=font(34), fill=ACCENT)
     return img
 
 
 def s_sangi():
     img, d = base("① 桟木（さんぎ）")
-    board(d, 120, 210, 380, 40, "断面イメージ：薄い板状")
-    d.text((120, 140), "薄くて細長い木材", font=font(36), fill=INK)
-    items = ["屋根の下地（瓦を引っかける瓦桟など）", "材木を積むときのすき間づくり（桟積み）", "コンクリート型枠などの仮設材"]
-    d.text((580, 140), "主な使い道", font=font(36), fill=ACCENT)
-    for i, t in enumerate(items):
-        d.text((580, 210 + i * 60), "・" + t, font=font(28), fill=INK)
-    d.text((120, 420), "寸法の目安：厚さ15mm前後 × 幅30〜45mm程度", font=font(30), fill=INK)
+    d.text((120, 140), "おもに「屋根の下地」に使う", font=font(40), fill=ACCENT)
+    board(d, 120, 240, 1040, 40, "長～い板（長さ４メートルほど）")
+    specs = [("厚み", "15ミリ程度以上"), ("幅", "30ミリ以上"), ("長さ", "４メートルほど")]
+    for i, (k, v) in enumerate(specs):
+        x = 120 + i * 350
+        d.text((x, 380), k, font=font(30), fill=(130, 120, 110))
+        d.text((x, 425), v, font=font(38), fill=INK)
     return img
 
 
 def s_taruki():
     img, d = base("② 垂木（たるき）")
-    board(d, 200, 200, 120, 120, "断面イメージ：角材に近い")
-    d.text((120, 140), "ほぼ正方形の、しっかりした角材", font=font(36), fill=INK)
-    # 屋根の図
-    ox, oy = 680, 370
-    d.polygon([(ox, oy), (ox + 260, oy - 220), (ox + 520, oy)], outline=INK, width=4)
-    d.line([(ox + 260, oy - 220), (ox, oy)], fill=WOOD_EDGE, width=14)
-    d.line([(ox + 260, oy - 220), (ox + 520, oy)], fill=WOOD_EDGE, width=14)
-    d.text((ox + 300, oy - 230), "棟", font=font(26), fill=INK)
-    d.text((ox + 20, oy - 150), "垂木", font=font(30), fill=ACCENT)
-    d.text((120, 420), "棟から軒先へ斜めに架け、屋根の重さを支える", font=font(30), fill=INK)
-    d.text((120, 470), "寸法の目安：30×40mm、45×45mm、45×60mm など", font=font(30), fill=INK)
+    d.text((120, 140), "構造材として使う、厚めの角材", font=font(40), fill=ACCENT)
+    board(d, 140, 230, 150, 150, "タテヨコ45ミリ以上が多い")
+    for i, t in enumerate(["長さは４メートルのものが多い", "見た目も実際も「重い」", "ガッチリした材料"]):
+        d.text((480, 240 + i * 60), "・" + t, font=font(36), fill=INK)
+    return img
+
+
+def s_diff():
+    img, d = base("見分け方はカンタン！")
+    board(d, 140, 230, 380, 40)
+    board(d, 820, 175, 150, 150)
+    d.text((170, 360), "薄いのが", font=font(40), fill=INK)
+    d.text((170, 415), "桟木", font=font(64), fill=ACCENT)
+    d.text((740, 360), "四角で重いのが", font=font(40), fill=INK)
+    d.text((740, 415), "垂木", font=font(64), fill=ACCENT)
     return img
 
 
 def s_dobuchi():
     img, d = base("③ 胴縁（どうぶち）")
-    board(d, 120, 210, 380, 45, "断面イメージ：薄め〜中くらい")
-    d.text((120, 140), "壁の下地に使う木材", font=font(36), fill=INK)
-    # 壁の図
-    x0, y0 = 680, 130
+    d.text((80, 130), "「壁の下地材」に使う", font=font(40), fill=ACCENT)
+    for i, t in enumerate(["壁自体の強度がアップ", "柱と柱をつなぐ役目", "釘やビスが打ち込める", "厚み15ミリ程度以上・長さ２mが多い"]):
+        d.text((80, 205 + i * 58), "・" + t, font=font(30), fill=INK)
+    x0, y0 = 760, 130
+    for k in range(3):
+        d.rectangle([x0 + k * 180, y0, x0 + k * 180 + 30, y0 + 300], fill=(200, 200, 200), outline=INK)
     for k in range(4):
-        d.rectangle([x0 + k * 150, y0, x0 + k * 150 + 30, y0 + 300], fill=(200, 200, 200), outline=INK)
-    for k in range(5):
-        y = y0 + 20 + k * 65
-        d.rectangle([x0 - 20, y, x0 + 500, y + 18], fill=WOOD, outline=WOOD_EDGE, width=2)
-    d.text((x0 + 340, y0 + 310), "↑ 胴縁（横）", font=font(28), fill=ACCENT)
-    d.text((x0 + 40, y0 + 310), "↑ 柱", font=font(28), fill=INK)
-    d.text((120, 490), "柱の上に横（または縦）に打ち付けて", font=font(30), fill=INK)
-    d.text((120, 535), "外壁材・壁ボードを留める土台に。壁の強さもアップ", font=font(30), fill=INK)
+        y = y0 + 30 + k * 75
+        d.rectangle([x0 - 20, y, x0 + 420, y + 18], fill=WOOD, outline=WOOD_EDGE, width=2)
+    d.text((x0, y0 + 310), "↑ 柱", font=font(26), fill=INK)
+    d.text((x0 + 230, y0 + 310), "↑ 胴縁", font=font(26), fill=ACCENT)
+    d.text((80, 470), "土木工事の現場では「丁張（ちょうはり）材」にも！", font=font(32), fill=INK)
     return img
 
 
 def s_compare():
     img, d = base("まとめて比較")
-    cols = ["名前", "断面", "主な使う場所"]
-    rows = [("桟木", "薄い板状", "屋根の下地・仮設"),
-            ("垂木", "角材に近い", "屋根を支える骨組み"),
-            ("胴縁", "薄め〜中くらい", "壁の下地")]
-    xs = [120, 370, 700]
-    y = 150
+    cols = ["名前", "使う場所", "厚み・形", "長さ"]
+    rows = [("桟木", "屋根の下地", "薄い（15mm程度〜）", "約４m"),
+            ("垂木", "構造材", "四角で重い（45mm〜）", "約４m"),
+            ("胴縁", "壁の下地", "15mm程度〜", "約２m")]
+    xs = [120, 280, 540, 960]
+    y = 140
     d.rectangle([100, y, W - 100, y + 70], fill=ACCENT)
     for x, c in zip(xs, cols):
-        d.text((x, y + 15), c, font=font(36), fill="white")
+        d.text((x, y + 15), c, font=font(34), fill="white")
     for i, r in enumerate(rows):
         yy = y + 70 + i * 90
         d.rectangle([100, yy, W - 100, yy + 90], fill="white" if i % 2 == 0 else (245, 235, 220), outline=(220, 200, 180))
         for x, c in zip(xs, r):
-            d.text((x, yy + 25), c, font=font(36), fill=INK)
+            d.text((x, yy + 25), c, font=font(34), fill=INK)
+    d.text((120, 520), "※寸法・長さは「多いもの」の目安です", font=font(26), fill=(130, 120, 110))
     return img
 
 
-def s_tips():
-    img, d = base("買うときのコツ")
-    tips = ["名前だけでなく「寸法（厚さ×幅×長さ）」で確認", "お店や地域によって呼び方が違うこともある", "DIYなら用途に合う太さを選べばOK！"]
-    for i, t in enumerate(tips):
-        y = 160 + i * 120
-        d.ellipse([90, y, 150, y + 60], fill=ACCENT)
-        d.text((108, y + 8), str(i + 1), font=font(40), fill="white")
-        d.text((180, y + 10), t, font=font(36), fill=INK)
+def s_material():
+    img, d = base("材料と、現場での注意")
+    d.text((100, 140), "建物の大事な材料なので…", font=font(36), fill=INK)
+    for i, t in enumerate(["スギ", "ヒノキ", "松"]):
+        x = 100 + i * 230
+        d.rounded_rectangle([x, 200, x + 200, 280], 20, fill=WOOD, outline=WOOD_EDGE, width=3)
+        tw = d.textlength(t, font=font(40))
+        d.text((x + (200 - tw) / 2, 217), t, font=font(40), fill=INK)
+    d.text((100, 300), "ほとんどが程度のいい木で作られています!(^^)!", font=font(32), fill=INK)
+    d.rounded_rectangle([100, 380, W - 100, 520], 20, fill="white", outline=ACCENT, width=4)
+    d.text((130, 400), "！ 呼び方を間違えると、材料屋さんが", font=font(34), fill=ACCENT)
+    d.text((130, 455), "　 別の材料を用意してしまうことも！", font=font(34), fill=ACCENT)
     return img
 
 
 def s_end():
     img = Image.new("RGB", (W, H), (70, 50, 35))
     d = ImageDraw.Draw(img)
-    d.text((120, 200), "同じ木材でも、", font=font(56), fill="white")
-    d.text((120, 290), "使う場所と形で名前が変わる！", font=font(56), fill=(255, 210, 160))
-    d.text((120, 420), "くわしくはブログ「LifeとWorkをカンタンに！」へ", font=font(34), fill="white")
-    d.text((120, 470), "ameblo.jp/11830ryubou315", font=font(30), fill=(255, 235, 210))
+    d.text((120, 170), "薄いのが桟木、四角で重いのが垂木、", font=font(48), fill="white")
+    d.text((120, 250), "壁の下地が胴縁！", font=font(48), fill="white")
+    d.text((120, 340), "これで“わけわかめ”も解消!(^^)!", font=font(52), fill=(255, 210, 160))
+    d.text((120, 450), "ブログ「LifeとWorkをカンタンに！」", font=font(34), fill="white")
+    d.text((120, 500), "ameblo.jp/11830ryubou315", font=font(30), fill=(255, 235, 210))
     return img
 
 
+# (描画関数, 字幕, 読み上げ用テキスト)。用語は読み間違い防止のため読み上げ側をかなにしている
 SCENES = [
-    (s_title, "こんにちは、りゅう坊です。今日は大工用語のお話。同じような木材なのに、呼び方がいろいろある。桟木、垂木、胴縁のちがいを解説します。"),
-    (s_intro, "ホームセンターの木材売り場で、見た目はほとんど同じ細長い木材なのに、名前がバラバラで迷ったことはありませんか。まさに、わけわかめ、ですよね。"),
-    (s_point, "見分けるポイントは二つです。一つ目は、どこに使うかという用途。二つ目は、断面が薄い板状なのか、角材に近いのか、という形です。"),
-    (s_sangi, "まずは桟木。薄くて細長い木材で、主に屋根の下地に使われます。ほかにも、材木を積むときのすき間づくりや、型枠などの仮設材としても活躍します。"),
-    (s_taruki, "次に垂木。こちらは正方形に近い、しっかりした角材です。屋根のてっぺんの棟から軒先へ斜めに架けて、屋根の重さを支える大事な骨組みです。"),
-    (s_dobuchi, "そして胴縁。こちらは壁の下地に使う木材です。柱の上に横や縦に打ち付けて、外壁材や壁のボードを留める土台になり、壁の強さを高める役目もあります。"),
-    (s_compare, "まとめると、桟木は薄い板状で屋根の下地、垂木は角材で屋根の骨組み、胴縁は壁の下地。同じ木材でも、使う場所と形で名前が変わるんです。"),
-    (s_tips, "買うときのコツは、名前だけでなく、厚さ、幅、長さの寸法で確認すること。お店や地域で呼び方がちがうこともあるので、DIYなら用途に合う太さを選べば大丈夫です。"),
-    (s_end, "以上、大工用語の解説でした。くわしくはブログ、ライフとワークをカンタンに、をご覧ください。ご視聴ありがとうございました。"),
+    (s_title,
+     "りゅう坊です！大工用語、第３弾‼ 今回は、木造のお家に使うたくさんの木の材料の中から、桟木と垂木、加えて胴縁についてお送りします。",
+     "りゅうぼうです！だいくようご、だいさんだん！こんかいは、木造のおうちに使う、たくさんの木の材料の中から、さんぎと、たるき、くわえて、どうぶちについてお送りします。"),
+    (s_shadow,
+     "どれも骨組みとしての構造材や、支えになる下地材として使われることがほとんど。表に出ない脇役ですが、一軒の家にとっては重要な骨組みとなる、影の主役なんです。",
+     "どれも、骨組みとしての構造材や、支えになる下地材として使われることがほとんどです。表に出ない脇役ではありますが、一軒の家にとっては重要な骨組みとなる、影の主役なんです。"),
+    (s_ryubou,
+     "ボク自身、仕事では垂木はほとんど使いませんが、桟木や胴縁はよく使う機会があります。「ちょ、ちょっと待って！なんのこっちゃぁ～⁉」という声がしそうなので、カンタンに説明しますね。",
+     "ボク自身、仕事では、たるきはほとんど使いませんが、さんぎや、どうぶちは、よく使う機会があります。ちょ、ちょっと待って、なんのこっちゃー、という声がしそうなので、カンタンに説明しますね。"),
+    (s_sangi,
+     "まずは桟木。おもに屋根の下地に使われます。イメージは、厚みが15ミリ程度以上、幅が30ミリ以上で、長さが４メートルほどある長～い板です。",
+     "まずは、さんぎ。おもに屋根の下地に使われます。イメージは、厚みが15ミリ程度以上、幅が30ミリ以上で、長さが4メートルほどある、なが～い板です。"),
+    (s_taruki,
+     "次に垂木。構造材として使うので、桟木に比べると厚めです。タテヨコ45ミリ以上のものが多く、長さも４メートルのものが多いです。見た目も実際も重い、ガッチリした材料です。",
+     "次に、たるき。構造材として使うので、さんぎに比べると厚めです。たてよこ45ミリ以上のものが多く、長さも4メートルのものが多いです。見た目も実際も重い、ガッチリした材料です。"),
+    (s_diff,
+     "見分け方はカンタン。薄いのが桟木、四角で重いのが垂木。こんなふうに見ればOKです！",
+     "見分け方はカンタン。薄いのが、さんぎ。四角で重いのが、たるき。こんなふうに見ればオーケーです！"),
+    (s_dobuchi,
+     "もうひとつ、胴縁は壁の下地材。壁の強度をアップし、柱と柱をつなぐ役目もあります。下地材なので釘やビスが打ち込めます。厚みは15ミリ程度以上、長さは２メートルのものが多く、土木工事の現場では丁張材としても使います。",
+     "もうひとつ、どうぶちは、壁の下地材です。壁の強度をアップし、柱と柱をつなぐ役目もあります。下地材なので、くぎやビスが打ち込めます。厚みは15ミリ程度以上、長さは2メートルのものが多く、土木工事の現場では、ちょうはり材としても使います。"),
+    (s_compare,
+     "まとめると、桟木は屋根の下地で薄い板、垂木は四角で重い構造材、胴縁は壁の下地。長さは桟木と垂木が４メートル、胴縁が２メートルのものが多いです。",
+     "まとめると、さんぎは屋根の下地で薄い板。たるきは四角で重い構造材。どうぶちは壁の下地。長さは、さんぎと、たるきが4メートル、どうぶちが2メートルのものが多いです。"),
+    (s_material,
+     "建物の大事な材料なので、ほとんどが程度のいいスギ・ヒノキ・松で作られています。はた目にはどれも同じようですが、現場では呼び方で材料屋さんが間違えることもあるので、名前はすごく大事なんです。",
+     "建物の大事な材料なので、ほとんどが程度のいい、スギ、ヒノキ、松で作られています。はた目にはどれも同じようですが、現場では呼び方によって材料屋さんが間違えることもあるので、名前はすごく大事なんです。"),
+    (s_end,
+     "これで「わけわかめ」も解消されるのではないかと！以上、りゅう坊でした。ご視聴ありがとうございました!(^^)!",
+     "これで、わけわかめも、解消されるのではないかと！以上、りゅうぼうでした。ご視聴ありがとうございました！"),
 ]
 
 
 def main():
     tmp = tempfile.mkdtemp()
     segs = []
-    for i, (fn, text) in enumerate(SCENES):
-        audio, sr = pyopenjtalk.tts(text, speed=1.05)
+    for i, (fn, text, speech) in enumerate(SCENES):
+        audio, sr = pyopenjtalk.tts(speech, speed=1.05)
         pad = np.zeros(int(sr * 0.6))
         audio = np.concatenate([pad, audio, pad])
         audio = np.clip(audio, -32768, 32767).astype(np.int16)
