@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ウッドデッキ図面セット</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+/* レイアウト：上に操作バー、その下にA4の図面用紙を縦に並べる。用紙は印刷物なので、あえて明るい紙の配色だけにしている。 */
+:root {
+  --desk: #dfe3dc;      /* 用紙の外側 */
+  --paper: #ffffff;
+  --ink: #18201b;
+  --muted: #5b665e;
+  --line: #c9d1c7;
+  --accent: #2c6849;
+  --wood: #b9844f;
+  --wood-soft: #f1e3d0;
+  --stone: #9aa39c;
+  --warn: #9c4a17;
+  --font: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--desk); color: var(--ink); font-family: var(--font); font-size: 13px; line-height: 1.65; font-variant-numeric: tabular-nums; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--paper); border-bottom: 1px solid var(--line); padding-inline: 16px; padding-block: 10px; }
+.bar form { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; }
+.bar .f { display: grid; gap: 2px; font-size: 12px; color: var(--muted); }
+.bar input[type=number], .bar select { font: inherit; font-size: 15px; font-weight: 700; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; width: 6.5em; }
+.bar select { width: auto; }
+.bar label.c { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+.bar input[type=checkbox] { accent-color: var(--accent); }
+.bar .sizes { display: flex; flex-wrap: wrap; gap: 6px; }
+.bar button { font: inherit; font-size: 12px; cursor: pointer; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 4px 10px; }
+.bar button.print { font-size: 14px; font-weight: 700; border-radius: 6px; background: var(--accent); border-color: var(--accent); color: #fff; padding: 7px 14px; margin-left: auto; }
+.bar button:focus-visible, .bar input:focus-visible, .bar select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar .tip { flex-basis: 100%; font-size: 12px; color: var(--muted); margin: 0; }
+
+.sheets { display: grid; justify-items: center; gap: 24px; padding-inline: 16px; padding-block: 24px 60px; overflow-x: auto; }
+.sheet { width: 210mm; min-height: 297mm; background: var(--paper); box-shadow: 0 1px 3px rgba(0,0,0,.15); padding: 12mm 12mm 10mm; display: flex; flex-direction: column; gap: 5mm; position: relative; }
+.sheet > .body { flex: 1; display: flex; flex-direction: column; gap: 5mm; }
+h1 { font-size: 26px; font-weight: 900; margin: 0; line-height: 1.3; text-wrap: balance; }
+h2 { font-size: 17px; font-weight: 900; margin: 0; padding-bottom: 2mm; border-bottom: 2px solid var(--ink); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+h2 small { font-size: 11px; font-weight: 400; color: var(--muted); }
+h3 { font-size: 13px; margin: 0 0 1.5mm; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.note { font-size: 11px; color: var(--muted); }
+svg { width: 100%; height: auto; display: block; }
+svg text { font-family: var(--font); fill: var(--ink); }
+svg .m { fill: var(--muted); }
+table { width: 100%; border-collapse: collapse; }
+th, td { border-bottom: 1px solid var(--line); padding: 1.6mm 2mm; text-align: left; vertical-align: top; }
+th { font-size: 11px; color: var(--muted); font-weight: 700; }
+td.r, th.r { text-align: right; white-space: nowrap; }
+tr.grp td { background: #f2f4f0; font-weight: 700; font-size: 12px; }
+tr.total td { font-weight: 900; font-size: 15px; border-bottom: 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 1.2mm 6mm; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-weight: 700; }
+.callout { border: 1.5px solid var(--accent); border-radius: 2mm; padding: 3mm 4mm; }
+.callout b { color: var(--accent); }
+.warn { color: var(--warn); font-weight: 700; }
+.box { width: 3.6mm; height: 3.6mm; border: 1.2px solid var(--ink); display: inline-block; vertical-align: -0.6mm; margin-right: 2mm; flex: none; }
+ul.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.8mm; }
+ul.check li { display: flex; align-items: flex-start; }
+ul.check li .box { margin-top: 1mm; }
+.day { break-inside: avoid; }
+.day h3 { display: flex; gap: 3mm; align-items: baseline; font-size: 14px; }
+.day h3 span { font-size: 11px; color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 2mm; }
+.cutgrp { break-inside: avoid; display: grid; gap: 1.5mm; }
+.cutrow { display: grid; grid-template-columns: 22mm 12mm 1fr; gap: 3mm; align-items: center; break-inside: avoid; }
+.cutrow .st { font-weight: 700; }
+.cutrow .n { text-align: right; font-weight: 700; }
+.stock { display: flex; height: 9mm; border: 1.2px solid var(--ink); border-radius: .6mm; overflow: hidden; background: repeating-linear-gradient(45deg, #fff, #fff 1.2mm, #e6e9e4 1.2mm, #e6e9e4 2.4mm); }
+.cut { background: var(--wood-soft); border-right: 1.2px solid var(--ink); display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 9.5px; line-height: 1.2; white-space: nowrap; overflow: hidden; }
+.cut b { font-size: 11px; }
+.tb { display: grid; grid-template-columns: 1.6fr 1fr 1fr .7fr; border: 1.5px solid var(--ink); font-size: 10.5px; }
+.tb > div { padding: 1.2mm 2mm; border-right: 1px solid var(--ink); display: grid; }
+.tb > div:last-child { border-right: 0; }
+.tb span { color: var(--muted); font-size: 9px; }
+.tb b { font-size: 11.5px; }
+.toc { counter-reset: t; list-style: none; padding: 0; margin: 0; display: grid; gap: 1.5mm; }
+.toc li { display: flex; gap: 3mm; }
+.toc li b { width: 10mm; color: var(--accent); }
+.cover-plan svg { height: 92mm; }
+.plan svg { max-height: 150mm; }
+.pos { display: grid; grid-template-columns: repeat(auto-fill, minmax(30mm, 1fr)); gap: 1.2mm; }
+.pos div { border: 1px solid var(--line); border-radius: 1mm; padding: 1mm 2mm; display: grid; font-size: 11px; }
+.pos b { font-size: 12px; }
+table.buy td { padding: 1.1mm 2mm; font-size: 12px; }
+.cover-hero { border: 1.5px solid var(--ink); padding: 4mm; }
+
+@page { size: A4; margin: 0; }
+@media print {
+  body { background: #fff; }
+  .bar { display: none; }
+  .sheets { padding: 0; gap: 0; display: block; overflow: visible; }
+  .sheet { box-shadow: none; break-after: page; margin: 0; }
+  .sheet:last-child { break-after: auto; }
+}
+@media (max-width: 820px) { .bar button.print { margin-left: 0; } }
+</style>
+</head>
+<body>
+<div class="bar">
+  <form id="f" novalidate>
+    <div class="f"><label for="w">幅 cm</label><input id="w" type="number" min="90" max="1000" step="10" value="270"></div>
+    <div class="f"><label for="d">奥行き cm</label><input id="d" type="number" min="60" max="600" step="10" value="180"></div>
+    <div class="f"><label for="h">高さ cm</label><input id="h" type="number" min="25" max="150" step="5" value="45"></div>
+    <div class="f"><label for="mat">木材</label><select id="mat"></select></div>
+    <label class="c"><input type="checkbox" id="maku" checked> 幕板</label>
+    <label class="c"><input type="checkbox" id="sheet" checked> 防草シート</label>
+    <button type="button" class="print" id="print">印刷・PDFで保存</button>
+    <div class="sizes" role="group" aria-label="販売用の定番サイズ">
+      <button type="button" data-p="180,90,40">180×90</button>
+      <button type="button" data-p="180,180,45">180×180</button>
+      <button type="button" data-p="270,180,45">270×180</button>
+      <button type="button" data-p="360,180,45">360×180</button>
+      <button type="button" data-p="360,270,50">360×270</button>
+    </div>
+    <p class="tip">サイズを選んで「印刷・PDFで保存」→ 送信先を「PDFに保存」にすると、販売用のPDF（A4・7ページ）ができます。</p>
+  </form>
+</div>
+
+<main class="sheets" id="sheets"></main>
+
+<script src="../lib/deck-engine.js"></script>
+<script>
+// ===== 図面に入れる情報（ここを書き換えてください） =====
+const BRAND = {
+  title: 'ウッドデッキ図面セット',
+  supervisor: '野村 隆一',
+  supervisorNote: '建設関係の仕事に35年。2003年に自宅のウッドデッキをDIYでつくって以来、フェンス・門扉・ペイビングなどを手がけ、ほかの人のデッキづくりもサポートしている。',
+  site: 'ryuphoenix.com',
+  version: '2026年版',
+};
+
+const E = DeckEngine;
+const $ = (id) => document.getElementById(id);
+const yen = (n) => '¥' + Math.round(n).toLocaleString('ja-JP');
+const mm = (n) => Math.round(n).toLocaleString('ja-JP');
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const COLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+for (const [k, m] of Object.entries(E.MATERIALS)) {
+  const o = document.createElement('option'); o.value = k; o.textContent = m.label; $('mat').appendChild(o);
+}
+
+// ===== 図の部品 =====
+// 水平の寸法線（連続寸法）。xs はmm座標、y は線の位置
+function dimH(xs, y, fs, sw, opt = {}) {
+  let s = '';
+  const tick = fs * 0.45;
+  s += `<line x1="${xs[0]}" x2="${xs[xs.length - 1]}" y1="${y}" y2="${y}" stroke="var(--muted)" stroke-width="${sw}"/>`;
+  xs.forEach((x) => { s += `<line x1="${x - tick * .6}" x2="${x + tick * .6}" y1="${y + tick * .6}" y2="${y - tick * .6}" stroke="var(--ink)" stroke-width="${sw * 1.4}"/>`; });
+  for (let i = 0; i < xs.length - 1; i++) {
+    const len = xs[i + 1] - xs[i];
+    if (len < fs * 2.2 && !opt.force) continue;
+    s += `<text x="${(xs[i] + xs[i + 1]) / 2}" y="${y - fs * .35}" text-anchor="middle" font-size="${fs}">${mm(len)}</text>`;
+  }
+  return s;
+}
+function dimV(ys, x, fs, sw) {
+  let s = '';
+  const tick = fs * 0.45;
+  s += `<line x1="${x}" x2="${x}" y1="${ys[0]}" y2="${ys[ys.length - 1]}" stroke="var(--muted)" stroke-width="${sw}"/>`;
+  ys.forEach((y) => { s += `<line x1="${x - tick * .6}" x2="${x + tick * .6}" y1="${y + tick * .6}" y2="${y - tick * .6}" stroke="var(--ink)" stroke-width="${sw * 1.4}"/>`; });
+  for (let i = 0; i < ys.length - 1; i++) {
+    const len = ys[i + 1] - ys[i];
+    if (len < fs * 2.2) continue;
+    const cy = (ys[i] + ys[i + 1]) / 2;
+    s += `<text x="${x - fs * .35}" y="${cy}" text-anchor="middle" font-size="${fs}" transform="rotate(-90 ${x - fs * .35} ${cy})">${mm(len)}</text>`;
+  }
+  return s;
+}
+const edges = (arr, a, b) => [a, ...arr, b];
+
+// 平面図の共通枠（建物・デッキ外形）。layer: 'found'（基礎）または 'frame'（骨組み）
+function planSvg(r, layer) {
+  const { W, D, postXs, beamYs, joistXs, nb } = r.geo;
+  const mat = r.mat;
+  const u = Math.max(W, D * 1.35);
+  const fs = u / 42, sw = u / 900;
+  const left = fs * 6, top = fs * 9, right = fs * 4, bottom = fs * 5;
+  const vbW = W + left + right, vbH = D + top + bottom;
+  const X = (x) => left + x, Y = (y) => top + y;
+  let s = `<svg viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="${layer === 'found' ? '束石の位置' : '大引と根太の位置'}">`;
+  s += `<rect x="${X(-fs)}" y="${Y(-fs * 2.6)}" width="${W + fs * 2}" height="${fs * 2.2}" fill="#e3e7e1"/>`;
+  s += `<text x="${X(W / 2)}" y="${Y(-fs * 1.15)}" text-anchor="middle" font-size="${fs}">建物（窓側）</text>`;
+  s += `<rect x="${X(0)}" y="${Y(0)}" width="${W}" height="${D}" fill="${layer === 'frame' ? 'var(--wood-soft)' : 'none'}" stroke="var(--ink)" stroke-width="${sw * 1.5}" ${layer === 'found' ? `stroke-dasharray="${sw * 8} ${sw * 5}"` : ''}/>`;
+  const pa = mat.post.t;
+  if (layer === 'frame') {
+    const bt = mat.beam.t;
+    beamYs.forEach((y) => { s += `<rect x="${X(0)}" y="${Y(y - bt / 2)}" width="${W}" height="${bt}" fill="var(--wood)" opacity=".55"/>`; });
+    const jt = mat.joist.t;
+    joistXs.forEach((x) => { s += `<rect x="${X(x - jt / 2)}" y="${Y(0)}" width="${jt}" height="${D}" fill="var(--accent)" opacity=".85"/>`; });
+    postXs.forEach((x) => beamYs.forEach((y) => { s += `<rect x="${X(x - pa / 2)}" y="${Y(y - pa / 2)}" width="${pa}" height="${pa}" fill="none" stroke="var(--ink)" stroke-width="${sw}" stroke-dasharray="${sw * 3} ${sw * 2}"/>`; }));
+    s += dimH(edges(joistXs, 0, W).filter((v, i, a) => a.indexOf(v) === i), Y(-fs * 4.6), fs * .8, sw);
+    s += `<text x="${X(0)}" y="${Y(-fs * 6.4)}" font-size="${fs * .85}" class="m">根太の間隔（中心）</text>`;
+    s += dimV(edges(beamYs, 0, D).filter((v, i, a) => a.indexOf(v) === i), X(-fs * 2.2), fs * .8, sw);
+    s += `<text x="${X(W + fs * .8)}" y="${Y(D / 2)}" font-size="${fs * .8}" class="m" transform="rotate(90 ${X(W + fs * .8)} ${Y(D / 2)})" text-anchor="middle">床板は建物と平行に${nb}枚</text>`;
+  } else {
+    const st = pa * 2.2;
+    postXs.forEach((x, i) => beamYs.forEach((y, j) => {
+      s += `<rect x="${X(x - st / 2)}" y="${Y(y - st / 2)}" width="${st}" height="${st}" fill="var(--stone)" opacity=".5" stroke="var(--ink)" stroke-width="${sw}"/>`;
+      s += `<rect x="${X(x - pa / 2)}" y="${Y(y - pa / 2)}" width="${pa}" height="${pa}" fill="var(--ink)"/>`;
+      s += `<text x="${X(x + st / 2 + fs * .2)}" y="${Y(y - st / 2 - fs * .2)}" font-size="${fs * .75}" class="m">${COLS[i]}${j + 1}</text>`;
+    }));
+    s += dimH(edges(postXs, 0, W), Y(-fs * 4.6), fs * .8, sw);
+    s += `<text x="${X(0)}" y="${Y(-fs * 6.4)}" font-size="${fs * .85}" class="m">束石の間隔（中心）</text>`;
+    s += dimV(edges(beamYs, 0, D), X(-fs * 2.2), fs * .8, sw);
+    s += `<line x1="${X(0)}" y1="${Y(0)}" x2="${X(W)}" y2="${Y(D)}" stroke="var(--accent)" stroke-width="${sw}" stroke-dasharray="${sw * 10} ${sw * 6}"/>`;
+    s += `<line x1="${X(W)}" y1="${Y(0)}" x2="${X(0)}" y2="${Y(D)}" stroke="var(--accent)" stroke-width="${sw}" stroke-dasharray="${sw * 10} ${sw * 6}"/>`;
+  }
+  s += dimH([0, W], Y(D + fs * 2.4), fs, sw, { force: true });
+  s += dimV([0, D], X(W + fs * 2.6), fs, sw);
+  s += '</svg>';
+  return s;
+}
+
+// 断面図（建物から奥行き方向に切った図）
+function sectionSvg(r) {
+  const { D, H, beamYs, postLen, negarami } = r.geo;
+  const m = r.mat, ST = E.SETTINGS.stoneTop;
+  // 高さ方向は見やすいように拡大する（拡大率は図に書く）
+  const ex = Math.min(4, Math.max(1, Math.round((D * 0.32 / H) * 2) / 2));
+  const u = Math.max(D, H * ex * 2.2);
+  const fs = u / 42, sw = u / 900;
+  const left = fs * 5, right = fs * 17, top = fs * 3, bottom = fs * 5;
+  const groundY = top + H * ex;
+  const vbW = D + left + right, vbH = H * ex + top + bottom + ST * ex;
+  const X = (x) => left + x, Y = (z) => groundY - z * ex;
+  let s = `<svg viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="断面図">`;
+  s += `<rect x="${X(-fs * 4)}" y="${Y(H) - fs * 2}" width="${fs * 4}" height="${(H + ST) * ex + fs * 2}" fill="#e3e7e1"/>`;
+  s += `<text x="${X(-fs * 2)}" y="${Y(H / 2)}" font-size="${fs * .9}" text-anchor="middle" dominant-baseline="middle">建物</text>`;
+  s += `<line x1="${X(-fs * 4)}" x2="${X(D + fs * 3)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="${sw * 2}"/>`;
+  for (let x = -fs * 4; x < D + fs * 3; x += fs * 1.2) s += `<line x1="${X(x)}" y1="${Y(0)}" x2="${X(x - fs * .8)}" y2="${Y(0) + fs * .8}" stroke="var(--muted)" stroke-width="${sw}"/>`;
+  const zBeam = ST + postLen, zJoist = zBeam + m.beam.h, zDeck = zJoist + m.joist.h;
+  const pa = m.post.t, stoneW = pa * 2.2;
+  const box = (x, z, w, h, attrs) => `<rect x="${X(x)}" y="${Y(z + h)}" width="${w}" height="${h * ex}" ${attrs}/>`;
+  beamYs.forEach((y) => {
+    s += box(y - stoneW / 2, -ST, stoneW, ST * 2, `fill="var(--stone)" opacity=".6" stroke="var(--ink)" stroke-width="${sw}"`);
+    s += box(y - pa / 2, ST, pa, postLen, `fill="#fff" stroke="var(--ink)" stroke-width="${sw}"`);
+    s += box(y - m.beam.t / 2, zBeam, m.beam.t, m.beam.h, `fill="var(--wood)" stroke="var(--ink)" stroke-width="${sw}"`);
+    s += `<path d="M${X(y - m.beam.t / 2)} ${Y(zJoist)}L${X(y + m.beam.t / 2)} ${Y(zBeam)}M${X(y + m.beam.t / 2)} ${Y(zJoist)}L${X(y - m.beam.t / 2)} ${Y(zBeam)}" stroke="var(--ink)" stroke-width="${sw * .7}" fill="none"/>`;
+  });
+  if (negarami) {
+    const zN = ST + Math.min(150, postLen / 3);
+    s += box(0, zN, D, m.joist.h, `fill="none" stroke="var(--ink)" stroke-width="${sw}" stroke-dasharray="${sw * 6} ${sw * 4}"`);
+  }
+  s += box(0, zJoist, D, m.joist.h, `fill="var(--accent)" opacity=".85"`);
+  const step = (D + E.SETTINGS.boardGap) / r.geo.nb;
+  for (let i = 0; i < r.geo.nb; i++) {
+    const w = i === r.geo.nb - 1 ? r.geo.lastBoardW : m.deck.w;
+    s += box(i * step, zDeck, Math.max(w, 1), m.deck.t, `fill="var(--wood-soft)" stroke="var(--ink)" stroke-width="${sw * .8}"`);
+  }
+  // 高さの内訳（ラベルは重ならないように下へずらす）
+  const dx = X(D + fs * 1.5);
+  const marks = [H, zDeck, zJoist, zBeam, ST, 0];
+  marks.forEach((z) => { s += `<line x1="${dx - fs * .5}" x2="${dx + fs * .5}" y1="${Y(z)}" y2="${Y(z)}" stroke="var(--ink)" stroke-width="${sw * 1.4}"/>`; });
+  s += `<line x1="${dx}" x2="${dx}" y1="${Y(H)}" y2="${Y(0)}" stroke="var(--muted)" stroke-width="${sw}"/>`;
+  const labels = [[H, zDeck, `床板 ${m.deck.t}`], [zDeck, zJoist, `根太 ${m.joist.h}`], [zJoist, zBeam, `大引 ${m.beam.h}`], [zBeam, ST, `束柱 ${mm(postLen)}`], [ST, 0, `束石 ${ST}`]];
+  let lastY = -Infinity;
+  labels.forEach(([a, b, t]) => {
+    const want = Y((a + b) / 2), y = Math.max(want, lastY + fs * 1.15);
+    lastY = y;
+    if (Math.abs(y - want) > fs * .2) s += `<line x1="${dx}" y1="${want}" x2="${dx + fs * .9}" y2="${y}" stroke="var(--muted)" stroke-width="${sw * .7}"/>`;
+    s += `<text x="${dx + fs * 1.1}" y="${y}" font-size="${fs * .85}" dominant-baseline="middle">${t}</text>`;
+  });
+  const dx2 = dx + fs * 10;
+  s += dimV([Y(H), Y(0)], dx2, fs, sw).replace(`>${mm(H * ex)}<`, `>${mm(H)}<`);
+  s += `<text x="${dx2 + fs * .9}" y="${Y(H / 2)}" font-size="${fs * .8}" class="m" dominant-baseline="middle" transform="rotate(90 ${dx2 + fs * .9} ${Y(H / 2)})" text-anchor="middle">地面から床面</text>`;
+  s += dimH(edges(beamYs, 0, D).filter((v, i, a) => a.indexOf(v) === i).map((v) => X(v)), Y(0) + fs * 3, fs * .8, sw);
+  s += `<text x="${X(0)}" y="${top - fs * 1.2}" font-size="${fs * .8}" class="m">${ex > 1 ? `高さ方向は${ex}倍に拡大して表示` : ''}${negarami ? `${ex > 1 ? '　' : ''}破線＝根がらみ` : ''}</text>`;
+  s += '</svg>';
+  return s;
+}
+
+// ===== ページ =====
+function titleBlock(r, name, no, total) {
+  const g = r.geo;
+  return `<div class="tb">
+    <div><span>図名</span><b>${name}</b></div>
+    <div><span>サイズ（幅×奥行き×高さ）</span><b>${mm(g.W)}×${mm(g.D)}×${mm(g.H)}</b></div>
+    <div><span>監修</span><b>${BRAND.supervisor}</b></div>
+    <div><span>${BRAND.version}</span><b>${no} / ${total}</b></div>
+  </div>`;
+}
+function sheet(r, name, no, total, body) {
+  return `<section class="sheet"><div class="body">${body}</div>${titleBlock(r, name, no, total)}</section>`;
+}
+
+function render() {
+  const inp = {
+    w: Math.min(1000, Math.max(90, Number($('w').value) || 270)),
+    d: Math.min(600, Math.max(60, Number($('d').value) || 180)),
+    h: Math.min(150, Math.max(25, Number($('h').value) || 45)),
+    mat: $('mat').value, maku: $('maku').checked, sheet: $('sheet').checked, tools: false,
+  };
+  const r = E.calculate(inp);
+  const g = r.geo, m = r.mat, TOTAL = 7;
+  const sizeLabel = `幅${mm(g.W)} × 奥行き${mm(g.D)} × 高さ${mm(g.H)} mm`;
+  const diag = Math.round(Math.hypot(g.W, g.D));
+  const pages = [];
+
+  // 1 表紙
+  pages.push(sheet(r, '表紙・概要', 1, TOTAL, `
+    <div class="cover-hero">
+      <p class="muted">${BRAND.title}</p>
+      <h1>${sizeLabel}</h1>
+      <p style="font-size:15px;font-weight:700;margin-top:2mm">${m.label}（床板 ${m.deck.spec}）</p>
+    </div>
+    ${r.warns.map((w) => `<p class="warn">${esc(w)}</p>`).join('')}
+    <div class="cover-plan">${planSvg(r, 'frame')}</div>
+    <div class="grid2">
+      <div>
+        <h3>このデッキの概要</h3>
+        <dl class="kv">
+          <dt>面積</dt><dd>${r.areaM2.toFixed(2)}㎡（約${(r.areaM2 / 1.62).toFixed(1)}畳）</dd>
+          <dt>束石・束柱</dt><dd>${g.posts}か所（${g.nx}列×${g.ny}行）</dd>
+          <dt>大引</dt><dd>${g.ny}本通し</dd>
+          <dt>根太</dt><dd>${g.nj}本</dd>
+          <dt>床板</dt><dd>${g.nb}列</dd>
+          <dt>材料費の目安</dt><dd>${yen(r.total)}</dd>
+          <dt>作業日数</dt><dd>約${r.days}日（2人作業）</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>収録内容</h3>
+        <ol class="toc">
+          <li><b>2</b>基礎伏図（束石の位置と直角の確認）</li>
+          <li><b>3</b>骨組み図（大引・根太の位置）</li>
+          <li><b>4</b>断面図（高さの内訳）と床板の割付</li>
+          <li><b>5</b>カット表（定尺材のどこで切るか）</li>
+          <li><b>6</b>購入リスト（チェック欄つき）</li>
+          <li><b>7</b>3日間の作業手順</li>
+        </ol>
+      </div>
+    </div>
+    <p class="note">監修：${BRAND.supervisor}。${BRAND.supervisorNote}<br>寸法の単位はすべてmm。寸法は部材の中心までの距離で、外周の部材は外面をデッキの端にそろえる。図は縮尺どおりではないので、必ず数字を優先すること。</p>
+  `));
+
+  // 2 基礎伏図
+    pages.push(sheet(r, '基礎伏図', 2, TOTAL, `
+    <h2>基礎伏図<small>束石の位置（上から見た図）</small></h2>
+    <div class="plan">${planSvg(r, 'found')}</div>
+    <div>
+      <h3>束石の位置（左端から／建物から、中心までの距離）</h3>
+      <div class="pos">
+        ${g.postXs.map((x, i) => `<div><b>${COLS[i]}列</b><span>左端から ${mm(x)}</span></div>`).join('')}
+      </div>
+      <div class="pos" style="margin-top:1.5mm">
+        ${g.beamYs.map((y, j) => `<div><b>${j + 1}行目</b><span>建物から ${mm(y)}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="callout">
+      <b>直角の確認：</b>外周に水糸を張ったら、2本の対角線（図の緑の破線）を測る。どちらも <b>${mm(diag)}mm</b> なら直角。差が5mm以上あれば、水糸を張り直してから束石を据える。
+    </div>
+    <p class="note">束石は羽子板付き（${g.posts}個）。束石の上面は地面から約${E.SETTINGS.stoneTop}mm出し、すべて同じ高さにそろえる。デッキの出来の大半はここで決まる。</p>
+  `));
+
+  // 3 骨組み図
+  const pitch = Math.round((g.joistXs[1] - g.joistXs[0]));
+  pages.push(sheet(r, '骨組み図', 3, TOTAL, `
+    <h2>骨組み図<small>大引・根太の位置（上から見た図）</small></h2>
+    <div class="plan">${planSvg(r, 'frame')}</div>
+    <div class="grid2">
+      <div>
+        <h3>部材</h3>
+        <table><tbody>
+          <tr><td>大引</td><td>${m.beam.spec}</td><td class="r">${g.ny}本通し（長さ${mm(g.W)}）</td></tr>
+          <tr><td>根太</td><td>${m.joist.spec}</td><td class="r">${g.nj}本（長さ${mm(g.D)}、間隔約${mm(pitch)}）</td></tr>
+          <tr><td>束柱</td><td>${m.post.spec}</td><td class="r">${g.posts}本（長さ${mm(g.postLen)}）</td></tr>
+          ${g.negarami ? `<tr><td>根がらみ</td><td>${m.joist.spec}</td><td class="r">外周に1周</td></tr>` : ''}
+        </tbody></table>
+      </div>
+      <div>
+        <h3>固定のポイント</h3>
+        <ul class="check">
+          <li><i class="box"></i>大引は束柱の上にのせ、ビスを1か所3本以上</li>
+          <li><i class="box"></i>根太は大引の上にのせ、交わる所ごとにビス3本</li>
+          <li><i class="box"></i>外周の根太を先に張り、ここで全体の水平を決める</li>
+          <li><i class="box"></i>大引・根太の継ぎ目は必ず束柱や大引の上にする</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">図の茶色の帯が大引、緑の帯が根太、点線の四角が束柱の位置。</p>
+  `));
+
+  // 4 断面図
+  const fullBoards = g.lastBoardW >= m.deck.w - 0.5;
+  pages.push(sheet(r, '断面図・床板割付', 4, TOTAL, `
+    <h2>断面図<small>建物から奥行き方向に切った図</small></h2>
+    ${sectionSvg(r)}
+    <div class="grid2">
+      <div>
+        <h3>高さの内訳</h3>
+        <table><tbody>
+          <tr><td>床板</td><td class="r">${m.deck.t}</td></tr>
+          <tr><td>根太</td><td class="r">${m.joist.h}</td></tr>
+          <tr><td>大引</td><td class="r">${m.beam.h}</td></tr>
+          <tr><td>束柱</td><td class="r">${mm(g.postLen)}</td></tr>
+          <tr><td>束石（地面から上）</td><td class="r">${E.SETTINGS.stoneTop}</td></tr>
+          <tr class="total"><td>地面から床面</td><td class="r">${mm(g.H)}</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h3>床板の割付</h3>
+        <dl class="kv">
+          <dt>枚数</dt><dd>${g.nb}列（幅${m.deck.w}mm）</dd>
+          <dt>すき間</dt><dd>${E.SETTINGS.boardGap}mm</dd>
+          <dt>最後の1列</dt><dd>${fullBoards ? 'そのままの幅で収まる' : `幅 <b>${mm(g.lastBoardW)}mm</b> に縦に割く`}</dd>
+        </dl>
+        <p class="note" style="margin-top:2mm">建物側から張りはじめ、${E.SETTINGS.boardGap}mmの板をすき間の治具にして並べる。5枚ごとに残りの寸法を測って、ずれを早めに直す。</p>
+      </div>
+    </div>
+    <p class="note">地面が傾いている場合、束柱の長さは場所ごとに変わる。束柱は長めに切って立て、水平器で大引の高さに墨を付けてから切りそろえる。</p>
+  `));
+
+  // 5 カット表
+  let cuts = '';
+  for (const k of E.MEMBER_KEYS) {
+    const L = r.lumber[k];
+    cuts += `<div class="cutgrp"><h3>${L.use}　${L.member.spec}</h3>`;
+    for (const gr of L.groups) {
+      const parts = gr.cuts.map((c) => `<div class="cut" style="width:${(c.len / gr.stock) * 100}%"><b>${mm(c.len)}</b>${esc(c.use)}</div>`).join('');
+      cuts += `<div class="cutrow"><span class="st">${mm(gr.stock)}</span><span class="n">×${gr.count}本</span><div class="stock" title="端材 ${mm(gr.waste)}mm">${parts}</div></div>`;
+    }
+    cuts += `</div>`;
+  }
+  pages.push(sheet(r, 'カット表', 5, TOTAL, `
+    <h2>カット表<small>左：定尺の長さ　右：切り方（斜線は端材）</small></h2>
+    ${cuts}
+    <p class="note">ノコギリの刃の厚み（約${E.SETTINGS.kerf}mm）を見込んでいる。切る前に、もう一度現場で寸法を測ること。ホームセンターのカットサービスを使うときは、このページを見せると早い。床板と根太は予備を1本ずつ買っておく（カット表には入れていない）。</p>
+  `));
+
+  // 6 購入リスト
+  let rowsHtml = '', last = '';
+  for (const row of r.rows) {
+    if (row.group !== last) { rowsHtml += `<tr class="grp"><td colspan="4">${row.group}</td></tr>`; last = row.group; }
+    const qty = row.qtyUnit === '式' ? '一式' : `${row.qty}${row.qtyUnit}`;
+    rowsHtml += `<tr><td><i class="box"></i>${esc(row.name)}</td><td>${esc(row.spec)}</td><td class="r">${qty}</td><td class="r">${yen(row.amount)}</td></tr>`;
+  }
+  rowsHtml += `<tr class="total"><td colspan="3">合計（目安）</td><td class="r">${yen(r.total)}</td></tr>`;
+  pages.push(sheet(r, '購入リスト', 6, TOTAL, `
+    <h2>購入リスト<small>買ったらチェック</small></h2>
+    <table class="buy"><thead><tr><th>材料</th><th>規格・長さ</th><th class="r">数量</th><th class="r">目安</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+    <div class="grid2">
+      <div>
+        <h3>道具</h3>
+        <ul class="check">
+          <li><i class="box"></i>インパクトドライバー（下穴用ドリルビットも）</li>
+          <li><i class="box"></i>丸ノコ（またはノコギリ）</li>
+          <li><i class="box"></i>水平器（60cm以上）</li>
+          <li><i class="box"></i>さしがね・メジャー・水糸・杭</li>
+          <li><i class="box"></i>スコップ・左官ゴテ・バケツ</li>
+          <li><i class="box"></i>保護メガネ・手袋</li>
+        </ul>
+      </div>
+      <div>
+        <h3>買うときの注意</h3>
+        <ul class="check">
+          <li><i class="box"></i>反りやねじれが少ない材を選ぶ</li>
+          <li><i class="box"></i>長い材を運ぶ手段（配送・軽トラ貸出）を確認</li>
+          <li><i class="box"></i>材料を雨に当てずに置く場所を用意</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">価格は一般的な価格帯をもとにした目安。地域や時期で変わる。</p>
+  `));
+
+  // 7 作業手順
+  const s = E.SETTINGS;
+  pages.push(sheet(r, '作業手順', 7, TOTAL, `
+    <h2>3日間の作業手順<small>2人作業の目安。天気と相談して進める</small></h2>
+    <div class="day"><h3><span>準備</span>前日まで</h3><ul class="check">
+      <li><i class="box"></i>掃き出し窓の下端から地面までを測り、床の高さ（${mm(g.H)}mm）を決める</li>
+      <li><i class="box"></i>カット表どおりに材料を切る（カットサービスを使ってもよい）</li>
+      ${m.paint ? '<li><i class="box"></i>組み立てる前に、全部の材料に塗料を1回塗っておく（見えなくなる面まで塗れる）</li>' : '<li><i class="box"></i>ハードウッドは塗装不要。ビスの位置に下穴をあける準備をする</li>'}
+    </ul></div>
+    <div class="day"><h3><span>1日目</span>基礎</h3><ul class="check">
+      <li><i class="box"></i>草を抜いて地面をならし、防草シートを敷く</li>
+      <li><i class="box"></i>杭を打ち、デッキの外周（${mm(g.W)}×${mm(g.D)}）に水糸を張る</li>
+      <li><i class="box"></i>対角線を2本測り、どちらも${mm(diag)}mmになるまで水糸を直す</li>
+      <li><i class="box"></i>基礎伏図の位置に束石を${g.posts}個並べ、穴を掘ってモルタルで据える</li>
+      <li><i class="box"></i>水糸と水平器で、束石の上面の高さをすべてそろえる</li>
+      <li><i class="box"></i>モルタルが固まるまで一晩おく</li>
+    </ul></div>
+    <div class="day"><h3><span>2日目</span>骨組み</h3><ul class="check">
+      <li><i class="box"></i>束柱（${mm(g.postLen)}mm）を束石の羽子板に固定し、垂直を確認</li>
+      <li><i class="box"></i>大引を束柱にのせて固定し、水平器で水平を確認</li>
+      <li><i class="box"></i>外周の根太 → 内側の根太の順に、約${mm(pitch)}mm間隔で固定</li>
+      ${g.negarami ? '<li><i class="box"></i>根がらみを外周に1周まわして、束柱どうしをつなぐ</li>' : ''}
+      <li><i class="box"></i>骨組み全体の長さと対角線を、もう一度測る</li>
+    </ul></div>
+    <div class="day"><h3><span>3日目</span>床板と仕上げ</h3><ul class="check">
+      <li><i class="box"></i>建物側から床板を張る。すき間${s.boardGap}mmの治具を使い、根太ごとにビス2本</li>
+      <li><i class="box"></i>ビスの頭は床板の面より少し沈める${m.kind === 'hardwood' ? '（必ず下穴をあける）' : ''}</li>
+      <li><i class="box"></i>5枚ごとに残りの寸法を測り、ずれを直す</li>
+      ${g.lastBoardW < m.deck.w - 0.5 ? `<li><i class="box"></i>最後の1列は幅${mm(g.lastBoardW)}mmに割いて張る</li>` : ''}
+      ${r.inp.maku ? '<li><i class="box"></i>幕板を正面と左右に張る</li>' : ''}
+      ${m.paint ? '<li><i class="box"></i>仕上げの塗装（切り口は特にしっかり塗る）</li>' : ''}
+    </ul></div>
+    <p class="note">わからないことがあれば ${BRAND.site} から相談を受け付けています。</p>
+  `));
+
+  $('sheets').innerHTML = pages.join('');
+}
+
+$('f').addEventListener('input', render);
+$('f').addEventListener('submit', (e) => e.preventDefault());
+document.querySelectorAll('[data-p]').forEach((b) => b.addEventListener('click', () => {
+  const [w, d, h] = b.dataset.p.split(',');
+  $('w').value = w; $('d').value = d; $('h').value = h; render();
+}));
+$('print').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>

@@ -264,201 +264,20 @@ footer { margin-top: 28px; font-size: 12px; color: var(--muted); max-width: 70ch
   </footer>
 </div>
 
+<script src="../lib/deck-engine.js"></script>
 <script>
 // ===== 設定（リンク先はここを書き換えてください） =====
 const CONFIG = {
   manualUrl: 'https://saipon.jp/h/ryubase1220',
   planUrl: 'https://ryuphoenix.com', // サイズ別図面の販売ページができたら差し替える
-  contractorPerM2: { softwood: 40000, hardwood: 50000 },
-  stoneTop: 100,      // 束石の地面から出ている高さ (mm)
-  postMaxSpan: 900,   // 束柱の最大間隔 (mm)
-  boardGap: 5,        // 床板のすき間 (mm)
-  kerf: 3,            // ノコギリの刃の厚み (mm)
+  contractorPerM2: DeckEngine.SETTINGS.contractorPerM2,
 };
-
-const MATERIALS = {
-  wrc: {
-    label: 'ウエスタンレッドシダー', kind: 'softwood', paint: true, joistPitch: 455,
-    hint: 'マニュアルの標準。軽くて加工しやすく、腐りにくい。',
-    deck:  { name: '床板',      spec: '2×6材 38×140', t: 38, w: 140, ppm: 1700, stocks: [1820, 2440, 3050, 3660] },
-    joist: { name: '根太',      spec: '2×4材 38×89',  t: 38, h: 89,  ppm: 1100, stocks: [1820, 2440, 3050, 3660] },
-    beam:  { name: '大引',      spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 2500, stocks: [1820, 2440, 3050, 3660] },
-    post:  { name: '束柱',      spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 2500, stocks: [1820, 2440, 3050, 3660] },
-  },
-  spf: {
-    label: '防腐処理SPF', kind: 'softwood', paint: true, joistPitch: 455,
-    hint: 'いちばん安い。数年ごとの塗り直しが必要。',
-    deck:  { name: '床板', spec: '2×6材 38×140', t: 38, w: 140, ppm: 900,  stocks: [1820, 2440, 3050, 3660] },
-    joist: { name: '根太', spec: '2×4材 38×89',  t: 38, h: 89,  ppm: 600,  stocks: [1820, 2440, 3050, 3660] },
-    beam:  { name: '大引', spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 1400, stocks: [1820, 3050, 3660] },
-    post:  { name: '束柱', spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 1400, stocks: [1820, 3050, 3660] },
-  },
-  ulin: {
-    label: 'ハードウッド（ウリン）', kind: 'hardwood', paint: false, joistPitch: 400,
-    hint: '重くて硬いがとても長持ち。塗装不要。ビス止めには下穴が必要。',
-    deck:  { name: '床板', spec: '20×105', t: 20, w: 105, ppm: 1500, stocks: [2000, 2500, 3000, 3500, 4000] },
-    joist: { name: '根太', spec: '45×90',  t: 45, h: 90,  ppm: 2600, stocks: [2000, 3000, 4000] },
-    beam:  { name: '大引', spec: '45×90',  t: 45, h: 90,  ppm: 2600, stocks: [2000, 3000, 4000] },
-    post:  { name: '束柱', spec: '90×90',  t: 90, h: 90,  ppm: 5500, stocks: [1000, 1500, 2000, 3000] },
-  },
-};
-
-const OTHER = {
-  stone: 900,                               // 羽子板付き束石 1個
-  cement: 700, sand: 350,                   // セメント25kg、砂20kg 1袋
-  deckScrewBox: { qty: 100, soft: 1500, hard: 1900 }, // 床板用ステンレスビス
-  frameScrewBox: { qty: 50, price: 1400 },  // 骨組み用ビス 75〜90mm
-  paintCan: { liters: 3.4, price: 8500, m2PerLiter: 6 }, // 2回塗りで1Lあたり約6㎡
-  sheetRoll: { m2: 10, price: 2500 },       // 防草シート 1m×10m
-  tools: 32000,                             // インパクトドライバー・丸ノコ・水平器・さしがね等
-};
+// 木材・単価・計算の前提は ../lib/deck-engine.js にある
+const { MATERIALS, calculate } = DeckEngine;
 
 const $ = (id) => document.getElementById(id);
 const yen = (n) => '¥' + Math.round(n).toLocaleString('ja-JP');
 const man = (n) => (n >= 10000 ? '約' + (Math.round(n / 1000) / 10).toLocaleString('ja-JP') + '万円' : yen(n));
-
-// 支点（束柱・大引・根太）の上で継ぐように、長い部材を分割する
-function splitRun(L, nSpans, maxLen) {
-  const span = L / nSpans;
-  const k = Math.floor((maxLen + 0.5) / span);
-  if (k < 1) { const n = Math.ceil(L / maxLen); return Array(n).fill(Math.round(L / n)); }
-  const pieces = Math.ceil(nSpans / k);
-  const base = Math.floor(nSpans / pieces), extra = nSpans % pieces;
-  const out = [];
-  for (let i = 0; i < pieces; i++) out.push(Math.round((base + (i < extra ? 1 : 0)) * span));
-  return out;
-}
-
-// 定尺材から切り出す本数を求める（1本ずつ、いちばんムダの少ない定尺を選ぶ）
-function pack(pieces, stocks, kerf) {
-  let rem = pieces.slice().sort((a, b) => b - a);
-  const maxS = Math.max(...stocks);
-  const bins = [];
-  while (rem.length) {
-    if (rem[0] > maxS) {
-      const p = rem.shift(), n = Math.ceil(p / maxS);
-      for (let i = 0; i < n; i++) rem.push(Math.round(p / n));
-      rem.sort((a, b) => b - a);
-      continue;
-    }
-    let best = null;
-    for (const s of stocks) {
-      if (s < rem[0]) continue;
-      let free = s; const cuts = [], left = [];
-      for (const p of rem) {
-        const need = cuts.length ? p + kerf : p;
-        if (need <= free) { cuts.push(p); free -= need; } else left.push(p);
-      }
-      const util = (s - free) / s;
-      if (!best || util > best.util + 1e-9 || (Math.abs(util - best.util) < 1e-9 && s > best.stock)) best = { stock: s, cuts, left, util };
-    }
-    bins.push({ stock: best.stock, cuts: best.cuts });
-    rem = best.left;
-  }
-  return bins;
-}
-
-function countStocks(bins) {
-  const m = new Map();
-  for (const b of bins) m.set(b.stock, (m.get(b.stock) || 0) + 1);
-  return [...m.entries()].sort((a, b) => b[0] - a[0]);
-}
-
-function calculate(inp, prices) {
-  const mat = MATERIALS[inp.mat];
-  const P = { deck: prices.deck, joist: prices.joist, beam: prices.beam, post: prices.post };
-  const W = inp.w * 10, D = inp.d * 10, H = inp.h * 10;
-  const warns = [];
-
-  const nx = Math.ceil(W / CONFIG.postMaxSpan) + 1;
-  const ny = Math.ceil(D / CONFIG.postMaxSpan) + 1;
-  const nj = Math.ceil(W / mat.joistPitch) + 1;
-  const nb = Math.ceil((D + CONFIG.boardGap) / (mat.deck.w + CONFIG.boardGap));
-  const posts = nx * ny;
-
-  const stack = mat.deck.t + mat.joist.h + mat.beam.h + CONFIG.stoneTop;
-  let postLen = H - stack;
-  if (postLen < 60) {
-    warns.push(`高さ${inp.h}cmでは束柱を立てる余裕がありません。この木材なら高さ${Math.ceil((stack + 60) / 50) * 5}cm以上にするか、束石の上に大引を直接のせる低いデッキの組み方になります。`);
-    postLen = 60;
-  }
-
-  // 部材ごとに必要な長さを並べる
-  const pieces = { deck: [], joist: [], beam: [], post: [] };
-  for (let i = 0; i < ny; i++) pieces.beam.push(...splitRun(W, nx - 1, Math.max(...mat.beam.stocks)));
-  for (let i = 0; i < nj; i++) pieces.joist.push(...splitRun(D, ny - 1, Math.max(...mat.joist.stocks)));
-  for (let i = 0; i < nb; i++) pieces.deck.push(...splitRun(W, nj - 1, Math.max(...mat.deck.stocks)));
-  for (let i = 0; i < posts; i++) pieces.post.push(Math.round(postLen));
-  const deckMax = Math.max(...mat.deck.stocks);
-  if (inp.maku) {
-    pieces.deck.push(...splitRun(W, nj - 1, deckMax));
-    pieces.deck.push(...splitRun(D, ny - 1, deckMax), ...splitRun(D, ny - 1, deckMax));
-  }
-  const negarami = postLen >= 300;
-  if (negarami) {
-    pieces.joist.push(...splitRun(W, nx - 1, Math.max(...mat.joist.stocks)), ...splitRun(W, nx - 1, Math.max(...mat.joist.stocks)));
-    pieces.joist.push(...splitRun(D, ny - 1, Math.max(...mat.joist.stocks)), ...splitRun(D, ny - 1, Math.max(...mat.joist.stocks)));
-  }
-
-  const rows = [];
-  let total = 0;
-  let paintArea = 0;
-  const lumberTotal = { sum: 0 };
-  const addRow = (group, name, spec, qty, unit, amount, note) => { rows.push({ group, name, spec, qty, unit, amount, note }); total += amount; };
-
-  const uses = {
-    deck: inp.maku ? '床板・幕板' : '床板',
-    joist: negarami ? '根太・根がらみ' : '根太',
-    beam: '大引', post: '束柱',
-  };
-  for (const key of ['deck', 'joist', 'beam', 'post']) {
-    const m = mat[key];
-    const bins = pack(pieces[key], m.stocks, CONFIG.kerf);
-    const counts = countStocks(bins);
-    if (key === 'deck' || key === 'joist') { // 予備を1本
-      const most = counts.reduce((a, b) => (b[1] > a[1] ? b : a));
-      most[1] += 1;
-    }
-    const runLen = pieces[key].reduce((a, b) => a + b, 0);
-    const perim = key === 'deck' ? 2 * (m.w + m.t) : 2 * (m.t + m.h);
-    paintArea += (runLen * perim) / 1e6;
-    counts.forEach(([s, n], idx) => {
-      const unit = Math.round((P[key] * s) / 1000 / 10) * 10;
-      const note = idx === 0 ? `必要な長さの合計 約${(runLen / 1000).toFixed(1)}m` + ((key === 'deck' || key === 'joist') ? '（予備1本込み）' : '') : '';
-      addRow('木材', uses[key], `${m.spec}　${s}mm`, n, unit, unit * n, note);
-      lumberTotal.sum += unit * n;
-    });
-  }
-
-  addRow('基礎', '羽子板付き束石', '束柱1本に1個', posts, OTHER.stone, posts * OTHER.stone, '');
-  const cementBags = Math.ceil(posts / 8), sandBags = Math.ceil(posts / 4);
-  addRow('基礎', 'セメント・砂', `セメント25kg×${cementBags}袋、砂20kg×${sandBags}袋`, 1, 0, cementBags * OTHER.cement + sandBags * OTHER.sand, '束石を据えるモルタル用');
-
-  const deckScrews = Math.ceil(nb * nj * 2 * 1.1);
-  const frameScrews = Math.ceil((posts * 4 + nj * ny * 3 + (negarami ? posts * 3 : 0) + (inp.maku ? (nj + ny * 2) * 2 : 0)) * 1.1);
-  const dBox = Math.ceil(deckScrews / OTHER.deckScrewBox.qty);
-  const fBox = Math.ceil(frameScrews / OTHER.frameScrewBox.qty);
-  const dPrice = mat.kind === 'hardwood' ? OTHER.deckScrewBox.hard : OTHER.deckScrewBox.soft;
-  addRow('金物・ビス', '床板用ステンレスビス', `${OTHER.deckScrewBox.qty}本入り（約${deckScrews}本）`, dBox, dPrice, dBox * dPrice, mat.kind === 'hardwood' ? 'ハードウッド用。下穴をあけてから打つ' : '');
-  addRow('金物・ビス', '骨組み用ビス 75〜90mm', `${OTHER.frameScrewBox.qty}本入り（約${frameScrews}本）`, fBox, OTHER.frameScrewBox.price, fBox * OTHER.frameScrewBox.price, '1か所に3本以上');
-
-  if (mat.paint) {
-    const liters = paintArea / OTHER.paintCan.m2PerLiter;
-    const cans = Math.max(1, Math.ceil(liters / OTHER.paintCan.liters));
-    addRow('仕上げ', '木材保護塗料', `${OTHER.paintCan.liters}L缶（全面2回塗り 約${paintArea.toFixed(0)}㎡）`, cans, OTHER.paintCan.price, cans * OTHER.paintCan.price, '組む前に塗ると、見えない部分まで塗れる');
-  }
-  if (inp.sheet) {
-    const area = ((W + 600) * (D + 600)) / 1e6;
-    const rolls = Math.ceil(area / OTHER.sheetRoll.m2);
-    addRow('仕上げ', '防草シート', `1m×10m（約${area.toFixed(1)}㎡）`, rolls, OTHER.sheetRoll.price, rolls * OTHER.sheetRoll.price, '');
-  }
-  if (inp.tools) addRow('工具', '工具一式', 'インパクトドライバー・丸ノコ・水平器・さしがね・メジャー・水糸', 1, OTHER.tools, OTHER.tools, '次のDIYにも使えます');
-
-  const areaM2 = (W * D) / 1e6;
-  const pro = areaM2 * CONFIG.contractorPerM2[mat.kind];
-  const days = areaM2 <= 7 ? 3 : 3 + Math.ceil((areaM2 - 7) / 5);
-  return { rows, total, pro, areaM2, days, warns, geo: { W, D, nx, ny, nj, nb, posts, postLen, negarami }, mat };
-}
 
 // ===== 平面図 =====
 function planSvg(r) {
@@ -546,7 +365,7 @@ function render() {
   let html = '', last = '';
   for (const row of r.rows) {
     if (row.group !== last) { html += `<tr class="grp"><td colspan="4">${row.group}</td></tr>`; last = row.group; }
-    const qty = row.unit ? `${row.qty}${row.group === '木材' ? '本' : row.group === '基礎' && row.unit ? '個' : row.name.includes('塗料') ? '缶' : row.name.includes('シート') ? '巻' : row.group === '工具' ? '式' : '箱'}` : '一式';
+    const qty = row.qtyUnit === '式' ? '一式' : `${row.qty}${row.qtyUnit}`;
     html += `<tr><td>${row.name}<span class="mspec">${row.spec}</span>${row.note ? `<small>${row.note}</small>` : ''}</td><td class="spec">${row.spec}</td><td class="r">${qty}</td><td class="r">${yen(row.amount)}</td></tr>`;
   }
   html += `<tr class="total"><td colspan="3" class="tl">合計（目安）</td><td class="r">${yen(r.total)}</td></tr>`;
