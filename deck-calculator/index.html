@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ウッドデッキ材料計算</title>
+<meta name="description" content="幅・奥行き・高さを入れるだけで、ウッドデッキDIYに必要な材料の本数と費用の目安、業者に頼んだ場合との差額がわかる無料ツールです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+/* レイアウト：左に入力（墨付けの指示書）、右に結果（見積書＋平面図）。スマホでは縦一列。 */
+:root {
+  --bg: #f2f4ef;
+  --surface: #ffffff;
+  --ink: #1c251f;
+  --muted: #5a675e;
+  --line: #d3dbd1;
+  --accent: #2c6849;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2eee6;
+  --wood: #b9844f;
+  --wood-soft: #efdfca;
+  --warn: #9c4a17;
+  --warn-soft: #f8e7da;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131915; --surface: #1b231e; --ink: #e4ebe5; --muted: #9aa99f; --line: #2e3a33;
+    --accent: #72c094; --accent-ink: #0d1a12; --accent-soft: #1f3328;
+    --wood: #d6a26c; --wood-soft: #3a2c1f; --warn: #f0a670; --warn-soft: #3a2518;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131915; --surface: #1b231e; --ink: #e4ebe5; --muted: #9aa99f; --line: #2e3a33;
+  --accent: #72c094; --accent-ink: #0d1a12; --accent-soft: #1f3328;
+  --wood: #d6a26c; --wood-soft: #3a2c1f; --warn: #f0a670; --warn-soft: #3a2518;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.7;
+  font-variant-numeric: tabular-nums;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; }
+header.top { display: grid; gap: 6px; margin-bottom: 22px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; color: var(--accent); font-weight: 700; }
+h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 4.2vw, 34px); line-height: 1.3; margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 62ch; }
+.layout { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .layout { grid-template-columns: 340px minmax(0, 1fr); align-items: start; } .inputs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.panel h2 { font-size: 16px; margin: 0 0 12px; font-weight: 700; }
+form { display: grid; gap: 16px; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; }
+legend { font-weight: 700; font-size: 14px; margin-bottom: 6px; padding: 0; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.layout > *, .results > * { min-width: 0; }
+.field label { font-size: 13px; color: var(--muted); }
+.field .hint { font-size: 12px; color: var(--muted); }
+.num { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.num input { flex: 1; min-width: 0; width: 100%; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 18px; font-weight: 700; padding: 8px 10px; }
+.num span { padding-right: 12px; color: var(--muted); font-size: 13px; }
+.num:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
+input:focus { outline: none; }
+.dims { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: inherit; font-size: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.chip:focus-visible, .opt:focus-within, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.opts { display: grid; gap: 6px; }
+.opt { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: start; border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; }
+.opt input { margin-top: 5px; accent-color: var(--accent); }
+.opt b { font-size: 14px; }
+.opt small { grid-column: 2; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.checks { display: grid; gap: 6px; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+details { border-top: 1px dashed var(--line); padding-top: 10px; }
+summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+.prices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.prices .num input { font-size: 15px; padding: 6px 8px; }
+
+.results { display: grid; gap: 20px; min-width: 0; }
+.summary { display: grid; gap: 14px; }
+.big { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.stat { display: grid; gap: 2px; }
+.stat .k { font-size: 12px; color: var(--muted); }
+.stat .v { font-family: var(--font-display); font-weight: 900; font-size: clamp(24px, 3.4vw, 32px); line-height: 1.2; }
+.stat .s { font-size: 12px; color: var(--muted); }
+.stat.save .v { color: var(--accent); }
+.bars { display: grid; gap: 8px; }
+.bar { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 10px; align-items: center; font-size: 13px; }
+.track { height: 14px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+.fill { height: 100%; border-radius: 4px; transition: width .3s ease; }
+.fill.diy { background: var(--accent); }
+.fill.pro { background: var(--wood); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.meta b { color: var(--ink); }
+.warn { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+
+.plan svg { width: 100%; height: auto; display: block; }
+.plan .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.sw { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 2px solid var(--ink); }
+.sw.joist { border-top: 2px dashed var(--accent); }
+.sw.beam { border-top: 4px solid var(--wood); }
+.sw.post { width: 10px; height: 10px; border: 0; background: var(--ink); }
+svg .house { fill: var(--line); }
+svg .deck { fill: var(--wood-soft); stroke: var(--ink); }
+svg .board { stroke: var(--wood); opacity: .55; }
+svg .beam { stroke: var(--wood); }
+svg .joist { stroke: var(--accent); }
+svg .post { fill: var(--ink); }
+svg .dim { stroke: var(--muted); }
+svg text { fill: var(--ink); font-family: var(--font-body); }
+svg text.m { fill: var(--muted); }
+
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+th, td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; color: var(--muted); font-weight: 700; }
+td.r, th.r { text-align: right; white-space: nowrap; }
+tr.grp td { background: var(--bg); font-weight: 700; font-size: 13px; }
+tr.total td { font-weight: 900; font-size: 16px; border-bottom: 0; }
+td small { color: var(--muted); display: block; font-size: 12px; }
+.mspec { display: none; }
+@media (max-width: 600px) {
+  table { min-width: 0; }
+  th.spec, td.spec { display: none; }
+  .mspec { display: block; color: var(--ink); font-size: 13px; }
+}
+.note { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+
+.cta { display: grid; gap: 12px; }
+.cta h2 { font-family: var(--font-display); font-weight: 900; font-size: 20px; margin: 0; text-wrap: balance; }
+.cta p { margin: 0; }
+.offers { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.offer { display: grid; gap: 6px; align-content: start; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.offer .tag { font-size: 11px; letter-spacing: .1em; color: var(--accent); font-weight: 700; }
+.offer b { font-size: 16px; }
+.offer p { font-size: 13px; color: var(--muted); }
+.btn { display: inline-block; text-align: center; text-decoration: none; font-weight: 700; border-radius: 8px; padding: 10px 14px; background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.author { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; }
+footer { margin-top: 28px; font-size: 12px; color: var(--muted); max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">無料 ・ ウッドデッキDIY</div>
+    <h1>あなたの家のウッドデッキ、材料費はいくら？</h1>
+    <p class="lead">幅・奥行き・高さを入れるだけで、必要な木材の本数と材料費の目安、業者に頼んだ場合との差額がわかります。</p>
+  </header>
+
+  <div class="layout">
+    <section class="panel inputs" aria-labelledby="in-h">
+      <h2 id="in-h">デッキの大きさ</h2>
+      <form id="f" novalidate>
+        <fieldset>
+          <div class="dims">
+            <div class="field"><label for="w">幅</label><div class="num"><input id="w" type="number" inputmode="numeric" min="90" max="1000" step="10" value="270"><span>cm</span></div></div>
+            <div class="field"><label for="d">奥行き</label><div class="num"><input id="d" type="number" inputmode="numeric" min="60" max="600" step="10" value="180"><span>cm</span></div></div>
+            <div class="field"><label for="h">高さ</label><div class="num"><input id="h" type="number" inputmode="numeric" min="25" max="150" step="5" value="45"><span>cm</span></div></div>
+          </div>
+          <div class="hint" style="font-size:12px;color:var(--muted)">幅＝建物の壁に沿った長さ。高さ＝地面から床面まで（掃き出し窓の下端に合わせるのが基本）。</div>
+          <div class="presets" role="group" aria-label="よくあるサイズ">
+            <button type="button" class="chip" data-p="180,90,40">180×90</button>
+            <button type="button" class="chip" data-p="270,180,45">270×180</button>
+            <button type="button" class="chip" data-p="360,180,45">360×180</button>
+            <button type="button" class="chip" data-p="370,240,50">370×240（体験者I.Oさん邸）</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>木材の種類</legend>
+          <div class="opts" id="mats"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>そのほか</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="maku" checked> 幕板（デッキ側面の目隠し板）をつける</label>
+            <label class="check"><input type="checkbox" id="sheet" checked> 防草シートを敷く</label>
+            <label class="check"><input type="checkbox" id="tools"> 工具を持っていない（工具代も入れる）</label>
+          </div>
+        </fieldset>
+
+        <details>
+          <summary>単価を自分の地域の価格に変える</summary>
+          <div class="prices" id="prices"></div>
+          <p class="note">木材は1mあたりの価格です。ホームセンターの価格表を見て書き換えると、より正確になります。</p>
+        </details>
+      </form>
+    </section>
+
+    <div class="results">
+      <section class="panel summary" aria-live="polite" aria-labelledby="sum-h">
+        <h2 id="sum-h" style="margin:0">計算結果（目安）</h2>
+        <div id="warns"></div>
+        <div class="big">
+          <div class="stat"><span class="k">DIYの材料費</span><span class="v" id="diy">-</span><span class="s" id="diy-s"></span></div>
+          <div class="stat"><span class="k">業者に頼んだ場合</span><span class="v" id="pro">-</span><span class="s" id="pro-s"></span></div>
+          <div class="stat save"><span class="k">自分でつくると</span><span class="v" id="save">-</span><span class="s">おトク（目安）</span></div>
+        </div>
+        <div class="bars" aria-hidden="true">
+          <div class="bar"><span>DIY</span><div class="track"><div class="fill diy" id="bar-diy"></div></div></div>
+          <div class="bar"><span>業者</span><div class="track"><div class="fill pro" id="bar-pro"></div></div></div>
+        </div>
+        <div class="meta" id="meta"></div>
+      </section>
+
+      <section class="panel plan" aria-labelledby="plan-h">
+        <h2 id="plan-h">上から見た骨組み</h2>
+        <div id="svg"></div>
+        <div class="legend">
+          <span><i class="sw post"></i>束柱・束石</span>
+          <span><i class="sw beam"></i>大引（束柱の上）</span>
+          <span><i class="sw joist"></i>根太（大引の上）</span>
+          <span><i class="sw"></i>床板の向き</span>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="mat-h">
+        <h2 id="mat-h">材料リスト</h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>材料</th><th class="spec">規格・長さ</th><th class="r">数量</th><th class="r">金額</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table></div>
+        <p class="note">木材の本数は、ホームセンターで売っている定尺（決まった長さ）からムダが少なくなるように切り出した場合の本数です。床板と根太には予備を1本ずつ入れています。価格は一般的な価格帯をもとにした目安で、地域や時期で変わります。</p>
+      </section>
+
+      <section class="panel cta" aria-labelledby="cta-h">
+        <h2 id="cta-h">このサイズで、失敗せずにつくりたい方へ</h2>
+        <p>材料の本数がわかっても、「どこで切るか」「束石をどこに置くか」でつまずく人がいちばん多いです。体験者のI.Oさんも、つまずきかけたのは材料の計算でした。</p>
+        <div class="offers">
+          <div class="offer">
+            <span class="tag">サイズ別図面</span>
+            <b>図面・カット表・材料表のセット</b>
+            <p>寸法入りの平面図と側面図、定尺材のどこで切るかを示したカット表、ホームセンターにそのまま持っていける購入リスト。</p>
+            <a class="btn ghost" id="plan-link" href="#" target="_blank" rel="noopener">くわしく見る</a>
+          </div>
+          <div class="offer">
+            <span class="tag">完成までサポート</span>
+            <b>ウッドデッキ実践マニュアル＋180日サポート</b>
+            <p>108ページのマニュアル、B5印刷版、解説動画。計画・材料計算から完成まで、メールとLINEで回数無制限に相談できます。</p>
+            <a class="btn" id="manual-link" href="#" target="_blank" rel="noopener">マニュアルを見る</a>
+          </div>
+        </div>
+        <p class="author">監修：野村隆一。建設関係の仕事に35年。2003年に自宅のウッドデッキをDIYでつくって以来、フェンス・門扉・ペイビングなどを手がけ、ほかの人のデッキづくりのサポートもしています。</p>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    計算結果は目安です。地面の傾き、地盤、窓の高さ、使う金物などで必要な材料は変わります。業者の価格は、ソフトウッドは1㎡あたり4万円〜、ハードウッドは1㎡あたり5万円〜（材料と施工費込みの一般的な相場）で計算しています。
+  </footer>
+</div>
+
+<script>
+// ===== 設定（リンク先はここを書き換えてください） =====
+const CONFIG = {
+  manualUrl: 'https://saipon.jp/h/ryubase1220',
+  planUrl: 'https://ryuphoenix.com', // サイズ別図面の販売ページができたら差し替える
+  contractorPerM2: { softwood: 40000, hardwood: 50000 },
+  stoneTop: 100,      // 束石の地面から出ている高さ (mm)
+  postMaxSpan: 900,   // 束柱の最大間隔 (mm)
+  boardGap: 5,        // 床板のすき間 (mm)
+  kerf: 3,            // ノコギリの刃の厚み (mm)
+};
+
+const MATERIALS = {
+  wrc: {
+    label: 'ウエスタンレッドシダー', kind: 'softwood', paint: true, joistPitch: 455,
+    hint: 'マニュアルの標準。軽くて加工しやすく、腐りにくい。',
+    deck:  { name: '床板',      spec: '2×6材 38×140', t: 38, w: 140, ppm: 1700, stocks: [1820, 2440, 3050, 3660] },
+    joist: { name: '根太',      spec: '2×4材 38×89',  t: 38, h: 89,  ppm: 1100, stocks: [1820, 2440, 3050, 3660] },
+    beam:  { name: '大引',      spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 2500, stocks: [1820, 2440, 3050, 3660] },
+    post:  { name: '束柱',      spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 2500, stocks: [1820, 2440, 3050, 3660] },
+  },
+  spf: {
+    label: '防腐処理SPF', kind: 'softwood', paint: true, joistPitch: 455,
+    hint: 'いちばん安い。数年ごとの塗り直しが必要。',
+    deck:  { name: '床板', spec: '2×6材 38×140', t: 38, w: 140, ppm: 900,  stocks: [1820, 2440, 3050, 3660] },
+    joist: { name: '根太', spec: '2×4材 38×89',  t: 38, h: 89,  ppm: 600,  stocks: [1820, 2440, 3050, 3660] },
+    beam:  { name: '大引', spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 1400, stocks: [1820, 3050, 3660] },
+    post:  { name: '束柱', spec: '4×4材 89×89',  t: 89, h: 89,  ppm: 1400, stocks: [1820, 3050, 3660] },
+  },
+  ulin: {
+    label: 'ハードウッド（ウリン）', kind: 'hardwood', paint: false, joistPitch: 400,
+    hint: '重くて硬いがとても長持ち。塗装不要。ビス止めには下穴が必要。',
+    deck:  { name: '床板', spec: '20×105', t: 20, w: 105, ppm: 1500, stocks: [2000, 2500, 3000, 3500, 4000] },
+    joist: { name: '根太', spec: '45×90',  t: 45, h: 90,  ppm: 2600, stocks: [2000, 3000, 4000] },
+    beam:  { name: '大引', spec: '45×90',  t: 45, h: 90,  ppm: 2600, stocks: [2000, 3000, 4000] },
+    post:  { name: '束柱', spec: '90×90',  t: 90, h: 90,  ppm: 5500, stocks: [1000, 1500, 2000, 3000] },
+  },
+};
+
+const OTHER = {
+  stone: 900,                               // 羽子板付き束石 1個
+  cement: 700, sand: 350,                   // セメント25kg、砂20kg 1袋
+  deckScrewBox: { qty: 100, soft: 1500, hard: 1900 }, // 床板用ステンレスビス
+  frameScrewBox: { qty: 50, price: 1400 },  // 骨組み用ビス 75〜90mm
+  paintCan: { liters: 3.4, price: 8500, m2PerLiter: 6 }, // 2回塗りで1Lあたり約6㎡
+  sheetRoll: { m2: 10, price: 2500 },       // 防草シート 1m×10m
+  tools: 32000,                             // インパクトドライバー・丸ノコ・水平器・さしがね等
+};
+
+const $ = (id) => document.getElementById(id);
+const yen = (n) => '¥' + Math.round(n).toLocaleString('ja-JP');
+const man = (n) => (n >= 10000 ? '約' + (Math.round(n / 1000) / 10).toLocaleString('ja-JP') + '万円' : yen(n));
+
+// 支点（束柱・大引・根太）の上で継ぐように、長い部材を分割する
+function splitRun(L, nSpans, maxLen) {
+  const span = L / nSpans;
+  const k = Math.floor((maxLen + 0.5) / span);
+  if (k < 1) { const n = Math.ceil(L / maxLen); return Array(n).fill(Math.round(L / n)); }
+  const pieces = Math.ceil(nSpans / k);
+  const base = Math.floor(nSpans / pieces), extra = nSpans % pieces;
+  const out = [];
+  for (let i = 0; i < pieces; i++) out.push(Math.round((base + (i < extra ? 1 : 0)) * span));
+  return out;
+}
+
+// 定尺材から切り出す本数を求める（1本ずつ、いちばんムダの少ない定尺を選ぶ）
+function pack(pieces, stocks, kerf) {
+  let rem = pieces.slice().sort((a, b) => b - a);
+  const maxS = Math.max(...stocks);
+  const bins = [];
+  while (rem.length) {
+    if (rem[0] > maxS) {
+      const p = rem.shift(), n = Math.ceil(p / maxS);
+      for (let i = 0; i < n; i++) rem.push(Math.round(p / n));
+      rem.sort((a, b) => b - a);
+      continue;
+    }
+    let best = null;
+    for (const s of stocks) {
+      if (s < rem[0]) continue;
+      let free = s; const cuts = [], left = [];
+      for (const p of rem) {
+        const need = cuts.length ? p + kerf : p;
+        if (need <= free) { cuts.push(p); free -= need; } else left.push(p);
+      }
+      const util = (s - free) / s;
+      if (!best || util > best.util + 1e-9 || (Math.abs(util - best.util) < 1e-9 && s > best.stock)) best = { stock: s, cuts, left, util };
+    }
+    bins.push({ stock: best.stock, cuts: best.cuts });
+    rem = best.left;
+  }
+  return bins;
+}
+
+function countStocks(bins) {
+  const m = new Map();
+  for (const b of bins) m.set(b.stock, (m.get(b.stock) || 0) + 1);
+  return [...m.entries()].sort((a, b) => b[0] - a[0]);
+}
+
+function calculate(inp, prices) {
+  const mat = MATERIALS[inp.mat];
+  const P = { deck: prices.deck, joist: prices.joist, beam: prices.beam, post: prices.post };
+  const W = inp.w * 10, D = inp.d * 10, H = inp.h * 10;
+  const warns = [];
+
+  const nx = Math.ceil(W / CONFIG.postMaxSpan) + 1;
+  const ny = Math.ceil(D / CONFIG.postMaxSpan) + 1;
+  const nj = Math.ceil(W / mat.joistPitch) + 1;
+  const nb = Math.ceil((D + CONFIG.boardGap) / (mat.deck.w + CONFIG.boardGap));
+  const posts = nx * ny;
+
+  const stack = mat.deck.t + mat.joist.h + mat.beam.h + CONFIG.stoneTop;
+  let postLen = H - stack;
+  if (postLen < 60) {
+    warns.push(`高さ${inp.h}cmでは束柱を立てる余裕がありません。この木材なら高さ${Math.ceil((stack + 60) / 50) * 5}cm以上にするか、束石の上に大引を直接のせる低いデッキの組み方になります。`);
+    postLen = 60;
+  }
+
+  // 部材ごとに必要な長さを並べる
+  const pieces = { deck: [], joist: [], beam: [], post: [] };
+  for (let i = 0; i < ny; i++) pieces.beam.push(...splitRun(W, nx - 1, Math.max(...mat.beam.stocks)));
+  for (let i = 0; i < nj; i++) pieces.joist.push(...splitRun(D, ny - 1, Math.max(...mat.joist.stocks)));
+  for (let i = 0; i < nb; i++) pieces.deck.push(...splitRun(W, nj - 1, Math.max(...mat.deck.stocks)));
+  for (let i = 0; i < posts; i++) pieces.post.push(Math.round(postLen));
+  const deckMax = Math.max(...mat.deck.stocks);
+  if (inp.maku) {
+    pieces.deck.push(...splitRun(W, nj - 1, deckMax));
+    pieces.deck.push(...splitRun(D, ny - 1, deckMax), ...splitRun(D, ny - 1, deckMax));
+  }
+  const negarami = postLen >= 300;
+  if (negarami) {
+    pieces.joist.push(...splitRun(W, nx - 1, Math.max(...mat.joist.stocks)), ...splitRun(W, nx - 1, Math.max(...mat.joist.stocks)));
+    pieces.joist.push(...splitRun(D, ny - 1, Math.max(...mat.joist.stocks)), ...splitRun(D, ny - 1, Math.max(...mat.joist.stocks)));
+  }
+
+  const rows = [];
+  let total = 0;
+  let paintArea = 0;
+  const lumberTotal = { sum: 0 };
+  const addRow = (group, name, spec, qty, unit, amount, note) => { rows.push({ group, name, spec, qty, unit, amount, note }); total += amount; };
+
+  const uses = {
+    deck: inp.maku ? '床板・幕板' : '床板',
+    joist: negarami ? '根太・根がらみ' : '根太',
+    beam: '大引', post: '束柱',
+  };
+  for (const key of ['deck', 'joist', 'beam', 'post']) {
+    const m = mat[key];
+    const bins = pack(pieces[key], m.stocks, CONFIG.kerf);
+    const counts = countStocks(bins);
+    if (key === 'deck' || key === 'joist') { // 予備を1本
+      const most = counts.reduce((a, b) => (b[1] > a[1] ? b : a));
+      most[1] += 1;
+    }
+    const runLen = pieces[key].reduce((a, b) => a + b, 0);
+    const perim = key === 'deck' ? 2 * (m.w + m.t) : 2 * (m.t + m.h);
+    paintArea += (runLen * perim) / 1e6;
+    counts.forEach(([s, n], idx) => {
+      const unit = Math.round((P[key] * s) / 1000 / 10) * 10;
+      const note = idx === 0 ? `必要な長さの合計 約${(runLen / 1000).toFixed(1)}m` + ((key === 'deck' || key === 'joist') ? '（予備1本込み）' : '') : '';
+      addRow('木材', uses[key], `${m.spec}　${s}mm`, n, unit, unit * n, note);
+      lumberTotal.sum += unit * n;
+    });
+  }
+
+  addRow('基礎', '羽子板付き束石', '束柱1本に1個', posts, OTHER.stone, posts * OTHER.stone, '');
+  const cementBags = Math.ceil(posts / 8), sandBags = Math.ceil(posts / 4);
+  addRow('基礎', 'セメント・砂', `セメント25kg×${cementBags}袋、砂20kg×${sandBags}袋`, 1, 0, cementBags * OTHER.cement + sandBags * OTHER.sand, '束石を据えるモルタル用');
+
+  const deckScrews = Math.ceil(nb * nj * 2 * 1.1);
+  const frameScrews = Math.ceil((posts * 4 + nj * ny * 3 + (negarami ? posts * 3 : 0) + (inp.maku ? (nj + ny * 2) * 2 : 0)) * 1.1);
+  const dBox = Math.ceil(deckScrews / OTHER.deckScrewBox.qty);
+  const fBox = Math.ceil(frameScrews / OTHER.frameScrewBox.qty);
+  const dPrice = mat.kind === 'hardwood' ? OTHER.deckScrewBox.hard : OTHER.deckScrewBox.soft;
+  addRow('金物・ビス', '床板用ステンレスビス', `${OTHER.deckScrewBox.qty}本入り（約${deckScrews}本）`, dBox, dPrice, dBox * dPrice, mat.kind === 'hardwood' ? 'ハードウッド用。下穴をあけてから打つ' : '');
+  addRow('金物・ビス', '骨組み用ビス 75〜90mm', `${OTHER.frameScrewBox.qty}本入り（約${frameScrews}本）`, fBox, OTHER.frameScrewBox.price, fBox * OTHER.frameScrewBox.price, '1か所に3本以上');
+
+  if (mat.paint) {
+    const liters = paintArea / OTHER.paintCan.m2PerLiter;
+    const cans = Math.max(1, Math.ceil(liters / OTHER.paintCan.liters));
+    addRow('仕上げ', '木材保護塗料', `${OTHER.paintCan.liters}L缶（全面2回塗り 約${paintArea.toFixed(0)}㎡）`, cans, OTHER.paintCan.price, cans * OTHER.paintCan.price, '組む前に塗ると、見えない部分まで塗れる');
+  }
+  if (inp.sheet) {
+    const area = ((W + 600) * (D + 600)) / 1e6;
+    const rolls = Math.ceil(area / OTHER.sheetRoll.m2);
+    addRow('仕上げ', '防草シート', `1m×10m（約${area.toFixed(1)}㎡）`, rolls, OTHER.sheetRoll.price, rolls * OTHER.sheetRoll.price, '');
+  }
+  if (inp.tools) addRow('工具', '工具一式', 'インパクトドライバー・丸ノコ・水平器・さしがね・メジャー・水糸', 1, OTHER.tools, OTHER.tools, '次のDIYにも使えます');
+
+  const areaM2 = (W * D) / 1e6;
+  const pro = areaM2 * CONFIG.contractorPerM2[mat.kind];
+  const days = areaM2 <= 7 ? 3 : 3 + Math.ceil((areaM2 - 7) / 5);
+  return { rows, total, pro, areaM2, days, warns, geo: { W, D, nx, ny, nj, nb, posts, postLen, negarami }, mat };
+}
+
+// ===== 平面図 =====
+function planSvg(r) {
+  const { W, D, nx, ny, nj } = r.geo;
+  const u = Math.max(W, D);
+  const fs = Math.max(u / 26, 90);
+  const m = fs * 3.2;
+  const houseH = fs * 2.4;
+  const vbW = W + m * 2, vbH = D + houseH + m * 2;
+  const x0 = m, y0 = m + houseH;
+  const sw = u / 400;
+  let s = `<svg viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="幅${W / 10}cm、奥行き${D / 10}cmのデッキの骨組み図。束柱${r.geo.posts}本、根太${nj}本">`;
+  s += `<rect class="house" x="${x0 - fs}" y="${m}" width="${W + fs * 2}" height="${houseH - fs * 0.6}" rx="${fs * 0.2}"/>`;
+  s += `<text x="${x0 + W / 2}" y="${m + houseH * 0.45}" text-anchor="middle" font-size="${fs}" dominant-baseline="middle">建物（窓側）</text>`;
+  s += `<rect class="deck" x="${x0}" y="${y0}" width="${W}" height="${D}" stroke-width="${sw}"/>`;
+  const step = D / r.geo.nb;
+  for (let i = 1; i < r.geo.nb; i++) s += `<line class="board" x1="${x0}" x2="${x0 + W}" y1="${y0 + i * step}" y2="${y0 + i * step}" stroke-width="${sw * 0.6}"/>`;
+  for (let j = 0; j < nj; j++) { const x = x0 + (j * W) / (nj - 1); s += `<line class="joist" x1="${x}" x2="${x}" y1="${y0}" y2="${y0 + D}" stroke-width="${sw * 1.2}" stroke-dasharray="${sw * 6} ${sw * 4}"/>`; }
+  for (let i = 0; i < ny; i++) { const y = y0 + (i * D) / (ny - 1); s += `<line class="beam" x1="${x0}" x2="${x0 + W}" y1="${y}" y2="${y}" stroke-width="${sw * 3.2}"/>`; }
+  const pz = Math.max(u / 55, 60);
+  for (let i = 0; i < ny; i++) for (let j = 0; j < nx; j++) {
+    const x = x0 + (j * W) / (nx - 1), y = y0 + (i * D) / (ny - 1);
+    s += `<rect class="post" x="${x - pz / 2}" y="${y - pz / 2}" width="${pz}" height="${pz}"/>`;
+  }
+  // 寸法線
+  const dy = y0 + D + fs * 1.4;
+  s += `<line class="dim" x1="${x0}" x2="${x0 + W}" y1="${dy}" y2="${dy}" stroke-width="${sw}"/>`;
+  s += `<line class="dim" x1="${x0}" x2="${x0}" y1="${dy - fs * 0.4}" y2="${dy + fs * 0.4}" stroke-width="${sw}"/><line class="dim" x1="${x0 + W}" x2="${x0 + W}" y1="${dy - fs * 0.4}" y2="${dy + fs * 0.4}" stroke-width="${sw}"/>`;
+  s += `<text x="${x0 + W / 2}" y="${dy + fs * 1.3}" text-anchor="middle" font-size="${fs}">幅 ${W.toLocaleString()}mm（束の間隔 ${Math.round(W / (nx - 1))}mm）</text>`;
+  const dx = x0 + W + fs * 1.4;
+  s += `<line class="dim" x1="${dx}" x2="${dx}" y1="${y0}" y2="${y0 + D}" stroke-width="${sw}"/>`;
+  s += `<line class="dim" x1="${dx - fs * 0.4}" x2="${dx + fs * 0.4}" y1="${y0}" y2="${y0}" stroke-width="${sw}"/><line class="dim" x1="${dx - fs * 0.4}" x2="${dx + fs * 0.4}" y1="${y0 + D}" y2="${y0 + D}" stroke-width="${sw}"/>`;
+  s += `<text x="${dx + fs * 0.9}" y="${y0 + D / 2}" text-anchor="middle" font-size="${fs}" transform="rotate(90 ${dx + fs * 0.9} ${y0 + D / 2})">奥行き ${D.toLocaleString()}mm</text>`;
+  s += `</svg>`;
+  return s;
+}
+
+// ===== 画面 =====
+const matsEl = $('mats');
+for (const [key, m] of Object.entries(MATERIALS)) {
+  const l = document.createElement('label');
+  l.className = 'opt';
+  l.innerHTML = `<input type="radio" name="mat" id="mat-${key}" value="${key}"${key === 'wrc' ? ' checked' : ''}><b>${m.label}</b><small>${m.hint}</small>`;
+  matsEl.appendChild(l);
+}
+const PRICE_FIELDS = [['deck', '床板'], ['joist', '根太'], ['beam', '大引'], ['post', '束柱']];
+function renderPriceInputs(matKey) {
+  const m = MATERIALS[matKey];
+  $('prices').innerHTML = PRICE_FIELDS.map(([k, n]) =>
+    `<div class="field"><label for="p-${k}">${n}（${m[k].spec}）</label><div class="num"><input id="p-${k}" type="number" inputmode="numeric" min="0" step="10" value="${m[k].ppm}"><span>円/m</span></div></div>`).join('');
+}
+
+function readInputs() {
+  const clamp = (v, lo, hi, def) => { const n = Number(v); return Number.isFinite(n) && n > 0 ? Math.min(hi, Math.max(lo, n)) : def; };
+  return {
+    w: clamp($('w').value, 90, 1000, 270),
+    d: clamp($('d').value, 60, 600, 180),
+    h: clamp($('h').value, 25, 150, 45),
+    mat: document.querySelector('input[name="mat"]:checked').value,
+    maku: $('maku').checked, sheet: $('sheet').checked, tools: $('tools').checked,
+  };
+}
+function readPrices(matKey) {
+  const out = {};
+  for (const [k] of PRICE_FIELDS) { const v = Number($('p-' + k)?.value); out[k] = Number.isFinite(v) && v >= 0 ? v : MATERIALS[matKey][k].ppm; }
+  return out;
+}
+
+function render() {
+  const inp = readInputs();
+  const r = calculate(inp, readPrices(inp.mat));
+  const save = Math.max(0, r.pro - r.total);
+  $('diy').textContent = man(r.total);
+  $('diy-s').textContent = yen(r.total) + '（税込目安）';
+  $('pro').textContent = man(r.pro) + '〜';
+  $('pro-s').textContent = `${r.areaM2.toFixed(1)}㎡ × ${CONFIG.contractorPerM2[r.mat.kind].toLocaleString()}円〜`;
+  $('save').textContent = save > 0 ? man(save) : '差はわずか';
+  $('save').nextElementSibling.textContent = save > 0 ? 'おトク（目安）' : '小さなデッキは、業者の最低料金しだいで差が出ます';
+  const mx = Math.max(r.pro, r.total);
+  $('bar-diy').style.width = (r.total / mx * 100).toFixed(1) + '%';
+  $('bar-pro').style.width = (r.pro / mx * 100).toFixed(1) + '%';
+  $('meta').innerHTML = `<span>面積 <b>${r.areaM2.toFixed(1)}㎡</b>（約${(r.areaM2 / 1.62).toFixed(1)}畳）</span><span>束柱 <b>${r.geo.posts}本</b></span><span>根太 <b>${r.geo.nj}本</b></span><span>床板 <b>${r.geo.nb}列</b></span><span>作業日数 <b>約${r.days}日</b>（2人作業の目安）</span>`;
+  $('warns').innerHTML = r.warns.map((w) => `<div class="warn">${w}</div>`).join('');
+  $('svg').innerHTML = planSvg(r);
+  let html = '', last = '';
+  for (const row of r.rows) {
+    if (row.group !== last) { html += `<tr class="grp"><td colspan="4">${row.group}</td></tr>`; last = row.group; }
+    const qty = row.unit ? `${row.qty}${row.group === '木材' ? '本' : row.group === '基礎' && row.unit ? '個' : row.name.includes('塗料') ? '缶' : row.name.includes('シート') ? '巻' : row.group === '工具' ? '式' : '箱'}` : '一式';
+    html += `<tr><td>${row.name}<span class="mspec">${row.spec}</span>${row.note ? `<small>${row.note}</small>` : ''}</td><td class="spec">${row.spec}</td><td class="r">${qty}</td><td class="r">${yen(row.amount)}</td></tr>`;
+  }
+  html += `<tr class="total"><td colspan="3" class="tl">合計（目安）</td><td class="r">${yen(r.total)}</td></tr>`;
+  $('tbody').innerHTML = html;
+  try { localStorage.setItem('deckcalc', JSON.stringify(inp)); } catch (e) {}
+}
+
+$('plan-link').href = CONFIG.planUrl;
+$('manual-link').href = CONFIG.manualUrl;
+
+try {
+  const saved = JSON.parse(localStorage.getItem('deckcalc') || 'null');
+  if (saved && MATERIALS[saved.mat]) {
+    $('w').value = saved.w; $('d').value = saved.d; $('h').value = saved.h;
+    $('mat-' + saved.mat).checked = true;
+    $('maku').checked = !!saved.maku; $('sheet').checked = !!saved.sheet; $('tools').checked = !!saved.tools;
+  }
+} catch (e) {}
+renderPriceInputs(document.querySelector('input[name="mat"]:checked').value);
+
+$('f').addEventListener('input', (e) => {
+  if (e.target.name === 'mat') renderPriceInputs(e.target.value);
+  render();
+});
+$('f').addEventListener('submit', (e) => e.preventDefault());
+document.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => {
+  const [w, d, h] = b.dataset.p.split(',');
+  $('w').value = w; $('d').value = d; $('h').value = h;
+  render();
+}));
+render();
+</script>
+</body>
+</html>
