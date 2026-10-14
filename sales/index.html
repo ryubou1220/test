@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>週末DIY 5ステップ講座</title>
+<meta name="description" content="道具を持ったことがない人が、5つの週末で、ウッドデッキをつくれるようになる講座。踏み台から始めて、囲炉裏テーブル、木製門扉、そしてウッドデッキへ。建設業35年の監修者が一歩ずつ案内します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Zen+Old+Mincho:wght@700&display=swap">
+<style>
+/* レイアウト：作品が1つずつ増えていく「道のり」を縦に追う1カラム。図面は紙のカードにのせる。 */
+:root {
+  --bg: #f3f4ef;
+  --surface: #ffffff;
+  --ink: #1b231e;
+  --muted: #58655c;
+  --line: #d5dcd2;
+  --accent: #2c6849;
+  --accent-ink: #ffffff;
+  --accent-soft: #e3eee6;
+  --wood: #b07a45;
+  --wood-soft: #f2e5d4;
+  --paper: #ffffff;
+  --warn: #9c4a17;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --font-quote: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121814; --surface: #1a221d; --ink: #e5ebe6; --muted: #9eaca2; --line: #2d3931;
+    --accent: #74c296; --accent-ink: #0c1810; --accent-soft: #1d3127;
+    --wood: #d7a46d; --wood-soft: #3a2c1f; --paper: #f4f2ec; --warn: #f0a670;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121814; --surface: #1a221d; --ink: #e5ebe6; --muted: #9eaca2; --line: #2d3931;
+  --accent: #74c296; --accent-ink: #0c1810; --accent-soft: #1d3127;
+  --wood: #d7a46d; --wood-soft: #3a2c1f; --paper: #f4f2ec; --warn: #f0a670;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.85; font-variant-numeric: tabular-nums; }
+img { max-width: 100%; display: block; }
+a { color: var(--accent); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; }
+section { padding-block: 64px; }
+section + section { border-top: 1px solid var(--line); }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .14em; color: var(--accent); margin-bottom: 10px; }
+.lead { color: var(--muted); max-width: 40em; margin: 14px 0 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-weight: 700; border-radius: 10px; padding: 14px 22px; background: var(--accent); color: var(--accent-ink); border: 2px solid var(--accent); }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn small { font-weight: 400; opacity: .85; }
+.btn:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--wood); outline-offset: 3px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+/* ヒーロー */
+.hero { padding-block: 56px 64px; }
+.hero-grid { display: grid; gap: 36px; grid-template-columns: minmax(0, 1fr); align-items: center; }
+@media (min-width: 860px) { .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
+.hero h1 { font-size: clamp(30px, 5.4vw, 52px); font-weight: 900; line-height: 1.3; letter-spacing: .01em; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .sub { font-size: clamp(16px, 2vw, 19px); margin: 18px 0 0; }
+.hero-photo { position: relative; }
+.hero-photo img { border-radius: var(--r); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.hero-photo figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-size: 14px; color: var(--muted); }
+.badges b { color: var(--ink); }
+
+/* 道のり */
+.road { display: grid; gap: 18px; margin-top: 36px; }
+.stepcard { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+@media (min-width: 760px) { .stepcard { grid-template-columns: 300px minmax(0, 1fr); } }
+.stepcard .art { background: var(--paper); display: grid; place-items: center; padding: 18px; min-height: 200px; }
+.stepcard .art img { max-height: 210px; width: auto; }
+.stepcard .txt { padding: 22px 24px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.stepno { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--accent); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.stepno .free { background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 1px 10px; letter-spacing: 0; }
+.stepcard h3 { font-size: 22px; font-weight: 900; }
+.skill { margin: 0; }
+.deckuse { font-size: 14px; color: var(--muted); border-left: 3px solid var(--wood); padding-left: 10px; margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 14px; color: var(--muted); }
+.facts b { color: var(--ink); }
+.stepcard.goal { border: 2px solid var(--accent); }
+.connector { text-align: center; color: var(--muted); font-size: 14px; }
+
+/* 悩みと答え */
+.qa { display: grid; gap: 14px; margin-top: 32px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.qa div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px; display: grid; gap: 6px; }
+.qa b { font-size: 17px; }
+.qa p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* 価格 */
+.price-table { width: 100%; border-collapse: collapse; margin-top: 28px; font-size: 15px; }
+.tablewrap { overflow-x: auto; }
+.price-table th, .price-table td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.price-table th { font-size: 13px; color: var(--muted); font-weight: 700; }
+.price-table td.r, .price-table th.r { text-align: right; white-space: nowrap; }
+.price-table .yen { font-size: 20px; font-weight: 900; }
+.price-table tr.set td { background: var(--accent-soft); }
+.price-table small { display: block; color: var(--muted); font-size: 13px; }
+.course-box { margin-top: 28px; background: var(--surface); border: 2px solid var(--accent); border-radius: var(--r); padding: 26px; display: grid; gap: 14px; }
+.course-box h3 { font-size: 22px; font-weight: 900; }
+.course-box ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.course-box .yen { font-size: 30px; font-weight: 900; }
+.guarantee { background: var(--accent-soft); border-radius: 10px; padding: 12px 16px; font-size: 15px; }
+
+/* 監修者 */
+.prof { display: grid; gap: 28px; margin-top: 28px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 860px) { .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+.prof dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 16px 0 0; }
+.prof dt { color: var(--muted); }
+.prof dd { margin: 0; }
+.works { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.works figure { margin: 0; display: grid; gap: 6px; }
+.works img { border-radius: 10px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.works figcaption { font-size: 13px; color: var(--muted); }
+.works .wide { grid-column: span 2; }
+
+/* 声 */
+.voices { display: grid; gap: 18px; margin-top: 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.voice { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 24px; display: grid; gap: 12px; align-content: start; }
+.voice blockquote { margin: 0; font-family: var(--font-quote); font-size: 18px; line-height: 1.8; }
+.voice .who { font-size: 14px; color: var(--muted); }
+.voice .num { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; }
+.voice .num b { font-size: 20px; }
+.note { font-size: 13px; color: var(--muted); }
+
+/* FAQ */
+.faq { margin-top: 24px; display: grid; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+.faq summary { cursor: pointer; font-weight: 700; }
+.faq p { margin: 10px 0 0; color: var(--muted); }
+
+.final { text-align: center; }
+.final h2 { max-width: 20em; margin-inline: auto; }
+.final .ctas { justify-content: center; }
+footer { padding-block: 32px 48px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); }
+footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">週末DIY 5ステップ講座</div>
+      <h1>道具を持ったことがない人が、<em>5つの週末</em>で、ウッドデッキをつくれるようになる。</h1>
+      <p class="sub">踏み台から始めて、プランター台、囲炉裏テーブル、木製門扉。そして卒業制作は、家族が集まるウッドデッキ。建設の仕事を35年続けてきた監修者が、一歩ずつ案内します。</p>
+      <div class="ctas">
+        <a class="btn" data-link="step1" href="#price">STEP1「踏み台」を無料で受け取る</a>
+        <a class="btn ghost" href="#road">講座の中身を見る</a>
+      </div>
+      <div class="badges"><span>最初の材料費 <b>約2,600円</b></span><span>1ステップ <b>半日〜2日</b></span><span>教材 <b>A4・6〜7ページの図面と手順</b></span></div>
+    </div>
+    <figure class="hero-photo" style="margin:0">
+      <img src="photos/irori.webp" alt="ウッドデッキの上に置いた、ふた付きの囲炉裏テーブル" width="718" height="521">
+      <figcaption>監修者がつくった囲炉裏テーブル（STEP3）。ふたを外すと炉になる。</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+<section id="why">
+  <div class="wrap">
+    <div class="eyebrow">なぜ、いきなりウッドデッキではないのか</div>
+    <h2>いきなり大物に挑むと、「失敗が怖い」で止まってしまうから。</h2>
+    <p class="lead">DIYをためらう理由として多いのは「工具がない」「失敗したくない」「手順がわからない」「相談できる人がいない」。この講座は、小さな作品で一つずつ答えていきます。</p>
+    <div class="qa">
+      <div><b>工具を持っていない</b><p>STEP1は、ノコギリとドライバーがあれば始められます。ホームセンターのカットサービスを使えば、切る作業なしでも組み立てられます。</p></div>
+      <div><b>失敗するのが怖い</b><p>最初の材料費は約2,600円。失敗しても、余った材料で作り直せます。小さな成功を重ねてから大物へ進みます。</p></div>
+      <div><b>手順がわからない</b><p>どのステップも、寸法入りの図面、カット表、立体図つきの手順、できあがりチェックがそろっています。</p></div>
+      <div><b>相談できる人がいない</b><p>卒業制作のウッドデッキには、180日間のメール・LINEサポートがつきます。計画図や材料の計算も一緒に確かめます。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="road">
+  <div class="wrap">
+    <div class="eyebrow">5つの週末の道のり</div>
+    <h2>つくるたびに、ウッドデッキに必要な技術が一つずつ身につく。</h2>
+    <p class="lead">各ステップで覚える作業は、どれもウッドデッキづくりでそのまま使います。つくった作品は、完成したデッキのまわりで活躍します。</p>
+    <div class="road">
+      <article class="stepcard">
+        <div class="art"><img src="img/step1.svg" alt="踏み台の完成図" width="300" height="220"></div>
+        <div class="txt">
+          <div class="stepno">STEP1 <span class="free">無料</span></div>
+          <h3>踏み台</h3>
+          <p class="skill">さしがねで直角の線を引く、まっすぐ切る、下穴をあけてビスで留める、対角線で直角を確かめる。</p>
+          <p class="deckuse">ウッドデッキでは：すべての作業の基本。完成した踏み台は、デッキの昇り口のステップになる。</p>
+          <div class="facts"><span>材料費 <b>約2,600円</b></span><span>時間 <b>半日</b></span><span>材料 <b>2×4材・2×6材 各1本</b></span></div>
+        </div>
+      </article>
+      <article class="stepcard">
+        <div class="art"><img src="img/step2.svg" alt="プランター台の完成図" width="300" height="220"></div>
+        <div class="txt">
+          <div class="stepno">STEP2</div>
+          <h3>プランター台</h3>
+          <p class="skill">根太を等しい間隔で並べ、5mmのすき間ゲージで板を張り、ビスを一直線にそろえる。板とすき間から全体の寸法を決める「割付け」も覚える。</p>
+          <p class="deckuse">ウッドデッキでは：床板張りとまったく同じつくり。プランター台は、デッキを小さく切り取ったもの。</p>
+          <div class="facts"><span>材料費 <b>約500円</b>（STEP1の余り＋2×4材1本）</span><span>時間 <b>半日</b></span></div>
+        </div>
+      </article>
+      <article class="stepcard">
+        <div class="art"><img src="img/step3.svg" alt="囲炉裏テーブルの完成図" width="300" height="220"></div>
+        <div class="txt">
+          <div class="stepno">STEP3</div>
+          <h3>囲炉裏テーブル</h3>
+          <p class="skill">幕板で四角い枠を組んで直角を出し、脚で水平をとり、受け材で開口部をつくる。炭火用と、カセットコンロ・飾り炉用のどちらにも対応。</p>
+          <p class="deckuse">ウッドデッキでは：骨組み（大引・根太）と点検口のつくり。完成したデッキの上で、家族や友人と囲める。</p>
+          <div class="facts"><span>材料費 <b>約7,100円</b>（炉の道具は別）</span><span>時間 <b>1〜2日</b></span><span>大きさ <b>1,010×720×350mm</b></span></div>
+        </div>
+      </article>
+      <article class="stepcard">
+        <div class="art"><img src="img/step4.svg" alt="木製門扉の完成図" width="300" height="220"></div>
+        <div class="txt">
+          <div class="stepno">STEP4</div>
+          <h3>木製門扉</h3>
+          <p class="skill">穴を掘ってコンクリートで柱を建て、2つの方向から垂直を出す。筋交いで扉の垂れを防ぎ、蝶番・ラッチを取り付ける。</p>
+          <p class="deckuse">ウッドデッキでは：基礎（束石・束柱）の作業そのもの。デッキではこれを十数か所くり返す。</p>
+          <div class="facts"><span>材料費 <b>約1.4万円</b></span><span>時間 <b>2日</b>（間にコンクリートを固める）</span><span>扉 <b>幅900×高さ1,200mm</b></span></div>
+        </div>
+      </article>
+      <p class="connector">ここまでで、ウッドデッキに必要な作業はすべて経験ずみ。</p>
+      <article class="stepcard goal">
+        <div class="art"><img src="img/deck.svg" alt="ウッドデッキの骨組みの図" width="300" height="220"></div>
+        <div class="txt">
+          <div class="stepno">卒業制作</div>
+          <h3>ウッドデッキ</h3>
+          <p class="skill">あなたの家のサイズで材料と費用を計算し、サイズ別の図面（基礎伏図・骨組み図・断面図・カット表・購入リスト・3日間の手順）で組み立てる。180日間のサポートつき。</p>
+          <p class="deckuse">業者に頼むと1㎡あたり4万円〜が相場。自分でつくれば、材料費だけで済みます。</p>
+          <div class="facts"><span>材料費 <b>約10〜30万円</b>（大きさと木材による）</span><span>時間 <b>3日〜</b></span></div>
+          <div><a class="btn ghost" data-link="calc" href="#price">あなたの家の材料費を計算する（無料）</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="price">
+  <div class="wrap">
+    <div class="eyebrow">料金</div>
+    <h2>無料のSTEP1から、自分のペースで。</h2>
+    <p class="lead">どのステップからでも始められます。すべての教材に、図面・カット表・材料リスト・手順・できあがりチェックがつきます。</p>
+    <div class="tablewrap">
+      <table class="price-table">
+        <thead><tr><th>ステップ</th><th>内容</th><th class="r">価格</th></tr></thead>
+        <tbody>
+          <tr><td><b>STEP1 踏み台</b></td><td>教材PDF 6ページ<small>LINEに登録すると受け取れます</small></td><td class="r"><span class="yen">無料</span></td></tr>
+          <tr><td><b>STEP2 プランター台</b></td><td>教材PDF 6ページ</td><td class="r"><span class="yen">980円</span></td></tr>
+          <tr><td><b>STEP3 囲炉裏テーブル</b></td><td>教材PDF 7ページ（炭火・カセットコンロ両対応）</td><td class="r"><span class="yen">1,980円</span></td></tr>
+          <tr><td><b>STEP4 木製門扉</b></td><td>教材PDF 7ページ</td><td class="r"><span class="yen">1,980円</span></td></tr>
+          <tr class="set"><td><b>STEP2〜4 セット</b></td><td>3つの教材をまとめて<small>単品で買うより 960円おトク</small></td><td class="r"><span class="yen">3,980円</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="course-box">
+      <div class="stepno">卒業制作</div>
+      <h3>ウッドデッキ完成コース</h3>
+      <ul>
+        <li>ウッドデッキ実践マニュアル（PDF 108ページ＋B5の印刷版をお届け）</li>
+        <li>ステップごとの解説動画</li>
+        <li>あなたの家のサイズの図面セット（基礎伏図・骨組み図・断面図・カット表・購入リスト・3日間の手順）</li>
+        <li>180日間のメール・LINEサポート（回数無制限）、希望する方はZoom相談</li>
+        <li>計画図・材料計算の確認、フェンスやベンチなどの追加アイデアの相談</li>
+      </ul>
+      <div><span class="yen">29,800円</span>（税込）<span class="note">　STEP2〜4を購入した方は、その金額を差し引きます</span></div>
+      <p class="guarantee">サポートを受けながら180日間取り組んでも完成しなかった場合は、代金を全額お返しします。</p>
+      <div class="ctas" style="margin-top:4px">
+        <a class="btn" data-link="course" href="#price">ウッドデッキ完成コースを申し込む</a>
+        <a class="btn ghost" data-link="calc" href="#price">先に材料費を計算する</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="voice">
+  <div class="wrap">
+    <div class="eyebrow">ウッドデッキをつくった方の声</div>
+    <h2>DIY歴1年未満でも、完成しています。</h2>
+    <div class="voices">
+      <div class="voice">
+        <div class="num"><span>業者の見積もり <b>40万円以上</b></span><span>材料費 <b>約20万円</b></span></div>
+        <blockquote>唯一つまづきかけた（挫折しかけた）のは、材料調達の計算でしたが、親切に何度も相談に乗ってくれて、しかも計算間違いなどがないか検証までしてくれたのです。</blockquote>
+        <div class="who">I.O さん（50代・会社員・DIY歴1年未満）　約9㎡（3.7m×2.4m）　平成30年6月</div>
+      </div>
+      <div class="voice">
+        <div class="num"><span>デッキの広さ <b>約15㎡</b></span><span>部屋から庭まで <b>高さ1m</b></span></div>
+        <blockquote>部屋から庭までの高さが１メートルあり、どう作ったらいいのか答えが出なくなりました。そこでアドバイスと計画図を提供してくれて二段デッキにすることでスタートすることになりました。</blockquote>
+        <div class="who">よしひろ さん（40代・自営業・DIY歴1年）　3.7m×4.0m　令和元年7月</div>
+      </div>
+    </div>
+    <p class="note">いただいた感想から一部を抜粋しています。個人の感想です。</p>
+  </div>
+</section>
+
+<section id="author">
+  <div class="wrap">
+    <div class="eyebrow">監修者</div>
+    <h2>野村 隆一</h2>
+    <div class="prof">
+      <div>
+        <p>建設関係の仕事に35年。2003年、自宅の新築をきっかけに家族の希望でウッドデッキを自作したのが、DIYの始まりです。その後、ウッドフェンス、木製門扉、レンガやタイルのペイビング、表札、囲炉裏テーブルなどをつくってきました。</p>
+        <p>知り合いのデッキづくりを手伝ううちに、「やり方を知れば、誰でもつくれる」と確信し、この講座をまとめました。大事にしているのは、計測と基礎。最初の線をまっすぐ引くことが、最後の仕上がりを決めます。</p>
+        <dl>
+          <dt>経歴</dt><dd>建設関係の仕事に35年</dd>
+          <dt>DIY</dt><dd>2003年から。ウッドデッキ、フェンス、門扉、ペイビング、囲炉裏テーブルなど</dd>
+          <dt>サポート</dt><dd>ほかの方のウッドデッキづくりを計画から完成まで支援</dd>
+        </dl>
+      </div>
+      <div class="works">
+        <figure class="wide"><img src="photos/irori-open.png" alt="ふたを外した囲炉裏テーブル。内側にケイカル板を貼った炉" width="624" height="436" loading="lazy"><figcaption>囲炉裏テーブルのふたを外したところ。炉の内側はケイカル板に耐熱塗料。</figcaption></figure>
+        <figure><img src="photos/bench.png" alt="すのこ張りのベンチ" width="487" height="370" loading="lazy"><figcaption>すのこ張りのベンチ</figcaption></figure>
+        <figure><img src="photos/irori.webp" alt="デッキの上の囲炉裏テーブル" width="718" height="521" loading="lazy"><figcaption>デッキの上で使う囲炉裏テーブル</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow">よくある質問</div>
+    <h2>始める前の疑問</h2>
+    <div class="faq">
+      <details><summary>工具を1つも持っていません。</summary><p>STEP1に必要なのは、さしがね・メジャー・ノコギリ・インパクトドライバー（またはドライバードリル）です。木材はホームセンターのカットサービスで切ってもらうこともできます。教材の「道具と材料」のページに、必要なものをチェックリストでまとめています。</p></details>
+      <details><summary>途中のステップから始められますか？</summary><p>はい。どのステップも単品で使えます。ただ、STEP2はSTEP1で余った材料を使う設計なので、順番に進めると材料のムダが出ません。</p></details>
+      <details><summary>1人でもできますか？</summary><p>STEP1〜3は1人でできます。STEP4の柱を建てる作業と、ウッドデッキの床板張りは、2人いると楽です。</p></details>
+      <details><summary>賃貸やマンションでも使えますか？</summary><p>STEP1〜3は、ベランダや庭のない家でもつくれます。囲炉裏テーブルは、カセットコンロ・飾り炉タイプにすれば炭火を使いません。炭火は屋外だけで使ってください。</p></details>
+      <details><summary>教材はどんな形で届きますか？</summary><p>A4のPDFです。スマートフォンで見ながら作業しても、印刷して現場に持って行っても使えます。ウッドデッキ完成コースのマニュアルは、B5の印刷版もお届けします。</p></details>
+      <details><summary>ウッドデッキの材料費は、どのくらいかかりますか？</summary><p>大きさと木材によって、約10〜30万円です。無料の計算ツールで、幅・奥行き・高さを入れると、材料の本数と費用の目安がわかります。</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>最初の一歩は、半日でつくれる踏み台から。</h2>
+    <p class="lead" style="margin-inline:auto">材料費は約2,600円。つくった踏み台は、いつかあなたのウッドデッキの昇り口になります。</p>
+    <div class="ctas">
+      <a class="btn" data-link="step1" href="#price">STEP1「踏み台」を無料で受け取る</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a data-link="law" href="#price">特定商取引法に基づく表記</a>
+      <a data-link="site" href="#price">Ryu'フェニックス</a>
+    </div>
+    <p>週末DIY 5ステップ講座　監修：野村 隆一</p>
+  </div>
+</footer>
+
+<script>
+// ===== リンク先（決まったらここを書き換える。空のままなら、ページ内の料金の欄に移動する） =====
+const LINKS = {
+  step1: '',   // LINE公式アカウントの登録URL
+  course: '',  // ウッドデッキ完成コースの申し込みページ
+  calc: '',    // 材料・費用計算ツールのURL
+  law: '',     // 特定商取引法に基づく表記のページ
+  site: 'https://ryuphoenix.com',
+};
+document.querySelectorAll('[data-link]').forEach((a) => {
+  const url = LINKS[a.dataset.link];
+  if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+});
+</script>
+</body>
+</html>
