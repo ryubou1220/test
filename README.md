@@ -8,11 +8,11 @@
 |---|---|---|
 | STEP1 踏み台（無料） | `course/step1-fumidai/index.html`（見本PDF：`step1-fumidai.pdf`） | できた |
 | STEP2 プランター台 | `course/step2-planter/index.html`（見本PDF：`step2-planter.pdf`） | できた |
-| STEP3 囲炉裏テーブル | — | これから |
+| STEP3 囲炉裏テーブル | `course/step3-irori/index.html`（見本PDF：`step3-irori.pdf`） | できた |
 | STEP4 木製門扉 | — | これから |
 | 卒業制作 ウッドデッキ | `deck-calculator/`（無料の計算ツール）、`deck-plans/`（サイズ別図面）、実践マニュアル＋180日サポート | できた |
 
-教材ページはパソコンのブラウザで開き、「印刷・PDFで保存」でPDFにする。STEP1は高さ（200・250・300mm）、STEP2は幅（600・900mm）を選べる。講座名・監修者・サイト・LINEは `lib/course.js` の `BRAND` で全ステップまとめて変えられる。
+教材ページはパソコンのブラウザで開き、「印刷・PDFで保存」でPDFにする。STEP1は高さ（200・250・300mm）、STEP2は幅（600・900mm）、STEP3は表紙に出す炉のタイプを選べる。監修者の作品写真は `course/photos/`。講座名・監修者・サイト・LINEは `lib/course.js` の `BRAND` で全ステップまとめて変えられる。
 
 ## deck-calculator/ … 無料の材料・費用計算ツール
 

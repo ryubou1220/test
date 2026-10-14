@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>囲炉裏テーブル STEP3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../lib/sheet.css">
+<link rel="stylesheet" href="../../lib/course.css">
+<style>
+.photo { display: grid; gap: 1mm; margin: 0; }
+.photo img { width: 100%; height: 48mm; object-fit: cover; border-radius: 1mm; }
+.photo figcaption { font-size: 11px; color: var(--muted); }
+.cover-row { display: grid; grid-template-columns: 1.35fr 1fr; gap: 5mm; align-items: center; }
+.stp.small { grid-template-columns: 1fr 52mm; }
+.stp.small svg { max-height: 42mm; }
+.types { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.type { border: 1.2px solid var(--line); border-radius: 2mm; padding: 3mm; display: grid; gap: 2mm; align-content: start; }
+.type h3 { margin: 0; }
+.type .tag { font-size: 11px; font-weight: 700; color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 2mm; justify-self: start; }
+.type.fire .tag { background: #9c4a17; }
+.type ul { margin: 0; padding-left: 4.5mm; display: grid; gap: .8mm; font-size: 12px; }
+.danger { border: 2px solid var(--warn); border-radius: 2mm; padding: 3mm 4mm; display: grid; gap: 1.5mm; }
+.danger b.t { color: var(--warn); font-size: 14px; }
+.danger ul { margin: 0; padding-left: 4.5mm; display: grid; gap: .8mm; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <form id="f" novalidate>
+    <div class="f"><label for="type">炉のタイプ（表紙の表示）</label>
+      <select id="type">
+        <option value="both" selected>両方（炭火・カセットコンロ）</option>
+        <option value="fire">炭火</option>
+        <option value="gas">カセットコンロ・飾り炉</option>
+      </select>
+    </div>
+    <button type="button" class="print" id="print">印刷・PDFで保存</button>
+    <p class="tip">「印刷・PDFで保存」→ 送信先を「PDFに保存」にすると、販売用のPDF（A4・7ページ）ができます。</p>
+  </form>
+</div>
+
+<main class="sheets" id="sheets"></main>
+
+<script src="../../lib/drawing.js"></script>
+<script src="../../lib/course.js"></script>
+<script>
+const { mm, esc, dimH, dimV, iso } = Draw;
+const { road, cutBar, packCuts, contact } = Course;
+const $ = (id) => document.getElementById(id);
+
+// ===== 寸法（mm）。2×4材 38×89、2×6材 38×140 =====
+const T = 38, B4 = 89, B6 = 140, GAP = 5, KERF = 3;
+const NB = 7;                              // 天板の板の枚数
+const MID = [2, 3, 4];                     // 開口部になる列
+const W = B6 * NB + GAP * (NB - 1);        // 1010
+const D = 720, H = 350;
+const TOPZ = H - T;                        // 312：天板の下の面
+const INSET = 30;                          // 天板の張り出し
+const OX0 = (B6 + GAP) * MID[0], OX1 = OX0 + B6 * MID.length + GAP * (MID.length - 1);   // 開口部 x 290〜720
+const OY0 = 160, OY1 = 560;                // 開口部 y 160〜560（カセットコンロとつまみの手が入る）
+const LID = OY1 - OY0 - 4;                 // ふたの板 396
+const KEICAL = 6;                          // ケイカル板の厚み
+
+const P = {}; // 部品
+(function build() {
+  const fx0 = INSET, fx1 = W - INSET, fy0 = INSET, fy1 = D - INSET;
+  const az = TOPZ - B4;
+  P.apronLong = [fy0, fy1 - T].map((y) => ({ x: fx0, y, z: az, w: fx1 - fx0, d: T, h: B4 }));
+  P.apronShort = [fx0, fx1 - T].map((x) => ({ x, y: fy0 + T, z: az, w: T, d: fy1 - fy0 - T * 2, h: B4 }));
+  P.legs = [[fx0 + T, fy0 + T], [fx1 - T - B4, fy0 + T], [fx0 + T, fy1 - T * 2], [fx1 - T - B4, fy1 - T * 2]].map(([x, y]) => ({ x, y, z: 0, w: B4, d: T, h: TOPZ }));
+  P.recv = [OY0, OY1].map((yc) => ({ x: fx0 + T, y: yc - T / 2, z: TOPZ - B6, w: fx1 - fx0 - T * 2, d: T, h: B6 }));
+  const ry0 = OY0 + T / 2, ry1 = OY1 - T / 2;   // 受け材の内側
+  P.rokuUke = [OX0 - 20, OX1 + 20 - B4].map((x) => ({ x, y: ry0, z: TOPZ - B6, w: B4, d: ry1 - ry0, h: T }));
+  P.floor = { x: OX0 - 20, y: ry0, z: TOPZ - B6 + T, w: OX1 - OX0 + 40, d: ry1 - ry0, h: KEICAL, tone: 'gray' };
+  const xs = [...Array(NB)].map((_, i) => i * (B6 + GAP));
+  P.topFull = xs.filter((_, i) => !MID.includes(i)).map((x) => ({ x, y: 0, z: TOPZ, w: B6, d: D, h: T }));
+  P.topShort = MID.flatMap((i) => [{ x: xs[i], y: 0, z: TOPZ, w: B6, d: OY0, h: T }, { x: xs[i], y: OY1, z: TOPZ, w: B6, d: D - OY1, h: T }]);
+  P.lid = MID.map((i) => ({ x: xs[i], y: OY0 + 2, z: TOPZ, w: B6, d: LID, h: T }));
+  P.frameDiag = Math.round(Math.hypot(fx1 - fx0, fy1 - fy0));
+  P.topDiag = Math.round(Math.hypot(W, D));
+  P.frameW = fx1 - fx0; P.frameD = fy1 - fy0;
+  P.inner = { x0: fx0 + T, y0: fy0 + T };
+  P.depth = TOPZ - (P.floor.z + KEICAL);   // 炉の深さ（受け材の上から炉床まで）
+})();
+const frame = () => [...P.apronLong, ...P.apronShort];
+const all = () => [...frame(), ...P.legs, ...P.recv, ...P.rokuUke, P.floor, ...P.topFull, ...P.topShort, ...P.lid];
+const old = (b) => ({ ...b, tone: b.tone === 'gray' ? 'gray' : 'old' });
+
+// ===== 図 =====
+function planView() {
+  const fs = 20, sw = 1.2, L = 70, Tp = 70, R = 80, Bt = 50;
+  const X = (x) => L + x, Y = (y) => Tp + y;
+  let s = `<svg viewBox="0 0 ${W + L + R} ${D + Tp + Bt}" role="img" aria-label="平面図">`;
+  [...P.topFull, ...P.topShort].forEach((b) => { s += `<rect x="${X(b.x)}" y="${Y(b.y)}" width="${b.w}" height="${b.d}" fill="var(--wood-soft)" stroke="var(--ink)"/>`; });
+  P.lid.forEach((b) => { s += `<rect x="${X(b.x)}" y="${Y(b.y)}" width="${b.w}" height="${b.d}" fill="#fff" stroke="var(--accent)" stroke-width="2"/>`; });
+  s += `<text x="${X((OX0 + OX1) / 2)}" y="${Y((OY0 + OY1) / 2)}" text-anchor="middle" dominant-baseline="middle" font-size="${fs * 1.1}" font-weight="700" fill="var(--accent)">ふた</text>`;
+  [...frame(), ...P.recv].forEach((b) => { s += `<rect x="${X(b.x)}" y="${Y(b.y)}" width="${b.w}" height="${b.d}" fill="none" stroke="var(--muted)" stroke-dasharray="6 4"/>`; });
+  P.legs.forEach((b) => { s += `<rect x="${X(b.x)}" y="${Y(b.y)}" width="${b.w}" height="${b.d}" fill="none" stroke="var(--ink)" stroke-dasharray="3 3"/>`; });
+  s += dimH([X(0), X(OX0), X(OX1), X(W)], Y(0) - 22, fs * .85, sw, { force: true });
+  s += dimH([X(0), X(W)], Y(0) - 52, fs, sw, { force: true });
+  s += dimV([Y(0), Y(OY0), Y(OY1), Y(D)], X(-28), fs * .85, sw, { force: true });
+  s += dimV([Y(0), Y(D)], X(W + 40), fs, sw, { force: true });
+  return s + '</svg>';
+}
+function frontView() {
+  const fs = 20, sw = 1.2, L = 60, Tp = 50, R = 70, Bt = 70;
+  const X = (x) => L + x, Y = (z) => Tp + H - z;
+  let s = `<svg viewBox="0 0 ${W + L + R} ${H + Tp + Bt}" role="img" aria-label="正面図">`;
+  s += `<rect x="${X(0)}" y="${Y(H)}" width="${W}" height="${T}" fill="var(--wood-soft)" stroke="var(--ink)"/>`;
+  const a = P.apronLong[1];
+  s += `<rect x="${X(a.x)}" y="${Y(TOPZ)}" width="${a.w}" height="${B4}" fill="#fff" stroke="var(--ink)"/>`;
+  [P.legs[2], P.legs[3]].forEach((l) => { s += `<rect x="${X(l.x)}" y="${Y(a.z)}" width="${l.w}" height="${a.z}" fill="#fff" stroke="var(--ink)"/>`; });
+  s += `<line x1="${X(-30)}" x2="${X(W + 30)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += dimH([X(0), X(INSET), X(P.legs[2].x), X(P.legs[2].x + B4), X(P.legs[3].x), X(P.legs[3].x + B4), X(W - INSET), X(W)], Y(0) + 34, fs * .8, sw);
+  s += dimV([Y(H), Y(TOPZ), Y(a.z), Y(0)], X(W + 34), fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+// 開口部を通る断面（y方向）。kind: 'none' | 'fire' | 'gas'
+function sectionView(kind) {
+  const fs = 20, sw = 1.2, L = 50, Tp = 40, R = 60, Bt = 60;
+  const X = (y) => L + y, Y = (z) => Tp + H - z;
+  let s = `<svg viewBox="0 0 ${D + L + R} ${H + Tp + Bt}" role="img" aria-label="断面図">`;
+  const rect = (y, z, d, h, fill, stroke = 'var(--ink)', extra = '') => `<rect x="${X(y)}" y="${Y(z + h)}" width="${d}" height="${h}" fill="${fill}" stroke="${stroke}" ${extra}/>`;
+  P.legs.slice(0, 2).forEach((l) => { s += rect(l.y, 0, T, l.h, '#f6f6f4', 'var(--muted)'); });
+  P.apronLong.forEach((a) => { s += rect(a.y, a.z, T, B4, 'var(--wood)'); });
+  P.recv.forEach((r) => { s += rect(r.y, r.z, T, B6, 'var(--wood)'); });
+  s += rect(P.rokuUke[0].y, P.rokuUke[0].z, P.rokuUke[0].d, T, '#f6f6f4', 'var(--muted)');
+  s += rect(P.floor.y, P.floor.z, P.floor.d, KEICAL, '#cfd4ce');
+  s += rect(0, TOPZ, OY0, T, 'var(--wood-soft)');
+  s += rect(OY1, TOPZ, D - OY1, T, 'var(--wood-soft)');
+  const fz = P.floor.z + KEICAL;
+  if (kind === 'none') s += rect(OY0 + 2, TOPZ, LID, T, '#fff', 'var(--accent)', 'stroke-width="2"');
+  if (kind === 'fire') {
+    P.recv.forEach((r, i) => { s += rect(i ? r.y - KEICAL : r.y + T, fz, KEICAL, TOPZ - fz, '#cfd4ce'); });
+    const bw = 250, by = (D - bw) / 2;
+    s += rect(by, fz, bw, 80, '#e9ecef', 'var(--ink)');
+    s += rect(by + 6, fz + 6, bw - 12, 40, '#d9d4cc', 'none');
+    s += `<text x="${X(D / 2)}" y="${Y(fz + 26)}" text-anchor="middle" font-size="${fs * .8}">灰</text>`;
+    [0, 1, 2].forEach((i) => { s += `<circle cx="${X(by + 55 + i * 45)}" cy="${Y(fz + 56)}" r="13" fill="#3a3a3a"/>`; });
+    s += `<path d="M${X(by + 20)} ${Y(fz + 95)}H${X(by + bw - 20)}M${X(by + 30)} ${Y(fz + 95)}V${Y(fz + 46)}M${X(by + bw - 30)} ${Y(fz + 95)}V${Y(fz + 46)}" stroke="var(--ink)" stroke-width="3" fill="none"/>`;
+    s += `<text x="${X(by + bw + 12)}" y="${Y(fz + 95)}" font-size="${fs * .75}" class="m">五徳</text>`;
+    s += dimH([X(OY0 + T / 2 - 19 + KEICAL), X(by)], Y(fz) + 24, fs * .7, sw, { force: true, labels: ['30以上'] });
+  }
+  if (kind === 'gas') {
+    const sw2 = 280, sy = (D - sw2) / 2, sh = 110;
+    s += rect(sy, fz, sw2, sh - 15, '#e9ecef', 'var(--ink)');
+    s += `<path d="M${X(sy + 40)} ${Y(fz + sh)}H${X(sy + sw2 - 40)}" stroke="var(--ink)" stroke-width="4"/>`;
+    s += `<text x="${X(D / 2)}" y="${Y(fz + 45)}" text-anchor="middle" font-size="${fs * .8}">カセットコンロ</text>`;
+  }
+  s += `<line x1="${X(-30)}" x2="${X(D + 30)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += dimV([Y(H), Y(TOPZ), Y(fz)], X(D + 30), fs * .8, sw, { force: true });
+  s += dimH([X(0), X(OY0), X(OY1), X(D)], Y(0) + 34, fs * .8, sw, { force: true });
+  return s + '</svg>';
+}
+
+// ===== ページ =====
+const sheet = (name, no, total, body) => Course.sheet({ step: 'STEP3 囲炉裏テーブル', name, size: `${W}×${D}×${H}`, no, total, body });
+
+function render() {
+  const type = $('type').value;
+  const TOTAL = 7;
+  const pages = [];
+
+  // 部品とカット
+  const parts6 = [
+    ...P.topFull.map(() => ({ len: D, use: '天板' })),
+    ...P.topShort.map((b) => ({ len: b.d, use: '天板(短)' })),
+    ...P.lid.map(() => ({ len: LID, use: 'ふた' })),
+    ...P.recv.map((b) => ({ len: b.w, use: '受け材' })),
+  ];
+  const parts4 = [
+    ...P.apronLong.map((b) => ({ len: b.w, use: '幕板(長)' })),
+    ...P.apronShort.map((b) => ({ len: b.d, use: '幕板(短)' })),
+    ...P.legs.map(() => ({ len: TOPZ, use: '脚' })),
+    ...P.rokuUke.map((b) => ({ len: b.d, use: '炉受け' })),
+  ];
+  const bins6 = packCuts(parts6), bins4 = packCuts(parts4);
+  const cost = bins6.length * 900 + bins4.length * 500 + 1000 + 1000;
+
+  // 1 表紙
+  const typeLine = { both: '炭火でも、カセットコンロでも使える', fire: '炭火で焼く、本格派の囲炉裏', gas: 'カセットコンロや飾り炉で、手軽に' }[type];
+  pages.push(sheet('表紙', 1, TOTAL, `
+    <div class="course">${Course.BRAND.course}</div>
+    <h1 class="big-title">STEP3　囲炉裏テーブルをつくる</h1>
+    <div class="facts"><span>材料費 <b>約${Math.round(cost / 1000)}千円</b>（炉の道具は別）</span><span>作業時間 <b>1〜2日</b></span><span><b>${typeLine}</b></span></div>
+    <div class="cover-row">
+      <figure class="fig cover-fig" style="margin:0">${iso(all(), { title: '完成した囲炉裏テーブル' })}<figcaption>完成図（幅${W}×奥行き${D}×高さ${H}mm）。中央の${MID.length}枚がふた</figcaption></figure>
+      <figure class="photo"><img src="../photos/irori.webp" alt="監修者がつくった箱型の囲炉裏テーブル"><figcaption>監修者の囲炉裏テーブル。ふたを外すと炉になる</figcaption></figure>
+    </div>
+    ${road(2)}
+    <div>
+      <h3>STEP3で覚えること</h3>
+      <ol class="learn">
+        <li><b>4本の幕板で四角い枠を組み、対角線で直角を出す</b><span>デッキの外周の大引・根太と同じ</span></li>
+        <li><b>脚を垂直に付け、水平を確かめる</b><span>デッキの束柱と同じ</span></li>
+        <li><b>受け材を入れて、開口部をつくる</b><span>デッキの点検口（床下をのぞくふた）と同じつくり</span></li>
+        <li><b>火を使う場所を、燃えない材料で守る</b><span>炉の底と内側にケイカル板（燃えない板）を使う</span></li>
+      </ol>
+    </div>
+  `));
+
+  // 2 道具と材料
+  const row = (name, spec, qty, price) => `<tr><td><i class="box"></i>${name}</td><td>${spec}</td><td class="r">${qty}</td><td class="r">${price}</td></tr>`;
+  pages.push(sheet('道具と材料', 2, TOTAL, `
+    <h2>道具と材料<small>買ったらチェック</small></h2>
+    <div>
+      <h3>本体の材料（約${cost.toLocaleString()}円）</h3>
+      <table class="buy"><thead><tr><th>材料</th><th>規格</th><th class="r">数量</th><th class="r">目安</th></tr></thead><tbody>
+        ${row('2×6材', '38×140mm　長さ1,820mm', `${bins6.length}本`, `¥${(bins6.length * 900).toLocaleString()}`)}
+        ${row('2×4材', '38×89mm　長さ1,820mm', `${bins4.length}本`, `¥${(bins4.length * 500).toLocaleString()}`)}
+        ${row('コーススレッド', '長さ75mm　100本入り（使うのは約90本）', '1箱', '¥1,000')}
+        ${row('ケイカル板（けい酸カルシウム板）', '厚さ6mm　455×910mm。燃えない板。カッターで切れる', '1枚', '¥1,000')}
+        ${row('塗料（あれば）', '屋外用の木材保護塗料', '—', '—')}
+        <tr class="total"><td colspan="3">合計（目安）</td><td class="r">¥${cost.toLocaleString()}</td></tr>
+      </tbody></table>
+      <p class="note">デッキの上や屋外に置くので、防腐処理したSPF材かウエスタンレッドシダーを選ぶ。</p>
+    </div>
+    <div class="types">
+      <div class="type fire"><span class="tag">炭火タイプ</span><h3>炉の道具</h3><ul>
+        <li>ステンレスの角型バット（外寸 約250×250mm、深さ80mm以下）</li>
+        <li>灰（ホームセンターの「囲炉裏用の灰」）</li>
+        <li>五徳（ごとく）、炭、火ばさみ、火消し壺</li>
+        <li>ケイカル板を、炉の内側の木部（受け材の内側）にも貼る</li>
+      </ul></div>
+      <div class="type"><span class="tag">カセットコンロ・飾り炉タイプ</span><h3>炉の道具</h3><ul>
+        <li>カセットコンロ（幅約340×奥行き約280mm、高さ110mm以下）</li>
+        <li>飾り炉にするなら：砂利や灰、ＬＥＤキャンドル、五徳</li>
+        <li>室内やマンションのベランダでも使える</li>
+      </ul></div>
+    </div>
+    <div class="grid2">
+      <div><h3>道具（STEP1・2と同じ）</h3><ul class="check">
+        <li><i class="box"></i>さしがね・メジャー・鉛筆・ノコギリ</li>
+        <li><i class="box"></i>インパクトドライバー・下穴用ドリル 3mm</li>
+        <li><i class="box"></i>サンドペーパー・保護メガネ・手袋</li>
+      </ul></div>
+      <div><h3>STEP3で新しく使うもの</h3><ul class="check">
+        <li><i class="box"></i>水平器（30cm以上）</li>
+        <li><i class="box"></i>カッターと金属の定規（ケイカル板を切る）</li>
+        <li><i class="box"></i>防じんマスク（ケイカル板を削るとき）</li>
+      </ul></div>
+    </div>
+  `));
+
+  // 3 図面
+  pages.push(sheet('図面', 3, TOTAL, `
+    <h2>図面<small>単位はmm</small></h2>
+    <div class="views">
+      <figure class="fig" style="margin:0">${planView()}<figcaption>平面図（上から）。緑がふた、破線は天板の下の枠と受け材</figcaption></figure>
+      <figure class="fig" style="margin:0">${frontView()}<figcaption>正面図（前から）</figcaption></figure>
+      <figure class="fig" style="margin:0">${sectionView('none')}<figcaption>断面図（炉の中央で前後に切った図）。ふたは受け材の上にのる</figcaption></figure>
+      <figure class="fig" style="margin:0">${iso([...frame(), ...P.legs, ...P.recv, ...P.rokuUke, P.floor, ...[...P.topFull, ...P.topShort, ...P.lid].map((b) => ({ ...b, tone: 'ghost' }))], { title: '天板の下の骨組み' })}<figcaption>天板の下の骨組み（天板は破線）</figcaption></figure>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>部品</h3>
+        <table><tbody>
+          <tr><td>天板</td><td>2×6材</td><td class="r">${D}mm×${P.topFull.length}枚、${OY0}mm×${P.topShort.length}枚</td></tr>
+          <tr><td>ふた</td><td>2×6材</td><td class="r">${LID}mm×${P.lid.length}枚</td></tr>
+          <tr><td>受け材</td><td>2×6材（縦）</td><td class="r">${P.recv[0].w}mm×2本</td></tr>
+          <tr><td>幕板</td><td>2×4材（縦）</td><td class="r">${P.apronLong[0].w}mm×2本、${P.apronShort[0].d}mm×2本</td></tr>
+          <tr><td>脚</td><td>2×4材</td><td class="r">${TOPZ}mm×4本</td></tr>
+          <tr><td>炉受け</td><td>2×4材（横）</td><td class="r">${P.rokuUke[0].d}mm×2本</td></tr>
+          <tr><td>炉床</td><td>ケイカル板</td><td class="r">${P.floor.w}×${P.floor.d}mm×1枚</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h3>寸法の決め方</h3>
+        <p>天板は2×6材${NB}枚とすき間5mmで、幅 ${W}mm（STEP2の割付けと同じ考え方）。開口部は真ん中の${MID.length}枚分で ${OX1 - OX0}×${OY1 - OY0}mm。カセットコンロが入り、つまみを回す手も入る大きさにしている。</p>
+        <p class="note" style="margin-top:2mm">受け材は開口部の縁の真下に置く。天板とふたが、受け材の厚みの半分（19mm）ずつにのる。</p>
+      </div>
+    </div>
+  `));
+
+  // 4 カット表
+  const bars = (bins) => bins.map((b) => { const c = cutBar(b); return `<div class="cutrow"><span class="st">1,820</span><span class="n">×1本</span>${c.html}</div>`; }).join('');
+  pages.push(sheet('カット表', 4, TOTAL, `
+    <h2>カット表<small>1,820mmの材料から切る（斜線は余り）</small></h2>
+    <div class="cutgrp"><h3>2×6材 1,820mm × ${bins6.length}本</h3>${bars(bins6)}</div>
+    <div class="cutgrp"><h3>2×4材 1,820mm × ${bins4.length}本</h3>${bars(bins4)}</div>
+    <div class="grid2">
+      <div>
+        <h3>ケイカル板の切り方</h3>
+        <ul class="check">
+          <li><i class="box"></i>炉床：${P.floor.w}×${P.floor.d}mm を1枚</li>
+          ${type !== 'gas' ? `<li><i class="box"></i>炭火タイプは、受け材の内側に貼る板：${OX1 - OX0}×${P.depth}mm を2枚</li>` : ''}
+          <li><i class="box"></i>金属の定規を当て、カッターで何度か筋を入れてから、机の角で折る</li>
+          <li><i class="box"></i>切り口はサンドペーパーで整える（防じんマスクをつける）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>今回のポイント</h3>
+        <ul class="check">
+          <li><i class="box"></i>脚4本は長さを必ずそろえる。ずれるとテーブルがゆれる</li>
+          <li><i class="box"></i>幕板は向かい合う2本ずつ、重ねて長さを確かめる</li>
+          <li><i class="box"></i>天板の短い板（${OY0}mm）とふた（${LID}mm）は、切ったら印をつけて分けておく</li>
+        </ul>
+      </div>
+    </div>
+  `));
+
+  // 5 組み立て（骨組み）
+  pages.push(sheet('組み立て（骨組み）', 5, TOTAL, `
+    <h2>組み立て1　骨組み<small>枠 → 脚 → 受け材 → 炉受け</small></h2>
+    <div class="steps">
+      <div class="stp small"><div>
+        <h3><span>1</span>幕板で四角い枠を組む</h3>
+        <ol>
+          <li>長い幕板2本で、短い幕板2本の両端をはさむ（幕板はすべて縦に立てる）</li>
+          <li>下穴をあけ、角ごとにビス2本で留める</li>
+          <li><b>対角線を2本測る。</b>どちらも約${mm(P.frameDiag)}mmなら直角</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso(frame(), { title: '枠を組む' })}<figcaption>外寸 ${P.frameW}×${P.frameD}mm</figcaption></figure></div>
+
+      <div class="stp small"><div>
+        <h3><span>2</span>脚を付けて、水平を確かめる</h3>
+        <ol>
+          <li>枠の4つの角の内側に脚を当てる。脚の上の端と幕板の上の端をそろえる</li>
+          <li>長い幕板と短い幕板の両方から、ビスを2本ずつ打つ</li>
+          <li>起こして平らな床に置き、水平器を枠の上にのせて、前後・左右とも水平か確かめる</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...frame().map(old), ...P.legs], { title: '脚を付ける' })}<figcaption>脚4本</figcaption></figure></div>
+
+      <div class="stp small"><div>
+        <h3><span>3</span>受け材を入れる</h3>
+        <ol>
+          <li>2×6材を縦にして、短い幕板の間に入れる。上の端を幕板とそろえる</li>
+          <li>位置は、受け材の中心が天板の前の端から${OY0}mmと${OY1}mm（前の幕板の内側から${OY0 - T / 2 - P.inner.y0}mm）</li>
+          <li>短い幕板の外側から、ビス2本ずつで留める</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...frame().map(old), ...P.legs.map(old), ...P.recv], { title: '受け材' })}<figcaption>受け材2本</figcaption></figure></div>
+
+      <div class="stp small"><div>
+        <h3><span>4</span>炉受けと炉床を付ける</h3>
+        <ol>
+          <li>2×4材を寝かせて、受け材の間に渡す。下の面を受け材の下の端とそろえ、受け材の外側からビスで留める</li>
+          <li>炉受けの上に、ケイカル板の炉床をのせる</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...frame().map(old), ...P.legs.map(old), ...P.recv.map(old), ...P.rokuUke, P.floor], { title: '炉受けと炉床' })}<figcaption>炉受けとケイカル板の炉床</figcaption></figure></div>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>「外周の枠で直角を出す → 脚で水平をとる → 内側に受け材を足す」は、デッキの骨組みとまったく同じ順番です。</div>
+  `));
+
+  // 6 天板・ふた・炉
+  pages.push(sheet('組み立て（天板と炉）', 6, TOTAL, `
+    <h2>組み立て2　天板・ふた・炉<small>開口部を残して張る</small></h2>
+    <div class="steps">
+      <div class="stp small"><div>
+        <h3><span>5</span>天板を張る</h3>
+        <ol>
+          <li>${D}mmの板${P.topFull.length}枚を、左右に2枚ずつ、すき間5mmで張る（STEP2のすき間ゲージを使う）。幕板と受け材の上で、ビス2本ずつ</li>
+          <li>真ん中の${MID.length}列は、${OY0}mmの短い板を前と後ろに張る。開口部側の端を、受け材の中心にそろえる</li>
+          <li>天板の対角線が約${mm(P.topDiag)}mmなら、まっすぐ張れている</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...frame().map(old), ...P.legs.map(old), ...P.recv.map(old), ...P.rokuUke.map(old), P.floor, ...P.topFull, ...P.topShort], { title: '天板を張る' })}<figcaption>真ん中に開口部が残る</figcaption></figure></div>
+      <div class="stp small"><div>
+        <h3><span>6</span>ふたをのせて、仕上げる</h3>
+        <ol>
+          <li>${LID}mmの板${P.lid.length}枚を開口部にのせる。前後に2mmずつすき間があれば、指で持ち上げられる</li>
+          <li>天板とふたの角を丸め、屋外用の塗料を2回塗る（炉の内側は塗らない）</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...frame().map(old), ...P.legs.map(old), ...P.recv.map(old), ...P.rokuUke.map(old), P.floor, ...P.topFull.map(old), ...P.topShort.map(old), ...P.lid.map((b) => ({ ...b, z: b.z + 90 }))], { title: 'ふた' })}<figcaption>ふたはのせるだけ</figcaption></figure></div>
+    </div>
+    <div class="types">
+      <div class="type fire"><span class="tag">炭火タイプ</span>
+        ${sectionView('fire')}
+        <ul>
+          <li>受け材の内側にケイカル板を貼る</li>
+          <li>炉床にバットを置き、灰を3cm以上入れて、炭と五徳をのせる</li>
+          <li>バットと木部の間は30mm以上あける</li>
+        </ul>
+      </div>
+      <div class="type"><span class="tag">カセットコンロ・飾り炉タイプ</span>
+        ${sectionView('gas')}
+        <ul>
+          <li>炉床にカセットコンロを横長に置くと、五徳が天板とほぼ同じ高さになる。ふたを閉めるときはコンロを出す</li>
+          <li>コンロの両側に、手を入れてつまみを回せるすき間があるか確かめる</li>
+          <li>飾り炉なら、砂利や灰を入れたバットにＬＥＤキャンドル</li>
+        </ul>
+      </div>
+    </div>
+  `));
+
+  // 7 できたら
+  pages.push(sheet('できたら', 7, TOTAL, `
+    <h2>できあがりチェック<small>全部できたらSTEP3修了</small></h2>
+    <div class="grid2">
+      <ul class="check" style="font-size:13px">
+        <li><i class="box"></i>平らな床で、がたつかない</li>
+        <li><i class="box"></i>水平器で、前後・左右とも水平</li>
+        <li><i class="box"></i>枠の対角線の差が3mm以内</li>
+        <li><i class="box"></i>ふたが、引っかからずに外せる</li>
+        <li><i class="box"></i>ふたをのせると、天板と面がそろう</li>
+        <li><i class="box"></i>炉の中に、木がむき出しの所がない（炭火タイプ）</li>
+      </ul>
+      <figure class="photo"><img src="../photos/irori-open.png" alt="ふたを外した囲炉裏テーブル。炉の内側に金属の板が貼ってある"><figcaption>監修者の作品。ふたを外すと、内側を金属で覆った炉が現れる。側面に板を張ると、このような箱型にもアレンジできる</figcaption></figure>
+    </div>
+    <div class="danger">
+      <b class="t">火を使うときの約束</b>
+      <ul>
+        <li>炭火は<b>屋外だけ</b>で使う。室内やテントの中では使わない（一酸化炭素中毒の危険）</li>
+        <li>火が付いている間は、その場を離れない。そばに水を入れたバケツを置く</li>
+        <li>使い終わった炭は火消し壺に入れる。灰が冷えるまで、ふたを閉めない</li>
+        <li>カセットコンロは、ボンベのまわりに熱がこもらないよう、大きな鍋や鉄板を使わない</li>
+      </ul>
+    </div>
+    ${road(3)}
+    <div class="cta">
+      <b class="t">次は STEP4「木製門扉」</b>
+      <p>柱を地面に建てて、扉を吊ります。穴を掘ってコンクリートで柱を固め、垂直と水平を出す作業は、ウッドデッキの基礎（束石）と同じです。標準サイズは片開き 幅900×高さ1,200mm。</p>
+      <p>${contact()}</p>
+    </div>
+  `));
+
+  $('sheets').innerHTML = pages.join('');
+}
+
+$('f').addEventListener('input', render);
+$('f').addEventListener('submit', (e) => e.preventDefault());
+$('print').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>
