@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>踏み台 STEP1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../lib/sheet.css">
+<style>
+.course { font-size: 12px; font-weight: 700; letter-spacing: .12em; color: var(--accent); }
+.big-title { font-size: 34px; font-weight: 900; line-height: 1.25; margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 2mm 8mm; font-size: 14px; }
+.facts b { font-size: 18px; }
+.road { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2mm; }
+.road div { border: 1.2px solid var(--line); border-radius: 1.5mm; padding: 2mm; display: grid; gap: .5mm; font-size: 11px; color: var(--muted); }
+.road div b { font-size: 13px; color: var(--ink); }
+.road div.on { border-color: var(--accent); background: #e6f0ea; }
+.road div.goal { border-style: dashed; }
+.learn { display: grid; gap: 2mm; counter-reset: l; }
+.learn li { list-style: none; display: grid; grid-template-columns: 8mm 1fr; gap: 1mm 2mm; }
+.learn li::before { counter-increment: l; content: counter(l); grid-row: span 2; font-weight: 900; font-size: 18px; color: var(--accent); }
+.learn li span { color: var(--muted); font-size: 11.5px; }
+.deck-link { border-left: 3px solid var(--wood); background: #faf4ec; padding: 2mm 3mm; font-size: 12px; }
+.deck-link b { color: #8a5a2b; }
+.fig { display: grid; gap: 1mm; }
+.fig svg { max-height: 80mm; }
+.cover-fig svg { max-height: 68mm; }
+.fig figcaption { font-size: 11px; color: var(--muted); text-align: center; }
+.steps { display: grid; gap: 4mm; }
+.stp { display: grid; grid-template-columns: 1fr 62mm; gap: 4mm; align-items: start; break-inside: avoid; }
+.stp h3 { font-size: 14px; display: flex; gap: 2mm; align-items: baseline; }
+.stp h3 span { font-size: 11px; color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 2mm; }
+.stp ol { margin: 0; padding-left: 5mm; display: grid; gap: 1mm; }
+.stp svg { max-height: 56mm; }
+.views { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 6mm; align-items: end; }
+.views .fig svg { max-height: 70mm; }
+.cta { border: 2px solid var(--accent); border-radius: 2mm; padding: 4mm; display: grid; gap: 2mm; }
+.cta b.t { font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <form id="f" novalidate>
+    <div class="f"><label for="h">踏み台の高さ</label>
+      <select id="h">
+        <option value="200">200mm（デッキの高さ 400mm 前後に）</option>
+        <option value="250" selected>250mm（デッキの高さ 450〜500mm に）</option>
+        <option value="300">300mm（デッキの高さ 600mm 前後に）</option>
+      </select>
+    </div>
+    <button type="button" class="print" id="print">印刷・PDFで保存</button>
+    <p class="tip">「印刷・PDFで保存」→ 送信先を「PDFに保存」にすると、配布用のPDF（A4・6ページ）ができます。</p>
+  </form>
+</div>
+
+<main class="sheets" id="sheets"></main>
+
+<script src="../../lib/drawing.js"></script>
+<script>
+// ===== 教材に入れる情報（ここを書き換えてください） =====
+const BRAND = {
+  course: '週末DIY 5ステップ講座',
+  supervisor: '野村 隆一',
+  site: 'ryuphoenix.com',
+  line: '', // LINE公式アカウントのURLやIDができたら入れる
+  version: '2026年版',
+};
+const STEPS = [
+  ['STEP1', '踏み台', '切る・留める'],
+  ['STEP2', 'プランター台', '板を張る'],
+  ['STEP3', '囲炉裏テーブル', '枠を組む'],
+  ['STEP4', '木製門扉', '柱を建てる'],
+  ['卒業制作', 'ウッドデッキ', 'すべてを使う'],
+];
+
+const { mm, esc, dimH, dimV, iso } = Draw;
+const $ = (id) => document.getElementById(id);
+
+// 寸法（mm）。2×4材 38×89、2×6材 38×140
+const T = 38, B4 = 89, B6 = 140, GAP = 5;
+const W = B6 * 3 + GAP * 2; // 430：天板3枚とすき間
+const D = 300;              // 天板の長さ＝奥行き
+const STOCK = 1820, KERF = 3;
+
+function geometry(H) {
+  const legH = H - T;
+  const apronL = W - T * 2;
+  const legs = [[0, 0], [W - T, 0], [0, D - B4], [W - T, D - B4]].map(([x, y]) => ({ x, y, z: 0, w: T, d: B4, h: legH }));
+  const aprons = [
+    { x: T, y: 0, z: legH - B4, w: apronL, d: T, h: B4 },          // 後ろ
+    { x: T, y: D - T, z: legH - B4, w: apronL, d: T, h: B4 },      // 前
+  ];
+  const tops = [0, 1, 2].map((i) => ({ x: i * (B6 + GAP), y: 0, z: legH, w: B6, d: D, h: T }));
+  const diag = Math.round(Math.hypot(W, D));
+  return { H, legH, apronL, legs, aprons, tops, diag };
+}
+
+function cutBar(cuts) {
+  const used = cuts.reduce((a, c) => a + c.len, 0) + KERF * (cuts.length - 1);
+  const parts = cuts.map((c) => `<div class="cut" style="width:${(c.len / STOCK) * 100}%"><b>${mm(c.len)}</b>${esc(c.use)}</div>`).join('');
+  return { html: `<div class="stock">${parts}</div>`, rest: STOCK - used };
+}
+
+// 三面図
+function frontView(g) {
+  const fs = 16, sw = 1, L = 70, Tp = 30, R = 50, Bt = 50;
+  const X = (x) => L + x, Y = (z) => Tp + g.H - z;
+  let s = `<svg viewBox="0 0 ${W + L + R} ${g.H + Tp + Bt}" role="img" aria-label="正面図">`;
+  g.tops.forEach((t) => { s += `<rect x="${X(t.x)}" y="${Y(g.H)}" width="${t.w}" height="${T}" fill="var(--wood-soft)" stroke="var(--ink)"/>`; });
+  [0, W - T].forEach((x) => { s += `<rect x="${X(x)}" y="${Y(g.legH)}" width="${T}" height="${g.legH}" fill="#fff" stroke="var(--ink)"/>`; });
+  s += `<rect x="${X(T)}" y="${Y(g.legH)}" width="${g.apronL}" height="${B4}" fill="#fff" stroke="var(--ink)"/>`;
+  s += `<line x1="${X(-20)}" x2="${X(W + 20)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += dimH([X(0), X(T), X(W - T), X(W)], Y(0) + 30, fs * .85, sw);
+  s += dimH([X(0), X(W)], Y(g.H) - 12, fs, sw, { force: true });
+  s += dimV([Y(g.H), Y(g.legH), Y(0)], X(-28), fs * .85, sw, { force: true });
+  s += dimV([Y(g.legH), Y(g.legH - B4)], X(W + 30), fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+function sideView(g) {
+  const fs = 16, sw = 1, L = 70, Tp = 30, R = 30, Bt = 50;
+  const X = (y) => L + y, Y = (z) => Tp + g.H - z;
+  let s = `<svg viewBox="0 0 ${D + L + R} ${g.H + Tp + Bt}" role="img" aria-label="側面図">`;
+  s += `<rect x="${X(0)}" y="${Y(g.H)}" width="${D}" height="${T}" fill="var(--wood-soft)" stroke="var(--ink)"/>`;
+  [0, D - B4].forEach((y) => { s += `<rect x="${X(y)}" y="${Y(g.legH)}" width="${B4}" height="${g.legH}" fill="#fff" stroke="var(--ink)"/>`; });
+  [0, D - T].forEach((y) => { s += `<rect x="${X(y)}" y="${Y(g.legH)}" width="${T}" height="${B4}" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>`; });
+  s += `<line x1="${X(-20)}" x2="${X(D + 20)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += dimH([X(0), X(B4), X(D - B4), X(D)], Y(0) + 30, fs * .85, sw, { force: true });
+  s += dimV([Y(g.H), Y(0)], X(-28), fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+function topView(g) {
+  const fs = 16, sw = 1, L = 60, Tp = 50, R = 30, Bt = 20;
+  const X = (x) => L + x, Y = (y) => Tp + y;
+  let s = `<svg viewBox="0 0 ${W + L + R} ${D + Tp + Bt}" role="img" aria-label="平面図">`;
+  g.tops.forEach((t) => { s += `<rect x="${X(t.x)}" y="${Y(0)}" width="${t.w}" height="${D}" fill="var(--wood-soft)" stroke="var(--ink)"/>`; });
+  g.legs.forEach((l) => { s += `<rect x="${X(l.x)}" y="${Y(l.y)}" width="${l.w}" height="${l.d}" fill="none" stroke="var(--ink)" stroke-dasharray="4 3"/>`; });
+  g.aprons.forEach((a) => { s += `<rect x="${X(a.x)}" y="${Y(a.y)}" width="${a.w}" height="${a.d}" fill="none" stroke="var(--muted)" stroke-dasharray="4 3"/>`; });
+  // ビスの位置
+  g.tops.forEach((t) => [T / 2, D - T / 2].forEach((y) => [t.x + 35, t.x + t.w - 35].forEach((x) => { s += `<circle cx="${X(x)}" cy="${Y(y)}" r="5" fill="var(--accent)"/>`; })));
+  s += `<line x1="${X(0)}" y1="${Y(0)}" x2="${X(W)}" y2="${Y(D)}" stroke="var(--accent)" stroke-dasharray="8 5"/>`;
+  s += dimH([X(0), X(B6), X(B6 + GAP), X(B6 * 2 + GAP), X(B6 * 2 + GAP * 2), X(W)], Y(0) - 14, fs * .85, sw, { labels: ['140', '5', '140', '5', '140'], force: false });
+  s += dimV([Y(0), Y(D)], X(-28), fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+
+function sheet(name, no, total, body) {
+  return `<section class="sheet"><div class="body">${body}</div>
+    <div class="tb">
+      <div><span>${BRAND.course}</span><b>STEP1 踏み台 ／ ${name}</b></div>
+      <div><span>サイズ（幅×奥行き×高さ）</span><b>${W}×${D}×${CURRENT_H}</b></div>
+      <div><span>監修</span><b>${BRAND.supervisor}</b></div>
+      <div><span>${BRAND.version}</span><b>${no} / ${total}</b></div>
+    </div></section>`;
+}
+
+let CURRENT_H = 250;
+function render() {
+  CURRENT_H = Number($('h').value) || 250;
+  const g = geometry(CURRENT_H);
+  const TOTAL = 6;
+  const pages = [];
+  const road = (on) => `<div class="road">${STEPS.map(([n, t, k], i) => `<div class="${i === on ? 'on' : ''}${i === 4 ? ' goal' : ''}"><span>${n}</span><b>${t}</b>${k}</div>`).join('')}</div>`;
+  const all = [...g.legs, ...g.aprons, ...g.tops];
+
+  // 1 表紙
+  pages.push(sheet('表紙', 1, TOTAL, `
+    <div class="course">${BRAND.course}</div>
+    <h1 class="big-title">STEP1　踏み台をつくる</h1>
+    <div class="facts"><span>材料費 <b>約3,000円</b></span><span>作業時間 <b>半日</b></span><span>材料 <b>2×4材と2×6材を1本ずつ</b></span></div>
+    <figure class="fig cover-fig" style="margin:0">${iso(all, { title: '完成した踏み台' })}<figcaption>完成図（幅${W}×奥行き${D}×高さ${g.H}mm）</figcaption></figure>
+    <div>
+      <h3>この講座のゴール</h3>
+      <p>小さな作品を順番につくりながら、最後はウッドデッキを自分でつくれるようになります。この踏み台は、完成したデッキの昇り口のステップとしても使えます。</p>
+    </div>
+    ${road(0)}
+    <div>
+      <h3>STEP1で覚えること</h3>
+      <ol class="learn">
+        <li><b>さしがねで、直角の線を引く</b><span>まっすぐ切れるかどうかは、線で決まる</span></li>
+        <li><b>線に沿って、まっすぐ切る</b><span>ノコギリでも丸ノコでもよい</span></li>
+        <li><b>下穴をあけて、ビスで留める</b><span>木が割れない、ビスが曲がらない</span></li>
+        <li><b>対角線で、直角を確かめる</b><span>2本の対角線が同じ長さなら直角</span></li>
+      </ol>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>この4つは、デッキづくりでも何百回とくり返す基本の作業です。対角線の確認は、デッキの基礎（束石の位置決め）でそのまま使います。</div>
+  `));
+
+  // 2 道具と材料
+  pages.push(sheet('道具と材料', 2, TOTAL, `
+    <h2>道具と材料<small>買ったらチェック</small></h2>
+    <div>
+      <h3>材料（約3,000円）</h3>
+      <table class="buy"><thead><tr><th>材料</th><th>規格</th><th class="r">数量</th><th class="r">目安</th></tr></thead><tbody>
+        <tr><td><i class="box"></i>2×4材（ツーバイフォー）</td><td>38×89mm　長さ1,820mm（6フィート）</td><td class="r">1本</td><td class="r">¥500</td></tr>
+        <tr><td><i class="box"></i>2×6材（ツーバイシックス）</td><td>38×140mm　長さ1,820mm（6フィート）</td><td class="r">1本</td><td class="r">¥900</td></tr>
+        <tr><td><i class="box"></i>コーススレッド（ビス）</td><td>長さ75mm　50本入り（使うのは20本）</td><td class="r">1箱</td><td class="r">¥500</td></tr>
+        <tr><td><i class="box"></i>木工用ボンド</td><td>屋外で使うなら屋外用</td><td class="r">1本</td><td class="r">¥500</td></tr>
+        <tr><td><i class="box"></i>サンドペーパー</td><td>#120</td><td class="r">2枚</td><td class="r">¥200</td></tr>
+        <tr><td><i class="box"></i>塗料（あれば）</td><td>屋外用の木材保護塗料</td><td class="r">—</td><td class="r">—</td></tr>
+        <tr class="total"><td colspan="3">合計（目安）</td><td class="r">¥2,600</td></tr>
+      </tbody></table>
+      <p class="note">デッキの昇り口として屋外に置くなら、防腐処理したSPF材かウエスタンレッドシダーを選ぶ。2×6材は900mmほど余るので、STEP2のプランター台で使う。</p>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>道具</h3>
+        <ul class="check">
+          <li><i class="box"></i>さしがね（直角の線を引く金属の定規）</li>
+          <li><i class="box"></i>メジャー・鉛筆</li>
+          <li><i class="box"></i>ノコギリ（または丸ノコ）</li>
+          <li><i class="box"></i>インパクトドライバー（またはドライバードリル）</li>
+          <li><i class="box"></i>下穴用のドリルビット 3mm</li>
+          <li><i class="box"></i>保護メガネ・手袋</li>
+        </ul>
+        <h3 style="margin-top:3mm">あると便利</h3>
+        <ul class="check">
+          <li><i class="box"></i>クランプ（材料を台に固定する）</li>
+          <li><i class="box"></i>スコヤ（小さな直角定規）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>道具を持っていない人へ</h3>
+        <p>多くのホームセンターには、買った木材をその場で切ってくれる<b>カットサービス</b>があります（1カット数十円ほど）。カット表（4ページ）を見せれば、切る作業なしで組み立てから始められます。工具の貸し出しをしている店もあるので、買う前に聞いてみてください。</p>
+        <h3 style="margin-top:3mm">安全のために</h3>
+        <ul class="check">
+          <li><i class="box"></i>切るときは材料をクランプで固定する</li>
+          <li><i class="box"></i>丸ノコは、刃が材料にはさまると手前に跳ね返る（キックバック）。材料の真後ろに立たない</li>
+          <li><i class="box"></i>保護メガネを必ずかける</li>
+        </ul>
+      </div>
+    </div>
+  `));
+
+  // 3 図面
+  pages.push(sheet('図面', 3, TOTAL, `
+    <h2>図面<small>単位はmm</small></h2>
+    <div class="views">
+      <figure class="fig" style="margin:0">${frontView(g)}<figcaption>正面図（前から見た図）</figcaption></figure>
+      <figure class="fig" style="margin:0">${sideView(g)}<figcaption>側面図（横から見た図）　破線は脚の内側の幕板</figcaption></figure>
+      <figure class="fig" style="margin:0">${topView(g)}<figcaption>平面図（上から見た図）　●はビスの位置、緑の破線は対角線</figcaption></figure>
+      <figure class="fig" style="margin:0">${iso([...g.legs, ...g.aprons, ...g.tops.map((t) => ({ ...t, tone: 'ghost' }))], { title: '天板の下の骨組み' })}<figcaption>天板の下の骨組み（天板は破線）</figcaption></figure>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>部品</h3>
+        <table><tbody>
+          <tr><td>天板</td><td>2×6材</td><td class="r">${D}mm × 3枚</td></tr>
+          <tr><td>脚</td><td>2×4材</td><td class="r">${g.legH}mm × 4本</td></tr>
+          <tr><td>幕板</td><td>2×4材</td><td class="r">${g.apronL}mm × 2本</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h3>高さを変えるとき</h3>
+        <p>脚の長さ＝高さ − 38mm（天板の厚み）。デッキの昇り口に使うなら、デッキの高さのおよそ半分にすると上り下りしやすい。</p>
+        <p class="note">高さは画面上の「踏み台の高さ」で 200・250・300mm から選べる（2×4材1本で足りる範囲）。</p>
+      </div>
+    </div>
+  `));
+
+  // 4 カット表
+  const c4 = cutBar([...Array(4)].map(() => ({ len: g.legH, use: '脚' })).concat([...Array(2)].map(() => ({ len: g.apronL, use: '幕板' }))));
+  const c6 = cutBar([...Array(3)].map(() => ({ len: D, use: '天板' })));
+  pages.push(sheet('カット表', 4, TOTAL, `
+    <h2>カット表<small>1,820mmの材料から切る（斜線は余り）</small></h2>
+    <div class="cutgrp"><h3>2×4材 1,820mm × 1本</h3><div class="cutrow"><span class="st">1,820</span><span class="n">×1本</span>${c4.html}</div><p class="note">余り 約${mm(c4.rest)}mm</p></div>
+    <div class="cutgrp"><h3>2×6材 1,820mm × 1本</h3><div class="cutrow"><span class="st">1,820</span><span class="n">×1本</span>${c6.html}</div><p class="note">余り 約${mm(c6.rest)}mm（STEP2で使うので捨てない）</p></div>
+    <div class="grid2">
+      <div>
+        <h3>線の引き方</h3>
+        <ol class="learn">
+          <li><b>端を切りそろえる</b><span>買ってきた材料の端は直角でないことが多い。まず端を5mmほど切り落とす</span></li>
+          <li><b>メジャーで長さに印</b><span>切りそろえた端から測る</span></li>
+          <li><b>さしがねで直角の線</b><span>さしがねの短い方を材料の側面に当てて線を引き、側面にも線を回す</span></li>
+          <li><b>捨てる側に×印</b><span>切る位置をまちがえないため</span></li>
+        </ol>
+      </div>
+      <div>
+        <h3>切り方</h3>
+        <ol class="learn">
+          <li><b>線の外側（×印の側）を切る</b><span>刃の厚み（約${KERF}mm）の分だけ、部品が短くならない</span></li>
+          <li><b>1本切るごとに次の印をつける</b><span>まとめて印をつけると、刃の厚みの分だけずれていく</span></li>
+          <li><b>同じ部品を並べて確かめる</b><span>脚4本を立てて並べ、高さがそろっているか見る。ずれは2mm以内に</span></li>
+        </ol>
+      </div>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>床板だけで数十枚を切ります。「線の外側を切る」「1本ごとに印」をここで身につけておくと、デッキの床板がきれいにそろいます。</div>
+  `));
+
+  // 5 組み立て
+  const frameBack = [g.legs[0], g.legs[1], g.aprons[0]];
+  const frameFront = [g.legs[2], g.legs[3], g.aprons[1]];
+  pages.push(sheet('組み立て', 5, TOTAL, `
+    <h2>組み立て<small>下穴 → ボンド → ビスの順</small></h2>
+    <div class="steps">
+      <div class="stp"><div>
+        <h3><span>1</span>前と後ろの枠をつくる</h3>
+        <ol>
+          <li>脚2本の間に幕板をはさみ、幕板の上の面と脚の上の端をそろえる</li>
+          <li>脚の外側から幕板の木口（切り口）に向けて、3mmの下穴を2か所あける</li>
+          <li>木口にボンドを塗り、75mmのビスを2本ずつ打つ</li>
+          <li>同じものをもう1組つくる</li>
+        </ol>
+        <p class="note">ビスは材料の端から20mm以上離す。近すぎると割れる。</p>
+      </div><figure class="fig" style="margin:0">${iso([...frameBack.map((b) => ({ ...b, y: b.y - 120 })), ...frameFront], { title: '前と後ろの枠' })}<figcaption>同じ枠を2つ</figcaption></figure></div>
+
+      <div class="stp"><div>
+        <h3><span>2</span>天板を張る</h3>
+        <ol>
+          <li>平らな床に枠を2つ立て、天板を1枚、端に合わせてのせる</li>
+          <li>天板の両端を、下穴をあけてからビス2本ずつで留める</li>
+          <li><b>対角線を測る：</b>天板の角から角まで2本測り、どちらも約${mm(g.diag)}mmなら直角。違えば枠を押して直す</li>
+          <li>残りの2枚を、5mmのすき間をあけて留める（すき間には5mmの板や定規をはさむ）</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...g.legs, ...g.aprons, { ...g.tops[0], tone: 'new' }, { ...g.tops[1], tone: 'ghost' }, { ...g.tops[2], tone: 'ghost' }].map((b) => (g.tops.includes(b) || b.tone ? b : { ...b, tone: 'old' })), { title: '天板を張る' })}<figcaption>1枚目を留めてから、対角線で直角を確認</figcaption></figure></div>
+
+      <div class="stp"><div>
+        <h3><span>3</span>仕上げる</h3>
+        <ol>
+          <li>天板の角と縁を、サンドペーパーで丸める（面取り）</li>
+          <li>平らな床に置き、がたつきがないか確かめる。がたつくときは長い脚の底を削る</li>
+          <li>屋外に置くなら、塗料を2回塗る。木口（切り口）は特にしっかり</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso(all, { title: '完成' })}<figcaption>完成</figcaption></figure></div>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>「5mmのすき間」は床板と同じ、「下穴」はハードウッドで欠かせない作業、「対角線」は基礎と骨組みで使います。</div>
+  `));
+
+  // 6 チェックと次へ
+  pages.push(sheet('できたら', 6, TOTAL, `
+    <h2>できあがりチェック<small>全部できたらSTEP1修了</small></h2>
+    <ul class="check" style="font-size:14px">
+      <li><i class="box"></i>平らな床で、がたつかない</li>
+      <li><i class="box"></i>乗っても、きしまない・たわまない</li>
+      <li><i class="box"></i>天板のすき間が、3本ともそろっている</li>
+      <li><i class="box"></i>ビスの頭が、天板の面から出ていない</li>
+      <li><i class="box"></i>角が丸く、さわっても痛くない</li>
+      <li><i class="box"></i>対角線を測って、直角を確かめられた</li>
+    </ul>
+    <div>
+      <h3>うまくいかなかったときは</h3>
+      <table><tbody>
+        <tr><td><b>がたつく</b></td><td>脚の長さがそろっていない。いちばん長い脚の底をサンドペーパーで削るか、ノコギリで1〜2mm切る</td></tr>
+        <tr><td><b>木が割れた</b></td><td>下穴がない、またはビスが端に近すぎる。割れた部品は作り直す（余った材料で足りる）</td></tr>
+        <tr><td><b>天板がななめ</b></td><td>直角が出ていない。ビスを1本ゆるめて枠を押し、対角線をそろえてから締め直す</td></tr>
+      </tbody></table>
+    </div>
+    ${road(1)}
+    <div class="cta">
+      <b class="t">次は STEP2「プランター台」</b>
+      <p>STEP1で余った2×6材を使って、すき間をそろえて板を張る練習をします。ウッドデッキの床板張りと同じ作業です。</p>
+      <p>完成した踏み台の写真を送ってくれた方に、STEP2の案内をお送りしています。<br>${BRAND.line ? `LINE：<b>${esc(BRAND.line)}</b>　／　` : ''}サイト：<b>${esc(BRAND.site)}</b></p>
+    </div>
+  `));
+
+  $('sheets').innerHTML = pages.join('');
+}
+
+$('f').addEventListener('input', render);
+$('f').addEventListener('submit', (e) => e.preventDefault());
+$('print').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>

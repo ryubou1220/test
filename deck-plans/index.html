@@ -7,104 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
-<style>
-/* レイアウト：上に操作バー、その下にA4の図面用紙を縦に並べる。用紙は印刷物なので、あえて明るい紙の配色だけにしている。 */
-:root {
-  --desk: #dfe3dc;      /* 用紙の外側 */
-  --paper: #ffffff;
-  --ink: #18201b;
-  --muted: #5b665e;
-  --line: #c9d1c7;
-  --accent: #2c6849;
-  --wood: #b9844f;
-  --wood-soft: #f1e3d0;
-  --stone: #9aa39c;
-  --warn: #9c4a17;
-  --font: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
-  color-scheme: light;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--desk); color: var(--ink); font-family: var(--font); font-size: 13px; line-height: 1.65; font-variant-numeric: tabular-nums; }
-
-.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--paper); border-bottom: 1px solid var(--line); padding-inline: 16px; padding-block: 10px; }
-.bar form { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end; }
-.bar .f { display: grid; gap: 2px; font-size: 12px; color: var(--muted); }
-.bar input[type=number], .bar select { font: inherit; font-size: 15px; font-weight: 700; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; width: 6.5em; }
-.bar select { width: auto; }
-.bar label.c { display: flex; gap: 6px; align-items: center; font-size: 13px; }
-.bar input[type=checkbox] { accent-color: var(--accent); }
-.bar .sizes { display: flex; flex-wrap: wrap; gap: 6px; }
-.bar button { font: inherit; font-size: 12px; cursor: pointer; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 4px 10px; }
-.bar button.print { font-size: 14px; font-weight: 700; border-radius: 6px; background: var(--accent); border-color: var(--accent); color: #fff; padding: 7px 14px; margin-left: auto; }
-.bar button:focus-visible, .bar input:focus-visible, .bar select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.bar .tip { flex-basis: 100%; font-size: 12px; color: var(--muted); margin: 0; }
-
-.sheets { display: grid; justify-items: center; gap: 24px; padding-inline: 16px; padding-block: 24px 60px; overflow-x: auto; }
-.sheet { width: 210mm; min-height: 297mm; background: var(--paper); box-shadow: 0 1px 3px rgba(0,0,0,.15); padding: 12mm 12mm 10mm; display: flex; flex-direction: column; gap: 5mm; position: relative; }
-.sheet > .body { flex: 1; display: flex; flex-direction: column; gap: 5mm; }
-h1 { font-size: 26px; font-weight: 900; margin: 0; line-height: 1.3; text-wrap: balance; }
-h2 { font-size: 17px; font-weight: 900; margin: 0; padding-bottom: 2mm; border-bottom: 2px solid var(--ink); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-h2 small { font-size: 11px; font-weight: 400; color: var(--muted); }
-h3 { font-size: 13px; margin: 0 0 1.5mm; }
-p { margin: 0; }
-.muted { color: var(--muted); }
-.note { font-size: 11px; color: var(--muted); }
-svg { width: 100%; height: auto; display: block; }
-svg text { font-family: var(--font); fill: var(--ink); }
-svg .m { fill: var(--muted); }
-table { width: 100%; border-collapse: collapse; }
-th, td { border-bottom: 1px solid var(--line); padding: 1.6mm 2mm; text-align: left; vertical-align: top; }
-th { font-size: 11px; color: var(--muted); font-weight: 700; }
-td.r, th.r { text-align: right; white-space: nowrap; }
-tr.grp td { background: #f2f4f0; font-weight: 700; font-size: 12px; }
-tr.total td { font-weight: 900; font-size: 15px; border-bottom: 0; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
-.kv { display: grid; grid-template-columns: auto 1fr; gap: 1.2mm 6mm; }
-.kv dt { color: var(--muted); }
-.kv dd { margin: 0; font-weight: 700; }
-.callout { border: 1.5px solid var(--accent); border-radius: 2mm; padding: 3mm 4mm; }
-.callout b { color: var(--accent); }
-.warn { color: var(--warn); font-weight: 700; }
-.box { width: 3.6mm; height: 3.6mm; border: 1.2px solid var(--ink); display: inline-block; vertical-align: -0.6mm; margin-right: 2mm; flex: none; }
-ul.check { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.8mm; }
-ul.check li { display: flex; align-items: flex-start; }
-ul.check li .box { margin-top: 1mm; }
-.day { break-inside: avoid; }
-.day h3 { display: flex; gap: 3mm; align-items: baseline; font-size: 14px; }
-.day h3 span { font-size: 11px; color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 2mm; }
-.cutgrp { break-inside: avoid; display: grid; gap: 1.5mm; }
-.cutrow { display: grid; grid-template-columns: 22mm 12mm 1fr; gap: 3mm; align-items: center; break-inside: avoid; }
-.cutrow .st { font-weight: 700; }
-.cutrow .n { text-align: right; font-weight: 700; }
-.stock { display: flex; height: 9mm; border: 1.2px solid var(--ink); border-radius: .6mm; overflow: hidden; background: repeating-linear-gradient(45deg, #fff, #fff 1.2mm, #e6e9e4 1.2mm, #e6e9e4 2.4mm); }
-.cut { background: var(--wood-soft); border-right: 1.2px solid var(--ink); display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 9.5px; line-height: 1.2; white-space: nowrap; overflow: hidden; }
-.cut b { font-size: 11px; }
-.tb { display: grid; grid-template-columns: 1.6fr 1fr 1fr .7fr; border: 1.5px solid var(--ink); font-size: 10.5px; }
-.tb > div { padding: 1.2mm 2mm; border-right: 1px solid var(--ink); display: grid; }
-.tb > div:last-child { border-right: 0; }
-.tb span { color: var(--muted); font-size: 9px; }
-.tb b { font-size: 11.5px; }
-.toc { counter-reset: t; list-style: none; padding: 0; margin: 0; display: grid; gap: 1.5mm; }
-.toc li { display: flex; gap: 3mm; }
-.toc li b { width: 10mm; color: var(--accent); }
-.cover-plan svg { height: 92mm; }
-.plan svg { max-height: 150mm; }
-.pos { display: grid; grid-template-columns: repeat(auto-fill, minmax(30mm, 1fr)); gap: 1.2mm; }
-.pos div { border: 1px solid var(--line); border-radius: 1mm; padding: 1mm 2mm; display: grid; font-size: 11px; }
-.pos b { font-size: 12px; }
-table.buy td { padding: 1.1mm 2mm; font-size: 12px; }
-.cover-hero { border: 1.5px solid var(--ink); padding: 4mm; }
-
-@page { size: A4; margin: 0; }
-@media print {
-  body { background: #fff; }
-  .bar { display: none; }
-  .sheets { padding: 0; gap: 0; display: block; overflow: visible; }
-  .sheet { box-shadow: none; break-after: page; margin: 0; }
-  .sheet:last-child { break-after: auto; }
-}
-@media (max-width: 820px) { .bar button.print { margin-left: 0; } }
-</style>
+<link rel="stylesheet" href="../lib/sheet.css">
 </head>
 <body>
 <div class="bar">
@@ -130,6 +33,7 @@ table.buy td { padding: 1.1mm 2mm; font-size: 12px; }
 <main class="sheets" id="sheets"></main>
 
 <script src="../lib/deck-engine.js"></script>
+<script src="../lib/drawing.js"></script>
 <script>
 // ===== 図面に入れる情報（ここを書き換えてください） =====
 const BRAND = {
@@ -143,8 +47,7 @@ const BRAND = {
 const E = DeckEngine;
 const $ = (id) => document.getElementById(id);
 const yen = (n) => '¥' + Math.round(n).toLocaleString('ja-JP');
-const mm = (n) => Math.round(n).toLocaleString('ja-JP');
-const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const { mm, esc } = Draw;
 const COLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 for (const [k, m] of Object.entries(E.MATERIALS)) {
@@ -152,33 +55,7 @@ for (const [k, m] of Object.entries(E.MATERIALS)) {
 }
 
 // ===== 図の部品 =====
-// 水平の寸法線（連続寸法）。xs はmm座標、y は線の位置
-function dimH(xs, y, fs, sw, opt = {}) {
-  let s = '';
-  const tick = fs * 0.45;
-  s += `<line x1="${xs[0]}" x2="${xs[xs.length - 1]}" y1="${y}" y2="${y}" stroke="var(--muted)" stroke-width="${sw}"/>`;
-  xs.forEach((x) => { s += `<line x1="${x - tick * .6}" x2="${x + tick * .6}" y1="${y + tick * .6}" y2="${y - tick * .6}" stroke="var(--ink)" stroke-width="${sw * 1.4}"/>`; });
-  for (let i = 0; i < xs.length - 1; i++) {
-    const len = xs[i + 1] - xs[i];
-    if (len < fs * 2.2 && !opt.force) continue;
-    s += `<text x="${(xs[i] + xs[i + 1]) / 2}" y="${y - fs * .35}" text-anchor="middle" font-size="${fs}">${mm(len)}</text>`;
-  }
-  return s;
-}
-function dimV(ys, x, fs, sw) {
-  let s = '';
-  const tick = fs * 0.45;
-  s += `<line x1="${x}" x2="${x}" y1="${ys[0]}" y2="${ys[ys.length - 1]}" stroke="var(--muted)" stroke-width="${sw}"/>`;
-  ys.forEach((y) => { s += `<line x1="${x - tick * .6}" x2="${x + tick * .6}" y1="${y + tick * .6}" y2="${y - tick * .6}" stroke="var(--ink)" stroke-width="${sw * 1.4}"/>`; });
-  for (let i = 0; i < ys.length - 1; i++) {
-    const len = ys[i + 1] - ys[i];
-    if (len < fs * 2.2) continue;
-    const cy = (ys[i] + ys[i + 1]) / 2;
-    s += `<text x="${x - fs * .35}" y="${cy}" text-anchor="middle" font-size="${fs}" transform="rotate(-90 ${x - fs * .35} ${cy})">${mm(len)}</text>`;
-  }
-  return s;
-}
-const edges = (arr, a, b) => [a, ...arr, b];
+const { dimH, dimV, edges } = Draw;
 
 // 平面図の共通枠（建物・デッキ外形）。layer: 'found'（基礎）または 'frame'（骨組み）
 function planSvg(r, layer) {
