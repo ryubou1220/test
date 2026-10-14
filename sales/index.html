@@ -53,7 +53,8 @@ h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
 .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 
 /* ヒーロー */
-.hero { padding-block: 56px 64px; }
+.hero { padding-block: 64px 56px; }
+.hero .wrap { max-width: 820px; }
 .hero-grid { display: grid; gap: 36px; grid-template-columns: minmax(0, 1fr); align-items: center; }
 @media (min-width: 860px) { .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
 .hero h1 { font-size: clamp(30px, 5.4vw, 52px); font-weight: 900; line-height: 1.3; letter-spacing: .01em; }
@@ -74,22 +75,18 @@ h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
 .hv-goal span { flex-direction: column; align-items: flex-start; gap: 0; font-size: 20px; font-weight: 900; }
 .hv-goal small { font-size: 12px; color: #2c6849; letter-spacing: .1em; }
 
-/* 道のり */
-.road { display: grid; gap: 18px; margin-top: 36px; }
-.stepcard { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
-@media (min-width: 760px) { .stepcard { grid-template-columns: 300px minmax(0, 1fr); } }
-.stepcard .art { background: var(--paper); display: grid; place-items: center; padding: 18px; min-height: 200px; }
-.stepcard .art img { max-height: 210px; width: auto; }
-.stepcard .txt { padding: 22px 24px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.stepno { font-size: 13px; font-weight: 700; letter-spacing: .1em; color: var(--accent); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.stepno .free { background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 1px 10px; letter-spacing: 0; }
-.stepcard h3 { font-size: 22px; font-weight: 900; }
-.skill { margin: 0; }
-.deckuse { font-size: 14px; color: var(--muted); border-left: 3px solid var(--wood); padding-left: 10px; margin: 0; }
-.facts { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 14px; color: var(--muted); }
+/* 道のり：5つの作品を1列に */
+.road { display: grid; gap: 12px; margin-top: 28px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.stepcard { display: grid; gap: 6px; align-content: start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px 16px; min-width: 0; }
+.stepcard .art { background: var(--paper); border-radius: 8px; display: grid; place-items: center; height: 120px; padding: 8px; }
+.stepcard .art img { max-height: 104px; width: auto; }
+.stepno { font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--accent); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+.stepno .free { background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 0 8px; letter-spacing: 0; }
+.stepcard h3 { font-size: 18px; font-weight: 900; line-height: 1.4; }
+.skill { margin: 0; font-size: 14px; line-height: 1.6; }
+.facts { font-size: 13px; color: var(--muted); }
 .facts b { color: var(--ink); }
 .stepcard.goal { border: 2px solid var(--accent); }
-.connector { text-align: center; color: var(--muted); font-size: 14px; }
 
 /* 悩みと答え */
 .qa { display: grid; gap: 14px; margin-top: 32px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
@@ -114,16 +111,14 @@ h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
 
 /* 監修者 */
 .prof { display: grid; gap: 28px; margin-top: 28px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 860px) { .prof { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+
 .prof dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 16px 0 0; }
 .prof dt { color: var(--muted); }
 .prof dd { margin: 0; }
-.works { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .works figure { margin: 0; display: grid; gap: 6px; }
 .works img { border-radius: 10px; aspect-ratio: 3 / 2; object-fit: cover; width: 100%; height: auto; }
 .works figcaption { font-size: 13px; color: var(--muted); }
-.works .wide { grid-column: span 2; }
-.works .wide img { aspect-ratio: 16 / 10; object-position: 50% 40%; }
 
 /* 声 */
 .voices { display: grid; gap: 18px; margin-top: 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
@@ -193,92 +188,33 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
   "h1a": "道具を持ったことがない人が、",
   "h1em": "5つの週末",
   "h1b": "で、ウッドデッキをつくれるようになる。",
-  "sub": "踏み台から始めて、プランター台、囲炉裏テーブル、木製門扉。そして卒業制作は、家族が集まるウッドデッキ。建設の仕事を35年続けてきた監修者が、一歩ずつ案内します。",
+  "sub": "踏み台から始めて、最後はウッドデッキ。建設の仕事を35年続けてきた監修者が、一歩ずつ案内します。",
   "cta1": "STEP1「踏み台」を無料で受け取る",
-  "cta2": "講座の中身を見る",
   "badges": [
+   {
+    "k": "STEP1",
+    "v": "無料"
+   },
    {
     "k": "最初の材料費",
     "v": "約2,600円"
-   },
-   {
-    "k": "1ステップ",
-    "v": "半日〜2日"
-   },
-   {
-    "k": "教材",
-    "v": "A4・6〜7ページの図面と手順"
-   }
-  ],
-  "pieces": [
-   {
-    "img": "img/step1.svg",
-    "label": "踏み台"
-   },
-   {
-    "img": "img/step2.svg",
-    "label": "プランター台"
-   },
-   {
-    "img": "img/step3.svg",
-    "label": "囲炉裏テーブル"
-   },
-   {
-    "img": "img/step4.svg",
-    "label": "木製門扉"
-   }
-  ],
-  "goalImg": "img/deck.svg",
-  "goalSmall": "卒業制作",
-  "goalLabel": "ウッドデッキ"
- },
- "why": {
-  "eyebrow": "なぜ、いきなりウッドデッキではないのか",
-  "h2": "いきなり大物に挑むと、「失敗が怖い」で止まってしまうから。",
-  "lead": "DIYをためらう理由として多いのは「工具がない」「失敗したくない」「手順がわからない」「相談できる人がいない」。この講座は、小さな作品で一つずつ答えていきます。",
-  "items": [
-   {
-    "t": "工具を持っていない",
-    "p": "STEP1は、ノコギリとドライバーがあれば始められます。ホームセンターのカットサービスを使えば、切る作業なしでも組み立てられます。"
-   },
-   {
-    "t": "失敗するのが怖い",
-    "p": "最初の材料費は約2,600円。失敗しても、余った材料で作り直せます。小さな成功を重ねてから大物へ進みます。"
-   },
-   {
-    "t": "手順がわからない",
-    "p": "どのステップも、寸法入りの図面、カット表、立体図つきの手順、できあがりチェックがそろっています。"
-   },
-   {
-    "t": "相談できる人がいない",
-    "p": "卒業制作のウッドデッキには、180日間のメール・LINEサポートがつきます。計画図や材料の計算も一緒に確かめます。"
    }
   ]
  },
  "road": {
   "eyebrow": "5つの週末の道のり",
-  "h2": "つくるたびに、ウッドデッキに必要な技術が一つずつ身につく。",
-  "lead": "各ステップで覚える作業は、どれもウッドデッキづくりでそのまま使います。つくった作品は、完成したデッキのまわりで活躍します。",
+  "h2": "つくるたびに、デッキに必要な技術が身につく。",
   "steps": [
    {
     "no": "STEP1",
     "tag": "無料",
     "title": "踏み台",
     "img": "img/step1.svg",
-    "skill": "さしがねで直角の線を引く、まっすぐ切る、下穴をあけてビスで留める、対角線で直角を確かめる。",
-    "deckuse": "ウッドデッキでは：すべての作業の基本。完成した踏み台は、デッキの昇り口のステップになる。",
+    "skill": "切る・留める・直角を出す",
     "facts": [
      {
       "k": "材料費",
       "v": "約2,600円"
-     },
-     {
-      "k": "時間",
-      "v": "半日"
-     },
-     {
-      "k": "材料",
-      "v": "2×4材・2×6材 各1本"
      }
     ]
    },
@@ -287,16 +223,11 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
     "tag": "",
     "title": "プランター台",
     "img": "img/step2.svg",
-    "skill": "根太を等しい間隔で並べ、5mmのすき間ゲージで板を張り、ビスを一直線にそろえる。板とすき間から全体の寸法を決める「割付け」も覚える。",
-    "deckuse": "ウッドデッキでは：床板張りとまったく同じつくり。プランター台は、デッキを小さく切り取ったもの。",
+    "skill": "すき間をそろえて板を張る",
     "facts": [
      {
       "k": "材料費",
-      "v": "約500円（STEP1の余り＋2×4材1本）"
-     },
-     {
-      "k": "時間",
-      "v": "半日"
+      "v": "約500円"
      }
     ]
    },
@@ -305,20 +236,11 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
     "tag": "",
     "title": "囲炉裏テーブル",
     "img": "img/step3.svg",
-    "skill": "幕板で四角い枠を組んで直角を出し、脚で水平をとり、受け材で開口部をつくる。炭火用と、カセットコンロ・飾り炉用のどちらにも対応。",
-    "deckuse": "ウッドデッキでは：骨組み（大引・根太）と点検口のつくり。完成したデッキの上で、家族や友人と囲める。",
+    "skill": "枠を組み、水平をとる",
     "facts": [
      {
       "k": "材料費",
-      "v": "約7,100円（炉の道具は別）"
-     },
-     {
-      "k": "時間",
-      "v": "1〜2日"
-     },
-     {
-      "k": "大きさ",
-      "v": "1,010×720×350mm"
+      "v": "約7,100円"
      }
     ]
    },
@@ -327,39 +249,24 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
     "tag": "",
     "title": "木製門扉",
     "img": "img/step4.svg",
-    "skill": "穴を掘ってコンクリートで柱を建て、2つの方向から垂直を出す。筋交いで扉の垂れを防ぎ、蝶番・ラッチを取り付ける。",
-    "deckuse": "ウッドデッキでは：基礎（束石・束柱）の作業そのもの。デッキではこれを十数か所くり返す。",
+    "skill": "柱を建て、垂直を出す",
     "facts": [
      {
       "k": "材料費",
       "v": "約1.4万円"
-     },
-     {
-      "k": "時間",
-      "v": "2日（間にコンクリートを固める）"
-     },
-     {
-      "k": "扉",
-      "v": "幅900×高さ1,200mm"
      }
     ]
    }
   ],
-  "connector": "ここまでで、ウッドデッキに必要な作業はすべて経験ずみ。",
   "goal": {
    "no": "卒業制作",
    "title": "ウッドデッキ",
    "img": "img/deck.svg",
-   "skill": "あなたの家のサイズで材料と費用を計算し、サイズ別の図面（基礎伏図・骨組み図・断面図・カット表・購入リスト・3日間の手順）で組み立てる。180日間のサポートつき。",
-   "deckuse": "業者に頼むと1㎡あたり4万円〜が相場。自分でつくれば、材料費だけで済みます。",
+   "skill": "ここまでの技術で、自分の家のデッキを。図面と180日サポートつき",
    "facts": [
     {
      "k": "材料費",
-     "v": "約10〜30万円（大きさと木材による）"
-    },
-    {
-     "k": "時間",
-     "v": "3日〜"
+     "v": "約10〜30万円"
     }
    ],
    "btn": "あなたの家の材料費を計算する（無料）"
@@ -368,7 +275,6 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
  "price": {
   "eyebrow": "料金",
   "h2": "無料のSTEP1から、自分のペースで。",
-  "lead": "どのステップからでも始められます。すべての教材に、図面・カット表・材料リスト・手順・できあがりチェックがつきます。",
   "rows": [
    {
     "name": "STEP1 踏み台",
@@ -386,7 +292,7 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
    },
    {
     "name": "STEP3 囲炉裏テーブル",
-    "desc": "教材PDF 7ページ（炭火・カセットコンロ両対応）",
+    "desc": "教材PDF 7ページ",
     "sub": "",
     "price": "1,980円",
     "set": false
@@ -410,21 +316,17 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
    "label": "卒業制作",
    "title": "ウッドデッキ完成コース",
    "items": [
-    "ウッドデッキ実践マニュアル（PDF 108ページ＋B5の印刷版をお届け）",
-    "ステップごとの解説動画",
-    "あなたの家のサイズの図面セット（基礎伏図・骨組み図・断面図・カット表・購入リスト・3日間の手順）",
-    "180日間のメール・LINEサポート（回数無制限）、希望する方はZoom相談",
-    "計画図・材料計算の確認、フェンスやベンチなどの追加アイデアの相談"
+    "ウッドデッキ実践マニュアル（PDF＋B5印刷版）と解説動画",
+    "あなたの家のサイズの図面セット",
+    "180日間のメール・LINEサポート（回数無制限）"
    ],
    "price": "29,800円",
-   "priceNote": "（税込）　STEP2〜4を購入した方は、その金額を差し引きます",
+   "priceNote": "（税込）　STEP2〜4の購入額は差し引きます",
    "guarantee": "サポートを受けながら180日間取り組んでも完成しなかった場合は、代金を全額お返しします。",
-   "btn1": "ウッドデッキ完成コースを申し込む",
-   "btn2": "先に材料費を計算する"
+   "btn1": "ウッドデッキ完成コースを申し込む"
   }
  },
  "voice": {
-  "eyebrow": "ウッドデッキをつくった方の声",
   "h2": "DIY歴1年未満でも、完成しています。",
   "items": [
    {
@@ -450,22 +352,7 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
   "eyebrow": "監修者",
   "name": "野村 隆一",
   "paras": [
-   "建設関係の仕事に35年。2003年、自宅の新築をきっかけに家族の希望でウッドデッキを自作したのが、DIYの始まりです。その後、ウッドフェンス、木製門扉、レンガやタイルのペイビング、表札、囲炉裏テーブルなどをつくってきました。",
-   "知り合いのデッキづくりを手伝ううちに、「やり方を知れば、誰でもつくれる」と確信し、この講座をまとめました。大事にしているのは、計測と基礎。最初の線をまっすぐ引くことが、最後の仕上がりを決めます。"
-  ],
-  "dl": [
-   {
-    "k": "経歴",
-    "v": "建設関係の仕事に35年"
-   },
-   {
-    "k": "DIY",
-    "v": "2003年から。ウッドデッキ、フェンス、門扉、ペイビング、囲炉裏テーブルなど"
-   },
-   {
-    "k": "サポート",
-    "v": "ほかの方のウッドデッキづくりを計画から完成まで支援"
-   }
+   "建設関係の仕事に35年。2003年に自宅のウッドデッキをつくって以来、フェンス・門扉・囲炉裏テーブルなどを手がけ、ほかの方のデッキづくりも支えてきました。"
   ],
   "works": [
    {
@@ -483,8 +370,7 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
   ]
  },
  "faq": {
-  "eyebrow": "よくある質問",
-  "h2": "始める前の疑問",
+  "h2": "よくある質問",
   "items": [
    {
     "q": "工具を1つも持っていません。",
@@ -495,18 +381,6 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
     "a": "はい。どのステップも単品で使えます。ただ、STEP2はSTEP1で余った材料を使う設計なので、順番に進めると材料のムダが出ません。"
    },
    {
-    "q": "1人でもできますか？",
-    "a": "STEP1〜3は1人でできます。STEP4の柱を建てる作業と、ウッドデッキの床板張りは、2人いると楽です。"
-   },
-   {
-    "q": "賃貸やマンションでも使えますか？",
-    "a": "STEP1〜3は、ベランダや庭のない家でもつくれます。囲炉裏テーブルは、カセットコンロ・飾り炉タイプにすれば炭火を使いません。炭火は屋外だけで使ってください。"
-   },
-   {
-    "q": "教材はどんな形で届きますか？",
-    "a": "A4のPDFです。スマートフォンで見ながら作業しても、印刷して現場に持って行っても使えます。ウッドデッキ完成コースのマニュアルは、B5の印刷版もお届けします。"
-   },
-   {
     "q": "ウッドデッキの材料費は、どのくらいかかりますか？",
     "a": "大きさと木材によって、約10〜30万円です。無料の計算ツールで、幅・奥行き・高さを入れると、材料の本数と費用の目安がわかります。"
    }
@@ -514,7 +388,7 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
  },
  "final": {
   "h2": "最初の一歩は、半日でつくれる踏み台から。",
-  "lead": "材料費は約2,600円。つくった踏み台は、いつかあなたのウッドデッキの昇り口になります。",
+  "lead": "材料費は約2,600円。半日でつくれます。",
   "btn": "STEP1「踏み台」を無料で受け取る"
  },
  "footer": {
@@ -562,13 +436,11 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
 
   const NEW = {
     'hero.badges': () => ({ k: '項目', v: '内容' }),
-    'why.items': () => ({ t: '悩み', p: '答え' }),
-    'road.steps': () => ({ no: 'STEP', tag: '', title: '作品名', img: '', skill: '覚えること', deckuse: 'ウッドデッキでは：', facts: [{ k: '材料費', v: '約○円' }] }),
+    'road.steps': () => ({ no: 'STEP', tag: '', title: '作品名', img: '', skill: '覚えること', facts: [{ k: '材料費', v: '約○円' }] }),
     'price.rows': () => ({ name: '商品名', desc: '内容', sub: '', price: '○円', set: false }),
     'price.course.items': () => '内容',
     'voice.items': () => ({ n1k: '項目', n1v: '数字', n2k: '項目', n2v: '数字', quote: '感想', who: 'お名前（年代・職業）' }),
     'author.paras': () => '文章',
-    'author.dl': () => ({ k: '項目', v: '内容' }),
     'author.works': () => ({ img: '', cap: '写真の説明' }),
     'faq.items': () => ({ q: '質問', a: '答え' }),
   };
@@ -576,16 +448,12 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
   function stepCard(p, goal) {
     const s = get(p);
     return `<article class="stepcard${goal ? ' goal' : ''}">
+      <div class="art">${IMG(p + '.img', s.title + 'の図', ' width="220" height="160"')}</div>
+      <div class="stepno">${T(p + '.no')}${s.tag || editing ? ` ${T(p + '.tag', 'span', s.tag ? 'free' : 'free ed-empty')}` : ''}</div>
+      ${T(p + '.title', 'h3')}
+      ${T(p + '.skill', 'p', 'skill')}
+      <div class="facts">${each(p + '.facts', (f) => `<span>${T(f + '.k')} <b>${T(f + '.v')}</b></span>`)}</div>
       ${goal ? '' : DEL(p, 'ステップ')}
-      <div class="art">${IMG(p + '.img', s.title + 'の図', ' width="300" height="220"')}</div>
-      <div class="txt">
-        <div class="stepno">${T(p + '.no')}${s.tag || editing ? ` ${T(p + '.tag', 'span', s.tag ? 'free' : 'free ed-empty')}` : ''}</div>
-        ${T(p + '.title', 'h3')}
-        ${T(p + '.skill', 'p', 'skill')}
-        ${T(p + '.deckuse', 'p', 'deckuse')}
-        <div class="facts">${each(p + '.facts', (f) => `<span>${T(f + '.k')} <b>${T(f + '.v')}</b>${DEL(f, '項目')}</span>`)}${ADD(p + '.facts', '項目')}</div>
-        ${goal ? `<div>${LINK('calc', p + '.btn', 'btn ghost')}</div>` : ''}
-      </div>
     </article>`;
   }
 
@@ -595,39 +463,26 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
       : `<details><summary>${esc(get(p + '.q'))}</summary><p>${esc(get(p + '.a'))}</p></details>`;
     app.innerHTML = `
 <header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      ${T('hero.eyebrow', 'div', 'eyebrow')}
-      <h1>${T('hero.h1a')}<em>${T('hero.h1em')}</em>${T('hero.h1b')}</h1>
-      ${T('hero.sub', 'p', 'sub')}
-      <div class="ctas">${LINK('step1', 'hero.cta1', 'btn')}<a class="btn ghost" href="#road">${T('hero.cta2')}</a></div>
-      <div class="badges">${each('hero.badges', (b) => `<span>${T(b + '.k')} <b>${T(b + '.v')}</b>${DEL(b, '項目')}</span>`)}${ADD('hero.badges', '項目')}</div>
-    </div>
-    <figure class="hero-visual" style="margin:0" aria-label="講座でつくる作品">
-      <ol class="hv">${each('hero.pieces', (h, i) => `<li>${IMG(h + '.img', get(h + '.label'), ' width="220" height="160"')}<span><b>${i + 1}</b>${T(h + '.label')}</span></li>`)}</ol>
-      <div class="hv-goal">${IMG('hero.goalImg', 'ウッドデッキ', ' width="220" height="160"')}<span>${T('hero.goalSmall', 'small')}${T('hero.goalLabel')}</span></div>
-    </figure>
+  <div class="wrap">
+    ${T('hero.eyebrow', 'div', 'eyebrow')}
+    <h1>${T('hero.h1a')}<em>${T('hero.h1em')}</em>${T('hero.h1b')}</h1>
+    ${T('hero.sub', 'p', 'sub')}
+    <div class="ctas">${LINK('step1', 'hero.cta1', 'btn')}</div>
+    <div class="badges">${each('hero.badges', (b) => `<span>${T(b + '.k')} <b>${T(b + '.v')}</b>${DEL(b, '項目')}</span>`)}${ADD('hero.badges', '項目')}</div>
   </div>
 </header>
 <main>
-<section id="why"><div class="wrap">
-  ${T('why.eyebrow', 'div', 'eyebrow')}${T('why.h2', 'h2')}${T('why.lead', 'p', 'lead')}
-  <div class="qa">${each('why.items', (q) => `<div>${T(q + '.t', 'b')}${T(q + '.p', 'p')}${DEL(q, '項目')}</div>`)}</div>
-  ${ADD('why.items', '項目')}
-</div></section>
-
 <section id="road"><div class="wrap">
-  ${T('road.eyebrow', 'div', 'eyebrow')}${T('road.h2', 'h2')}${T('road.lead', 'p', 'lead')}
+  ${T('road.eyebrow', 'div', 'eyebrow')}${T('road.h2', 'h2')}
   <div class="road">
     ${each('road.steps', (p) => stepCard(p, false))}
-    ${ADD('road.steps', 'ステップ')}
-    ${T('road.connector', 'p', 'connector')}
     ${stepCard('road.goal', true)}
   </div>
+  ${ADD('road.steps', 'ステップ')}
 </div></section>
 
 <section id="price"><div class="wrap">
-  ${T('price.eyebrow', 'div', 'eyebrow')}${T('price.h2', 'h2')}${T('price.lead', 'p', 'lead')}
+  ${T('price.eyebrow', 'div', 'eyebrow')}${T('price.h2', 'h2')}
   <div class="tablewrap"><table class="price-table">
     <thead><tr><th>ステップ</th><th>内容</th><th class="r">価格</th></tr></thead>
     <tbody>${each('price.rows', (r) => `<tr${get(r + '.set') ? ' class="set"' : ''}><td>${T(r + '.name', 'b')}${DEL(r, '行')}</td><td>${T(r + '.desc')}${get(r + '.sub') || editing ? T(r + '.sub', 'small') : ''}</td><td class="r">${T(r + '.price', 'span', 'yen')}</td></tr>`)}</tbody>
@@ -639,12 +494,12 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
     ${ADD('price.course.items', '項目')}
     <div>${T('price.course.price', 'span', 'yen')}${T('price.course.priceNote', 'span', 'note')}</div>
     ${T('price.course.guarantee', 'p', 'guarantee')}
-    <div class="ctas" style="margin-top:4px">${LINK('course', 'price.course.btn1', 'btn')}${LINK('calc', 'price.course.btn2', 'btn ghost')}</div>
+    <div class="ctas" style="margin-top:4px">${LINK('course', 'price.course.btn1', 'btn')}</div>
   </div>
 </div></section>
 
 <section id="voice"><div class="wrap">
-  ${T('voice.eyebrow', 'div', 'eyebrow')}${T('voice.h2', 'h2')}
+  ${T('voice.h2', 'h2')}
   <div class="voices">${each('voice.items', (v) => `<div class="voice">
     <div class="num"><span>${T(v + '.n1k')} <b>${T(v + '.n1v')}</b></span><span>${T(v + '.n2k')} <b>${T(v + '.n2v')}</b></span></div>
     ${T(v + '.quote', 'blockquote')}${T(v + '.who', 'div', 'who')}${DEL(v, '声')}</div>`)}</div>
@@ -657,14 +512,13 @@ body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
   <div class="prof">
     <div>
       ${each('author.paras', (p) => `<div class="ed-row">${T(p, 'p')}${DEL(p, '段落')}</div>`)}${ADD('author.paras', '段落')}
-      <dl>${each('author.dl', (d) => `${T(d + '.k', 'dt')}<dd>${T(d + '.v')}${DEL(d, '項目')}</dd>`)}</dl>${ADD('author.dl', '項目')}
     </div>
-    <div class="works">${each('author.works', (w, i) => `<figure${i === 0 ? ' class="wide"' : ''}>${IMG(w + '.img', get(w + '.cap'), ' loading="lazy"')}${T(w + '.cap', 'figcaption')}${DEL(w, '写真')}</figure>`)}${ADD('author.works', '写真')}</div>
+    <div class="works">${each('author.works', (w) => `<figure>${IMG(w + '.img', get(w + '.cap'), ' loading="lazy"')}${T(w + '.cap', 'figcaption')}${DEL(w, '写真')}</figure>`)}${ADD('author.works', '写真')}</div>
   </div>
 </div></section>
 
 <section id="faq"><div class="wrap">
-  ${T('faq.eyebrow', 'div', 'eyebrow')}${T('faq.h2', 'h2')}
+  ${T('faq.h2', 'h2')}
   <div class="faq">${each('faq.items', faqItem)}</div>
   ${ADD('faq.items', '質問')}
 </div></section>

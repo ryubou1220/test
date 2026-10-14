@@ -37,13 +37,11 @@
 
   const NEW = {
     'hero.badges': () => ({ k: '項目', v: '内容' }),
-    'why.items': () => ({ t: '悩み', p: '答え' }),
-    'road.steps': () => ({ no: 'STEP', tag: '', title: '作品名', img: '', skill: '覚えること', deckuse: 'ウッドデッキでは：', facts: [{ k: '材料費', v: '約○円' }] }),
+    'road.steps': () => ({ no: 'STEP', tag: '', title: '作品名', img: '', skill: '覚えること', facts: [{ k: '材料費', v: '約○円' }] }),
     'price.rows': () => ({ name: '商品名', desc: '内容', sub: '', price: '○円', set: false }),
     'price.course.items': () => '内容',
     'voice.items': () => ({ n1k: '項目', n1v: '数字', n2k: '項目', n2v: '数字', quote: '感想', who: 'お名前（年代・職業）' }),
     'author.paras': () => '文章',
-    'author.dl': () => ({ k: '項目', v: '内容' }),
     'author.works': () => ({ img: '', cap: '写真の説明' }),
     'faq.items': () => ({ q: '質問', a: '答え' }),
   };
@@ -51,16 +49,12 @@
   function stepCard(p, goal) {
     const s = get(p);
     return `<article class="stepcard${goal ? ' goal' : ''}">
+      <div class="art">${IMG(p + '.img', s.title + 'の図', ' width="220" height="160"')}</div>
+      <div class="stepno">${T(p + '.no')}${s.tag || editing ? ` ${T(p + '.tag', 'span', s.tag ? 'free' : 'free ed-empty')}` : ''}</div>
+      ${T(p + '.title', 'h3')}
+      ${T(p + '.skill', 'p', 'skill')}
+      <div class="facts">${each(p + '.facts', (f) => `<span>${T(f + '.k')} <b>${T(f + '.v')}</b></span>`)}</div>
       ${goal ? '' : DEL(p, 'ステップ')}
-      <div class="art">${IMG(p + '.img', s.title + 'の図', ' width="300" height="220"')}</div>
-      <div class="txt">
-        <div class="stepno">${T(p + '.no')}${s.tag || editing ? ` ${T(p + '.tag', 'span', s.tag ? 'free' : 'free ed-empty')}` : ''}</div>
-        ${T(p + '.title', 'h3')}
-        ${T(p + '.skill', 'p', 'skill')}
-        ${T(p + '.deckuse', 'p', 'deckuse')}
-        <div class="facts">${each(p + '.facts', (f) => `<span>${T(f + '.k')} <b>${T(f + '.v')}</b>${DEL(f, '項目')}</span>`)}${ADD(p + '.facts', '項目')}</div>
-        ${goal ? `<div>${LINK('calc', p + '.btn', 'btn ghost')}</div>` : ''}
-      </div>
     </article>`;
   }
 
@@ -70,39 +64,26 @@
       : `<details><summary>${esc(get(p + '.q'))}</summary><p>${esc(get(p + '.a'))}</p></details>`;
     app.innerHTML = `
 <header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      ${T('hero.eyebrow', 'div', 'eyebrow')}
-      <h1>${T('hero.h1a')}<em>${T('hero.h1em')}</em>${T('hero.h1b')}</h1>
-      ${T('hero.sub', 'p', 'sub')}
-      <div class="ctas">${LINK('step1', 'hero.cta1', 'btn')}<a class="btn ghost" href="#road">${T('hero.cta2')}</a></div>
-      <div class="badges">${each('hero.badges', (b) => `<span>${T(b + '.k')} <b>${T(b + '.v')}</b>${DEL(b, '項目')}</span>`)}${ADD('hero.badges', '項目')}</div>
-    </div>
-    <figure class="hero-visual" style="margin:0" aria-label="講座でつくる作品">
-      <ol class="hv">${each('hero.pieces', (h, i) => `<li>${IMG(h + '.img', get(h + '.label'), ' width="220" height="160"')}<span><b>${i + 1}</b>${T(h + '.label')}</span></li>`)}</ol>
-      <div class="hv-goal">${IMG('hero.goalImg', 'ウッドデッキ', ' width="220" height="160"')}<span>${T('hero.goalSmall', 'small')}${T('hero.goalLabel')}</span></div>
-    </figure>
+  <div class="wrap">
+    ${T('hero.eyebrow', 'div', 'eyebrow')}
+    <h1>${T('hero.h1a')}<em>${T('hero.h1em')}</em>${T('hero.h1b')}</h1>
+    ${T('hero.sub', 'p', 'sub')}
+    <div class="ctas">${LINK('step1', 'hero.cta1', 'btn')}</div>
+    <div class="badges">${each('hero.badges', (b) => `<span>${T(b + '.k')} <b>${T(b + '.v')}</b>${DEL(b, '項目')}</span>`)}${ADD('hero.badges', '項目')}</div>
   </div>
 </header>
 <main>
-<section id="why"><div class="wrap">
-  ${T('why.eyebrow', 'div', 'eyebrow')}${T('why.h2', 'h2')}${T('why.lead', 'p', 'lead')}
-  <div class="qa">${each('why.items', (q) => `<div>${T(q + '.t', 'b')}${T(q + '.p', 'p')}${DEL(q, '項目')}</div>`)}</div>
-  ${ADD('why.items', '項目')}
-</div></section>
-
 <section id="road"><div class="wrap">
-  ${T('road.eyebrow', 'div', 'eyebrow')}${T('road.h2', 'h2')}${T('road.lead', 'p', 'lead')}
+  ${T('road.eyebrow', 'div', 'eyebrow')}${T('road.h2', 'h2')}
   <div class="road">
     ${each('road.steps', (p) => stepCard(p, false))}
-    ${ADD('road.steps', 'ステップ')}
-    ${T('road.connector', 'p', 'connector')}
     ${stepCard('road.goal', true)}
   </div>
+  ${ADD('road.steps', 'ステップ')}
 </div></section>
 
 <section id="price"><div class="wrap">
-  ${T('price.eyebrow', 'div', 'eyebrow')}${T('price.h2', 'h2')}${T('price.lead', 'p', 'lead')}
+  ${T('price.eyebrow', 'div', 'eyebrow')}${T('price.h2', 'h2')}
   <div class="tablewrap"><table class="price-table">
     <thead><tr><th>ステップ</th><th>内容</th><th class="r">価格</th></tr></thead>
     <tbody>${each('price.rows', (r) => `<tr${get(r + '.set') ? ' class="set"' : ''}><td>${T(r + '.name', 'b')}${DEL(r, '行')}</td><td>${T(r + '.desc')}${get(r + '.sub') || editing ? T(r + '.sub', 'small') : ''}</td><td class="r">${T(r + '.price', 'span', 'yen')}</td></tr>`)}</tbody>
@@ -114,12 +95,12 @@
     ${ADD('price.course.items', '項目')}
     <div>${T('price.course.price', 'span', 'yen')}${T('price.course.priceNote', 'span', 'note')}</div>
     ${T('price.course.guarantee', 'p', 'guarantee')}
-    <div class="ctas" style="margin-top:4px">${LINK('course', 'price.course.btn1', 'btn')}${LINK('calc', 'price.course.btn2', 'btn ghost')}</div>
+    <div class="ctas" style="margin-top:4px">${LINK('course', 'price.course.btn1', 'btn')}</div>
   </div>
 </div></section>
 
 <section id="voice"><div class="wrap">
-  ${T('voice.eyebrow', 'div', 'eyebrow')}${T('voice.h2', 'h2')}
+  ${T('voice.h2', 'h2')}
   <div class="voices">${each('voice.items', (v) => `<div class="voice">
     <div class="num"><span>${T(v + '.n1k')} <b>${T(v + '.n1v')}</b></span><span>${T(v + '.n2k')} <b>${T(v + '.n2v')}</b></span></div>
     ${T(v + '.quote', 'blockquote')}${T(v + '.who', 'div', 'who')}${DEL(v, '声')}</div>`)}</div>
@@ -132,14 +113,13 @@
   <div class="prof">
     <div>
       ${each('author.paras', (p) => `<div class="ed-row">${T(p, 'p')}${DEL(p, '段落')}</div>`)}${ADD('author.paras', '段落')}
-      <dl>${each('author.dl', (d) => `${T(d + '.k', 'dt')}<dd>${T(d + '.v')}${DEL(d, '項目')}</dd>`)}</dl>${ADD('author.dl', '項目')}
     </div>
-    <div class="works">${each('author.works', (w, i) => `<figure${i === 0 ? ' class="wide"' : ''}>${IMG(w + '.img', get(w + '.cap'), ' loading="lazy"')}${T(w + '.cap', 'figcaption')}${DEL(w, '写真')}</figure>`)}${ADD('author.works', '写真')}</div>
+    <div class="works">${each('author.works', (w) => `<figure>${IMG(w + '.img', get(w + '.cap'), ' loading="lazy"')}${T(w + '.cap', 'figcaption')}${DEL(w, '写真')}</figure>`)}${ADD('author.works', '写真')}</div>
   </div>
 </div></section>
 
 <section id="faq"><div class="wrap">
-  ${T('faq.eyebrow', 'div', 'eyebrow')}${T('faq.h2', 'h2')}
+  ${T('faq.h2', 'h2')}
   <div class="faq">${each('faq.items', faqItem)}</div>
   ${ADD('faq.items', '質問')}
 </div></section>
