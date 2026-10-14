@@ -178,7 +178,7 @@ function render() {
     ...P.rokuUke.map((b) => ({ len: b.d, use: '炉受け' })),
   ];
   const bins6 = packCuts(parts6), bins4 = packCuts(parts4);
-  const cost = bins6.length * 900 + bins4.length * 500 + 1000 + 1000;
+  const cost = bins6.length * 900 + bins4.length * 500 + 1000 + 1000;  // 炭火タイプの耐熱塗料スプレーは炉の道具に含める
 
   // 1 表紙
   const typeLine = { both: '炭火でも、カセットコンロでも使える', fire: '炭火で焼く、本格派の囲炉裏', gas: 'カセットコンロや飾り炉で、手軽に' }[type];
@@ -224,6 +224,7 @@ function render() {
         <li>灰（ホームセンターの「囲炉裏用の灰」）</li>
         <li>五徳（ごとく）、炭、火ばさみ、火消し壺</li>
         <li>ケイカル板を、炉の内側の木部（受け材の内側）にも貼る</li>
+        <li>耐熱塗料スプレー（耐熱温度600℃程度、黒など）1本：ケイカル板の炉床と内側を仕上げる</li>
       </ul></div>
       <div class="type"><span class="tag">カセットコンロ・飾り炉タイプ</span><h3>炉の道具</h3><ul>
         <li>カセットコンロ（幅約340×奥行き約280mm、高さ110mm以下）</li>
@@ -289,6 +290,7 @@ function render() {
           ${type !== 'gas' ? `<li><i class="box"></i>炭火タイプは、受け材の内側に貼る板：${OX1 - OX0}×${P.depth}mm を2枚</li>` : ''}
           <li><i class="box"></i>金属の定規を当て、カッターで何度か筋を入れてから、机の角で折る</li>
           <li><i class="box"></i>切り口はサンドペーパーで整える（防じんマスクをつける）</li>
+          ${type !== 'gas' ? '<li><i class="box"></i>炭火タイプは、取り付ける前に耐熱塗料スプレーを2〜3回に分けて薄く吹き、よく乾かす（屋外で）</li>' : ''}
         </ul>
       </div>
       <div>
@@ -360,7 +362,7 @@ function render() {
         <h3><span>6</span>ふたをのせて、仕上げる</h3>
         <ol>
           <li>${LID}mmの板${P.lid.length}枚を開口部にのせる。前後に2mmずつすき間があれば、指で持ち上げられる</li>
-          <li>天板とふたの角を丸め、屋外用の塗料を2回塗る（炉の内側は塗らない）</li>
+          <li>天板とふたの角を丸め、屋外用の塗料を2回塗る（炉の内側の木部には塗らない。燃えやすくなる）</li>
         </ol>
       </div><figure class="fig" style="margin:0">${iso([...frame().map(old), ...P.legs.map(old), ...P.recv.map(old), ...P.rokuUke.map(old), P.floor, ...P.topFull.map(old), ...P.topShort.map(old), ...P.lid.map((b) => ({ ...b, z: b.z + 90 }))], { title: 'ふた' })}<figcaption>ふたはのせるだけ</figcaption></figure></div>
     </div>
@@ -368,7 +370,7 @@ function render() {
       <div class="type fire"><span class="tag">炭火タイプ</span>
         ${sectionView('fire')}
         <ul>
-          <li>受け材の内側にケイカル板を貼る</li>
+          <li>受け材の内側にケイカル板を貼り、炉床と内側を耐熱塗料スプレー（600℃程度）で仕上げる</li>
           <li>炉床にバットを置き、灰を3cm以上入れて、炭と五徳をのせる</li>
           <li>バットと木部の間は30mm以上あける</li>
         </ul>
@@ -395,8 +397,9 @@ function render() {
         <li><i class="box"></i>ふたが、引っかからずに外せる</li>
         <li><i class="box"></i>ふたをのせると、天板と面がそろう</li>
         <li><i class="box"></i>炉の中に、木がむき出しの所がない（炭火タイプ）</li>
+        <li><i class="box"></i>耐熱塗料がよく乾いている。初めて火を入れるときは弱火で焼き付ける（炭火タイプ）</li>
       </ul>
-      <figure class="photo"><img src="../photos/irori-open.png" alt="ふたを外した囲炉裏テーブル。炉の内側に金属の板が貼ってある"><figcaption>監修者の作品。ふたを外すと、内側を金属で覆った炉が現れる。側面に板を張ると、このような箱型にもアレンジできる</figcaption></figure>
+      <figure class="photo"><img src="../photos/irori-open.png" alt="ふたを外した囲炉裏テーブル。炉の内側にケイカル板が貼ってある"><figcaption>監修者の作品。ふたを外すと、内側にケイカル板を貼り、耐熱塗料（600℃程度）で仕上げた炉が現れる。側面に板を張ると、このような箱型にもアレンジできる</figcaption></figure>
     </div>
     <div class="danger">
       <b class="t">火を使うときの約束</b>
