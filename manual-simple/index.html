@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ウッドデッキ実践マニュアル かんたん版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../lib/sheet.css">
+<link rel="stylesheet" href="../lib/course.css">
+<style>
+.pg-head { display: flex; align-items: center; gap: 4mm; border-bottom: 2px solid var(--ink); padding-bottom: 2.5mm; }
+.pg-no { font-size: 13px; font-weight: 900; color: #fff; background: var(--sc, var(--accent)); border-radius: 1.2mm; padding: 1mm 2.5mm; white-space: nowrap; }
+.pg-head h2 { border: 0; padding: 0; font-size: 22px; flex: 1; }
+.pg-day { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.pg-lead { font-size: 16px; line-height: 1.8; }
+.pg-body { display: grid; grid-template-columns: minmax(0, 1fr) 70mm; gap: 6mm; align-items: start; }
+.topic { display: grid; gap: 4mm; }
+.topic + .topic { border-top: 1px dashed var(--line); padding-top: 6mm; }
+.sheet.packed { height: 297mm; }
+.sheet.packed > .body { min-height: 0; overflow: hidden; gap: 6mm; }
+.check { font-size: 15px; }
+.pg-body.nofig { grid-template-columns: minmax(0, 1fr); }
+.blk h3 { font-size: 14px; color: var(--sc, var(--accent)); margin: 0 0 1.5mm; letter-spacing: .05em; }
+.todo { margin: 0; padding-left: 7mm; display: grid; gap: 2mm; font-size: 16px; line-height: 1.65; }
+.todo li::marker { font-weight: 900; color: var(--sc, var(--accent)); }
+.points { display: grid; gap: 1.6mm; font-size: 14.5px; }
+.points div { background: #f3f5f1; border-radius: 1.5mm; padding: 2mm 3mm; line-height: 1.6; }
+.points b { color: var(--ink); }
+.warnbox { border-left: 3px solid var(--warn); background: #fbf1ea; padding: 2mm 3mm; font-size: 14.5px; line-height: 1.6; }
+.warnbox b { color: var(--warn); }
+.tool-link { border: 1.2px dashed var(--accent); border-radius: 1.5mm; padding: 2mm 3mm; font-size: 14.5px; }
+.tool-link b { color: var(--accent); }
+.fig svg { max-height: 95mm; }
+.fig figcaption { text-align: left; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.tbl th, .tbl td { border-bottom: 1px solid var(--line); padding: 1.5mm 2mm; text-align: left; vertical-align: top; }
+.tbl th { font-size: 11px; color: var(--muted); }
+.tbl td.r { text-align: right; white-space: nowrap; }
+.cover { display: grid; gap: 6mm; }
+.cover .t1 { font-size: 15px; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
+.cover h1 { font-size: 40px; line-height: 1.25; }
+.cover h1 small { display: block; font-size: 22px; color: var(--accent); margin-top: 2mm; }
+.cover .ph { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap: 3mm; }
+.cover .ph img { width: 100%; height: 100%; object-fit: cover; border-radius: 1.5mm; }
+.cover .ph img:first-child { grid-row: span 2; aspect-ratio: 4 / 3; }
+.toc2 { display: grid; gap: 2mm; }
+.toc2 div { display: grid; grid-template-columns: 26mm 1fr auto; gap: 3mm; align-items: baseline; border-bottom: 1px dotted var(--line); padding-bottom: 2mm; font-size: 16px; }
+.toc2 .s { font-weight: 900; color: var(--sc); }
+.toc2 .p { color: var(--muted); font-size: 12px; }
+.flow { display: grid; gap: 1.5mm; }
+.flow div { display: grid; grid-template-columns: 34mm 18mm 1fr; gap: 3mm; align-items: center; font-size: 15px; }
+.flow .bar { height: 6mm; border-radius: 1mm; background: var(--sc); color: #fff; font-weight: 700; display: flex; align-items: center; padding: 0 2mm; font-size: 12px; }
+.flow .d { font-weight: 900; text-align: right; }
+.big4 { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+.big4 div { border: 1.2px solid var(--line); border-radius: 2mm; padding: 3mm; font-size: 15px; line-height: 1.6; }
+.big4 b { display: block; font-size: 15px; color: var(--accent); margin-bottom: 1mm; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <form id="f" novalidate>
+    <button type="button" class="print" id="print">印刷・PDFで保存</button>
+    <p class="tip">「印刷・PDFで保存」→ 送信先を「PDFに保存」にすると、かんたん版マニュアルのPDF（A4）ができます。</p>
+  </form>
+</div>
+<main class="sheets" id="sheets"></main>
+
+<script src="../lib/drawing.js"></script>
+<script>
+// ===== 監修者・版（ここを書き換える） =====
+const BRAND = { title: 'ウッドデッキ実践マニュアル かんたん版', supervisor: '野村 隆一（どけん屋なボク）', version: '2026年版', site: 'ryuphoenix.com' };
+const { mm, esc, dimH, dimV } = Draw;
+const SC = { 0: '#5b665e', 1: '#2a8fc2', 2: '#c7702f', 3: '#c2477a', 4: '#2f9a7a', 5: '#3f73b8', 6: '#7a55a8', 9: '#7a7f5a' };
+
+// ===== 図 =====
+const F = {};
+// 高さの内訳（地面から天板まで500mmの例）
+F.height = () => {
+  const s = 0.42, X0 = 60, G = 290, Y = (z) => G - z * s;
+  const box = (x, z, w, h, fill, label, lx) => `<rect x="${x}" y="${Y(z + h)}" width="${w}" height="${h * s}" fill="${fill}" stroke="#18201b"/>` + (label ? `<text x="${lx}" y="${Y(z + h / 2) + 4}" font-size="12">${label}</text>` : '');
+  let o = `<svg viewBox="0 0 300 330" role="img" aria-label="高さの内訳">`;
+  o += `<line x1="20" x2="200" y1="${G}" y2="${G}" stroke="#18201b" stroke-width="2"/>`;
+  o += box(X0, -50, 70, 150, '#c9cec8', '束石 露出100（埋込50）', 140);
+  o += box(X0 + 20, 100, 30, 362, '#fff', '', 0);
+  o += box(X0 - 18, 182, 18, 140, '#2f9a7a', '', 0) + box(X0 + 50, 182, 18, 140, '#2f9a7a', '', 0);
+  o += box(X0 - 18, 322, 18, 140, '#7fc4ad', '', 0) + box(X0 + 50, 322, 18, 140, '#7fc4ad', '', 0);
+  o += box(X0 - 30, 462, 130, 38, '#f1e3d0', '', 0);
+  o += `<text x="140" y="${Y(481) + 4}" font-size="12">天板 38</text>`;
+  o += `<text x="140" y="${Y(392) + 4}" font-size="12">根太（上段）140</text>`;
+  o += `<text x="140" y="${Y(252) + 4}" font-size="12">根太（下段）140</text>`;
+  o += `<text x="140" y="${Y(150) + 4}" font-size="12" font-weight="700">支柱 362</text>`;
+  o += dimV([Y(500), Y(0)], 22, 12, 1, { force: true });
+  o += `<text x="${X0 + 35}" y="${Y(-70)}" font-size="11" text-anchor="middle" fill="#5b665e">支柱を根太で両側から挟む</text>`;
+  return o + '</svg>';
+};
+// 束石の配置（3.6m×1.8m、12個）
+F.stones = () => {
+  const s = 0.075, L = 30, T = 40, W = 3600, D = 1800, X = (x) => L + x * s, Y = (y) => T + y * s;
+  let o = `<svg viewBox="0 0 330 230" role="img" aria-label="束石の配置">`;
+  o += `<rect x="${X(0)}" y="${Y(0)}" width="${W * s}" height="${D * s}" fill="#f1e3d0" stroke="#18201b"/>`;
+  const xs = [83, 1228, 2373, 3517], ys = [83, 900, 1717];
+  ys.forEach((y) => xs.forEach((x) => { o += `<rect x="${X(x) - 5}" y="${Y(y) - 5}" width="10" height="10" fill="#18201b"/>`; }));
+  o += `<line x1="${X(83)}" y1="${Y(83)}" x2="${X(3517)}" y2="${Y(1717)}" stroke="#c2477a" stroke-dasharray="5 4"/>`;
+  o += dimH([X(83), X(1228), X(2373), X(3517)], Y(0) - 10, 10, 1, { labels: ['1,145', '1,145', '1,145'], force: true });
+  o += dimV([Y(83), Y(900), Y(1717)], X(3600) + 18, 10, 1, { labels: ['817', '817'], force: true });
+  o += `<text x="${X(1800)}" y="${Y(1800) + 22}" font-size="11" text-anchor="middle" fill="#5b665e">幅3,600 × 奥行き1,800、束石12個（寸法は中心まで）</text>`;
+  return o + '</svg>';
+};
+// 3:4:5 の定規
+F.tri = () => `<svg viewBox="0 0 300 220" role="img" aria-label="3対4対5の直角定規">
+  <polygon points="40,180 280,180 40,30" fill="#fbe4ee" stroke="#c2477a" stroke-width="3"/>
+  <rect x="40" y="166" width="14" height="14" fill="none" stroke="#18201b"/>
+  <text x="160" y="200" text-anchor="middle" font-size="14" font-weight="700">4（120cm）</text>
+  <text x="30" y="110" text-anchor="end" font-size="14" font-weight="700" transform="rotate(-90 30 110)">3（90cm）</text>
+  <text x="175" y="95" text-anchor="middle" font-size="14" font-weight="700">5（150cm）</text>
+</svg>`;
+// サンドイッチ工法と大引工法
+F.sandwich = () => `<svg viewBox="0 0 300 250" role="img" aria-label="サンドイッチ工法">
+  <text x="75" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#2f9a7a">サンドイッチ工法（本書）</text>
+  <rect x="20" y="40" width="110" height="14" fill="#f1e3d0" stroke="#18201b"/>
+  <rect x="62" y="58" width="26" height="130" fill="#fff" stroke="#18201b"/>
+  <rect x="48" y="58" width="14" height="62" fill="#2f9a7a" stroke="#18201b"/><rect x="88" y="58" width="14" height="62" fill="#2f9a7a" stroke="#18201b"/>
+  <rect x="48" y="140" width="14" height="30" fill="#7fc4ad" stroke="#18201b"/><rect x="88" y="140" width="14" height="30" fill="#7fc4ad" stroke="#18201b"/>
+  <rect x="45" y="188" width="60" height="40" fill="#c9cec8" stroke="#18201b"/>
+  <text x="112" y="92" font-size="10">根太</text><text x="112" y="158" font-size="10">根がらみ</text><text x="40" y="244" font-size="10">支柱は10mm短く</text>
+  <text x="225" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#9c4a17">大引工法（すすめない）</text>
+  <rect x="170" y="40" width="110" height="14" fill="#f1e3d0" stroke="#18201b"/>
+  <rect x="200" y="54" width="14" height="22" fill="#e6e9e4" stroke="#18201b"/><rect x="240" y="54" width="14" height="22" fill="#e6e9e4" stroke="#18201b"/>
+  <rect x="190" y="76" width="74" height="24" fill="#b9844f" stroke="#18201b"/>
+  <rect x="214" y="100" width="26" height="88" fill="#fff" stroke="#18201b"/>
+  <rect x="197" y="188" width="60" height="40" fill="#c9cec8" stroke="#18201b"/>
+  <text x="268" y="92" font-size="10">大引</text><text x="180" y="244" font-size="10">支柱をすべて同じ高さに</text>
+</svg>`;
+// ビスの位置（天板1枚 140mm）
+F.screw = () => `<svg viewBox="0 0 300 200" role="img" aria-label="ビスの位置">
+  ${[0, 1, 2].map((i) => `<rect x="20" y="${30 + i * 52}" width="260" height="42" fill="#f1e3d0" stroke="#18201b"/>`).join('')}
+  <line x1="150" y1="18" x2="150" y2="186" stroke="#3f73b8" stroke-dasharray="6 4"/>
+  ${[0, 1, 2].map((i) => `<circle cx="150" cy="${30 + i * 52 + 9}" r="4" fill="#3f73b8"/><circle cx="150" cy="${30 + i * 52 + 33}" r="4" fill="#3f73b8"/>`).join('')}
+  <text x="160" y="14" font-size="11" fill="#3f73b8">根太の中心線（チョークライン）</text>
+  <text x="20" y="198" font-size="11" fill="#5b665e">板の幅140：端から30・間80・端から30 の目安</text>
+</svg>`;
+// 目地の治具
+F.jig = () => `<svg viewBox="0 0 300 180" role="img" aria-label="目地の治具">
+  <rect x="20" y="60" width="120" height="40" fill="#f1e3d0" stroke="#18201b"/>
+  <rect x="160" y="60" width="120" height="40" fill="#f1e3d0" stroke="#18201b"/>
+  <rect x="140" y="50" width="20" height="58" fill="#3f73b8" stroke="#18201b"/>
+  <rect x="128" y="44" width="44" height="10" fill="#3f73b8" stroke="#18201b"/>
+  <text x="150" y="132" text-anchor="middle" font-size="12" font-weight="700">厚さ10mmの木片（2個以上）</text>
+  <text x="150" y="150" text-anchor="middle" font-size="11" fill="#5b665e">上にストッパーを付けると、すき間に落ちない</text>
+</svg>`;
+
+// ===== ページ =====
+const PAGES = [
+  { cover: true },
+  { toc: true },
+  { sec: 0, no: 'はじめに', title: 'この本の使い方と、作業の流れ', fig: null,
+    lead: 'この本は、作業しながら見るための本です。1ページに1つの作業。上から順に進めれば、ウッドデッキが完成します。計算が必要なところは、計算ツールとサイズ別図面が自動で出してくれます。',
+    flow: true },
+  { sec: 0, no: 'はじめに', title: '始める前に覚えておきたい4つのこと', big4: [
+      ['メンテナンスは必ず必要', 'どんな木材も、いずれは劣化します。年に1回は全体を点検し、塗装も定期的に。'],
+      ['自分でつくれば安くなる', '業者に頼むと1㎡あたり4万円〜（材料1.5万＋手間2.5万）。自分でつくれば、手間代がかかりません。'],
+      ['計画と準備を手抜きしない', '基礎をていねいに組めば、できたも同然。寸法は何度も確かめます。'],
+      ['楽しみながら、あせらずに', '完成した姿を思い描いて。あせりは、ケガや手戻りのもとです。'] ],
+    warn: '<b>始める前に：</b>電動工具は取扱説明書を読んで試しに使ってみる。音で近所に迷惑がかからないか確かめる。材料を雨に当てずに置ける場所を用意する。' },
+
+  // STEP1
+  { sec: 1, no: '1-1', title: '場所と大きさ、高さを決める', day: '準備', fig: null,
+    todo: ['つくる場所をメジャーで測る（例：幅3.6m×奥行き1.8m＝6.48㎡）', '高さを決める。家の窓の高さに合わせると出入りしやすい（一般的には50〜60cm）', '形を決める：板の向き（縦張り・横張り）、1段か2段か、L字・コの字など', '屋根（パーゴラ）やフェンスをつけるなら、ここで決めておく'],
+    points: ['<b>誤差の目安：</b>ミリ単位はOK。センチ単位でずれると、あとの作業に響く', '<b>本書の例：</b>幅3,600×奥行き1,800×高さ500mm で説明します'] },
+  { sec: 1, no: '1-2', title: '図面を用意する', day: '準備', fig: null,
+    todo: ['デッキの形と寸法を書いた図を用意する。マンガのような絵でもよい', '上から見た図（支柱・根太・天板の位置）と、横から見た図（高さ）の2枚があると安心', '場所の写真を撮って、完成のイメージを重ねてみる'],
+    tool: '<b>計算ツールとサイズ別図面を使えば、</b>束石の位置・根太の間隔・天板の枚数・カット表まで自動で出ます。手で描くのは、形を決めるためのラフな図だけで大丈夫です。' },
+  { sec: 1, no: '1-3', title: '高さの内訳から、支柱の長さを決める', day: '準備', fig: 'height',
+    todo: ['地面から天板の上までの高さを決める（例：500mm）', '天板・根太・束石の高さを足す：38＋140×2＋100＝418', '支柱は「根太2段分＋残り」：280＋（500−418）＝362mm', '支柱は根太より10mmほど短めにして、天板に当たらないようにする'],
+    points: ['<b>束石：</b>高さ150mmを地面に50mm埋め、100mmを出す', '<b>根太：</b>2×6材（38×140mm）を2段。支柱を両側から挟む'] },
+  { sec: 1, no: '1-4', title: '束石（支柱）の位置を決める', day: '準備', fig: 'stones',
+    todo: ['四隅の束石は、支柱の中心が外周の根太の内側にくる位置に置く', '四隅の間に、等しい間隔で束石を足す（例：横1,145mm、縦817mm、合計12個）', '位置を測り出し、釘やスプレーで地面に印をつける'],
+    points: ['<b>支柱の間隔：</b>最大1,200mm前後まで。広すぎると根太がたわむので、余裕をもって決める', '<b>本数：</b>多いほど丈夫だが、束石と支柱の費用が増える'] },
+  { sec: 1, no: '1-5', title: '根太の向きと、天板の枚数を決める', day: '準備', fig: null,
+    todo: ['天板を縦張りにするなら、縦方向の根太を下段、横方向の根太を上段にする（横張りは逆）', '上段の根太は、天板と交差する向きにする（天板をビスで留められるように）', '天板の枚数を出す：幅140mmの板＋すき間10mmで並べ、全体の長さに収まる枚数（例：24枚で3,590mm）'],
+    tool: '<b>計算ツールなら：</b>幅・奥行き・高さを入れるだけで、天板の枚数と最後の1枚の幅が出ます。' },
+  { sec: 1, no: '1-6', title: '材料の一覧と予算、日程を決める', day: '準備', fig: null,
+    table: [['束石 H150', '12個', '7,200円'], ['支柱用 角材 L1,200', '4本', '5,880円'], ['根太材 L3,600', '6枚', '20,880円'], ['根太材 L1,800', '8枚', '10,560円'], ['天板材 L1,800', '24枚', '31,680円'], ['ビス ステンレス75mm（200本入）', '2箱', '3,500円'], ['塗料（浸透性・水性）3.4L', '2缶', '13,620円'], ['セメント・砂・砕石', '一式', '3,700円'], ['合計（2020年の例）', '', '約10万円']],
+    todo: ['材料の一覧をつくり、価格を調べる（ホームセンター・ネット通販）', '作業の日程表をつくる。休日だけなら2〜3か月の予定で'],
+    points: ['<b>表の例：</b>3.6m×1.8m、ウエスタンレッドシダー。今の価格は計算ツールで確かめる'] },
+  { sec: 1, no: '1-7', title: '地面の準備（雑草と水はけ）', day: '準備', fig: null,
+    todo: ['草を取る（必要なら除草剤。ペットがいる家は注意）', '防草シートを敷き、砂利で押さえる', '水はけを確かめる：①デッキの下に水がたまらないか ②近くに排水できる側溝があるか ③地面が家の方へ傾いていないか'],
+    warn: '<b>今やる理由：</b>天板を張ると、デッキの下には手が届かなくなります。水はけと雑草の対策は、必ずこの段階で。' },
+
+  // STEP2
+  { sec: 2, no: '2-1', title: '道具をそろえる', day: '準備', fig: null,
+    table: [['掘る', 'スコップ（大・小）', ''], ['測る', 'メジャー（5.5m）、さしがね、止定規、水平器、水糸', ''], ['印をつける', '鉛筆（赤鉛筆が見やすい）、チョークライン（または墨つぼ）', ''], ['切る', '電動丸のこ、のこぎり（替刃式）', ''], ['留める', 'インパクトドライバー', ''], ['削る・打つ', 'サンダー、ハンマー、ゴムハンマー', ''], ['あると便利', 'クランプ、延長コード、モルタル用の箱（ふね）、コテ', '']],
+    todo: ['<b>自作する道具：</b>タンパー（砕石を突き固める。9cm角の角材に持ち手をつける）、目地の治具（厚さ10mmの木片を2個以上）'],
+    points: ['<b>電動工具：</b>デッキづくりならDIY用で十分。プロ用は約2倍の価格'] },
+  { sec: 2, no: '2-2', title: '電動工具を安全に使う', day: '準備', fig: null,
+    todo: ['<b>丸のこ：</b>真後ろに立たない（斜め左後ろ）。刃の交換や角度の調整は、必ずコンセントを抜いてから', '<b>丸のこ：</b>切る材料は枕木で支え、切り落とす側が下に落ちる位置で切る（刃がはさまるとキックバック）', '<b>丸のこ：</b>キックバックが起きても手を離さない。止まるまでしっかり支える', '<b>インパクト：</b>打ち始めはゆっくり。ビスが立つまで低速で'],
+    warn: '<b>キックバックとは：</b>刃が材料にはさまり、丸のこが暴れる現象。電動丸のこの事故は60代以上が6割（消費者庁）。保護メガネ・手袋・動きやすい靴で、明るく片づいた場所で作業し、始める前に家族へ声をかけます。',
+    points: ['<b>手袋の注意：</b>インパクトでビスを打つとき、指を添えると手袋が巻き込まれることがある'] },
+  { sec: 2, no: '2-3', title: '木材を選んで注文する', day: '準備', fig: null,
+    todo: ['おすすめは<b>ウエスタンレッドシダー</b>：腐りにくく、軽くて加工しやすい（耐久10〜20年）', '安くするなら<b>防腐注入材</b>（杉・ヒノキ）、長持ち重視なら<b>ハードウッド</b>（ウリンなど。重く硬く高い）', '根太は厚みを重視する。幅が広くても薄いとたわむ', '少し多めに注文し、雨に当たらない置き場を用意する'],
+    table: [['2×4材', '38×89mm'], ['2×6材', '38×140mm（根太・天板）'], ['2×8材', '38×184mm（幕板）'], ['4×4材', '89×89mm（支柱）']],
+    points: ['<b>天板は木裏を上に：</b>反っても山形になり、雨水が流れやすい'] },
+  { sec: 2, no: '2-4', title: '束石・ビス・塗料・セメント', day: '準備', fig: null,
+    todo: ['<b>束石：</b>羽子板付きのH150が基本。羽子板の向きが根がらみとぶつからないか、先に確かめる', '<b>ビス：</b>ステンレスのコーススレッド。長さは留める材の厚みの約2倍（38mmなら75mm）', '<b>塗料：</b>屋外木部用の木材保護塗料。おすすめは木部浸透性の水性。3.4Lで約17㎡（2回塗り）', '<b>モルタル：</b>セメント1：砂3に水を少しずつ。混ぜる箱（ふね）があると楽'] },
+  { sec: 2, no: '2-5', title: '組む前に1回目の塗装をする', day: '塗装1回目・1日', fig: null,
+    todo: ['材料が届いたら、表面のささくれを240番のサンドペーパーで軽く整える', '全部の材料に1回目の塗装をする。組み立てたあとでは塗れない面（天板の裏・根太・支柱）があるため', '切った木口（切り口）は、そのつど多めに塗る'],
+    points: ['<b>2回塗りが基本：</b>1回目は組む前、2回目は完成後に表面を塗る'] },
+
+  // STEP3
+  { sec: 3, no: '3-1', title: '束石を据える', day: '基礎・2〜3日', fig: null,
+    table: [['やわらかい（移植ごてで掘れる）', '砕石50〜100mmを入れて突き固め、モルタルで固める'], ['ふつう（スコップで掘る）', '砕石50mm＋モルタルで固める'], ['かたい（ほぐさないと掘れない）', 'そのまま置いてもよいが、埋めて突き固め、モルタルで固めるのがよい'], ['コンクリートの上', '水平でなければドライモルタルで高さを調整']],
+    todo: ['印の位置を掘り、地面のかたさに合わせて下地をつくる（上の表）', '束石を50mmほど埋めて据える'] },
+  { sec: 3, no: '3-2', title: '直角を確かめる', day: '基礎', fig: 'tri',
+    todo: ['板で3：4：5の直角定規をつくる（90cm・120cm・150cm）', '定規を当てて、束石の中心がまっすぐ並ぶように直す', 'メジャーで四隅の対角線を2本測る。同じ長さなら直角'],
+    points: ['<b>対角線の長さ：</b>√（横の2乗＋縦の2乗）。例：束石の中心が3,434×1,634なら約3,803mm。スマホの電卓（関数）で計算できる'] },
+  { sec: 3, no: '3-3', title: '束石の高さをそろえる（傾斜地も）', day: '基礎', fig: null,
+    todo: ['束石どうしにまっすぐな板を渡し、水平器で高さの差を測る', '傾斜地では、束石の高さはそのままで、支柱の長さで差を調整する', '測った差の分だけ支柱を長く（または短く）切る。計画より1cmほど短めに'],
+    points: ['<b>傾斜地：</b>低い方へ押す力がかかるので、束石は砕石とモルタルで確実に固める', '<b>水平の確認は3回：</b>束石のとき、支柱のとき、根太のとき'] },
+  { sec: 3, no: '3-4', title: '支柱を立てる', day: '基礎', fig: null,
+    todo: ['支柱を羽子板にビス4本で留める（小さい穴4か所）', '支柱は根太より10mmほど低くする。支柱どうしの高さはぴったりでなくてよい', '水平器を支柱の向かい合う2面に当てて、垂直を確かめる', '四隅の対角線をもう一度測る（支柱の中心まで。半分の45mmを足す）'],
+    points: ['<b>水平は根太で決める：</b>この工法では、支柱の高さに多少のばらつきがあっても大丈夫'] },
+
+  // STEP4
+  { sec: 4, no: '4-1', title: 'サンドイッチ工法で組む', day: '骨組み・2〜3日', fig: 'sandwich',
+    lead: '本書では、支柱を根太で両側から挟んで留める「サンドイッチ工法」をすすめます。支柱を少し低く立てておき、根太で水平を合わせるので、初心者でも高さを出しやすい工法です。',
+    points: ['<b>大引工法をすすめない理由：</b>支柱の上に大引をのせる工法は、支柱をすべて同じ高さにそろえる必要があり、ずれると大引がガタつく', '<b>弱点：</b>寿命を決めるのは、根太と支柱を留めるビス。定期的にビスの傷み具合を点検する'] },
+  { sec: 4, no: '4-2', title: '外周の根太を張る（いちばん大事）', day: '骨組み', fig: null,
+    todo: ['建物側の根太から取り付ける。高さは束石を置いた時点で測っておく', '外周の根太を支柱に留める。<b>ここで全体の水平が決まる</b>ので、時間をかけて水平器で確かめる', '四隅の直角を、さしがねや3：4：5の定規で確かめる（長い定規ほど正確）', '1人で作業するときは、クランプや車のジャッキ、受け台で根太を支えて仮留めする'],
+    warn: '<b>最重要：</b>外周の根太の水平と直角がずれると、あとの作業がすべて難しくなります。手伝ってくれる人がいれば、ここで頼みましょう。' },
+  { sec: 4, no: '4-3', title: '内側の根太と根がらみを張る', day: '骨組み', fig: null,
+    todo: ['内側の根太を、天板と交差する向きに張る（縦張りなら横方向）', '根がらみを張る。支柱どうしをつなぎ、根太の補強にもなる', '仮留めして全体の水平を確かめてから、本留めする'],
+    points: ['<b>羽子板に注意：</b>根がらみの高さによっては、束石の羽子板とぶつかる'] },
+  { sec: 4, no: '4-4', title: 'ビス止めのルール', day: '骨組み', fig: null,
+    todo: ['1か所に<b>最低3本、理想は4本</b>。多すぎても材料費が増えるだけ', 'ビスの長さは、留める材の厚みの約2倍（38mm×2＝75mm前後）', 'ウエスタンレッドシダーなどやわらかい木は、下穴なしでもよい。硬い木（ハードウッド）は下穴をあける', '下穴はビスより太くしない'] },
+
+  // STEP5
+  { sec: 5, no: '5-1', title: 'ビスを打つ位置に線を引く', day: '天板・1日', fig: 'screw',
+    todo: ['天板を根太の上に角をそろえて並べ、根太の位置に合わせてチョークラインで線を引く', '天板1枚につき、根太1本あたりビス2本', '2本の間隔は、寄りすぎず離れすぎず（140mmの板なら、端から30mm・間80mmが目安）'],
+    points: ['<b>線を引く理由：</b>ビスが一直線に並び、見た目がきれいになり、作業も速い'] },
+  { sec: 5, no: '5-2', title: '全体の長さを確かめてから並べる', day: '天板', fig: null,
+    todo: ['天板の幅×枚数＋目地10mm×数 で全体の長さを計算する（例：140×24＋10×23＝3,590mm）', '①両端の板の位置を決める ②残りを仮置きして収まりを確かめる ③目地を10mm前後で調整しながら留める'],
+    warn: '<b>「その場合わせ」にしない：</b>上に組むほど、寸法のずれは直せなくなります。必ずこの確認をしてから次へ。' },
+  { sec: 5, no: '5-3', title: '治具を使って天板を張る', day: '天板', fig: 'jig',
+    todo: ['板と板の間に10mmの治具をはさみ、線に合わせてビスを打つ', 'ビスの頭は、天板の面より1〜2mm沈める（座ったときに指が引っかからない）', '板が反って目地がそろわないときは、両端で10mmを確保する。強く反った板はバールで矯正する（布を当てる）'],
+    points: ['<b>目地10mmの理由：</b>雨水を流し、風を通して、長持ちさせるため'] },
+  { sec: 5, no: '5-4', title: '端を切りそろえ、幕板をつける', day: '天板', fig: null,
+    todo: ['天板の先がそろっていないときは、2cmほど内側に線を引いて切りそろえる（1cm以下だと割れやすい）', '木口を隠すなら、前と横に幕板（2×8材 38×184mm）を張る。角は45度に切って突き合わせる'],
+    warn: '<b>幕板の注意：</b>天板と幕板のすき間に雨水が入り、湿気が抜けにくくなります。長持ちを優先するなら、幕板なしも選択肢です。' },
+  { sec: 5, no: '5-5', title: '仕上げの塗装（2回目）', day: '塗装2回目・1日', fig: null,
+    todo: ['晴れが1〜2日続いたあとの晴れた日に塗る。塗る面は乾拭きしておく', '塗料はよくかき混ぜる。目地など塗りにくい所から塗り、目立つ所は最後に', '木目に沿って薄く。刷毛は「ひと幅あけて塗る→広げる→縦に整える」、ローラーは「Wの字→横→縦→一方向に整える」', '刷毛は筋交い刷毛（化学繊維）で十分。使ったら洗って陰干し'],
+    points: ['<b>用意するもの：</b>小さなバケツ、刷毛（広い・細い）、ローラー、マスキングテープ、ウエス、手袋'] },
+
+  // STEP6
+  { sec: 6, no: '6-1', title: '掃除と点検', day: '完成後', fig: null,
+    todo: ['<b>日常：</b>ほこりを取り、汚れはデッキブラシで水洗い。ささくれはサンドペーパーで', '<b>定期：</b>全体の傷み、接合部とすき間を確かめ、掃除して塗り直す', '<b>いちばんの点検ポイント：</b>目地の部分。天板の側面と根太の上面は、いちばん長く湿ったままになる。水あかを細いブラシで落として塗る', '根太と支柱を留めているビスの傷みも見る'] },
+  { sec: 6, no: '6-2', title: '塗り直しの目安とチェックリスト', day: '完成後', fig: null,
+    table: [['天板の上面・側面・木口', '最低2年ごと'], ['天板の下面・根太・根がらみ', '最低5年ごと'], ['手や日がよく当たる所', '1〜2年で傷むことも']],
+    check: ['天板にささくれ・割れ・反りがないか', '目地に水あか・ゴミがたまっていないか', 'ビスが浮いたり、さびたりしていないか', '根太と支柱の接合部に割れや腐れがないか', '束石が沈んだり、傾いたりしていないか', '塗装がはげて、水をはじかなくなっていないか'] },
+
+  // 付録
+  { sec: 9, no: '付録', title: 'あると便利な道具と材料', day: '', fig: null,
+    table: [['ジグソー', 'カーブや丸い切り抜き'], ['ドライバードリル', 'ネジの締め外し（インパクトの代わりにも）'], ['グラインダー', 'ブロックやタイルを切る'], ['ノミ・カンナ', '切り欠き、表面の仕上げ'], ['バール', '天板の目地の矯正'], ['クワ・ジョレン・一輪車', '土や砂利を動かす'], ['レーザー墨出し器', '水平の印つけに便利（1万円前後〜）'], ['鋼製束', 'コンクリートの上で根太を支える（高さを調整できる）'], ['防水パッキン（ゴム板5mm）', '束石と支柱の間にはさみ、支柱に水がしみ込むのを防ぐ'], ['安全靴・保護メガネ・防じんマスク', 'ケガと粉じんを防ぐ']] },
+  { sec: 9, no: '付録', title: '電動工具の選び方', day: '', fig: null,
+    todo: ['<b>DIY用とプロ用：</b>メーカーは本体の色で分けている。デッキ1台分ならDIY用で十分（プロ用は約2倍の価格）', '<b>コードレスとコード付き：</b>動き回るデッキづくりは充電式が便利。長時間ならコード付きか予備バッテリー', '<b>丸のこの刃の大きさ：</b>147mmの刃で切れる厚さは4cm強。5cm以上を切るなら165mm以上（または裏返して2回切る）', '<b>手入れ：</b>使ったら木くずをふき取り、コードの傷とネジのゆるみを確かめる'] },
+  { end: true },
+];
+
+function pageHead(p) {
+  return `<div class="pg-head" style="--sc:${SC[p.sec]}"><span class="pg-no">${p.no}</span><h2>${p.title}</h2>${p.day ? `<span class="pg-day">${p.day}</span>` : ''}</div>`;
+}
+function body(p) {
+  const left = [];
+  if (p.lead) left.push(`<p class="pg-lead">${p.lead}</p>`);
+  if (p.todo) left.push(`<div class="blk"><h3>やること</h3><ol class="todo">${p.todo.map((t) => `<li>${t}</li>`).join('')}</ol></div>`);
+  if (p.table) left.push(`<table class="tbl"><tbody>${p.table.map((r) => `<tr>${r.map((c, i) => `<td${i === r.length - 1 && r.length === 3 ? ' class="r"' : ''}>${i === 0 ? `<b>${c}</b>` : c}</td>`).join('')}</tr>`).join('')}</tbody></table>`);
+  if (p.check) left.push(`<div class="blk"><h3>点検チェックリスト</h3><ul class="check">${p.check.map((c) => `<li><i class="box"></i>${c}</li>`).join('')}</ul></div>`);
+  if (p.points) left.push(`<div class="blk"><h3>ポイント</h3><div class="points">${p.points.map((t) => `<div>${t}</div>`).join('')}</div></div>`);
+  if (p.tool) left.push(`<div class="tool-link">${p.tool}</div>`);
+  if (p.warn) left.push(`<div class="warnbox">${p.warn}</div>`);
+  const fig = p.fig ? `<figure class="fig" style="margin:0">${F[p.fig]()}</figure>` : '';
+  return `<div class="pg-body${fig ? '' : ' nofig'}" style="--sc:${SC[p.sec]}"><div style="display:grid;gap:4mm;min-width:0">${left.join('')}</div>${fig}</div>`;
+}
+function tb(name, no, total) {
+  return `<div class="tb"><div><span>${BRAND.title}</span><b>${esc(name)}</b></div><div><span>工法</span><b>サンドイッチ工法・目地10mm</b></div><div><span>監修</span><b>${BRAND.supervisor}</b></div><div><span>${BRAND.version}</span><b>${no} / ${total}</b></div></div>`;
+}
+
+// 特別なページ（表紙・もくじ・はじめに・おわりに）はそのまま1ページ。
+// それ以外の項目は、A4に入るだけ詰めて並べる。
+function special(p) {
+  if (p.cover) return `<div class="cover">
+        <div class="t1">WoodDeck Production Manual</div>
+        <h1>ウッドデッキ<br>実践マニュアル<small>かんたん版　${BRAND.version}</small></h1>
+        <div class="ph"><img src="photos/deck1.jpg" alt="監修者がつくったウッドデッキ"><img src="photos/deck2.jpg" alt="二段のウッドデッキ"><img src="photos/deck3.jpg" alt="木を生かしたウッドデッキ"></div>
+        <p class="pg-lead">1ページに1つの作業。上から順に進めれば、ウッドデッキが完成します。<br>監修：${BRAND.supervisor}（建設関係の仕事に35年）</p>
+      </div>`;
+  if (p.toc) return `<div class="pg-head"><span class="pg-no" style="background:#18201b">目次</span><h2>もくじ</h2></div><div class="toc2" id="toc"></div>
+        <p class="note">もとのマニュアル（108ページ）の内容を、作業の順番に6つのステップへまとめ直しました。</p>`;
+  if (p.end) return `<div class="pg-head"><span class="pg-no" style="background:#18201b">おわりに</span><h2>ここから始まり</h2></div>
+        <p class="pg-lead">念願のマイ・ウッドデッキが完成しました。くつろぐ時間に、仲間とのバーベキューに、ときには物干しに。使い方は自由です。</p>
+        <p class="pg-lead">そして、完成はメンテナンスのスタートでもあります。汗をかいてつくったデッキが、あなたの素敵なリビングであり続けるよう、大切にしてあげてください。</p>
+        <div class="big4"><div><b>次につくるなら</b>フェンス、ベンチ、囲炉裏テーブル、デッキ階段。デッキづくりで覚えた技術がそのまま使えます。</div><div><b>困ったときは</b>計画・材料計算から完成まで、相談を受け付けています。<br>${BRAND.site}</div></div>
+        <figure class="photo" style="margin:0"><img src="photos/deck2.jpg" alt="完成したウッドデッキ" style="width:100%;height:80mm;object-fit:cover;border-radius:1.5mm"></figure>`;
+  return null;
+}
+function topic(p) {
+  let inner = pageHead(p);
+  if (p.flow) {
+    const rows = [[1, '準備', '2〜3日', '場所・図面・道具と材料の用意'], [2, '塗装1回目', '1日', '組む前に材料を塗る'], [3, '基礎', '2〜3日', '整地・束石・支柱'], [4, '骨組み', '2〜3日', '根太・根がらみ'], [5, '天板', '1日', '天板を張る'], [5, '塗装2回目', '1日', '表面を仕上げる']];
+    inner += `<p class="pg-lead">${p.lead}</p><div class="blk"><h3 style="color:#18201b">作業の流れ（1日まるごと作業した場合の目安）</h3><div class="flow">${rows.map(([s, t, d, x]) => `<div style="--sc:${SC[s]}"><span class="bar">${t}</span><span class="d">${d}</span><span>${x}</span></div>`).join('')}</div></div>
+      <div class="points"><div><b>基礎がいちばん大事です。</b>自分のペースで時間をかけ、手戻りがないようじっくり進めましょう。休日だけなら、2〜3か月の予定を立てると無理がありません。</div></div>
+      <div class="tool-link"><b>この本といっしょに使うもの：</b>材料・費用の計算ツール（あなたの家のサイズで、材料の本数と費用がわかる）、サイズ別図面セット（束石の位置・カット表・購入リスト）。</div>`;
+  } else if (p.big4) {
+    inner += `<div class="big4">${p.big4.map(([t, d]) => `<div><b>${t}</b>${d}</div>`).join('')}</div>${p.warn ? `<div class="warnbox">${p.warn}</div>` : ''}`;
+  } else inner += body(p);
+  return `<div class="topic" data-sec="${p.sec}" data-name="${esc(p.no + ' ' + p.title)}">${inner}</div>`;
+}
+
+function render() {
+  const root = document.getElementById('sheets');
+  root.innerHTML = '';
+  const sheets = [];
+  const newSheet = (packed) => {
+    const el = document.createElement('section');
+    el.className = 'sheet' + (packed ? ' packed' : '');
+    el.innerHTML = '<div class="body"></div>' + tb('', 0, 0); // 表題欄を先に入れてから、本文の入る高さを測る
+    root.appendChild(el); sheets.push(el);
+    return el.querySelector('.body');
+  };
+  let cur = null;
+  for (const p of PAGES) {
+    const sp = special(p);
+    if (sp) { newSheet(false).innerHTML = sp; cur = null; continue; }
+    const html = topic(p);
+    // ステップが変わったら新しいページから
+    const sameStep = cur && cur.lastElementChild && cur.lastElementChild.dataset.sec === String(p.sec);
+    if (!cur || !sameStep) cur = newSheet(true);
+    cur.insertAdjacentHTML('beforeend', html);
+    if (cur.scrollHeight > cur.clientHeight + 1 && cur.children.length > 1) {
+      const last = cur.lastElementChild; last.remove();
+      cur = newSheet(true); cur.appendChild(last);
+    }
+  }
+  const total = sheets.length;
+  const names = ['表紙', 'もくじ'];
+  sheets.forEach((el, i) => {
+    const t = el.querySelector('.topic');
+    const name = t ? t.dataset.name : (names[i] || 'おわりに');
+    el.querySelector('.tb').outerHTML = tb(name, i + 1, total);
+  });
+  // もくじ（ページ番号は詰めたあとに数える）
+  const secs = [[0, 'はじめに', '', '使い方・作業の流れ・覚えておくこと'], [1, 'STEP1', '計画する', '大きさ・図面・高さ・束石の位置・枚数・予算・地面'], [2, 'STEP2', 'そろえる', '道具・安全・木材・束石とビスと塗料・1回目の塗装'], [3, 'STEP3', '基礎をつくる', '束石・直角・高さ・支柱'], [4, 'STEP4', '骨組みを組む', 'サンドイッチ工法・外周の根太・内側の根太・ビス'], [5, 'STEP5', '天板を張って塗る', '線を引く・並べる・治具で張る・幕板・2回目の塗装'], [6, 'STEP6', '長持ちさせる', '掃除と点検・塗り直しの目安'], [9, '付録', '', '便利な道具・電動工具の選び方']];
+  const pageOf = (s) => sheets.findIndex((el) => el.querySelector(`.topic[data-sec="${s}"]`)) + 1;
+  document.getElementById('toc').innerHTML = secs.map(([s, a, b, d]) => `<div style="--sc:${SC[s]}"><span class="s">${a}</span><span><b>${b || a}</b><br><span class="p">${d}</span></span><span class="p">${pageOf(s)}ページ</span></div>`).join('');
+}
+const start = () => render();
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(start);
+window.addEventListener('beforeprint', render);
+document.getElementById('print').addEventListener('click', () => window.print());
+</script>
+</body>
+</html>
