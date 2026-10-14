@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>プランター台 STEP2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../lib/sheet.css">
+<link rel="stylesheet" href="../../lib/course.css">
+<style>
+.formula { font-size: 15px; font-weight: 700; background: #f2f4f0; border-radius: 1.5mm; padding: 2.5mm 3mm; }
+.formula small { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="bar">
+  <form id="f" novalidate>
+    <div class="f"><label for="w">プランター台の幅</label>
+      <select id="w">
+        <option value="600" selected>600mm（鉢2つ・2×4材1本）</option>
+        <option value="900">900mm（鉢3つ・2×4材2本）</option>
+      </select>
+    </div>
+    <button type="button" class="print" id="print">印刷・PDFで保存</button>
+    <p class="tip">「印刷・PDFで保存」→ 送信先を「PDFに保存」にすると、販売用のPDF（A4・6ページ）ができます。</p>
+  </form>
+</div>
+
+<main class="sheets" id="sheets"></main>
+
+<script src="../../lib/drawing.js"></script>
+<script src="../../lib/course.js"></script>
+<script>
+const { mm, esc, dimH, dimV, iso } = Draw;
+const { road, cutBar, contact } = Course;
+const $ = (id) => document.getElementById(id);
+
+// 寸法（mm）。2×4材 38×89、2×6材 38×140
+const T = 38, B4 = 89, B6 = 140, GAP = 5, N = 3;
+const D = B4 * N + GAP * (N - 1);   // 277：床板3枚とすき間＝根太の長さ
+const H = B6 + T;                   // 178
+const LEFTOVER = 914;               // STEP1で余った2×6材
+const KERF = 3;
+
+function geometry(W) {
+  const pitch = (W - T) / 2;
+  const joists = [0, pitch, W - T].map((x) => ({ x: Math.round(x), y: 0, z: 0, w: T, d: D, h: B6 }));
+  const slats = [...Array(N)].map((_, i) => ({ x: 0, y: i * (B4 + GAP), z: B6, w: W, d: B4, h: T }));
+  const diag = Math.round(Math.hypot(W, D));
+  const screws = N * 3 * 2;
+  return { W, pitch: Math.round(pitch), joists, slats, diag, screws };
+}
+
+function frontView(g) {
+  const fs = 18, sw = 1, L = 40, Tp = 40, R = 50, Bt = 60;
+  const X = (x) => L + x, Y = (z) => Tp + H - z;
+  let s = `<svg viewBox="0 0 ${g.W + L + R} ${H + Tp + Bt}" role="img" aria-label="正面図">`;
+  s += `<rect x="${X(0)}" y="${Y(H)}" width="${g.W}" height="${T}" fill="var(--wood-soft)" stroke="var(--ink)"/>`;
+  g.joists.forEach((j) => { s += `<rect x="${X(j.x)}" y="${Y(B6)}" width="${T}" height="${B6}" fill="#fff" stroke="var(--ink)"/>`; });
+  s += `<line x1="${X(-20)}" x2="${X(g.W + 20)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += dimH([X(0), X(T / 2), X(g.pitch + T / 2), X(g.W - T / 2), X(g.W)], Y(0) + 34, fs * .85, sw);
+  s += dimH([X(0), X(g.W)], Y(H) - 14, fs, sw, { force: true });
+  s += dimV([Y(H), Y(B6), Y(0)], X(g.W + 34), fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+function sideView(g) {
+  const fs = 18, sw = 1, L = 50, Tp = 40, R = 40, Bt = 60;
+  const X = (y) => L + y, Y = (z) => Tp + H - z;
+  let s = `<svg viewBox="0 0 ${D + L + R} ${H + Tp + Bt}" role="img" aria-label="側面図">`;
+  g.slats.forEach((sl) => { s += `<rect x="${X(sl.y)}" y="${Y(H)}" width="${B4}" height="${T}" fill="var(--wood-soft)" stroke="var(--ink)"/>`; });
+  s += `<rect x="${X(0)}" y="${Y(B6)}" width="${D}" height="${B6}" fill="#fff" stroke="var(--ink)"/>`;
+  s += `<line x1="${X(-20)}" x2="${X(D + 20)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="2"/>`;
+  s += dimH([X(0), X(B4), X(B4 + GAP), X(B4 * 2 + GAP), X(B4 * 2 + GAP * 2), X(D)], Y(H) - 14, fs * .85, sw, { labels: ['89', '5', '89', '5', '89'] });
+  s += dimH([X(0), X(D)], Y(0) + 34, fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+function topView(g) {
+  const fs = 18, sw = 1, L = 60, Tp = 50, R = 30, Bt = 50;
+  const X = (x) => L + x, Y = (y) => Tp + y;
+  let s = `<svg viewBox="0 0 ${g.W + L + R} ${D + Tp + Bt}" role="img" aria-label="平面図">`;
+  g.slats.forEach((sl) => { s += `<rect x="${X(0)}" y="${Y(sl.y)}" width="${g.W}" height="${B4}" fill="var(--wood-soft)" stroke="var(--ink)"/>`; });
+  g.joists.forEach((j) => {
+    s += `<rect x="${X(j.x)}" y="${Y(0)}" width="${T}" height="${D}" fill="none" stroke="var(--ink)" stroke-dasharray="4 3"/>`;
+    s += `<line x1="${X(j.x + T / 2)}" x2="${X(j.x + T / 2)}" y1="${Y(-16)}" y2="${Y(D + 16)}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="10 4 2 4"/>`;
+    g.slats.forEach((sl) => [22, B4 - 22].forEach((dy) => { s += `<circle cx="${X(j.x + T / 2)}" cy="${Y(sl.y + dy)}" r="5" fill="var(--accent)"/>`; }));
+  });
+  s += `<line x1="${X(0)}" y1="${Y(0)}" x2="${X(g.W)}" y2="${Y(D)}" stroke="var(--wood)" stroke-width="1.5" stroke-dasharray="8 5"/>`;
+  s += dimH([X(T / 2), X(g.pitch + T / 2), X(g.W - T / 2)], Y(0) - 22, fs * .85, sw, { force: true });
+  s += dimV([Y(0), Y(D)], X(-30), fs * .85, sw, { force: true });
+  return s + '</svg>';
+}
+
+let W_NOW = 600;
+const sheet = (name, no, total, body) => Course.sheet({ step: 'STEP2 プランター台', name, size: `${W_NOW}×${D}×${H}`, no, total, body });
+
+function render() {
+  W_NOW = Number($('w').value) || 600;
+  const g = geometry(W_NOW);
+  const TOTAL = 6;
+  const boards4 = W_NOW === 600 ? 1 : 2;
+  const all = [...g.joists, ...g.slats];
+  const pages = [];
+
+  // 1 表紙
+  pages.push(sheet('表紙', 1, TOTAL, `
+    <div class="course">${Course.BRAND.course}</div>
+    <h1 class="big-title">STEP2　プランター台をつくる</h1>
+    <div class="facts"><span>材料費 <b>約${boards4 * 500}円</b></span><span>作業時間 <b>半日</b></span><span>材料 <b>STEP1の余り＋2×4材${boards4}本</b></span></div>
+    <figure class="fig cover-fig" style="margin:0">${iso(all, { title: '完成したプランター台' })}<figcaption>完成図（幅${g.W}×奥行き${D}×高さ${H}mm）</figcaption></figure>
+    ${road(1)}
+    <div>
+      <h3>STEP2で覚えること</h3>
+      <ol class="learn">
+        <li><b>板を支える「根太」を、等しい間隔で並べる</b><span>根太の間隔は、板がたわまない長さにする</span></li>
+        <li><b>すき間をそろえて、板を張る</b><span>5mmの「すき間ゲージ」をはさむだけでそろう</span></li>
+        <li><b>ビスの位置を、一直線にそろえる</b><span>先に線を引いてから打つと、見た目がぐっと良くなる</span></li>
+        <li><b>板の幅とすき間から、全体の寸法を決める（割付け）</b><span>板3枚＋すき間2つ＝${D}mm</span></li>
+      </ol>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>プランター台は、ウッドデッキを小さく切り取ったものです。根太の上に床板を張る作り方は、デッキとまったく同じです。</div>
+  `));
+
+  // 2 道具と材料
+  pages.push(sheet('道具と材料', 2, TOTAL, `
+    <h2>道具と材料<small>買ったらチェック</small></h2>
+    <div>
+      <h3>材料（約${boards4 * 500}円）</h3>
+      <table class="buy"><thead><tr><th>材料</th><th>規格</th><th class="r">数量</th><th class="r">目安</th></tr></thead><tbody>
+        <tr><td><i class="box"></i>2×6材（STEP1の余り）</td><td>38×140mm　長さ約${LEFTOVER}mm</td><td class="r">1本</td><td class="r">—</td></tr>
+        <tr><td><i class="box"></i>2×4材</td><td>38×89mm　長さ1,820mm</td><td class="r">${boards4}本</td><td class="r">¥${boards4 * 500}</td></tr>
+        <tr><td><i class="box"></i>コーススレッド 75mm（STEP1の残り）</td><td>使うのは${g.screws}本</td><td class="r">—</td><td class="r">—</td></tr>
+        <tr><td><i class="box"></i>すき間ゲージ</td><td>厚さ5mmの端材（ベニヤ板など）2枚</td><td class="r">2枚</td><td class="r">—</td></tr>
+        <tr><td><i class="box"></i>塗料（あれば）</td><td>屋外用の木材保護塗料</td><td class="r">—</td><td class="r">—</td></tr>
+        <tr class="total"><td colspan="3">合計（目安）</td><td class="r">¥${boards4 * 500}</td></tr>
+      </tbody></table>
+      <p class="note">STEP1から始めていない場合は、2×6材1,820mmを1本（約900円）とコーススレッド75mm（約500円）を追加。鉢を置くので、屋外用の塗料を塗っておくと長持ちする。</p>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>道具（STEP1と同じ）</h3>
+        <ul class="check">
+          <li><i class="box"></i>さしがね・メジャー・鉛筆</li>
+          <li><i class="box"></i>ノコギリ（または丸ノコ）</li>
+          <li><i class="box"></i>インパクトドライバー・下穴用ドリル 3mm</li>
+          <li><i class="box"></i>サンドペーパー #120</li>
+          <li><i class="box"></i>保護メガネ・手袋</li>
+        </ul>
+        <h3 style="margin-top:3mm">STEP2で新しく使うもの</h3>
+        <ul class="check">
+          <li><i class="box"></i>まっすぐな長い定規（なければ2×4材の端材）</li>
+          <li><i class="box"></i>すき間ゲージ（上の材料表）</li>
+        </ul>
+      </div>
+      <div>
+        <h3>割付け（わりつけ）の考え方</h3>
+        <p class="formula">奥行き ＝ 板の幅×枚数 ＋ すき間×（枚数−1）<small>89×3 ＋ 5×2 ＝ ${D}mm → 根太の長さを${D}mmにする</small></p>
+        <p style="margin-top:2mm">先に板とすき間の寸法から全体を決めると、板を細く割かずに済みます。</p>
+        <h3 style="margin-top:3mm">根太の間隔</h3>
+        <p class="formula">間隔 ＝（幅 − 根太の厚み）÷ 2<small>（${g.W} − 38）÷ 2 ＝ 約${g.pitch}mm（中心から中心）</small></p>
+      </div>
+    </div>
+  `));
+
+  // 3 図面
+  pages.push(sheet('図面', 3, TOTAL, `
+    <h2>図面<small>単位はmm</small></h2>
+    <div class="views">
+      <figure class="fig" style="margin:0">${frontView(g)}<figcaption>正面図（前から見た図）</figcaption></figure>
+      <figure class="fig" style="margin:0">${sideView(g)}<figcaption>側面図（横から見た図）</figcaption></figure>
+      <figure class="fig" style="margin:0">${topView(g)}<figcaption>平面図　緑の線＝根太の中心線（ビスを打つ線）、●＝ビス</figcaption></figure>
+      <figure class="fig" style="margin:0">${iso([...g.joists, ...g.slats.map((s) => ({ ...s, tone: 'ghost' }))], { title: '根太の並び' })}<figcaption>床板の下の根太（床板は破線）</figcaption></figure>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>部品</h3>
+        <table><tbody>
+          <tr><td>根太</td><td>2×6材（縦に立てる）</td><td class="r">${D}mm × 3本</td></tr>
+          <tr><td>床板</td><td>2×4材（寝かせる）</td><td class="r">${g.W}mm × 3枚</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h3>ビスの位置</h3>
+        <p>床板1枚につき、根太1本あたり2本。板の縁から22mm内側、根太の中心線の上。合計${g.screws}本。</p>
+      </div>
+    </div>
+  `));
+
+  // 4 カット表
+  const c6 = cutBar([...Array(3)].map(() => ({ len: D, use: '根太' })), LEFTOVER, KERF);
+  const bars4 = W_NOW === 600
+    ? [cutBar([...Array(3)].map(() => ({ len: g.W, use: '床板' })))]
+    : [cutBar([{ len: g.W, use: '床板' }, { len: g.W, use: '床板' }]), cutBar([{ len: g.W, use: '床板' }])];
+  pages.push(sheet('カット表', 4, TOTAL, `
+    <h2>カット表<small>斜線は余り</small></h2>
+    <div class="cutgrp"><h3>2×6材（STEP1の余り 約${LEFTOVER}mm）</h3><div class="cutrow"><span class="st">${LEFTOVER}</span><span class="n">×1本</span>${c6.html}</div><p class="note">余り 約${mm(c6.rest)}mm</p></div>
+    <div class="cutgrp"><h3>2×4材 1,820mm × ${boards4}本</h3>${bars4.map((b) => `<div class="cutrow"><span class="st">1,820</span><span class="n">×1本</span>${b.html}</div>`).join('')}<p class="note">${W_NOW === 600 ? '1,820mmから600mmを3本とると余りはほぼ0。最初に端を切りそろえるときは、2〜3mmだけにする。' : `2本目の余り 約${mm(bars4[1].rest)}mmは、STEP3で使える。`}</p></div>
+    <div class="grid2">
+      <div>
+        <h3>STEP1のおさらい</h3>
+        <ul class="check">
+          <li><i class="box"></i>さしがねで直角の線を引き、側面にも回す</li>
+          <li><i class="box"></i>線の外側（捨てる側）を切る</li>
+          <li><i class="box"></i>1本切るごとに次の印をつける</li>
+        </ul>
+      </div>
+      <div>
+        <h3>今回のポイント</h3>
+        <ul class="check">
+          <li><i class="box"></i>根太3本は高さ（140mm）がそろっているか、立てて並べて確かめる</li>
+          <li><i class="box"></i>床板3枚は長さがそろうように、重ねて端を確かめる</li>
+        </ul>
+      </div>
+    </div>
+  `));
+
+  // 5 組み立て
+  const old = (b) => ({ ...b, tone: 'old' });
+  pages.push(sheet('組み立て', 5, TOTAL, `
+    <h2>組み立て<small>根太 → 1枚目 → 直角 → 残り</small></h2>
+    <div class="steps">
+      <div class="stp"><div>
+        <h3><span>1</span>根太を並べる</h3>
+        <ol>
+          <li>平らな床に根太3本を立てて並べる</li>
+          <li>両端の根太の外側を${g.W}mmに、真ん中の根太を中央（両端から約${g.pitch}mm）に置く</li>
+          <li>根太の上の面に、中心線を鉛筆で引いておく（ビスを打つ線になる）</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso(g.joists, { title: '根太を並べる' })}<figcaption>根太3本</figcaption></figure></div>
+
+      <div class="stp"><div>
+        <h3><span>2</span>1枚目を張って、直角を確かめる</h3>
+        <ol>
+          <li>1枚目の床板を、根太の手前の端にそろえてのせる</li>
+          <li>両端の根太に1本ずつ、下穴をあけて仮留めする</li>
+          <li>3枚とも並べてから、全体の対角線を2本測る。どちらも約${mm(g.diag)}mmなら直角</li>
+          <li>直角が出たら、1枚目を全部の根太にビス2本ずつで留める</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso([...g.joists.map(old), { ...g.slats[2] }], { title: '1枚目を張る' })}<figcaption>手前の1枚目から</figcaption></figure></div>
+
+      <div class="stp"><div>
+        <h3><span>3</span>すき間ゲージで残りを張る</h3>
+        <ol>
+          <li>1枚目との間にすき間ゲージを2か所はさみ、2枚目を押しつけて留める</li>
+          <li>3枚目も同じように張る。最後の板の外側が根太の端とそろえば正解</li>
+          <li>まっすぐな定規を根太の中心線に合わせて床板の上にも線を引き、その線の上にビスを打つ</li>
+        </ol>
+        <p class="note">ずれたときは、ビスを抜いてやり直せばよい。デッキの床板でも同じ直し方をする。</p>
+      </div><figure class="fig" style="margin:0">${iso([...g.joists.map(old), old(g.slats[2]), g.slats[1], g.slats[0]], { title: '残りを張る' })}<figcaption>すき間5mmで2枚目・3枚目</figcaption></figure></div>
+
+      <div class="stp"><div>
+        <h3><span>4</span>仕上げる</h3>
+        <ol>
+          <li>床板の角と縁をサンドペーパーで丸める</li>
+          <li>屋外用の塗料を2回塗る。根太の下の木口（地面に触れる面）は特にしっかり</li>
+          <li>鉢を置き、水やりの水がすき間から抜けるか確かめる</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso(all, { title: '完成' })}<figcaption>完成</figcaption></figure></div>
+    </div>
+  `));
+
+  // 6 チェックと次へ
+  pages.push(sheet('できたら', 6, TOTAL, `
+    <h2>できあがりチェック<small>全部できたらSTEP2修了</small></h2>
+    <ul class="check" style="font-size:14px">
+      <li><i class="box"></i>すき間が2か所とも、端から端まで5mmでそろっている</li>
+      <li><i class="box"></i>ビスの頭が、根太の中心線の上に一直線に並んでいる</li>
+      <li><i class="box"></i>対角線の2本が同じ長さ（差が3mm以内）</li>
+      <li><i class="box"></i>平らな床で、がたつかない</li>
+      <li><i class="box"></i>鉢を置いても、床板がたわまない</li>
+    </ul>
+    <div>
+      <h3>うまくいかなかったときは</h3>
+      <table><tbody>
+        <tr><td><b>すき間が広がっていく</b></td><td>床板が少し曲がっている。ゲージを両端と中央の3か所にはさみ、板を押しつけながら留める</td></tr>
+        <tr><td><b>ビスが曲がって並ぶ</b></td><td>線を引かずに打った。床板の上に、根太の中心線を写してから打つ</td></tr>
+        <tr><td><b>最後の板がはみ出す</b></td><td>すき間が5mmより広い。ゲージの厚みを確かめて張り直す</td></tr>
+      </tbody></table>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>床板が20枚以上になると、すき間のずれが積み重なります。STEP2の「ゲージをはさむ」「線を引いてから打つ」が、そのままデッキの仕上がりを決めます。</div>
+    ${road(2)}
+    <div class="cta">
+      <b class="t">次は STEP3「囲炉裏テーブル」</b>
+      <p>脚と枠を組み、天板の真ん中に炉をつくります。炭火を使う本格派と、飾り炉・カセットコンロ用の手軽なタイプから選べます。ウッドデッキの骨組み（大引・根太）を組む練習になります。</p>
+      <p>${contact()}</p>
+    </div>
+  `));
+
+  $('sheets').innerHTML = pages.join('');
+}
+
+$('f').addEventListener('input', render);
+$('f').addEventListener('submit', (e) => e.preventDefault());
+$('print').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>

@@ -8,37 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
 <link rel="stylesheet" href="../../lib/sheet.css">
-<style>
-.course { font-size: 12px; font-weight: 700; letter-spacing: .12em; color: var(--accent); }
-.big-title { font-size: 34px; font-weight: 900; line-height: 1.25; margin: 0; }
-.facts { display: flex; flex-wrap: wrap; gap: 2mm 8mm; font-size: 14px; }
-.facts b { font-size: 18px; }
-.road { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2mm; }
-.road div { border: 1.2px solid var(--line); border-radius: 1.5mm; padding: 2mm; display: grid; gap: .5mm; font-size: 11px; color: var(--muted); }
-.road div b { font-size: 13px; color: var(--ink); }
-.road div.on { border-color: var(--accent); background: #e6f0ea; }
-.road div.goal { border-style: dashed; }
-.learn { display: grid; gap: 2mm; counter-reset: l; }
-.learn li { list-style: none; display: grid; grid-template-columns: 8mm 1fr; gap: 1mm 2mm; }
-.learn li::before { counter-increment: l; content: counter(l); grid-row: span 2; font-weight: 900; font-size: 18px; color: var(--accent); }
-.learn li span { color: var(--muted); font-size: 11.5px; }
-.deck-link { border-left: 3px solid var(--wood); background: #faf4ec; padding: 2mm 3mm; font-size: 12px; }
-.deck-link b { color: #8a5a2b; }
-.fig { display: grid; gap: 1mm; }
-.fig svg { max-height: 80mm; }
-.cover-fig svg { max-height: 68mm; }
-.fig figcaption { font-size: 11px; color: var(--muted); text-align: center; }
-.steps { display: grid; gap: 4mm; }
-.stp { display: grid; grid-template-columns: 1fr 62mm; gap: 4mm; align-items: start; break-inside: avoid; }
-.stp h3 { font-size: 14px; display: flex; gap: 2mm; align-items: baseline; }
-.stp h3 span { font-size: 11px; color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 2mm; }
-.stp ol { margin: 0; padding-left: 5mm; display: grid; gap: 1mm; }
-.stp svg { max-height: 56mm; }
-.views { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 6mm; align-items: end; }
-.views .fig svg { max-height: 70mm; }
-.cta { border: 2px solid var(--accent); border-radius: 2mm; padding: 4mm; display: grid; gap: 2mm; }
-.cta b.t { font-size: 16px; }
-</style>
+<link rel="stylesheet" href="../../lib/course.css">
 </head>
 <body>
 <div class="bar">
@@ -58,24 +28,10 @@
 <main class="sheets" id="sheets"></main>
 
 <script src="../../lib/drawing.js"></script>
+<script src="../../lib/course.js"></script>
 <script>
-// ===== 教材に入れる情報（ここを書き換えてください） =====
-const BRAND = {
-  course: '週末DIY 5ステップ講座',
-  supervisor: '野村 隆一',
-  site: 'ryuphoenix.com',
-  line: '', // LINE公式アカウントのURLやIDができたら入れる
-  version: '2026年版',
-};
-const STEPS = [
-  ['STEP1', '踏み台', '切る・留める'],
-  ['STEP2', 'プランター台', '板を張る'],
-  ['STEP3', '囲炉裏テーブル', '枠を組む'],
-  ['STEP4', '木製門扉', '柱を建てる'],
-  ['卒業制作', 'ウッドデッキ', 'すべてを使う'],
-];
-
 const { mm, esc, dimH, dimV, iso } = Draw;
+const { BRAND, road, cutBar } = Course;
 const $ = (id) => document.getElementById(id);
 
 // 寸法（mm）。2×4材 38×89、2×6材 38×140
@@ -95,12 +51,6 @@ function geometry(H) {
   const tops = [0, 1, 2].map((i) => ({ x: i * (B6 + GAP), y: 0, z: legH, w: B6, d: D, h: T }));
   const diag = Math.round(Math.hypot(W, D));
   return { H, legH, apronL, legs, aprons, tops, diag };
-}
-
-function cutBar(cuts) {
-  const used = cuts.reduce((a, c) => a + c.len, 0) + KERF * (cuts.length - 1);
-  const parts = cuts.map((c) => `<div class="cut" style="width:${(c.len / STOCK) * 100}%"><b>${mm(c.len)}</b>${esc(c.use)}</div>`).join('');
-  return { html: `<div class="stock">${parts}</div>`, rest: STOCK - used };
 }
 
 // 三面図
@@ -145,15 +95,7 @@ function topView(g) {
   return s + '</svg>';
 }
 
-function sheet(name, no, total, body) {
-  return `<section class="sheet"><div class="body">${body}</div>
-    <div class="tb">
-      <div><span>${BRAND.course}</span><b>STEP1 踏み台 ／ ${name}</b></div>
-      <div><span>サイズ（幅×奥行き×高さ）</span><b>${W}×${D}×${CURRENT_H}</b></div>
-      <div><span>監修</span><b>${BRAND.supervisor}</b></div>
-      <div><span>${BRAND.version}</span><b>${no} / ${total}</b></div>
-    </div></section>`;
-}
+const sheet = (name, no, total, body) => Course.sheet({ step: 'STEP1 踏み台', name, size: `${W}×${D}×${CURRENT_H}`, no, total, body });
 
 let CURRENT_H = 250;
 function render() {
@@ -161,7 +103,6 @@ function render() {
   const g = geometry(CURRENT_H);
   const TOTAL = 6;
   const pages = [];
-  const road = (on) => `<div class="road">${STEPS.map(([n, t, k], i) => `<div class="${i === on ? 'on' : ''}${i === 4 ? ' goal' : ''}"><span>${n}</span><b>${t}</b>${k}</div>`).join('')}</div>`;
   const all = [...g.legs, ...g.aprons, ...g.tops];
 
   // 1 表紙

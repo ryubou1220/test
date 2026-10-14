@@ -1,0 +1,30 @@
+/* 講座教材（course/）の共通スタイル。lib/sheet.css の後に読み込む。 */
+.course { font-size: 12px; font-weight: 700; letter-spacing: .12em; color: var(--accent); }
+.big-title { font-size: 34px; font-weight: 900; line-height: 1.25; margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 2mm 8mm; font-size: 14px; }
+.facts b { font-size: 18px; }
+.road { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2mm; }
+.road div { border: 1.2px solid var(--line); border-radius: 1.5mm; padding: 2mm; display: grid; gap: .5mm; font-size: 11px; color: var(--muted); }
+.road div b { font-size: 13px; color: var(--ink); }
+.road div.on { border-color: var(--accent); background: #e6f0ea; }
+.road div.goal { border-style: dashed; }
+.learn { display: grid; gap: 2mm; counter-reset: l; }
+.learn li { list-style: none; display: grid; grid-template-columns: 8mm 1fr; gap: 1mm 2mm; }
+.learn li::before { counter-increment: l; content: counter(l); grid-row: span 2; font-weight: 900; font-size: 18px; color: var(--accent); }
+.learn li span { color: var(--muted); font-size: 11.5px; }
+.deck-link { border-left: 3px solid var(--wood); background: #faf4ec; padding: 2mm 3mm; font-size: 12px; }
+.deck-link b { color: #8a5a2b; }
+.fig { display: grid; gap: 1mm; }
+.fig svg { max-height: 80mm; }
+.cover-fig svg { max-height: 68mm; }
+.fig figcaption { font-size: 11px; color: var(--muted); text-align: center; }
+.steps { display: grid; gap: 4mm; }
+.stp { display: grid; grid-template-columns: 1fr 62mm; gap: 4mm; align-items: start; break-inside: avoid; }
+.stp h3 { font-size: 14px; display: flex; gap: 2mm; align-items: baseline; }
+.stp h3 span { font-size: 11px; color: #fff; background: var(--accent); border-radius: 1mm; padding: 0 2mm; }
+.stp ol { margin: 0; padding-left: 5mm; display: grid; gap: 1mm; }
+.stp svg { max-height: 56mm; }
+.views { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 6mm; align-items: end; }
+.views .fig svg { max-height: 70mm; }
+.cta { border: 2px solid var(--accent); border-radius: 2mm; padding: 4mm; display: grid; gap: 2mm; }
+.cta b.t { font-size: 16px; }
