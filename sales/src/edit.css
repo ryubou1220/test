@@ -1,0 +1,28 @@
+
+/* 編集モード（編集できる人だけに表示） */
+[contenteditable] { outline: 1.5px dashed var(--wood); outline-offset: 2px; border-radius: 3px; cursor: text; min-width: 1em; display: inline-block; }
+p[contenteditable], h1 [contenteditable], blockquote[contenteditable], h2[contenteditable], h3[contenteditable], figcaption[contenteditable], div[contenteditable] { display: block; }
+h1 [contenteditable] { display: inline; }
+[contenteditable]:focus { outline: 2px solid var(--accent); background: var(--accent-soft); }
+.ed-empty:empty::before { content: "（空）"; opacity: .5; }
+.ed-btn { font: inherit; font-size: 13px; cursor: pointer; border-radius: 8px; padding: 4px 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.ed-add { margin-top: 12px; border-style: dashed; color: var(--accent); border-color: var(--accent); }
+.ed-del { color: var(--warn); border-color: currentColor; padding: 1px 8px; font-size: 12px; margin-left: 6px; vertical-align: middle; justify-self: end; align-self: start; width: auto; }
+.stepcard > .ed-del { justify-self: end; grid-column: 1 / -1; margin: 10px 10px 0 0; }
+.ed-imgwrap { position: relative; display: block; }
+.ed-imgwrap .ed-img { position: absolute; right: 8px; bottom: 8px; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.ed-noimg { display: grid; place-items: center; aspect-ratio: 3 / 2; width: 100%; min-width: 160px; border: 1.5px dashed var(--line); border-radius: 10px; color: var(--muted); font-size: 13px; }
+.ed-faq { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; display: grid; gap: 6px; }
+.ed-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 6px; }
+.edbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--surface); border-top: 2px solid var(--accent); box-shadow: 0 -4px 16px rgba(0, 0, 0, .12); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+.edbar .ed-in { max-width: 1040px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.edbar button { font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; border-radius: 8px; padding: 8px 14px; border: 1.5px solid var(--accent); background: transparent; color: var(--accent); }
+.edbar button.ed-main { background: var(--accent); color: var(--accent-ink); }
+.edbar button:disabled { opacity: .6; cursor: default; }
+.edbar button:focus-visible, .ed-btn:focus-visible { outline: 3px solid var(--wood); outline-offset: 2px; }
+.ed-hint, .ed-msg { font-size: 13px; color: var(--muted); }
+.ed-msg { color: var(--ink); font-weight: 700; }
+.ed-links { max-width: 1040px; margin: 0 auto 10px; display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-height: 46vh; overflow-y: auto; }
+.ed-field { display: grid; gap: 2px; font-size: 12px; color: var(--muted); min-width: 0; }
+.ed-field input { font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; min-width: 0; }
+body:has(.edbar:not([hidden])) footer { padding-bottom: 120px; }
