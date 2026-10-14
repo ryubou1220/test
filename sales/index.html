@@ -65,11 +65,20 @@ h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
 .hero h1 { font-size: clamp(30px, 5.4vw, 52px); font-weight: 900; line-height: 1.3; letter-spacing: .01em; }
 .hero h1 em { font-style: normal; color: var(--accent); }
 .hero .sub { font-size: clamp(16px, 2vw, 19px); margin: 18px 0 0; }
-.hero-photo { position: relative; }
-.hero-photo img { border-radius: var(--r); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
-.hero-photo figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 .badges { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 22px; font-size: 14px; color: var(--muted); }
 .badges b { color: var(--ink); }
+
+/* ヒーローの図：つくる作品の並び */
+.hero-visual { background: var(--paper); border-radius: var(--r); padding: 18px; display: grid; gap: 12px; color: #1b231e; box-shadow: 0 1px 0 var(--line); }
+.hv { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; counter-reset: none; }
+.hv li { display: grid; gap: 4px; justify-items: center; align-content: end; border: 1px solid #e3e6df; border-radius: 10px; padding: 10px 8px 8px; }
+.hv img { height: 104px; width: auto; }
+.hv span, .hv-goal span { font-size: 14px; font-weight: 700; display: flex; gap: 6px; align-items: center; }
+.hv b { width: 22px; height: 22px; border-radius: 50%; background: #2c6849; color: #fff; display: grid; place-items: center; font-size: 12px; }
+.hv-goal { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; border: 2px solid #2c6849; border-radius: 10px; padding: 10px 14px; }
+.hv-goal img { height: 92px; width: auto; }
+.hv-goal span { flex-direction: column; align-items: flex-start; gap: 0; font-size: 20px; font-weight: 900; }
+.hv-goal small { font-size: 12px; color: #2c6849; letter-spacing: .1em; }
 
 /* 道のり */
 .road { display: grid; gap: 18px; margin-top: 36px; }
@@ -117,9 +126,10 @@ h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
 .prof dd { margin: 0; }
 .works { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .works figure { margin: 0; display: grid; gap: 6px; }
-.works img { border-radius: 10px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.works img { border-radius: 10px; aspect-ratio: 3 / 2; object-fit: cover; width: 100%; height: auto; }
 .works figcaption { font-size: 13px; color: var(--muted); }
 .works .wide { grid-column: span 2; }
+.works .wide img { aspect-ratio: 16 / 10; object-position: 50% 40%; }
 
 /* 声 */
 .voices { display: grid; gap: 18px; margin-top: 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
@@ -157,9 +167,14 @@ footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
       </div>
       <div class="badges"><span>最初の材料費 <b>約2,600円</b></span><span>1ステップ <b>半日〜2日</b></span><span>教材 <b>A4・6〜7ページの図面と手順</b></span></div>
     </div>
-    <figure class="hero-photo" style="margin:0">
-      <img src="photos/irori.webp" alt="ウッドデッキの上に置いた、ふた付きの囲炉裏テーブル" width="718" height="521">
-      <figcaption>監修者がつくった囲炉裏テーブル（STEP3）。ふたを外すと炉になる。</figcaption>
+    <figure class="hero-visual" style="margin:0" aria-label="講座でつくる作品">
+      <ol class="hv">
+        <li><img src="img/step1.svg" alt="踏み台" width="220" height="160"><span><b>1</b>踏み台</span></li>
+        <li><img src="img/step2.svg" alt="プランター台" width="220" height="160"><span><b>2</b>プランター台</span></li>
+        <li><img src="img/step3.svg" alt="囲炉裏テーブル" width="220" height="160"><span><b>3</b>囲炉裏テーブル</span></li>
+        <li><img src="img/step4.svg" alt="木製門扉" width="220" height="160"><span><b>4</b>木製門扉</span></li>
+      </ol>
+      <div class="hv-goal"><img src="img/deck.svg" alt="ウッドデッキの骨組み" width="220" height="160"><span><small>卒業制作</small>ウッドデッキ</span></div>
     </figure>
   </div>
 </header>
@@ -313,9 +328,10 @@ footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
         </dl>
       </div>
       <div class="works">
-        <figure class="wide"><img src="photos/irori-open.png" alt="ふたを外した囲炉裏テーブル。内側にケイカル板を貼った炉" width="624" height="436" loading="lazy"><figcaption>囲炉裏テーブルのふたを外したところ。炉の内側はケイカル板に耐熱塗料。</figcaption></figure>
-        <figure><img src="photos/bench.png" alt="すのこ張りのベンチ" width="487" height="370" loading="lazy"><figcaption>すのこ張りのベンチ</figcaption></figure>
-        <figure><img src="photos/irori.webp" alt="デッキの上の囲炉裏テーブル" width="718" height="521" loading="lazy"><figcaption>デッキの上で使う囲炉裏テーブル</figcaption></figure>
+        <figure class="wide"><img src="photos/bench-crop.jpg" alt="白木のすのこ張りベンチ" width="392" height="325" loading="lazy"><figcaption>すのこ張りのベンチ。STEP2の「すき間をそろえて張る」技術でつくれる。</figcaption></figure>
+        <figure><img src="photos/irori-crop.jpg" alt="デッキの上に置いた囲炉裏テーブル" width="560" height="360" loading="lazy"><figcaption>デッキの上で使い続けている囲炉裏テーブル</figcaption></figure>
+        <figure><img src="photos/irori-open-crop.jpg" alt="ふたを外した囲炉裏テーブル。内側にケイカル板を貼った炉" width="600" height="421" loading="lazy"><figcaption>ふたを外すと炉。内側はケイカル板に耐熱塗料</figcaption></figure>
+      </div>
       </div>
     </div>
   </div>
