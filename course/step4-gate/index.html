@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>木製門扉 STEP4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="../../lib/sheet.css">
+<link rel="stylesheet" href="../../lib/course.css">
+<style>
+.stp.small { grid-template-columns: 1fr 56mm; }
+.stp.small svg { max-height: 58mm; }
+.views3 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 6mm; align-items: end; }
+.views3 .wide { grid-column: span 2; }
+.views3 svg { max-height: 82mm; }
+.views3 .wide svg { max-height: 52mm; }
+.danger { border: 2px solid var(--warn); border-radius: 2mm; padding: 3mm 4mm; display: grid; gap: 1.5mm; }
+.danger b.t { color: var(--warn); font-size: 14px; }
+.danger ul { margin: 0; padding-left: 4.5mm; display: grid; gap: .8mm; }
+.alt { border: 1.2px dashed var(--accent); border-radius: 2mm; padding: 3mm 4mm; font-size: 12px; }
+.alt b { color: var(--accent); }
+.arrow-note { font-weight: 700; color: var(--warn); }
+</style>
+</head>
+<body>
+<div class="bar">
+  <form id="f" novalidate>
+    <div class="f"><label for="hinge">蝶番の位置（外から見て）</label>
+      <select id="hinge">
+        <option value="left" selected>左に蝶番（右に開け閉めの取っ手）</option>
+        <option value="right">右に蝶番（左に開け閉めの取っ手）</option>
+      </select>
+    </div>
+    <button type="button" class="print" id="print">印刷・PDFで保存</button>
+    <p class="tip">「印刷・PDFで保存」→ 送信先を「PDFに保存」にすると、販売用のPDF（A4・7ページ）ができます。</p>
+  </form>
+</div>
+
+<main class="sheets" id="sheets"></main>
+
+<script src="../../lib/drawing.js"></script>
+<script src="../../lib/course.js"></script>
+<script>
+const { mm, esc, dimH, dimV, iso } = Draw;
+const { road, cutBar, packCuts, contact } = Course;
+const $ = (id) => document.getElementById(id);
+
+// ===== 寸法（mm） =====
+const POST = 89;                 // 門柱 4×4材 89×89
+const T2 = 38, B4 = 89, T1 = 19; // 2×4材 38×89、1×4材 19×89
+const GW = 900, GH = 1200;       // 扉
+const SIDE = 10, BOTTOM = 50;    // 扉と柱のすき間、扉の下のすき間
+const ABOVE = 1300, BURY = 500;  // 柱の地上の高さ、埋める深さ
+const POST_L = ABOVE + BURY;     // 1800
+const HOLE_W = 250, GRAVEL = 50, HOLE_D = BURY + GRAVEL;
+const NB = 9;                    // 扉の板の枚数
+const BGAP = (GW - B4 * NB) / (NB - 1);  // 約12.4
+const RAIL_IN = 120;             // 横桟の位置（扉の上下の端から）
+
+const G = {};
+(function build() {
+  G.p1 = { x: 0, y: 0, z: 0, w: POST, d: POST, h: ABOVE };                       // 蝶番側の柱
+  G.gx0 = POST + SIDE; G.gx1 = G.gx0 + GW;
+  G.p2 = { x: G.gx1 + SIDE, y: 0, z: 0, w: POST, d: POST, h: ABOVE };             // 取っ手側の柱
+  G.TW = G.p2.x + POST;
+  G.inner = G.p2.x - POST;                                                        // 柱の内側の間隔 920
+  G.boards = [...Array(NB)].map((_, i) => ({ x: G.gx0 + i * (B4 + BGAP), y: POST - T1, z: BOTTOM, w: B4, d: T1, h: GH }));
+  const rz0 = BOTTOM + RAIL_IN, rz1 = BOTTOM + GH - RAIL_IN - B4;
+  G.rails = [rz0, rz1].map((z) => ({ x: G.gx0, y: POST - T1 - T2, z, w: GW, d: T2, h: B4 }));
+  // 筋交い：下の横桟の上（蝶番側）から、上の横桟の下（取っ手側）へ
+  const zA = rz0 + B4, zB = rz1;
+  const A = [G.gx0 + 70, zA], B = [G.gx1 - 70, zB];
+  const len = Math.hypot(B[0] - A[0], B[1] - A[1]);
+  const u = [(B[0] - A[0]) / len, (B[1] - A[1]) / len], n = [-u[1], u[0]];
+  const edge = (sgn, z) => { const p0 = [A[0] + n[0] * sgn * B4 / 2, A[1] + n[1] * sgn * B4 / 2]; const t = (z - p0[1]) / u[1]; return [p0[0] + u[0] * t, z]; };
+  G.brace = [edge(1, zA), edge(1, zB), edge(-1, zB), edge(-1, zA)];
+  G.braceLong = Math.round(Math.max(Math.hypot(G.brace[1][0] - G.brace[0][0], zB - zA), Math.hypot(G.brace[2][0] - G.brace[3][0], zB - zA)));
+  G.braceAngle = Math.round(Math.atan2(zB - zA, B[0] - A[0]) * 180 / Math.PI);
+  G.rz0 = rz0; G.rz1 = rz1;
+  G.diag = Math.round(Math.hypot(GW, GH));
+})();
+
+// ===== 図 =====
+// 正面図（外から見た図）。mirror=true で左右反転
+function elevation(side, mirror) {
+  const fs = 30, sw = 1.6, L = 110, R = 150, Tp = 60, Bt = HOLE_D + 120;
+  const X = (x) => L + (mirror ? G.TW - x : x), Y = (z) => Tp + ABOVE - z;
+  const rx = (x, w) => (mirror ? X(x + w) : X(x));
+  let s = `<svg viewBox="0 0 ${G.TW + L + R} ${ABOVE + Tp + Bt}" role="img" aria-label="${side === 'front' ? '外から見た図' : '内側から見た図'}">`;
+  // 地面と基礎
+  s += `<line x1="${X(-80) - (mirror ? 0 : 0)}" x2="${X(G.TW + 80)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="3"/>`;
+  [G.p1, G.p2].forEach((p) => {
+    const cx = p.x + POST / 2;
+    s += `<rect x="${rx(cx - HOLE_W / 2, HOLE_W)}" y="${Y(0)}" width="${HOLE_W}" height="${BURY}" fill="#d9ddd8" stroke="var(--muted)" stroke-dasharray="8 5"/>`;
+    s += `<rect x="${rx(cx - HOLE_W / 2, HOLE_W)}" y="${Y(-BURY)}" width="${HOLE_W}" height="${GRAVEL}" fill="#c3c0b8" stroke="var(--muted)" stroke-dasharray="8 5"/>`;
+    s += `<rect x="${rx(p.x, POST)}" y="${Y(ABOVE)}" width="${POST}" height="${ABOVE + BURY}" fill="#fff" stroke="var(--ink)" stroke-width="${sw}"/>`;
+  });
+  if (side === 'front') {
+    G.boards.forEach((b) => { s += `<rect x="${rx(b.x, b.w)}" y="${Y(b.z + b.h)}" width="${b.w}" height="${b.h}" fill="var(--wood-soft)" stroke="var(--ink)" stroke-width="${sw}"/>`; });
+  } else {
+    G.boards.forEach((b) => { s += `<rect x="${rx(b.x, b.w)}" y="${Y(b.z + b.h)}" width="${b.w}" height="${b.h}" fill="#f7efe4" stroke="var(--muted)" stroke-width="${sw * .7}"/>`; });
+    G.rails.forEach((r) => { s += `<rect x="${rx(r.x, r.w)}" y="${Y(r.z + r.h)}" width="${r.w}" height="${r.h}" fill="var(--wood)" stroke="var(--ink)" stroke-width="${sw}"/>`; });
+    s += `<polygon points="${G.brace.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="var(--wood)" stroke="var(--ink)" stroke-width="${sw}"/>`;
+    // 蝶番と取っ手
+    G.rails.forEach((r) => {
+      s += `<rect x="${rx(G.p1.x + POST - 30, 230)}" y="${Y(r.z + r.h / 2 + 18)}" width="230" height="36" fill="#9aa2a8" stroke="var(--ink)" stroke-width="${sw}"/>`;
+    });
+    s += `<rect x="${rx(G.gx1 - 70, 120)}" y="${Y(G.rz1 + B4 / 2 + 20)}" width="120" height="40" fill="#9aa2a8" stroke="var(--ink)" stroke-width="${sw}"/>`;
+    s += `<text x="${X(G.gx1 - 10)}" y="${Y(G.rz1 + B4 + 40)}" text-anchor="middle" font-size="${fs * .8}">ラッチ</text>`;
+    s += `<text x="${X(G.p1.x + POST + 85)}" y="${Y(G.rz0 - 40)}" text-anchor="middle" font-size="${fs * .8}">蝶番</text>`;
+    // 筋交いの向き
+    const mid = [(G.brace[0][0] + G.brace[2][0]) / 2, (G.brace[0][1] + G.brace[2][1]) / 2];
+    s += `<text x="${X(mid[0]) + (mirror ? -1 : 1) * 120}" y="${Y(mid[1])}" text-anchor="middle" font-size="${fs}" font-weight="700" fill="var(--warn)">筋交い</text>`;
+  }
+  // 寸法
+  s += dimH([X(G.p1.x + POST), X(G.gx0), X(G.gx1), X(G.p2.x)].sort((a, b) => a - b), Y(ABOVE) - 30, fs * .8, sw, { force: true, labels: mirror ? [SIDE, GW, SIDE].map(String) : [String(SIDE), String(GW), String(SIDE)] });
+  s += dimH([X(G.p1.x + POST), X(G.p2.x)].sort((a, b) => a - b), Y(ABOVE) - 80, fs * .85, sw, { force: true, labels: [`柱の内側 ${G.inner}`] });
+  const dx = mirror ? X(-50) : X(G.TW + 50);
+  s += dimV([Y(ABOVE), Y(BOTTOM + GH), Y(BOTTOM), Y(0), Y(-BURY), Y(-HOLE_D)], dx, fs * .8, sw, { force: true, labels: ['50', String(GH), String(BOTTOM), String(BURY), String(GRAVEL)] });
+  s += `<text x="${X(-60)}" y="${Y(-HOLE_D / 2)}" text-anchor="${mirror ? 'start' : 'end'}" font-size="${fs * .75}" class="m">コンクリート</text>`;
+  s += `<text x="${X(G.TW / 2)}" y="${Y(-HOLE_D) + fs * 1.6}" text-anchor="middle" font-size="${fs * .8}" class="m">穴 直径約${HOLE_W}・深さ${HOLE_D}（底に砕石${GRAVEL}）</text>`;
+  return s + '</svg>';
+}
+// 平面図（上から）：扉の開く向き
+function planView(mirror) {
+  const fs = 30, sw = 1.6, L = 60, R = 60, Tp = 70, Bt = GW + 80;
+  const X = (x) => L + (mirror ? G.TW - x : x), Y = (y) => Tp + (POST - y);
+  const rx = (x, w) => (mirror ? X(x + w) : X(x));
+  let s = `<svg viewBox="0 0 ${G.TW + L + R} ${POST + Tp + Bt}" role="img" aria-label="上から見た図">`;
+  s += `<text x="${X(G.TW / 2)}" y="${Tp - 30}" text-anchor="middle" font-size="${fs * .8}" class="m">道路側（外）</text>`;
+  [G.p1, G.p2].forEach((p) => { s += `<rect x="${rx(p.x, POST)}" y="${Y(POST)}" width="${POST}" height="${POST}" fill="#fff" stroke="var(--ink)" stroke-width="${sw}"/>`; });
+  s += `<rect x="${rx(G.gx0, GW)}" y="${Y(POST)}" width="${GW}" height="${T1 + T2}" fill="var(--wood-soft)" stroke="var(--ink)" stroke-width="${sw}"/>`;
+  const hx = X(G.gx0), hy = Y(POST - T1 - T2);
+  const ex = X(G.gx0) + (mirror ? -1 : 1) * 0, ey = hy + GW;
+  s += `<path d="M${X(G.gx1)} ${hy} A ${GW} ${GW} 0 0 ${mirror ? 0 : 1} ${hx} ${ey}" fill="none" stroke="var(--accent)" stroke-width="${sw}" stroke-dasharray="12 8"/>`;
+  s += `<line x1="${hx}" y1="${hy}" x2="${hx}" y2="${ey}" stroke="var(--accent)" stroke-width="${sw * 2}"/>`;
+  s += `<rect x="${rx(G.p2.x - 19, 19)}" y="${Y(POST - T1 - T2)}" width="19" height="60" fill="var(--wood)" stroke="var(--ink)"/>`;
+  s += `<text x="${X(G.gx0 + GW / 2)}" y="${hy + GW * .55}" text-anchor="middle" font-size="${fs * .8}" fill="var(--accent)">内側（敷地）へ開く</text>`;
+  s += `<text x="${X(G.p2.x - 30)}" y="${hy + 110}" text-anchor="${mirror ? 'start' : 'end'}" font-size="${fs * .7}" class="m">戸当たり</text>`;
+  return s + '</svg>';
+}
+// 柱の基礎の断面
+function footing() {
+  const fs = 22, sw = 1.4, L = 120, R = 200, Tp = 60, Bt = 50;
+  const W = HOLE_W + 160;
+  const X = (x) => L + x, Y = (z) => Tp + 250 - z;
+  let s = `<svg viewBox="0 0 ${W + L + R} ${250 + HOLE_D + Tp + Bt}" role="img" aria-label="基礎の断面">`;
+  s += `<rect x="${X(0)}" y="${Y(0)}" width="${W}" height="${HOLE_D + 20}" fill="#ece6da"/>`;
+  s += `<rect x="${X(80)}" y="${Y(0)}" width="${HOLE_W}" height="${BURY}" fill="#d3d7d2" stroke="var(--ink)" stroke-width="${sw}"/>`;
+  s += `<rect x="${X(80)}" y="${Y(-BURY)}" width="${HOLE_W}" height="${GRAVEL}" fill="#bdb6a8" stroke="var(--ink)" stroke-width="${sw}"/>`;
+  s += `<rect x="${X(80 + (HOLE_W - POST) / 2)}" y="${Y(250)}" width="${POST}" height="${250 + BURY}" fill="#fff" stroke="var(--ink)" stroke-width="${sw}"/>`;
+  s += `<path d="M${X(80)} ${Y(0)} L${X(80 + HOLE_W / 2 - POST / 2)} ${Y(20)} M${X(80 + HOLE_W)} ${Y(0)} L${X(80 + HOLE_W / 2 + POST / 2)} ${Y(20)}" stroke="var(--ink)" stroke-width="${sw}"/>`;
+  s += `<line x1="${X(-20)}" x2="${X(W + 20)}" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--ink)" stroke-width="3"/>`;
+  s += `<text x="${X(W + 30)}" y="${Y(-BURY / 2)}" font-size="${fs}">コンクリート</text>`;
+  s += `<text x="${X(W + 30)}" y="${Y(-BURY - GRAVEL / 2) + 8}" font-size="${fs}">砕石</text>`;
+  s += `<text x="${X(W + 30)}" y="${Y(30)}" font-size="${fs}">上面を山形に</text>`;
+  s += `<text x="${X(W + 30)}" y="${Y(30) + fs * 1.2}" font-size="${fs * .85}" class="m">（水がたまらない）</text>`;
+  s += dimV([Y(0), Y(-BURY), Y(-HOLE_D)], X(-40), fs * .9, sw, { force: true });
+  s += dimH([X(80), X(80 + HOLE_W)], Y(-HOLE_D) + 36, fs * .9, sw, { force: true });
+  return s + '</svg>';
+}
+
+// ===== ページ =====
+const sheet = (name, no, total, body) => Course.sheet({ step: 'STEP4 木製門扉', name, size: `扉${GW}×${GH}（柱の内側${G.inner}）`, no, total, body });
+
+function render() {
+  const mirror = $('hinge').value === 'right';
+  const TOTAL = 7;
+  const pages = [];
+  const allBoxes = [G.p1, G.p2, ...G.rails, ...G.boards];
+  const isoBoxes = mirror ? allBoxes.map((b) => ({ ...b, x: G.TW - b.x - b.w })) : allBoxes;
+
+  // 部品とカット
+  const bins4x4 = packCuts([G.p1, G.p2].map(() => ({ len: POST_L, use: '門柱' })), 1820);
+  const bins1x4 = packCuts([...G.boards.map(() => ({ len: GH, use: '扉の板' })), { len: GH, use: '戸当たり' }], 2440);
+  const bins2x4 = packCuts([...G.rails.map(() => ({ len: GW, use: '横桟' })), { len: G.braceLong, use: '筋交い' }], 1820);
+  const bagsConcrete = 4;
+  const cost = bins4x4.length * 2500 + bins1x4.length * 450 + bins2x4.length * 500 + 1500 + 1000 + 600 + bagsConcrete * 600 + 400;
+
+  // 1 表紙
+  pages.push(sheet('表紙', 1, TOTAL, `
+    <div class="course">${Course.BRAND.course}</div>
+    <h1 class="big-title">STEP4　木製門扉をつくる</h1>
+    <div class="facts"><span>材料費 <b>約${(Math.round(cost / 1000) / 10).toFixed(1)}万円</b></span><span>作業時間 <b>2日</b>（間にコンクリートを固める日）</span><span>扉 <b>幅${GW}×高さ${GH}mm</b></span></div>
+    <figure class="fig cover-fig" style="margin:0">${iso(isoBoxes, { title: '完成した門扉' })}<figcaption>完成図（外から見た側）。柱は地面から${ABOVE}mm、地中に${BURY}mm</figcaption></figure>
+    ${road(3)}
+    <div>
+      <h3>STEP4で覚えること</h3>
+      <ol class="learn">
+        <li><b>穴を掘り、コンクリートで柱を建てる</b><span>デッキの束石を据える作業と同じ</span></li>
+        <li><b>柱の垂直を、2つの方向から確かめる</b><span>水平器を柱の2つの面に当てる</span></li>
+        <li><b>筋交いで、扉が垂れないようにする</b><span>向きを間違えると効かない。斜め切りもここで覚える</span></li>
+        <li><b>金物を付け、まわりのすき間を均等にする</b><span>蝶番・ラッチ・戸当たり</span></li>
+      </ol>
+    </div>
+  `));
+
+  // 2 道具と材料
+  const row = (name, spec, qty, price) => `<tr><td><i class="box"></i>${name}</td><td>${spec}</td><td class="r">${qty}</td><td class="r">${price}</td></tr>`;
+  pages.push(sheet('道具と材料', 2, TOTAL, `
+    <h2>道具と材料<small>買ったらチェック</small></h2>
+    <div>
+      <h3>材料（約${cost.toLocaleString()}円）</h3>
+      <table class="buy"><thead><tr><th>材料</th><th>規格</th><th class="r">数量</th><th class="r">目安</th></tr></thead><tbody>
+        ${row('4×4材（門柱）', '89×89mm　長さ1,820mm　防腐処理材', `${bins4x4.length}本`, `¥${(bins4x4.length * 2500).toLocaleString()}`)}
+        ${row('1×4材（扉の板・戸当たり）', '19×89mm　長さ2,440mm', `${bins1x4.length}本`, `¥${(bins1x4.length * 450).toLocaleString()}`)}
+        ${row('2×4材（横桟・筋交い）', '38×89mm　長さ1,820mm', `${bins2x4.length}本`, `¥${(bins2x4.length * 500).toLocaleString()}`)}
+        ${row('Tヒンジ（門扉用の蝶番）', 'ステンレス　長さ200mm程度', '2個', '¥1,500')}
+        ${row('ゲートラッチ（留め金）', '屋外用', '1個', '¥1,000')}
+        ${row('コーススレッド', '長さ45mm　100本入り（板を横桟に留める）', '1箱', '¥600')}
+        ${row('インスタントコンクリート', '25kg（水を混ぜるだけ）', `${bagsConcrete}袋`, `¥${(bagsConcrete * 600).toLocaleString()}`)}
+        ${row('砕石', '20kg', '1袋', '¥400')}
+        ${row('塗料', '屋外用の木材保護塗料（STEP1〜3の残りでよい）', '—', '—')}
+        <tr class="total"><td colspan="3">合計（目安）</td><td class="r">¥${cost.toLocaleString()}</td></tr>
+      </tbody></table>
+    </div>
+    <div class="grid2">
+      <div><h3>道具</h3><ul class="check">
+        <li><i class="box"></i>STEP1〜3の道具一式（水平器も）</li>
+        <li><i class="box"></i>スコップと穴掘り器（ダブルスコップ）</li>
+        <li><i class="box"></i>練り舟（トロ舟）とクワ、またはバケツと移植ごて</li>
+        <li><i class="box"></i>突き棒（2×4の端材でよい）</li>
+        <li><i class="box"></i>水糸・杭・仮留め用の板（2×4の端材2本）</li>
+        <li><i class="box"></i>ゴム手袋（コンクリートで手が荒れる）</li>
+      </ul></div>
+      <div class="alt"><b>今ある門柱や塀の柱に付けるとき</b><br>
+        柱を建てる作業（5ページ）は省けます。柱の内側の間隔が${G.inner}mmになるよう、扉の幅（${GW}mm）と板の枚数を調整してください。
+        板のすき間は「（扉の幅 − 89×枚数）÷（枚数 − 1）」で計算できます（STEP2の割付けと同じ）。
+        ブロック塀に木の柱を付けるときは、ブロック用のアンカーを使い、塀の強度を必ず確かめてください。
+      </div>
+    </div>
+  `));
+
+  // 3 図面
+  pages.push(sheet('図面', 3, TOTAL, `
+    <h2>図面<small>単位はmm</small></h2>
+    <div class="views3">
+      <figure class="fig" style="margin:0">${elevation('front', mirror)}<figcaption>外から見た図（道路側）</figcaption></figure>
+      <figure class="fig" style="margin:0">${elevation('back', !mirror)}<figcaption>内側から見た図（敷地側）。左右が逆になることに注意</figcaption></figure>
+      <figure class="fig wide" style="margin:0">${planView(mirror)}<figcaption>上から見た図。扉は敷地の内側へ開き、戸当たりで止まる</figcaption></figure>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>部品</h3>
+        <table><tbody>
+          <tr><td>門柱</td><td>4×4材</td><td class="r">${POST_L}mm × 2本</td></tr>
+          <tr><td>扉の板</td><td>1×4材</td><td class="r">${GH}mm × ${NB}枚</td></tr>
+          <tr><td>横桟</td><td>2×4材</td><td class="r">${GW}mm × 2本</td></tr>
+          <tr><td>筋交い</td><td>2×4材</td><td class="r">長い辺 約${G.braceLong}mm × 1本</td></tr>
+          <tr><td>戸当たり</td><td>1×4材</td><td class="r">${GH}mm × 1本</td></tr>
+        </tbody></table>
+      </div>
+      <div>
+        <h3>筋交いの向き</h3>
+        <p class="arrow-note">蝶番側の下から、取っ手側の上へ。</p>
+        <p>扉は、取っ手側が下がろうとします。筋交いがその力を蝶番側の下に伝えて、扉が垂れるのを防ぎます。逆向きに付けると、ほとんど効きません。</p>
+      </div>
+    </div>
+  `));
+
+  // 4 カット表
+  const bars = (bins, stock) => bins.map((b) => { const c = cutBar(b, stock); return `<div class="cutrow"><span class="st">${mm(stock)}</span><span class="n">×1本</span>${c.html}</div>`; }).join('');
+  pages.push(sheet('カット表', 4, TOTAL, `
+    <h2>カット表<small>斜線は余り</small></h2>
+    <div class="cutgrp"><h3>4×4材 1,820mm × ${bins4x4.length}本</h3>${bars(bins4x4, 1820)}</div>
+    <div class="cutgrp"><h3>1×4材 2,440mm × ${bins1x4.length}本</h3>${bars(bins1x4, 2440)}</div>
+    <div class="cutgrp"><h3>2×4材 1,820mm × ${bins2x4.length}本</h3>${bars(bins2x4, 1820)}<p class="note">筋交いは、少し長めに切っておき、実物に当てて斜めの線を引いてから切る（6ページ）。</p></div>
+    <div class="grid2">
+      <div>
+        <h3>斜め切り（筋交いの両端）</h3>
+        <ol class="learn">
+          <li><b>扉を裏返し、横桟の間に筋交いの材をのせる</b><span>蝶番側の下から、取っ手側の上へ</span></li>
+          <li><b>横桟の縁に沿って、材に線を引く</b><span>上下2か所。角度は約${G.braceAngle}°になる</span></li>
+          <li><b>線の外側を、ゆっくり切る</b><span>ノコギリは線に沿わせて、最初の数回は軽く引く</span></li>
+        </ol>
+      </div>
+      <div>
+        <h3>扉の板の割付け</h3>
+        <p class="formula" style="font-size:14px;font-weight:700;background:#f2f4f0;border-radius:1.5mm;padding:2.5mm 3mm">すき間 ＝（${GW} − 89×${NB}）÷ ${NB - 1} ＝ 約${BGAP.toFixed(1)}mm</p>
+        <p style="margin-top:2mm">12mmの端材をゲージにして並べると、両端がちょうど${GW}mmにそろいます。STEP2のすき間ゲージと同じやり方です。</p>
+      </div>
+    </div>
+  `));
+
+  // 5 1日目：柱を建てる
+  const postsOnly = mirror ? [G.p1, G.p2].map((b) => ({ ...b, x: G.TW - b.x - b.w })) : [G.p1, G.p2];
+  pages.push(sheet('1日目 柱を建てる', 5, TOTAL, `
+    <h2>1日目　柱を建てる<small>この日はコンクリートを固めて終わり</small></h2>
+    <div class="steps">
+      <div class="stp small"><div>
+        <h3><span>1</span>位置を出して、穴を掘る</h3>
+        <ol>
+          <li>杭と水糸で、柱を立てる線を張る。2本の柱の中心の間隔は${G.inner + POST}mm</li>
+          <li>柱の位置に、直径約${HOLE_W}mm・深さ${HOLE_D}mmの穴を掘る</li>
+          <li>底に砕石を${GRAVEL}mm入れ、突き棒でしっかり突き固める</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${footing()}<figcaption>基礎の断面</figcaption></figure></div>
+      <div class="stp small"><div>
+        <h3><span>2</span>柱を立てて、垂直を出す</h3>
+        <ol>
+          <li>柱を穴に立て、2方向から仮留めの板で支える（板は杭に留める）</li>
+          <li><b>水平器を柱の2つの面に当てて</b>、どちらも垂直になるまで調整する</li>
+          <li>2本目も同じように立てる。<b>柱の内側の間隔が上でも下でも${G.inner}mm</b>、高さ（地面から${ABOVE}mm）がそろっているか確かめる</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso(postsOnly, { title: '柱を2本立てる' })}<figcaption>柱の内側の間隔 ${G.inner}mm</figcaption></figure></div>
+      <div class="stp small"><div>
+        <h3><span>3</span>コンクリートを入れて、固める</h3>
+        <ol>
+          <li>インスタントコンクリートに水を混ぜ、穴に少しずつ入れる。棒で突いて空気を抜く</li>
+          <li>入れ終わったら、もう一度2本の柱の垂直と間隔を確かめる</li>
+          <li>上の面を柱に向かって山形に盛り、雨水がたまらないようにする</li>
+          <li><b>2日以上</b>そのまま固める。扉はこの間につくる</li>
+        </ol>
+      </div><div></div></div>
+    </div>
+    <div class="deck-link"><b>ウッドデッキでは：</b>「水糸で位置を出す」「穴を掘って突き固める」「2方向から垂直を見る」は、デッキの束石と束柱の作業そのものです。デッキでは、これを十数か所くり返します。</div>
+  `));
+
+  // 6 2日目：扉をつくって吊る
+  pages.push(sheet('2日目 扉をつくる', 6, TOTAL, `
+    <h2>2日目　扉をつくって、吊る<small>板 → 横桟 → 筋交い → 金物</small></h2>
+    <div class="steps">
+      <div class="stp small"><div>
+        <h3><span>4</span>板を並べて、横桟を留める</h3>
+        <ol>
+          <li>平らな場所に、扉の板${NB}枚を表を下にして並べる。すき間に12mmのゲージをはさむ</li>
+          <li>板の上と下の端から${RAIL_IN}mmの位置に横桟をのせる。<b>対角線が両方とも約${mm(G.diag)}mm</b>になるよう直角を出す</li>
+          <li>横桟の上から、板1枚につき2本ずつ45mmのビスで留める</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${elevation('back', !mirror).replace('role="img"', 'role="img" style="max-height:58mm"')}<figcaption>扉の裏側</figcaption></figure></div>
+      <div class="stp small"><div>
+        <h3><span>5</span>筋交いを入れる</h3>
+        <ol>
+          <li><b class="arrow-note">蝶番側の下から、取っ手側の上へ</b>筋交いの材をのせ、横桟の縁に沿って線を引いて斜めに切る（4ページ）</li>
+          <li>横桟の間にぴったり入れ、板1枚につき2本ずつ留める</li>
+        </ol>
+      </div><div></div></div>
+      <div class="stp small"><div>
+        <h3><span>6</span>扉を吊って、ラッチと戸当たりを付ける</h3>
+        <ol>
+          <li>扉の下に${BOTTOM}mmの台（2×4の端材を寝かせたもの＋薄い板）をかませ、柱の間に置く。両側のすき間が${SIDE}mmずつになるよう位置を決める</li>
+          <li>Tヒンジの長い方を横桟に、短い方を蝶番側の柱に留める</li>
+          <li>台を外して開け閉めし、こすれる所がないか確かめる</li>
+          <li>取っ手側の柱の内側に戸当たりを付け、ラッチを取り付ける</li>
+        </ol>
+      </div><figure class="fig" style="margin:0">${iso(isoBoxes, { title: '完成' })}<figcaption>完成（外から見た側）</figcaption></figure></div>
+    </div>
+  `));
+
+  // 7 できたら
+  pages.push(sheet('できたら', 7, TOTAL, `
+    <h2>できあがりチェック<small>全部できたらSTEP4修了</small></h2>
+    <ul class="check" style="font-size:13px">
+      <li><i class="box"></i>柱が2本とも、2つの面で垂直</li>
+      <li><i class="box"></i>扉のまわりのすき間が、左右${SIDE}mm・下${BOTTOM}mmでそろっている</li>
+      <li><i class="box"></i>扉を開けたまま手を離しても、取っ手側が下がらない</li>
+      <li><i class="box"></i>閉めると戸当たりで止まり、ラッチがかかる</li>
+      <li><i class="box"></i>柱のまわりのコンクリートに、水がたまらない</li>
+    </ul>
+    <div>
+      <h3>うまくいかなかったときは</h3>
+      <table><tbody>
+        <tr><td><b>扉が下がって地面をこする</b></td><td>筋交いの向きが逆か、すき間がある。向きを確かめ、筋交いの端をぴったり当て直す</td></tr>
+        <tr><td><b>上と下ですき間が違う</b></td><td>柱が傾いている、または扉が直角でない。扉の対角線を測り直し、蝶番の位置で調整する</td></tr>
+        <tr><td><b>ラッチがかからない</b></td><td>扉が少し下がっている。ラッチの受け側の位置を下げて付け直す</td></tr>
+      </tbody></table>
+    </div>
+    <div class="danger">
+      <b class="t">掘る前に必ず確かめること</b>
+      <ul>
+        <li>地中に水道管・ガス管・電線が通っていないか（家の図面や、メーターの位置を見る）</li>
+        <li>敷地の境界の内側か。お隣との境界ぎりぎりなら、先に話しておく</li>
+        <li>コンクリートはアルカリ性で、手が荒れる。ゴム手袋と保護メガネを使う</li>
+      </ul>
+    </div>
+    ${road(4)}
+    <div class="cta">
+      <b class="t">いよいよ卒業制作「ウッドデッキ」</b>
+      <p>切る・留める（STEP1）、板を張る（STEP2）、枠を組む（STEP3）、柱を建てる（STEP4）。ウッドデッキに必要な作業は、すべて身につきました。</p>
+      <p>あなたの家のサイズで材料と費用を計算し、サイズ別の図面と180日間のサポートで、一緒に完成させましょう。</p>
+      <p>${contact()}</p>
+    </div>
+  `));
+
+  $('sheets').innerHTML = pages.join('');
+}
+
+$('f').addEventListener('input', render);
+$('f').addEventListener('submit', (e) => e.preventDefault());
+$('print').addEventListener('click', () => window.print());
+render();
+</script>
+</body>
+</html>
