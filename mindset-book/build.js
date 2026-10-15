@@ -9,7 +9,7 @@ const {
 } = require("docx");
 const book = require("./content");
 
-const FONT = "Meiryo";
+const FONT = process.env.BOOK_FONT || "Meiryo";
 const ACCENT = "C0504D";
 const SUB = "7F7F7F";
 const out = process.argv[2] || path.join(__dirname, "人生を変える64の習慣リスト.docx");
@@ -18,7 +18,7 @@ const run = (text, o = {}) => new TextRun({ text, font: { ascii: FONT, eastAsia:
 const para = (text, o = {}, r = {}) => new Paragraph({ children: [run(text, r)], spacing: { after: 120, line: 360 }, ...o });
 const lines = (text, o, r) => text.split("\n").map((t) => para(t, o, r));
 const bullet = (text) => new Paragraph({ numbering: { reference: "bullets", level: 0 }, children: [run(text)], spacing: { after: 60, line: 340 } });
-const check = (text) => new Paragraph({ children: [run("✓ ", { color: ACCENT, bold: true }), run(text)], indent: { left: 360 }, spacing: { after: 60 } });
+const check = (text, keepNext = false) => new Paragraph({ children: [run("✓ ", { color: ACCENT, bold: true }), run(text)], indent: { left: 360 }, spacing: { after: 60 }, keepNext });
 const pageBreak = () => new Paragraph({ children: [new PageBreak()] });
 const label = (text) => new Paragraph({ children: [run(text, { bold: true, color: ACCENT })], spacing: { before: 120, after: 60 } });
 const box = (children, fill) => {
@@ -95,7 +95,7 @@ book.chapters.forEach((ch) => {
     }));
   });
   children.push(new Paragraph({ heading: HeadingLevel.HEADING_3, children: [run("この章のまとめ")] }));
-  names.forEach((t) => children.push(check(t)));
+  names.forEach((t, i) => children.push(check(t, i < names.length - 1)));
 });
 if (n !== 64) throw new Error(`習慣の数が64ではありません: ${n}`);
 
