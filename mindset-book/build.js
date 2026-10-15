@@ -5,7 +5,7 @@ const path = require("path");
 const {
   Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel,
   PageBreak, Footer, PageNumber, Table, TableRow, TableCell, WidthType,
-  BorderStyle, ShadingType, LevelFormat,
+  BorderStyle, ShadingType, LevelFormat, ImageRun,
 } = require("docx");
 const book = require("./content");
 
@@ -38,13 +38,16 @@ const spacer = () => new Paragraph({ children: [], spacing: { after: 120 } });
 
 const children = [];
 
-// 表紙
-children.push(
-  new Paragraph({ children: [], spacing: { before: 3600 } }),
-  new Paragraph({ alignment: AlignmentType.CENTER, children: [run(book.title, { size: 52, bold: true })], spacing: { after: 360 } }),
-  new Paragraph({ alignment: AlignmentType.CENTER, children: [run(`〜${book.subtitle}〜`, { size: 28, color: SUB })], spacing: { after: 2400 } }),
-  new Paragraph({ alignment: AlignmentType.CENTER, children: [run(book.author, { size: 32, bold: true })] }),
-);
+// 表紙（cover/cover_vertical_1600x2560.png を使用）
+children.push(new Paragraph({
+  alignment: AlignmentType.CENTER,
+  children: [new ImageRun({
+    type: "png",
+    data: fs.readFileSync(path.join(__dirname, "cover", "cover_vertical_1600x2560.png")),
+    transformation: { width: 578, height: 925 },
+    altText: { title: book.title, description: `${book.title}　${book.subtitle}　${book.author}`, name: "cover" },
+  })],
+}));
 
 // 目次
 children.push(
