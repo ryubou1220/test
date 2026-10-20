@@ -13,6 +13,9 @@
     --gold: #c9a24a;
     --ink: #1b2433;
     --muted: #3c4656;
+    --bw: 214px;   /* book width */
+    --bh: 300px;   /* book height */
+    --bt: 34px;    /* book thickness */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 1408px; height: 768px; overflow: hidden; }
@@ -40,89 +43,109 @@
   .vdots.r { right: 42px; top: 440px; }
   .sparkle { position: absolute; border-radius: 50%; background: #fff; box-shadow: 0 0 10px 4px rgba(150, 220, 255, .9); }
 
-  /* ---------- book series ---------- */
-  .shelf { position: absolute; left: 0; top: 0; width: 680px; height: 768px; perspective: 1800px; }
+  /* ---------- book series (real 3D boxes) ---------- */
+  .shelf { position: absolute; left: 0; top: 0; width: 700px; height: 768px; }
   .glow {
-    position: absolute; left: 90px; top: 120px; width: 520px; height: 560px;
+    position: absolute; left: 80px; top: 110px; width: 560px; height: 580px;
     background: radial-gradient(ellipse at center, rgba(90, 190, 240, .5), transparent 70%);
     filter: blur(30px);
   }
   .book {
-    position: absolute; width: 250px; height: 356px;
-    transform: rotateY(16deg) rotateX(2deg);
+    position: absolute; width: var(--bw); height: var(--bh);
+    transform: perspective(1500px) rotateY(30deg) rotateX(-4deg);
     transform-style: preserve-3d;
   }
+  .floor {
+    position: absolute; left: 10px; top: calc(var(--bh) - 16px); width: calc(var(--bw) + 40px); height: 40px;
+    background: radial-gradient(ellipse at center, rgba(20, 40, 70, .38), transparent 70%);
+    filter: blur(8px); transform: translateZ(calc(var(--bt) / -2)) rotateX(90deg); transform-origin: top;
+  }
+  .face { position: absolute; backface-visibility: hidden; }
+  .front {
+    inset: 0; transform: translateZ(calc(var(--bt) / 2)); overflow: hidden; border-radius: 1px 4px 4px 1px;
+    background: linear-gradient(160deg, #ffffff 0%, #f5f7fa 55%, #e6ebf1 100%);
+    box-shadow: 0 0 0 1px rgba(255,255,255,.6) inset;
+  }
+  .front::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.18) 0, rgba(0,0,0,0) 14px),
+      linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.55) 44%, rgba(255,255,255,0) 58%);
+  }
+  .back  { inset: 0; transform: rotateY(180deg) translateZ(calc(var(--bt) / 2)); background: #0f2a52; }
+  .spine {
+    width: var(--bt); height: var(--bh); left: calc((var(--bw) - var(--bt)) / 2);
+    transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2));
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 10px 0;
+    color: #fff; box-shadow: inset 6px 0 8px rgba(255,255,255,.18), inset -8px 0 10px rgba(0,0,0,.35);
+  }
+  .spine .sv { font-family: "Oswald", sans-serif; font-size: 13px; line-height: 1; text-align: center; }
+  .spine .sv b { display: block; font-size: 20px; font-weight: 600; }
+  .spine .st { writing-mode: vertical-rl; font-weight: 700; font-size: 15px; letter-spacing: .12em; }
+  .spine .sg { width: 100%; height: 2px; background: linear-gradient(90deg, #b98c35, #f1dfa6, #b98c35); }
   .pages {
-    position: absolute; right: -12px; top: 6px; width: 12px; height: calc(100% - 10px);
-    background: repeating-linear-gradient(90deg, #fbfbf8 0 2px, #e7e5df 2px 3px);
-    transform: skewY(-28deg); transform-origin: left top;
+    width: var(--bt); height: calc(var(--bh) - 6px); top: 3px; left: calc((var(--bw) - var(--bt)) / 2);
+    transform: rotateY(90deg) translateZ(calc(var(--bw) / 2 - 3px));
+    background: repeating-linear-gradient(90deg, #fbfbf8 0 2px, #e2e0da 2px 3px);
   }
-  .cover {
-    position: absolute; inset: 0; border-radius: 2px 5px 5px 2px; overflow: hidden;
-    background: linear-gradient(160deg, #ffffff 0%, #f5f7fa 55%, #e8edf2 100%);
-    box-shadow: 22px 24px 44px rgba(20, 40, 70, .28), 0 0 0 1px rgba(255,255,255,.6) inset;
+  .top {
+    width: calc(var(--bw) - 4px); height: var(--bt); top: calc((var(--bh) - var(--bt)) / 2);
+    transform: rotateX(90deg) translateZ(calc(var(--bh) / 2 - 3px));
+    background: repeating-linear-gradient(0deg, #fbfbf8 0 2px, #e2e0da 2px 3px);
   }
-  .cover::after {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(105deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.5) 45%, rgba(255,255,255,0) 60%);
-  }
-  .hinge { position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(90deg, rgba(0,0,0,.08), rgba(255,255,255,.7)); }
   .band {
-    position: absolute; left: 0; right: 0; top: 0; height: 74px;
-    display: flex; align-items: center; gap: 12px; padding-left: 22px; color: #fff;
+    position: absolute; left: 0; right: 0; top: 0; height: 62px;
+    display: flex; align-items: center; gap: 10px; padding-left: 20px; color: #fff;
   }
   .band::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, #b98c35, #f1dfa6, #b98c35); }
-  .vol { font-family: "Oswald", sans-serif; font-weight: 500; font-size: 15px; letter-spacing: .08em; line-height: 1; text-align: center; opacity: .9; }
-  .vol b { display: block; font-size: 30px; font-weight: 600; letter-spacing: 0; margin-top: 2px; }
-  .part { font-weight: 900; font-size: 30px; letter-spacing: .04em; }
-  .foot { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; }
+  .vol { font-family: "Oswald", sans-serif; font-weight: 500; font-size: 12px; letter-spacing: .08em; line-height: 1; text-align: center; opacity: .9; }
+  .vol b { display: block; font-size: 26px; font-weight: 600; letter-spacing: 0; margin-top: 2px; }
+  .part { font-weight: 900; font-size: 23px; letter-spacing: .03em; white-space: nowrap; }
+  .foot { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; }
   .foot::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, #b98c35, #f1dfa6, #b98c35); }
-  .frame { position: absolute; left: 22px; right: 22px; top: 92px; bottom: 62px; border: 1px solid rgba(201,162,74,.75); }
-  .inner { position: absolute; left: 24px; right: 24px; top: 108px; text-align: center; }
-  .en { font-family: "Oswald", sans-serif; font-size: 13px; letter-spacing: .12em; color: var(--navy); }
+  .frame { position: absolute; left: 18px; right: 18px; top: 76px; bottom: 48px; border: 1px solid rgba(201,162,74,.75); }
+  .inner { position: absolute; left: 20px; right: 20px; top: 92px; text-align: center; }
+  .en { font-family: "Oswald", sans-serif; font-size: 11px; letter-spacing: .12em; color: var(--navy); }
   .title {
-    margin-top: 6px; font-weight: 900; font-size: 32px; line-height: 1.1;
+    margin-top: 4px; font-weight: 900; font-size: 27px; line-height: 1.1;
     background: linear-gradient(180deg, var(--navy) 0%, var(--blue) 55%, var(--teal) 100%);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .title span { display: block; font-size: 38px; }
-  .sub { margin-top: 12px; font-weight: 700; font-size: 14px; color: var(--navy); }
-  .rule { width: 120px; height: 1px; background: var(--gold); margin: 10px auto 8px; }
-  .sub-en { font-family: "Oswald", sans-serif; font-size: 12px; letter-spacing: .06em; color: var(--navy); }
-
-  .c1 .band, .c1 .foot { background: linear-gradient(120deg, #0f2a52, #1b4478); }
-  .c2 .band, .c2 .foot { background: linear-gradient(120deg, #17406f, #2063a0); }
-  .c3 .band, .c3 .foot { background: linear-gradient(120deg, #1a5a80, #26869a); }
-  .c4 .band, .c4 .foot { background: linear-gradient(120deg, #1d6e74, #2fa08f); }
+  .title span { display: block; font-size: 32px; }
+  .sub { margin-top: 10px; font-weight: 700; font-size: 12.5px; color: var(--navy); white-space: nowrap; }
+  .rule { width: 100px; height: 1px; background: var(--gold); margin: 8px auto 6px; }
+  .sub-en { font-family: "Oswald", sans-serif; font-size: 11px; letter-spacing: .06em; color: var(--navy); }
 
   .series-tag {
-    position: absolute; left: 78px; top: 690px;
+    position: absolute; left: 78px; top: 700px;
     font-family: "Oswald", sans-serif; font-size: 18px; letter-spacing: .14em; color: var(--navy);
   }
   .series-tag b { font-family: "Noto Sans JP", sans-serif; font-weight: 700; letter-spacing: .04em; margin-left: 10px; }
 
   /* ---------- right copy ---------- */
-  .copy { position: absolute; left: 690px; right: 50px; top: 120px; text-align: center; }
+  .copy { position: absolute; left: 700px; right: 44px; top: 168px; text-align: center; }
   .badge {
-    display: inline-block; padding: 11px 34px; font-weight: 700; font-size: 23px; white-space: nowrap; color: var(--ink);
+    display: inline-block; padding: 11px 34px; font-weight: 700; font-size: 23px; color: var(--ink); white-space: nowrap;
     background: linear-gradient(90deg, rgba(220,228,236,0), rgba(220,228,236,.95) 12%, rgba(220,228,236,.95) 88%, rgba(220,228,236,0));
     letter-spacing: .02em;
   }
-  .headline { margin-top: 26px; font-weight: 700; font-size: 58px; color: #14233b; white-space: nowrap; }
+  .headline { margin-top: 24px; font-weight: 700; font-size: 56px; color: #14233b; white-space: nowrap; }
   .headline .hl { color: var(--teal); }
-  .steps { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .steps { position: relative; margin-top: 54px; display: grid; grid-template-columns: repeat(6, 1fr); }
+  .steps::before { /* timeline */
+    content: ""; position: absolute; left: 8%; right: 8%; top: 19px; height: 3px;
+    background: linear-gradient(90deg, #13305c, #1d4f8c, #1f6f8a, #22867f, #2a9a8a);
+    opacity: .35;
+  }
   .step { position: relative; display: flex; flex-direction: column; align-items: center; }
   .num {
-    position: absolute; left: 6px; top: -6px; width: 40px; height: 40px; border-radius: 50%;
-    color: #fff; font-family: "Inter", sans-serif; font-weight: 600; font-size: 21px;
-    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%; position: relative;
+    color: #fff; font-family: "Inter", sans-serif; font-weight: 600; font-size: 20px;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 5px #eef2f6;
   }
-  .s1 .num { background: #13305c; } .s2 .num { background: #1d4f8c; } .s3 .num { background: #1f6f8a; } .s4 .num { background: #22867f; }
-  .icon { width: 92px; height: 80px; margin-left: 22px; }
-  .step h3 { margin-top: 12px; font-size: 29px; font-weight: 700; color: #14233b; }
-  .step h4 { font-family: "Inter", sans-serif; font-size: 19px; font-weight: 600; color: var(--ink); margin-top: 2px; }
-  .step p { font-family: "Inter", sans-serif; font-size: 16px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
-  .arrow { position: absolute; right: -12px; top: 32px; width: 14px; height: 14px; border-top: 3px solid #aab6c3; border-right: 3px solid #aab6c3; transform: rotate(45deg); }
+  .icon { width: 70px; height: 62px; margin-top: 18px; }
+  .step h3 { margin-top: 12px; font-size: 22px; font-weight: 700; color: #14233b; white-space: nowrap; }
+  .step h4 { font-family: "Inter", sans-serif; font-size: 14px; font-weight: 600; color: var(--muted); margin-top: 4px; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -132,98 +155,75 @@
   <div class="dots bl"><i></i><i></i><i></i><i></i></div>
   <div class="vdots r"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <span class="sparkle" style="left:60px;top:430px;width:4px;height:4px"></span>
-  <span class="sparkle" style="left:640px;top:170px;width:4px;height:4px"></span>
-  <span class="sparkle" style="left:655px;top:600px;width:3px;height:3px"></span>
-  <span class="sparkle" style="left:84px;top:560px;width:3px;height:3px"></span>
+  <span class="sparkle" style="left:660px;top:170px;width:4px;height:4px"></span>
+  <span class="sparkle" style="left:672px;top:600px;width:3px;height:3px"></span>
+  <span class="sparkle" style="left:84px;top:600px;width:3px;height:3px"></span>
 
-  <!-- book series: back (Vol.1) to front (Vol.4) -->
+  <!-- book series: back (Vol.1) to front (Vol.6) -->
   <div class="shelf">
     <div class="glow"></div>
     <div id="books"></div>
-    <div class="series-tag">CONTENT FREEDOM SERIES<b>全4巻</b></div>
+    <div class="series-tag">CONTENT FREEDOM SERIES<b>全6巻</b></div>
   </div>
 
   <!-- copy -->
   <div class="copy">
-    <div class="badge">導入からフォローまで、全4冊で学ぶEラーニングビジネス</div>
-    <div class="headline">「4冊で<span class="hl">自由</span>を手にする」</div>
-
-    <div class="steps">
-      <div class="step s1">
-        <div class="num">1</div>
-        <svg class="icon" viewBox="0 0 110 96" fill="none" stroke="#1b2a44" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-          <!-- open door / start -->
-          <path d="M22 88V10h50v78"/><path d="M22 10l30 8v76l-30-6" fill="#fff"/>
-          <circle cx="44" cy="52" r="2.5" fill="#1b2a44"/>
-          <line x1="8" y1="88" x2="96" y2="88"/>
-          <path d="M80 40l14 10-14 10" stroke="#1f7f86"/><line x1="66" y1="50" x2="93" y2="50" stroke="#1f7f86"/>
-        </svg>
-        <h3>導入</h3>
-        <h4>Introduction</h4>
-        <p>Find your theme<br>&amp; strengths.</p>
-        <i class="arrow"></i>
-      </div>
-      <div class="step s2">
-        <div class="num">2</div>
-        <svg class="icon" viewBox="0 0 110 96" fill="none" stroke="#1b2a44" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-          <!-- monitor with video: build the course -->
-          <rect x="10" y="8" width="88" height="62" rx="4"/>
-          <line x1="10" y1="20" x2="98" y2="20"/>
-          <circle cx="18" cy="14" r="1.5" fill="#1b2a44"/><circle cx="24" cy="14" r="1.5" fill="#1b2a44"/>
-          <rect x="18" y="28" width="30" height="16"/><rect x="18" y="50" width="30" height="12"/>
-          <rect x="56" y="28" width="34" height="34"/>
-          <path d="M68 37l12 8-12 8z" fill="#1d4f8c" stroke="#1d4f8c"/>
-          <line x1="44" y1="70" x2="40" y2="84"/><line x1="64" y1="70" x2="68" y2="84"/><line x1="32" y1="86" x2="76" y2="86"/>
-        </svg>
-        <h3>構築</h3>
-        <h4>Creation</h4>
-        <p>Build your course<br>&amp; sales system.</p>
-        <i class="arrow"></i>
-      </div>
-      <div class="step s3">
-        <div class="num">3</div>
-        <svg class="icon" viewBox="0 0 110 96" fill="none" stroke="#1b2a44" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-          <!-- growth chart: sell -->
-          <line x1="8" y1="88" x2="102" y2="88"/>
-          <rect x="16" y="66" width="12" height="22"/><rect x="36" y="54" width="12" height="34"/>
-          <rect x="56" y="40" width="12" height="48"/><rect x="76" y="26" width="12" height="62"/>
-          <path d="M12 60l22-16 18 8 40-36" stroke="#1f6f8a"/>
-          <path d="M82 14h12v12" stroke="#1f6f8a"/>
-          <circle cx="30" cy="20" r="10" stroke="#1f6f8a"/><path d="M33 15h-5a2.5 2.5 0 000 5h4a2.5 2.5 0 010 5h-6M30 12v3M30 25v3" stroke="#1f6f8a" stroke-width="2"/>
-        </svg>
-        <h3>運用</h3>
-        <h4>Operation</h4>
-        <p>Market and sell<br>your content.</p>
-        <i class="arrow"></i>
-      </div>
-      <div class="step s4">
-        <div class="num">4</div>
-        <svg class="icon" viewBox="0 0 110 96" fill="none" stroke="#1b2a44" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-          <!-- chat + heart: follow-up -->
-          <path d="M14 14h56a6 6 0 016 6v30a6 6 0 01-6 6H36l-14 12V56h-8a6 6 0 01-6-6V20a6 6 0 016-6z"/>
-          <path d="M42 46c-10-7-14-11-14-16a6 6 0 0114-2 6 6 0 0114 2c0 5-4 9-14 16z" fill="#22867f" stroke="#22867f"/>
-          <path d="M84 34h12a5 5 0 015 5v24a5 5 0 01-5 5h-4v10l-12-10H62a5 5 0 01-5-5v-3"/>
-        </svg>
-        <h3>フォロー</h3>
-        <h4>Follow-up</h4>
-        <p>Support students<br>&amp; build loyalty.</p>
-      </div>
-    </div>
+    <div class="badge">導入からフォローまで、全6巻で学ぶEラーニングビジネス</div>
+    <div class="headline">「6ステップで<span class="hl">自由</span>を手に」</div>
+    <div class="steps" id="steps"></div>
   </div>
 
 <script>
+  const C = ['#13305c', '#1a4277', '#1d5590', '#1f6a8c', '#227f86', '#2a957f'];
+  const C2 = ['#1b4478', '#215c98', '#2671a8', '#2a86a0', '#2f9b98', '#38ad8f'];
   const vols = [
-    { part: '導入編',     en: 'INTRODUCTION', sub: 'ゼロから始める第一歩' },
-    { part: '構築編',     en: 'CREATION',     sub: '講座と販売の仕組みづくり' },
-    { part: '運用編',     en: 'OPERATION',    sub: '集客して、売れる流れへ' },
-    { part: 'フォロー編', en: 'FOLLOW-UP',    sub: '受講生を支え、続く収益に' },
+    { part: '導入編',     step: '導入',     en: 'INTRODUCTION', step_en: 'Introduction', sub: 'ゼロから始める第一歩' },
+    { part: '基礎知識編', step: '基礎知識', en: 'FUNDAMENTALS', step_en: 'Fundamentals', sub: '成功に必要な基本を押さえる' },
+    { part: '商品作成編', step: '商品作成', en: 'CREATION',     step_en: 'Creation',     sub: '売れる講座のつくり方' },
+    { part: '商品販売編', step: '商品販売', en: 'SALES',        step_en: 'Sales',        sub: '販売の仕組みを整える' },
+    { part: '集客編',     step: '集客',     en: 'MARKETING',    step_en: 'Marketing',    sub: '見込み客を集める' },
+    { part: 'フォロー編', step: 'フォロー', en: 'FOLLOW-UP',    step_en: 'Follow-up',    sub: '受講生を支え、続く収益に' },
   ];
-  const pos = [[70, 92], [166, 162], [262, 232], [358, 302]];
-  document.getElementById('books').innerHTML = vols.map((v, i) => `
-    <div class="book c${i + 1}" style="left:${pos[i][0]}px;top:${pos[i][1]}px;z-index:${i + 1}">
-      <div class="pages"></div>
-      <div class="cover">
-        <div class="band"><div class="vol">VOL.<b>${i + 1}</b></div><div class="part">${v.part}</div></div>
+
+  // icons: stroke paths in a 110x96 box; `A` marks the accent-colored parts
+  const ICONS = [
+    // 導入: open door + arrow
+    `<path d="M22 88V10h50v78"/><path d="M22 10l30 8v76l-30-6" fill="#fff"/><circle cx="44" cy="52" r="2.5" fill="#1b2a44"/>
+     <line x1="8" y1="88" x2="96" y2="88"/><path d="M80 40l14 10-14 10" stroke="A"/><line x1="66" y1="50" x2="93" y2="50" stroke="A"/>`,
+    // 基礎知識: open book + lightbulb
+    `<path d="M55 40c-12-8-28-10-44-8v52c16-2 32 0 44 8 12-8 28-10 44-8V32c-16-2-32 0-44 8z"/><line x1="55" y1="40" x2="55" y2="92"/>
+     <path d="M55 4c-8 0-14 6-14 13 0 5 3 8 6 11v4h16v-4c3-3 6-6 6-11 0-7-6-13-14-13z" stroke="A"/>`,
+    // 商品作成: monitor with video
+    `<rect x="10" y="8" width="88" height="62" rx="4"/><line x1="10" y1="20" x2="98" y2="20"/>
+     <rect x="18" y="28" width="30" height="16"/><rect x="18" y="50" width="30" height="12"/><rect x="56" y="28" width="34" height="34"/>
+     <path d="M68 37l12 8-12 8z" fill="A" stroke="A"/><line x1="44" y1="70" x2="40" y2="84"/><line x1="64" y1="70" x2="68" y2="84"/><line x1="32" y1="86" x2="76" y2="86"/>`,
+    // 商品販売: cart + coin
+    `<path d="M6 14h14l12 50h52l10-36H26"/><circle cx="38" cy="80" r="6"/><circle cx="78" cy="80" r="6"/>
+     <circle cx="60" cy="44" r="12" stroke="A"/><path d="M64 38h-6a3 3 0 000 6h4a3 3 0 010 6h-7M60 34v4M60 50v4" stroke="A" stroke-width="2"/>`,
+    // 集客: megaphone + people
+    `<path d="M12 36h14l40-20v58L26 54H12z"/><path d="M26 54l6 26h12l-6-24"/>
+     <path d="M80 30c6 6 6 24 0 30M90 22c10 10 10 36 0 46" stroke="A"/>`,
+    // フォロー: chat bubbles + heart
+    `<path d="M14 14h56a6 6 0 016 6v30a6 6 0 01-6 6H36l-14 12V56h-8a6 6 0 01-6-6V20a6 6 0 016-6z"/>
+     <path d="M42 46c-10-7-14-11-14-16a6 6 0 0114-2 6 6 0 0114 2c0 5-4 9-14 16z" fill="A" stroke="A"/>
+     <path d="M84 34h12a5 5 0 015 5v24a5 5 0 01-5 5h-4v10l-12-10H62a5 5 0 01-5-5v-3"/>`,
+  ];
+
+  const pos = vols.map((_, i) => [62 + i * 70, 96 + i * 50]);
+  document.getElementById('books').innerHTML = vols.map((v, i) => {
+    const g = `linear-gradient(120deg, ${C[i]}, ${C2[i]})`;
+    return `
+    <div class="book" style="left:${pos[i][0]}px;top:${pos[i][1]}px;z-index:${i + 1}">
+      <div class="floor"></div>
+      <div class="face back"></div>
+      <div class="face top"></div>
+      <div class="face pages"></div>
+      <div class="face spine" style="background:linear-gradient(90deg, ${C[i]}, ${C2[i]} 60%, ${C[i]})">
+        <div class="sv"><b>${i + 1}</b></div><div class="sg"></div>
+        <div class="st">${v.part}</div><div class="sg"></div>
+      </div>
+      <div class="face front">
+        <div class="band" style="background:${g}"><div class="vol">VOL.<b>${i + 1}</b></div><div class="part">${v.part}</div></div>
         <div class="frame"></div>
         <div class="inner">
           <div class="en">CONTENT FREEDOM</div>
@@ -232,9 +232,19 @@
           <div class="rule"></div>
           <div class="sub-en">${v.en}</div>
         </div>
-        <div class="foot"></div>
-        <div class="hinge"></div>
+        <div class="foot" style="background:${g}"></div>
       </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('steps').innerHTML = vols.map((v, i) => `
+    <div class="step">
+      <div class="num" style="background:${C[i]}">${i + 1}</div>
+      <svg class="icon" viewBox="0 0 110 96" fill="none" stroke="#1b2a44" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+        ${ICONS[i].replaceAll('"A"', `"${C2[i]}"`)}
+      </svg>
+      <h3>${v.step}</h3>
+      <h4>${v.step_en}</h4>
     </div>`).join('');
 </script>
 </body>
