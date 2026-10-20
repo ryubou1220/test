@@ -76,7 +76,7 @@
   .spine {
     width: var(--bt); height: var(--bh); left: calc((var(--bw) - var(--bt)) / 2);
     transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2));
-    display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 10px 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 14px 0;
     color: #fff; box-shadow: inset 6px 0 8px rgba(255,255,255,.18), inset -8px 0 10px rgba(0,0,0,.35);
   }
   .spine .sv { font-family: "Oswald", sans-serif; font-size: 13px; line-height: 1; text-align: center; }
@@ -95,12 +95,12 @@
   }
   .band {
     position: absolute; left: 0; right: 0; top: 0; height: 62px;
-    display: flex; align-items: center; gap: 10px; padding-left: 20px; color: #fff;
+    display: flex; align-items: center; justify-content: center; color: #fff;
   }
   .band::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, #b98c35, #f1dfa6, #b98c35); }
   .vol { font-family: "Oswald", sans-serif; font-weight: 500; font-size: 12px; letter-spacing: .08em; line-height: 1; text-align: center; opacity: .9; }
   .vol b { display: block; font-size: 26px; font-weight: 600; letter-spacing: 0; margin-top: 2px; }
-  .part { font-weight: 900; font-size: 23px; letter-spacing: .03em; white-space: nowrap; }
+  .part { font-weight: 900; font-size: 26px; letter-spacing: .03em; white-space: nowrap; }
   .foot { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; }
   .foot::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, #b98c35, #f1dfa6, #b98c35); }
   .frame { position: absolute; left: 18px; right: 18px; top: 76px; bottom: 48px; border: 1px solid rgba(201,162,74,.75); }
@@ -139,7 +139,7 @@
   }
   .step { position: relative; display: flex; flex-direction: column; align-items: center; }
   .num {
-    width: 40px; height: 40px; border-radius: 50%; position: relative;
+    width: 18px; height: 18px; margin-top: 11px; border-radius: 50%; position: relative;
     color: #fff; font-family: "Inter", sans-serif; font-weight: 600; font-size: 20px;
     display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 5px #eef2f6;
   }
@@ -219,11 +219,11 @@
       <div class="face top"></div>
       <div class="face pages"></div>
       <div class="face spine" style="background:linear-gradient(90deg, ${C[i]}, ${C2[i]} 60%, ${C[i]})">
-        <div class="sv"><b>${i + 1}</b></div><div class="sg"></div>
+        <div class="sg"></div>
         <div class="st">${v.part}</div><div class="sg"></div>
       </div>
       <div class="face front">
-        <div class="band" style="background:${g}"><div class="vol">VOL.<b>${i + 1}</b></div><div class="part">${v.part}</div></div>
+        <div class="band" style="background:${g}"><div class="part">${v.part}</div></div>
         <div class="frame"></div>
         <div class="inner">
           <div class="en">CONTENT FREEDOM</div>
@@ -239,7 +239,7 @@
 
   document.getElementById('steps').innerHTML = vols.map((v, i) => `
     <div class="step">
-      <div class="num" style="background:${C[i]}">${i + 1}</div>
+      <div class="num" style="background:${C[i]}"></div>
       <svg class="icon" viewBox="0 0 110 96" fill="none" stroke="#1b2a44" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
         ${ICONS[i].replaceAll('"A"', `"${C2[i]}"`)}
       </svg>
