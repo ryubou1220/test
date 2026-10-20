@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="font.css">
+<style>
+:root{--W:780px;--H:1100px;--T:120px;--navy:#0f2f63;--teal:#127f95;--gold:#d4a84b}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1400px;height:1980px;overflow:hidden}
+body{background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#eef5fb 45%,#d7e7f4 100%);font-family:'Zen Kaku Gothic New',sans-serif;position:relative}
+.glow{position:absolute;left:-200px;top:900px;width:700px;height:700px;background:radial-gradient(circle,rgba(120,200,255,.35),transparent 65%)}
+.spark{position:absolute;border-radius:50%;background:#fff;box-shadow:0 0 12px 4px rgba(140,210,255,.9)}
+.scene{position:absolute;left:0;top:0;width:100%;height:100%;perspective:6000px;perspective-origin:50% 35%}
+.book{position:absolute;left:calc(50% - var(--W)/2 + 40px);top:420px;width:var(--W);height:var(--H);transform-style:preserve-3d;transform:scale(1.3) rotateX(-8deg) rotateY(27deg)}
+.face{position:absolute;backface-visibility:hidden}
+.front{width:var(--W);height:var(--H);transform:translateZ(calc(var(--T)/2));overflow:hidden;border-radius:2px 8px 8px 2px;
+ background:linear-gradient(135deg,#ffffff 0%,#f4f8fc 50%,#e9f1f8 100%);box-shadow:inset 8px 0 14px rgba(0,0,0,.18)}
+.spine{width:var(--T);height:var(--H);left:calc((var(--W) - var(--T))/2);transform:rotateY(-90deg) translateZ(calc(var(--W)/2));
+ background:linear-gradient(90deg,#0b234b,#14427f 40%,#1a5a96 70%,#0e2f5f);overflow:hidden}
+.top{width:var(--W);height:var(--T);top:calc((var(--H) - var(--T))/2);transform:rotateX(90deg) translateZ(calc(var(--H)/2));
+ background:repeating-linear-gradient(0deg,#fbfbf8 0 3px,#e6e4dc 3px 4px)}
+.top::before{content:"";position:absolute;inset:0 0 0 0;border-left:10px solid #0e2f5f}
+.shadow{position:absolute;left:250px;top:1700px;width:1000px;height:110px;background:radial-gradient(ellipse,rgba(10,40,80,.35),transparent 70%);filter:blur(8px)}
+svg.deco{position:absolute;inset:0}
+.content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:215px}
+.en{font-family:'Oswald';font-weight:600;color:var(--navy);letter-spacing:.06em;font-size:40px;line-height:1.15}
+.small{font-size:30px;letter-spacing:.12em;font-weight:500}
+.title{margin-top:26px;font-weight:900;line-height:1.08;font-size:112px;letter-spacing:-.02em;
+ background:linear-gradient(100deg,var(--navy) 0%,#1d4f8f 45%,var(--teal) 100%);-webkit-background-clip:text;color:transparent}
+.title .big{font-size:124px}
+.tag{margin-top:26px;font-weight:700;font-size:28px;color:#fff;background:linear-gradient(90deg,var(--navy),var(--teal));padding:8px 26px;border-radius:40px;letter-spacing:.06em}
+.sub-en{margin-top:34px;font-size:34px}
+.sub{font-weight:900;font-size:46px;color:#111a2e;margin-top:6px;letter-spacing:.02em}
+.rule{width:470px;height:2px;margin:24px 0 20px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.foot{font-weight:700;font-size:36px;color:#111a2e}
+.spine .vt{position:absolute;left:0;right:0;top:120px;bottom:120px;writing-mode:vertical-rl;display:flex;align-items:center;justify-content:flex-start;color:#fff;font-weight:900;font-size:44px;letter-spacing:.06em;margin:0 auto;white-space:nowrap}
+.spine .vt span{font-family:'Oswald';font-weight:500;font-size:28px;letter-spacing:.1em;color:#f1d58c;margin-top:30px;white-space:nowrap}
+.spine .band{position:absolute;left:0;right:0;height:5px;background:var(--gold)}
+</style></head><body>
+<div class="glow"></div>
+<div class="spark" style="left:110px;top:1240px;width:6px;height:6px"></div>
+<div class="spark" style="left:60px;top:1330px;width:4px;height:4px"></div>
+<div class="spark" style="left:180px;top:1390px;width:5px;height:5px"></div>
+<div class="spark" style="left:40px;top:980px;width:4px;height:4px"></div>
+<div class="spark" style="left:1290px;top:640px;width:5px;height:5px"></div>
+<div class="spark" style="left:1330px;top:760px;width:3px;height:3px"></div>
+<div class="shadow"></div>
+<div class="scene"><div class="book">
+ <div class="face top"></div>
+ <div class="face spine">
+  <div class="band" style="top:60px"></div><div class="band" style="top:74px;height:2px"></div>
+  <div class="vt">コンテンツフリーダム<span>CONTENT FREEDOM</span></div>
+  <div class="band" style="bottom:74px;height:2px"></div><div class="band" style="bottom:60px"></div>
+ </div>
+ <div class="face front">
+  <svg class="deco" viewBox="0 0 780 1100" preserveAspectRatio="none">
+   <defs>
+    <linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0f2f63"/><stop offset="1" stop-color="#1a5c9a"/></linearGradient>
+    <linearGradient id="b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#127f95"/><stop offset="1" stop-color="#2aa3b5"/></linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8862d"/><stop offset=".5" stop-color="#f6dc93"/><stop offset="1" stop-color="#c39338"/></linearGradient>
+   </defs>
+   <!-- 左上 -->
+   <polygon points="0,0 250,0 0,250" fill="url(#b1)"/>
+   <polygon points="300,0 340,0 0,340 0,300" fill="url(#b2)"/>
+   <polygon points="262,0 276,0 0,276 0,262" fill="url(#g)"/>
+   <polygon points="372,0 380,0 0,380 0,372" fill="url(#g)"/>
+   <!-- 右上 -->
+   <polygon points="780,0 590,0 780,190" fill="url(#b1)"/>
+   <polygon points="545,0 575,0 780,205 780,235" fill="url(#b2)"/>
+   <polygon points="520,0 530,0 780,250 780,260" fill="url(#g)"/>
+   <!-- 左下 -->
+   <polygon points="0,1100 0,940 160,1100" fill="url(#b1)"/>
+   <polygon points="0,900 0,925 175,1100 200,1100" fill="url(#b2)"/>
+   <polygon points="0,872 0,881 219,1100 228,1100" fill="url(#g)"/>
+   <!-- 右下 -->
+   <polygon points="780,1100 600,1100 780,920" fill="url(#b1)"/>
+   <polygon points="560,1100 530,1100 780,850 780,880" fill="url(#b2)"/>
+   <polygon points="585,1100 575,1100 780,895 780,905" fill="url(#g)"/>
+   <polygon points="505,1100 498,1100 780,818 780,825" fill="url(#g)"/>
+   <!-- 内枠 -->
+   <line x1="70" y1="330" x2="70" y2="840" stroke="url(#g)" stroke-width="2"/>
+   <line x1="80" y1="345" x2="80" y2="825" stroke="url(#g)" stroke-width="1"/>
+   <line x1="710" y1="260" x2="710" y2="770" stroke="url(#g)" stroke-width="2"/>
+   <line x1="700" y1="275" x2="700" y2="755" stroke="url(#g)" stroke-width="1"/>
+  </svg>
+  <div class="content">
+   <div class="en">CONTENT FREEDOM:</div>
+   <div class="en small">YOUR KNOWLEDGE, YOUR FREEDOM</div>
+   <div class="title">コンテンツ<br><span class="big">フリーダム</span></div>
+   <div class="tag">知識を「売れ続ける資産」に変える</div>
+   <div class="en sub-en">3 STEPS TO FREEDOM</div>
+   <div class="sub">自由を手に入れる3ステップ</div>
+   <div class="rule"></div>
+   <div class="en small" style="font-size:32px">TIME・PLACE・INCOME</div>
+   <div class="foot">時間・場所・収入の自由へ</div>
+  </div>
+ </div>
+</div></div>
+</body></html>
