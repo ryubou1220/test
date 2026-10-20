@@ -2,10 +2,12 @@
 import os, subprocess, sys, re
 from PIL import Image, ImageDraw, ImageFont
 sys.path.insert(0, os.path.dirname(__file__))
-from script import SLIDES
+import importlib
+MOD = importlib.import_module(os.environ.get("SCRIPT", "script"))
+SLIDES = MOD.SLIDES
 
 D = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(D, "out"); os.makedirs(OUT, exist_ok=True)
+OUT = os.path.join(D, "out" if MOD.__name__ == "script" else "out_" + MOD.__name__); os.makedirs(OUT, exist_ok=True)
 FONT = "/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf"
 VOICE = os.path.join(D, "voice/MMDAgent_Example-1.8/Voice/mei/mei_normal.htsvoice")
 DIC = "/var/lib/mecab/dic/open-jtalk/naist-jdic"
@@ -13,6 +15,7 @@ W, H = 1920, 1080
 
 BG = (16, 27, 48); BG2 = (24, 40, 68); CARD = (32, 52, 86)
 ACCENT = (255, 176, 59); TEXT = (240, 244, 250); MUTED = (160, 176, 200); RED = (255, 107, 107)
+globals().update(getattr(MOD, "THEME", {}))
 
 def f(size): return ImageFont.truetype(FONT, size)
 
@@ -62,7 +65,7 @@ def render(slide, idx, total):
     im, d = base(slide, idx, total)
     k, pts = slide["kind"], slide["points"]
     if k == "cover":
-        bold(d, (W // 2, 230), "電子書籍 解説", f(40), ACCENT, 1, "mm")
+        bold(d, (W // 2, 230), getattr(MOD, "COVER_TAG", "電子書籍 解説"), f(40), ACCENT, 1, "mm")
         y = 360
         for line in slide["title"].split("\n"):
             size = 96 if y == 360 else 64
@@ -112,7 +115,7 @@ def render(slide, idx, total):
             d.ellipse((x + 30, y + 30, x + 100, y + 100), fill=RED)
             bold(d, (x + 65, y + 65), str(i + 1), f(42), BG, 1, "mm")
             bold(d, (x + 125, y + 65), name, f(46), TEXT, 1, "lm")
-            d.text((x + 125, y + 102), "ブレーキ", font=f(26), fill=MUTED)
+            d.text((x + 125, y + 102), slide.get("sub", "ブレーキ"), font=f(26), fill=MUTED)
             ty = y + 160
             for ln in wrap(d, desc, f(32), cw - 70):
                 d.text((x + 35, ty), ln, font=f(32), fill=MUTED); ty += 42
@@ -136,12 +139,12 @@ def render(slide, idx, total):
         y0 = title_block(d, slide["title"]) + 30
         n = len(pts); gap = 70
         cw = (W - 200 - gap * (n - 1)) // n
-        ch = H - y0 - 230
+        ch = slide.get("ch", H - y0 - 230)
         for i, p in enumerate(pts):
             name, desc = p.split("|")
             x = 100 + i * (cw + gap)
             d.rounded_rectangle((x, y0, x + cw, y0 + ch), radius=24, fill=CARD)
-            lab = f"STEP {i+1}" if k == "steps" else f"柱 {i+1}"
+            lab = (slide["tag"] + f" {i+1}") if "tag" in slide else (f"STEP {i+1}" if k == "steps" else f"柱 {i+1}")
             d.rounded_rectangle((x + 40, y0 + 40, x + 230, y0 + 96), radius=28, fill=ACCENT)
             bold(d, (x + 135, y0 + 68), lab, f(32), BG, 1, "mm")
             ty = y0 + 150
@@ -150,7 +153,7 @@ def render(slide, idx, total):
             ty += 20
             for ln in wrap(d, desc, f(36), cw - 80):
                 d.text((x + 40, ty), ln, font=f(36), fill=MUTED); ty += 50
-            if i < n - 1:
+            if i < n - 1 and not slide.get("noarrow"):
                 ax = x + cw + gap // 2; ay = y0 + ch // 2
                 d.polygon([(ax - 14, ay - 24), (ax + 16, ay), (ax - 14, ay + 24)], fill=ACCENT)
     return im
@@ -173,12 +176,15 @@ def subtitle(im, text):
         d.text((W // 2, y), ln, font=fn, fill=(255, 255, 255), anchor="mm"); y += lh
     return im
 
-READ = [("エスエヌエス", "エスエヌエス")]
+READINGS = getattr(MOD, "READINGS", {})
 def to_display(s): return s.replace("エスエヌエス", "SNS")
+def to_reading(s):
+    for a, b in READINGS.items(): s = s.replace(a, b)
+    return s
 
 def tts(text, path):
     tp = path + ".txt"
-    open(tp, "w").write(text)
+    open(tp, "w").write(to_reading(text))
     subprocess.run(["open_jtalk", "-x", DIC, "-m", VOICE, "-r", "1.05", "-fm", "0", "-ow", path, tp], check=True)
 
 def dur(p):
@@ -208,7 +214,7 @@ for si, s in enumerate(SLIDES):
 
 with open(f"{OUT}/list.txt", "w") as fh:
     for p in segs: fh.write(f"file '{p}'\n")
-final = os.path.join(D, "消去方式コンテンツ販売_解説動画.mp4")
+final = os.path.join(D, getattr(MOD, "OUTNAME", "消去方式コンテンツ販売_解説動画.mp4"))
 subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", f"{OUT}/list.txt",
                 "-c", "copy", "-movflags", "+faststart", final], check=True)
 print(final, dur(final))
