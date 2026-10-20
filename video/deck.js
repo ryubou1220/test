@@ -1,13 +1,14 @@
 const pptxgen = require("pptxgenjs");
 const fs = require("fs");
-const SLIDES = JSON.parse(fs.readFileSync(__dirname + "/slides.json", "utf8"));
+const CFG = process.argv[2] ? JSON.parse(fs.readFileSync(process.argv[2], "utf8")) : { slides: JSON.parse(fs.readFileSync(__dirname + "/slides.json", "utf8")) };
+const SLIDES = CFG.slides;
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_16x9"; // 10 x 5.625 in
-pres.title = "消去方式コンテンツ販売 ～時間の壁消去編～";
+pres.title = CFG.title || "消去方式コンテンツ販売 ～時間の壁消去編～";
 pres.theme = { headFontFace: "Meiryo", bodyFontFace: "Meiryo" };
 
-const BG = "101B30", BG2 = "182844", CARD = "203456", ACCENT = "FFB03B", TEXT = "F0F4FA", MUTED = "A0B0C8", RED = "FF6B6B";
+const { BG, BG2, CARD, ACCENT, TEXT, MUTED, RED } = Object.assign({ BG: "101B30", BG2: "182844", CARD: "203456", ACCENT: "FFB03B", TEXT: "F0F4FA", MUTED: "A0B0C8", RED: "FF6B6B" }, CFG.theme || {});
 
 pres.defineSlideMaster({
   title: "DARK",
@@ -49,7 +50,7 @@ SLIDES.forEach((d0, i) => {
   const pts = d.points;
   if (d.kind === "agenda") d = Object.assign({}, d, { title: "全体の流れ" });
   if (d.kind === "cover") {
-    s.addText("電子書籍 解説", T({ x: 0, y: 1.0, w: 10, h: 0.4, fontSize: 16, bold: true, color: ACCENT, align: "center" }));
+    s.addText(CFG.coverTag || "電子書籍 解説", T({ x: 0, y: 1.0, w: 10, h: 0.4, fontSize: 16, bold: true, color: ACCENT, align: "center" }));
     const [t1, t2] = d.title.split("\n");
     s.addText(t1, T({ x: 0, y: 1.55, w: 10, h: 0.8, fontSize: 40, bold: true, align: "center" }));
     s.addText(t2, T({ x: 0, y: 2.35, w: 10, h: 0.55, fontSize: 26, bold: true, align: "center" }));
@@ -86,7 +87,7 @@ SLIDES.forEach((d0, i) => {
         card(s, x, y, cw, ch);
         s.addShape(pres.shapes.OVAL, { x: x + 0.2, y: y + 0.2, w: 0.45, h: 0.45, fill: { color: RED }, line: { type: "none" } });
         s.addText(String(k + 1), T({ x: x + 0.2, y: y + 0.2, w: 0.45, h: 0.45, fontSize: 18, bold: true, color: BG, align: "center" }));
-        s.addText([{ text: name, options: { fontSize: 17, bold: true, breakLine: true } }, { text: "ブレーキ", options: { fontSize: 10, color: MUTED } }],
+        s.addText([{ text: name, options: { fontSize: 17, bold: true, breakLine: true } }, { text: d.sub || "ブレーキ", options: { fontSize: 10, color: MUTED } }],
           T({ x: x + 0.8, y: y + 0.15, w: cw - 0.95, h: 0.6 }));
         s.addText(desc, T({ x: x + 0.2, y: y + 0.8, w: cw - 0.4, h: 0.7, fontSize: 12, color: MUTED, valign: "top" }));
       });
@@ -102,17 +103,18 @@ SLIDES.forEach((d0, i) => {
         s.addText(desc, T({ x: 3.1, y, w: 6.2, h: rh, fontSize: 14 }));
       });
     } else if (d.kind === "steps" || d.kind === "pillars") {
-      const n = pts.length, gap = 0.4, cw = (9.0 - gap * (n - 1)) / n, ch = Math.min(2.5, 5.2 - y0);
+      const n = pts.length, gap = 0.4, cw = (9.0 - gap * (n - 1)) / n, ch = Math.min(d.ch ? 1.6 : 2.5, 5.2 - y0);
+      const pw = d.tag ? 1.35 : 1.0;
       pts.forEach((p, k) => {
         const [name, desc] = p.split("|");
         const x = 0.5 + k * (cw + gap);
         card(s, x, y0, cw, ch);
-        const lab = d.kind === "steps" ? `STEP ${k + 1}` : `柱 ${k + 1}`;
-        s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 0.25, y: y0 + 0.25, w: 1.0, h: 0.32, rectRadius: 0.16, fill: { color: ACCENT }, line: { type: "none" } });
-        s.addText(lab, T({ x: x + 0.25, y: y0 + 0.25, w: 1.0, h: 0.32, fontSize: 11, bold: true, color: BG, align: "center" }));
+        const lab = d.tag ? `${d.tag} ${k + 1}` : (d.kind === "steps" ? `STEP ${k + 1}` : `柱 ${k + 1}`);
+        s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 0.25, y: y0 + 0.25, w: pw, h: 0.32, rectRadius: 0.16, fill: { color: ACCENT }, line: { type: "none" } });
+        s.addText(lab, T({ x: x + 0.25, y: y0 + 0.25, w: pw, h: 0.32, fontSize: 11, bold: true, color: BG, align: "center" }));
         s.addText(name, T({ x: x + 0.2, y: y0 + 0.75, w: cw - 0.4, h: 0.75, fontSize: 15, bold: true, valign: "top" }));
         s.addText(desc, T({ x: x + 0.2, y: y0 + 1.5, w: cw - 0.4, h: ch - 1.65, fontSize: 14, color: MUTED, valign: "top" }));
-        if (k < n - 1) s.addShape(pres.shapes.ISOSCELES_TRIANGLE, { x: x + cw + gap / 2 - 0.09, y: y0 + ch / 2 - 0.12, w: 0.18, h: 0.24, rotate: 90, fill: { color: ACCENT }, line: { type: "none" } });
+        if (k < n - 1 && !d.noarrow) s.addShape(pres.shapes.ISOSCELES_TRIANGLE, { x: x + cw + gap / 2 - 0.09, y: y0 + ch / 2 - 0.12, w: 0.18, h: 0.24, rotate: 90, fill: { color: ACCENT }, line: { type: "none" } });
       });
     }
   }
@@ -120,4 +122,4 @@ SLIDES.forEach((d0, i) => {
   s.addNotes(d.narration.join("\n"));
 });
 
-pres.writeFile({ fileName: __dirname + "/消去方式コンテンツ販売_スライド.pptx" }).then(f => console.log(f));
+pres.writeFile({ fileName: __dirname + "/" + (CFG.outname || "消去方式コンテンツ販売_スライド.pptx") }).then(f => console.log(f));
