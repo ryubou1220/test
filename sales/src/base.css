@@ -135,3 +135,40 @@ h2 { font-size: clamp(24px, 3.6vw, 34px); font-weight: 900; line-height: 1.4; }
 .final .ctas { justify-content: center; }
 footer { padding-block: 32px 48px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); }
 footer .links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+/* 印刷・PDF：A4・4ページに割り付ける
+   1 見出しと5つのステップ / 2 料金 / 3 お客様の声と監修者 / 4 よくある質問と最後のボタン */
+@page { size: A4; margin: 12mm 12mm 12mm; }
+@media print {
+  :root, :root[data-theme="dark"] {
+    --bg: #ffffff; --surface: #ffffff; --ink: #1b231e; --muted: #58655c; --line: #d5dcd2;
+    --accent: #2c6849; --accent-ink: #ffffff; --accent-soft: #e3eee6; --wood: #b07a45; --wood-soft: #f2e5d4; --paper: #ffffff;
+    color-scheme: light;
+  }
+  body { font-size: 11pt; line-height: 1.65; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .wrap { max-width: none; padding-inline: 0; }
+  section, .hero { padding-block: 0; }
+  section + section { border-top: 0; }
+  section { margin-top: 10mm; }
+  #price, #voice, #faq { break-before: page; page-break-before: always; margin-top: 0; }
+  .hero h1 { font-size: 26pt; }
+  h2 { font-size: 17pt; }
+  .eyebrow, h2, h3, .stepno { break-after: avoid; page-break-after: avoid; }
+  .road { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3mm; margin-top: 6mm; }
+  .stepcard .art { height: 28mm; }
+  .stepcard .art img { max-height: 24mm; }
+  .stepcard, .course-box, .voice, .price-table tr, .works figure, .faq details, .final { break-inside: avoid; page-break-inside: avoid; }
+  .price-table { margin-top: 5mm; }
+  .price-table th, .price-table td { padding: 2.5mm 3mm; }
+  .course-box { margin-top: 6mm; padding: 6mm; gap: 3mm; }
+  .voices { margin-top: 5mm; gap: 4mm; }
+  .voice { padding: 5mm; gap: 2mm; }
+  .voice blockquote { font-size: 11pt; }
+  .prof { margin-top: 4mm; gap: 4mm; }
+  .final { margin-top: 14mm; }
+  .faq details:not([open]) > p { display: none; }
+  .ctas { margin-top: 6mm; }
+  .ctas .btn { padding: 3mm 6mm; }
+  .edbar, .ed-btn { display: none !important; }
+  footer { border-top: 1px solid var(--line); margin-top: 12mm; padding-block: 4mm 0; }
+}
