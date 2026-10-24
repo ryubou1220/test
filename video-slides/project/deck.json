@@ -1,0 +1,21 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-10-24T09:00:00Z" },
+  "lists": "css",
+  "title": "日曜大工プログラム 解説動画スライド",
+  "cover": "cover",
+  "order": ["cover", "howto", "flow", "s1-height", "s1-stones", "s2-tools", "s2-safety", "s3-stones", "s3-square", "s3-posts", "s4-sandwich", "s4-outer", "s4-screws", "s5-lines", "s5-jig", "s5-paint", "s6-check", "s6-repaint", "closing"],
+  "sections": {
+    "intro": { "description": "動画シリーズの使い方と、作業全体の流れ", "start": "cover" },
+    "step1": { "description": "STEP1 計画する：高さの内訳と束石の位置", "start": "s1-height" },
+    "step2": { "description": "STEP2 そろえる：道具と電動工具の安全", "start": "s2-tools" },
+    "step3": { "description": "STEP3 基礎をつくる：束石・直角・支柱", "start": "s3-stones" },
+    "step4": { "description": "STEP4 骨組みを組む：サンドイッチ工法と外周の根太", "start": "s4-sandwich" },
+    "step5": { "description": "STEP5 天板を張って塗る：線・治具・塗装", "start": "s5-lines" },
+    "step6": { "description": "STEP6 長持ちさせる：点検と塗り直し、相談窓口", "start": "s6-check" }
+  },
+  "faces": {
+    "zen-kaku-gothic-new": { "family": "Zen Kaku Gothic New", "href": "https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" }
+  },
+  "designSystems": []
+}
