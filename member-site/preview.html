@@ -1,0 +1,212 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>会員サイト プレビュー</title>
+<style>
+body{margin:0;background:#e9e6dd;font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+.pv-toc{position:sticky;top:0;z-index:2;background:#1b231e;display:flex;gap:4px;overflow-x:auto;padding:8px 12px}
+.pv-toc a{flex:none;color:#f5f3ec;text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px}
+.pv-toc a:hover{background:#2c6849}
+.pv-page{background:#fff;max-width:960px;margin:24px auto;padding:32px 40px 40px;border-radius:8px;scroll-margin-top:56px}
+.pv-head{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;border-bottom:1px dashed #ccc;padding-bottom:10px;margin-bottom:24px;font-size:13px;color:#777}
+.pv-head b{font-size:15px;color:#1b231e}
+@media (max-width:600px){.pv-page{margin:12px 0;padding:20px 16px;border-radius:0}}
+/* 日曜大工プログラム 会員サイト
+   WordPress の「外観 → カスタマイズ → 追加CSS」に、このファイルの中身をすべて貼ります。
+   すべて .wdp の中だけに効くので、テーマの見た目は変わりません。 */
+.wdp{--ink:#1b231e;--sub:#4a564d;--line:#dcd5c6;--paper:#f5f3ec;--card:#ffffff;--green:#2c6849;--green-soft:#e3eee7;--wood:#b5652b;--wood-soft:#f6e9dc;--warn:#9a3b22;color:var(--ink);line-height:1.8;font-size:16px;max-width:880px;margin:0 auto}
+.wdp *{box-sizing:border-box}
+.wdp img{max-width:100%;height:auto}
+.wdp a{color:var(--green)}
+.wdp h2,.wdp h3,.wdp h4{color:var(--ink);line-height:1.4;margin:0;padding:0;border:0;background:none}
+.wdp h2::before,.wdp h2::after,.wdp h3::before,.wdp h3::after{content:none}
+.wdp p{margin:0}
+.wdp ul,.wdp ol{margin:0;padding-left:1.4em}
+.wdp section{margin:0 0 40px}
+.wdp .wdp-hero{background:var(--paper);border-radius:12px;padding:32px 28px;margin-bottom:32px}
+.wdp .wdp-eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--green);margin-bottom:6px}
+.wdp .wdp-hero h2{font-size:28px;font-weight:900;margin-bottom:12px}
+.wdp .wdp-hero p{color:var(--sub)}
+.wdp .wdp-h{font-size:21px;font-weight:900;margin-bottom:16px;padding-left:12px;border-left:5px solid var(--green)}
+.wdp .wdp-lead{color:var(--sub);margin-bottom:16px}
+.wdp .wdp-video{position:relative;aspect-ratio:16/9;background:#1b231e;border-radius:10px;overflow:hidden}
+.wdp .wdp-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.wdp .wdp-video-note{font-size:13px;color:var(--sub);margin-top:8px}
+.wdp .wdp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.wdp .wdp-grid>*{min-width:0}
+.wdp .wdp-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.wdp .wdp-card h3{font-size:17px;font-weight:900;margin-bottom:6px}
+.wdp .wdp-card p{font-size:15px;color:var(--sub)}
+.wdp .wdp-num{display:block;font-size:30px;font-weight:900;color:var(--green);line-height:1.2;margin-bottom:4px}
+.wdp .wdp-steps{display:grid;gap:10px}
+.wdp a.wdp-step{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;text-decoration:none;color:var(--ink)}
+.wdp a.wdp-step:hover{border-color:var(--green);background:var(--green-soft)}
+.wdp .wdp-step-no{flex:none;width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:20px;line-height:1}
+.wdp .wdp-step-no small{font-size:9px;letter-spacing:.08em;margin-bottom:2px}
+.wdp .wdp-step-body{min-width:0}
+.wdp .wdp-step-body b{display:block;font-size:17px}
+.wdp .wdp-step-body span{font-size:14px;color:var(--sub)}
+.wdp .wdp-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;counter-reset:f}
+.wdp .wdp-flow>div{background:var(--paper);border-radius:8px;padding:12px 14px;min-width:0}
+.wdp .wdp-flow b{display:block;font-size:15px}
+.wdp .wdp-flow em{font-style:normal;font-size:13px;color:var(--green);font-weight:700}
+.wdp .wdp-flow span{display:block;font-size:13px;color:var(--sub);line-height:1.6}
+.wdp table.wdp-table{width:100%;border-collapse:collapse;font-size:15px;margin:0}
+.wdp .wdp-table th,.wdp .wdp-table td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;background:var(--card)}
+.wdp .wdp-table th{background:var(--paper);white-space:nowrap;font-weight:700}
+.wdp .wdp-scroll{overflow-x:auto}
+.wdp .wdp-check{list-style:none;padding:0;display:grid;gap:8px}
+.wdp .wdp-check label{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;cursor:pointer}
+.wdp .wdp-check input{flex:none;width:20px;height:20px;margin:3px 0 0;accent-color:var(--green)}
+.wdp .wdp-check input:checked+span{color:var(--sub);text-decoration:line-through}
+.wdp .wdp-progress{font-size:14px;color:var(--sub);margin-top:10px}
+.wdp .wdp-point{background:var(--wood-soft);border-radius:10px;padding:16px 20px}
+.wdp .wdp-point b{color:var(--wood)}
+.wdp .wdp-warn{background:#fbebe5;border-radius:10px;padding:16px 20px}
+.wdp .wdp-warn b{color:var(--warn)}
+.wdp .wdp-help{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:var(--green-soft);border-radius:12px;padding:20px 24px}
+.wdp .wdp-help p{flex:1 1 260px}
+.wdp a.wdp-btn{display:inline-block;background:var(--green);color:#fff;font-weight:700;text-decoration:none;border-radius:999px;padding:12px 28px;text-align:center}
+.wdp a.wdp-btn:hover{background:#1f4f37;color:#fff}
+.wdp a.wdp-btn.wdp-line{background:#06c755}
+.wdp a.wdp-btn.wdp-line:hover{background:#05a647}
+.wdp a.wdp-btn.wdp-ghost{background:transparent;color:var(--green);border:2px solid var(--green)}
+.wdp .wdp-nav{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:20px}
+.wdp .wdp-nav a{text-decoration:none;font-weight:700}
+.wdp .wdp-dl{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.wdp .wdp-dl>div{flex:1 1 260px;min-width:0}
+.wdp ol.wdp-ol{display:grid;gap:10px}
+.wdp ol.wdp-ol li::marker{font-weight:900;color:var(--green)}
+.wdp .wdp-small{font-size:13px;color:var(--sub)}
+@media (max-width:600px){
+  .wdp .wdp-hero{padding:24px 18px}
+  .wdp .wdp-hero h2{font-size:23px}
+  .wdp .wdp-card,.wdp .wdp-help,.wdp .wdp-point,.wdp .wdp-warn{padding:16px}
+  .wdp .wdp-table th{white-space:normal}
+}
+@media print{.wdp .wdp-video,.wdp .wdp-nav,.wdp .wdp-help{display:none}}
+
+</style></head><body><nav class="pv-toc"><a href="#p-register">会員登録</a><a href="#p-login">ログイン</a><a href="#p-member">会員トップ</a><a href="#p-step1">STEP1 計画する</a><a href="#p-step2">STEP2 そろえる</a><a href="#p-step3">STEP3 基礎をつくる</a><a href="#p-step4">STEP4 骨組みを組む</a><a href="#p-step5">STEP5 天板を張って塗る</a><a href="#p-step6">STEP6 長持ちさせる</a><a href="#p-downloads">資料ダウンロード</a><a href="#p-support">相談・質問</a><a href="#p-guarantee">返金保証</a></nav><article id="p-register" class="pv-page"><header class="pv-head"><b>会員登録</b><span>/register/ ・ だれでも見られる ・ pages/00-register.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">ご購入ありがとうございます</p><h2>会員登録のご案内</h2><p>このページで会員登録をすると、解説動画とマニュアルが見られる会員ページに入れます。</p></div>
+<section><h3 class="wdp-h">登録の手順</h3><ol class="wdp-ol"><li>下のフォームに、<b>Infotopでご購入時のメールアドレス</b>を入れます</li><li>ユーザー名とパスワードを決めて、登録します</li><li>ご購入を確認して、<b>1日以内に会員ページを使えるようにします</b>【要確認：日数】。使えるようになったらメールでお知らせします</li><li>お知らせが届いたら、ログインページから入ります</li></ol></section>
+<div class="wdp-point"><p><b>ご購入時と同じメールアドレスで登録してください。</b>違うアドレスで登録すると、ご購入の確認に時間がかかります。</p></div>
+<!-- この下に「ショートコード」ブロックを置き、[swpm_registration_form] と入れる -->
+</div>
+</article><article id="p-login" class="pv-page"><header class="pv-head"><b>ログイン</b><span>/login/ ・ だれでも見られる ・ pages/01-login.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">会員ページ</p><h2>ログイン</h2><p>登録したユーザー名とパスワードで入ってください。</p></div>
+<!-- この下に「ショートコード」ブロックを置き、[swpm_login_form] と入れる -->
+<p class="wdp-small" style="margin-top:16px">パスワードを忘れたときは、フォームの下の「パスワードを忘れた方」から再設定できます。まだ登録していない方は、Infotopのご購入完了メールにある登録ページからどうぞ。</p>
+</div>
+</article><article id="p-member" class="pv-page"><header class="pv-head"><b>会員トップ</b><span>/member/ ・ 会員限定 ・ pages/10-top.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">会員ページ</p><h2>ようこそ、日曜大工プログラムへ</h2><p>ご購入ありがとうございます。ここから、あなたの家のウッドデッキづくりが始まります。まずは下の「はじめに」の動画をご覧ください。</p></div>
+<section><h3 class="wdp-h">はじめに（約5分）</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>はじめに</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">進め方</h3><div class="wdp-grid"><div class="wdp-card"><span class="wdp-num">1</span><h3>動画を見る</h3><p>STEPごとに1本。作業の前の日に見ておくと、当日迷いません。</p></div><div class="wdp-card"><span class="wdp-num">2</span><h3>マニュアルで確かめる</h3><p>寸法や手順の細かいところは、かんたん版マニュアルと完全版で確認します。</p></div><div class="wdp-card"><span class="wdp-num">3</span><h3>チェックして進む</h3><p>各STEPのチェックリストに印をつけながら、1つずつ進めます。</p></div></div></section>
+<section><h3 class="wdp-h">作業の流れ</h3><p class="wdp-lead">1日まるごと作業するなら9〜12日。日曜日だけなら2〜3か月が目安です。</p><div class="wdp-flow"><div><b>準備</b><em>2〜3日</em><span>場所・図面・道具と材料</span></div><div><b>塗装1回目</b><em>1日</em><span>組む前に全部の材料を塗る</span></div><div><b>基礎</b><em>2〜3日</em><span>整地・束石・支柱</span></div><div><b>骨組み</b><em>2〜3日</em><span>根太・根がらみ</span></div><div><b>天板</b><em>1日</em><span>天板を張る</span></div><div><b>塗装2回目</b><em>1日</em><span>表面を仕上げる</span></div></div></section>
+<section><h3 class="wdp-h">6つのステップ</h3><div class="wdp-steps"><a class="wdp-step" href="#p-step1"><span class="wdp-step-no"><small>STEP</small>1</span><span class="wdp-step-body"><b>計画する</b><span>高さの内訳と束石の位置</span></span></a><a class="wdp-step" href="#p-step2"><span class="wdp-step-no"><small>STEP</small>2</span><span class="wdp-step-body"><b>そろえる</b><span>道具と電動工具の安全</span></span></a><a class="wdp-step" href="#p-step3"><span class="wdp-step-no"><small>STEP</small>3</span><span class="wdp-step-body"><b>基礎をつくる</b><span>束石・直角・支柱</span></span></a><a class="wdp-step" href="#p-step4"><span class="wdp-step-no"><small>STEP</small>4</span><span class="wdp-step-body"><b>骨組みを組む</b><span>サンドイッチ工法と外周の根太</span></span></a><a class="wdp-step" href="#p-step5"><span class="wdp-step-no"><small>STEP</small>5</span><span class="wdp-step-body"><b>天板を張って塗る</b><span>線・治具・塗装</span></span></a><a class="wdp-step" href="#p-step6"><span class="wdp-step-no"><small>STEP</small>6</span><span class="wdp-step-body"><b>長持ちさせる</b><span>点検と塗り直し</span></span></a></div></section>
+<section><h3 class="wdp-h">最初にやること</h3><div class="wdp-point"><p><b>図面づくりのために、設置場所の情報を送ってください。</b><br>幅・奥行き・高さの希望と、設置場所の写真をお送りいただくと、あなたの家のサイズの図面一式をお作りします。くわしくは<a href="#p-downloads">資料ダウンロード</a>のページをご覧ください。</p></div></section>
+<div class="wdp-help"><p>作業の途中で困ったことがあれば、180日間、何度でもご相談いただけます。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+</div>
+</article><article id="p-step1" class="pv-page"><header class="pv-head"><b>STEP1 計画する</b><span>/member/step1/ ・ 会員限定 ・ pages/11-step1.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">STEP1</p><h2>計画する</h2><p>いちばん大事なのは「計測と基礎」。最初に高さと束石の位置を決めれば、あとの作業は迷いません。</p></div>
+<section><h3 class="wdp-h">解説動画</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>STEP1 計画する</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">この動画の要点</h3><div class="wdp-grid"><div class="wdp-card"><h3>支柱の長さは引き算で決める</h3><p>仕上がりの高さから、天板・根太・束石の高さを引いて支柱の長さを出します。支柱は根太より10mmほど短くします。</p></div><div class="wdp-card"><h3>束石は1,200mm前後の間隔で</h3><p>間隔が広すぎると根太がたわみます。幅3,600×奥行き1,800なら、束石は12個が目安です。</p></div><div class="wdp-card"><h3>位置は地面に印をつける</h3><p>束石の中心に釘を打つか、スプレーで印をつけておきます。</p></div></div></section>
+<section><h3 class="wdp-h">高さの計算例（高さ500mm）</h3><p class="wdp-lead">天板38＋根太280＋束石100＝418mm。残りの82mmと根太2段分が支柱の長さです。</p><div class="wdp-scroll"><table class="wdp-table"><thead><tr><th>部材</th><th>高さ</th></tr></thead><tbody><tr><th>天板</th><td>38mm</td></tr><tr><th>根太（2段分）</th><td>140×2＝280mm</td></tr><tr><th>束石（地上に出る分）</th><td>100mm</td></tr><tr><th>支柱</th><td>280＋（500−418）＝362mm</td></tr></tbody></table></div></section>
+<section><h3 class="wdp-h">チェックリスト</h3><p class="wdp-lead">全部に印がついたら、次のSTEPへ進みましょう。</p><ul class="wdp-check" data-wdp-check="step1"><li><label><input type="checkbox"><span>設置場所の幅と奥行きを測った</span></label></li><li><label><input type="checkbox"><span>窓の下から、仕上がりの高さを決めた</span></label></li><li><label><input type="checkbox"><span>地面の傾きを、水糸と水平器で測った</span></label></li><li><label><input type="checkbox"><span>支柱の長さを計算した</span></label></li><li><label><input type="checkbox"><span>束石の位置と個数を決めた</span></label></li><li><label><input type="checkbox"><span>設置場所の情報を送り、図面を依頼した</span></label></li></ul>
+<p class="wdp-progress" data-wdp-progress="step1"></p>
+<script>(function(){var k="wdp-check-step1",l=document.querySelector('[data-wdp-check="step1"]'),p=document.querySelector('[data-wdp-progress="step1"]');if(!l)return;var b=l.querySelectorAll("input"),s=[];try{s=JSON.parse(localStorage.getItem(k)||"[]")}catch(e){}function show(){var n=0;b.forEach(function(x){if(x.checked)n++});p.textContent="できたこと "+n+" / "+b.length}b.forEach(function(x,i){x.checked=!!s[i];x.addEventListener("change",function(){var v=[];b.forEach(function(y){v.push(y.checked)});try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}show()})});show()})();</script>
+<p class="wdp-small">チェックは、お使いの端末に記録されます。</p></section>
+<div class="wdp-help"><p>つまずいたら、写真を1枚送ってください。あなたの家の状況に合わせてお答えします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+<nav class="wdp-nav"><a href="#p-member">← 会員トップ</a><a href="#p-step2">STEP2 そろえる →</a></nav>
+</div>
+</article><article id="p-step2" class="pv-page"><header class="pv-head"><b>STEP2 そろえる</b><span>/member/step2/ ・ 会員限定 ・ pages/12-step2.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">STEP2</p><h2>そろえる</h2><p>道具は役割ごとにそろえます。電動工具はDIY用で十分です。材料が届いたら、組む前に1回目の塗装をします。</p></div>
+<section><h3 class="wdp-h">解説動画</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>STEP2 そろえる</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">そろえる道具</h3><p class="wdp-lead">木材はホームセンターのカットサービスで切ってもらうこともできます。</p><div class="wdp-scroll"><table class="wdp-table"><thead><tr><th>役割</th><th>道具</th></tr></thead><tbody><tr><th>掘る</th><td>スコップ（大・小）</td></tr><tr><th>測る</th><td>メジャー・さしがね・止定規・水平器・水糸</td></tr><tr><th>印をつける</th><td>鉛筆（赤が見やすい）・チョークライン</td></tr><tr><th>切る</th><td>電動丸のこ・のこぎり（替刃式）</td></tr><tr><th>留める</th><td>インパクトドライバー</td></tr><tr><th>自作する</th><td>タンパー（9cm角＋持ち手）・目地の治具（10mmの木片）</td></tr></tbody></table></div></section>
+<section><h3 class="wdp-h">電動丸のこの安全</h3><div class="wdp-grid"><div class="wdp-card"><h3>真後ろに立たない</h3><p>丸のこの斜め左後ろに立ちます。</p></div><div class="wdp-card"><h3>刃の交換は電源を抜いて</h3><p>角度や深さを変えるときも同じです。</p></div><div class="wdp-card"><h3>枕木の位置でキックバックを防ぐ</h3><p>切り落とす側が下に落ちる位置で切ります。</p></div><div class="wdp-card"><h3>暴れても手を離さない</h3><p>刃が止まるまで、しっかり支えます。</p></div></div><div class="wdp-warn" style="margin-top:14px"><p><b>電動丸のこの事故は、60代以上が6割。</b>（消費者庁、2010〜2019年の報告87件）慣れた人ほど、毎回ルールを確かめてください。</p></div></section>
+<section><h3 class="wdp-h">チェックリスト</h3><p class="wdp-lead">全部に印がついたら、次のSTEPへ進みましょう。</p><ul class="wdp-check" data-wdp-check="step2"><li><label><input type="checkbox"><span>道具を役割ごとにそろえた</span></label></li><li><label><input type="checkbox"><span>タンパーと目地の治具（10mm）を作った</span></label></li><li><label><input type="checkbox"><span>材料を注文した（購入リストで確認）</span></label></li><li><label><input type="checkbox"><span>丸のこの安全ルールを確かめた</span></label></li><li><label><input type="checkbox"><span>材料が届いたら、全部の材料に1回目の塗装をした（STEP5の動画で塗り方を確認）</span></label></li></ul>
+<p class="wdp-progress" data-wdp-progress="step2"></p>
+<script>(function(){var k="wdp-check-step2",l=document.querySelector('[data-wdp-check="step2"]'),p=document.querySelector('[data-wdp-progress="step2"]');if(!l)return;var b=l.querySelectorAll("input"),s=[];try{s=JSON.parse(localStorage.getItem(k)||"[]")}catch(e){}function show(){var n=0;b.forEach(function(x){if(x.checked)n++});p.textContent="できたこと "+n+" / "+b.length}b.forEach(function(x,i){x.checked=!!s[i];x.addEventListener("change",function(){var v=[];b.forEach(function(y){v.push(y.checked)});try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}show()})});show()})();</script>
+<p class="wdp-small">チェックは、お使いの端末に記録されます。</p></section>
+<div class="wdp-help"><p>つまずいたら、写真を1枚送ってください。あなたの家の状況に合わせてお答えします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+<nav class="wdp-nav"><a href="#p-step1">← STEP1 計画する</a><a href="#p-step3">STEP3 基礎をつくる →</a></nav>
+</div>
+</article><article id="p-step3" class="pv-page"><header class="pv-head"><b>STEP3 基礎をつくる</b><span>/member/step3/ ・ 会員限定 ・ pages/13-step3.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">STEP3</p><h2>基礎をつくる</h2><p>束石・直角・支柱。ここをていねいに組めば、ウッドデッキはできたも同然です。</p></div>
+<section><h3 class="wdp-h">解説動画</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>STEP3 基礎をつくる</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">束石の下地は、地面のかたさで決める</h3><p class="wdp-lead">束石は地面に50mmほど埋めて安定させます。モルタルはセメント1：砂3。</p><div class="wdp-scroll"><table class="wdp-table"><thead><tr><th>地面のかたさ</th><th>下地のつくり方</th></tr></thead><tbody><tr><th>やわらかい<br>（移植ごてで掘れる）</th><td>砕石50〜100mmを突き固め、モルタルで固める</td></tr><tr><th>ふつう<br>（スコップで掘る）</th><td>砕石50mm＋モルタルで固める</td></tr><tr><th>かたい<br>（ほぐさないと掘れない）</th><td>埋めて突き固め、モルタルで固めるのがよい</td></tr><tr><th>コンクリートの上</th><td>水平でなければドライモルタルで調整</td></tr></tbody></table></div></section>
+<section><h3 class="wdp-h">直角は「3：4：5」と対角線で</h3><div class="wdp-grid"><div class="wdp-card"><span class="wdp-num">①</span><h3>定規をつくる</h3><p>板で90・120・150cmの三角形をつくります。</p></div><div class="wdp-card"><span class="wdp-num">②</span><h3>対角線を2本測る</h3><p>2本が同じ長さなら直角です。対角線＝√（横の2乗＋縦の2乗）。</p></div></div><div class="wdp-point" style="margin-top:14px"><p><b>例：</b>束石の中心が3,434×1,634なら、対角線は約3,803mm。スマホの電卓で計算できます。</p></div></section>
+<section><h3 class="wdp-h">支柱は、少し低く、まっすぐに</h3><p class="wdp-lead">水平の確認は、束石・支柱・根太の3回です。</p><div class="wdp-grid"><div class="wdp-card"><span class="wdp-num">10mm</span><h3>短く立てる</h3><p>水平は、あとで根太で合わせます。支柱どうしはぴったりでなくて大丈夫です。</p></div><div class="wdp-card"><span class="wdp-num">2面</span><h3>垂直を見る</h3><p>水平器を、向かい合う2つの面に当てます。</p></div><div class="wdp-card"><span class="wdp-num">4本</span><h3>羽子板に留める</h3><p>小さい穴4か所にビス。四隅の対角線をもう一度測ります。</p></div></div></section>
+<section><h3 class="wdp-h">チェックリスト</h3><p class="wdp-lead">全部に印がついたら、次のSTEPへ進みましょう。</p><ul class="wdp-check" data-wdp-check="step3"><li><label><input type="checkbox"><span>束石の位置を掘り、下地を突き固めた</span></label></li><li><label><input type="checkbox"><span>束石を据え、モルタルで固めた</span></label></li><li><label><input type="checkbox"><span>3：4：5の定規と対角線で直角を確かめた</span></label></li><li><label><input type="checkbox"><span>束石の水平を確かめた</span></label></li><li><label><input type="checkbox"><span>支柱を10mm短く切り、垂直に立てた</span></label></li><li><label><input type="checkbox"><span>羽子板にビスを留め、対角線をもう一度測った</span></label></li></ul>
+<p class="wdp-progress" data-wdp-progress="step3"></p>
+<script>(function(){var k="wdp-check-step3",l=document.querySelector('[data-wdp-check="step3"]'),p=document.querySelector('[data-wdp-progress="step3"]');if(!l)return;var b=l.querySelectorAll("input"),s=[];try{s=JSON.parse(localStorage.getItem(k)||"[]")}catch(e){}function show(){var n=0;b.forEach(function(x){if(x.checked)n++});p.textContent="できたこと "+n+" / "+b.length}b.forEach(function(x,i){x.checked=!!s[i];x.addEventListener("change",function(){var v=[];b.forEach(function(y){v.push(y.checked)});try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}show()})});show()})();</script>
+<p class="wdp-small">チェックは、お使いの端末に記録されます。</p></section>
+<div class="wdp-help"><p>つまずいたら、写真を1枚送ってください。あなたの家の状況に合わせてお答えします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+<nav class="wdp-nav"><a href="#p-step2">← STEP2 そろえる</a><a href="#p-step4">STEP4 骨組みを組む →</a></nav>
+</div>
+</article><article id="p-step4" class="pv-page"><header class="pv-head"><b>STEP4 骨組みを組む</b><span>/member/step4/ ・ 会員限定 ・ pages/14-step4.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">STEP4</p><h2>骨組みを組む</h2><p>支柱を根太で挟む「サンドイッチ工法」なら、支柱の高さが多少ばらついても水平が出せます。</p></div>
+<section><h3 class="wdp-h">解説動画</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>STEP4 骨組みを組む</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">サンドイッチ工法</h3><div class="wdp-grid"><div class="wdp-card"><h3>サンドイッチ工法（このプログラム）</h3><p>支柱を低めに立て、両側から根太で挟んで留めます。水平は根太で合わせます。</p></div><div class="wdp-card"><h3>大引工法（すすめない）</h3><p>支柱の上に大引をのせます。支柱をすべて同じ高さにそろえないとガタつき、初めての人には難しい方法です。</p></div></div><div class="wdp-warn" style="margin-top:14px"><p><b>弱点は、根太と支柱を留めるビス。</b>デッキの寿命はここで決まります。完成後も定期的にビスの傷みを点検します。</p></div></section>
+<section><h3 class="wdp-h">いちばん大事：外周の根太</h3><div class="wdp-point"><p><b>全体の水平は、外周の根太で決まります。</b>建物側から張り始め、水平器と直角定規で何度も確かめます。1人のときは、クランプや受け台で根太を支えて仮留めします。手伝ってくれる人がいれば、この日に頼みましょう。</p></div></section>
+<section><h3 class="wdp-h">ビス止めの3つのルール</h3><div class="wdp-grid"><div class="wdp-card"><span class="wdp-num">3〜4本</span><h3>1か所あたり</h3><p>最低3本、理想は4本。多すぎても材料費が増えるだけです。</p></div><div class="wdp-card"><span class="wdp-num">×2</span><h3>長さは厚みの2倍</h3><p>38mmの材なら75mm前後。ステンレス製を使います。</p></div><div class="wdp-card"><span class="wdp-num">下穴</span><h3>硬い木だけ</h3><p>レッドシダーなら省略してよい。下穴はビスより太くしません。</p></div></div></section>
+<section><h3 class="wdp-h">チェックリスト</h3><p class="wdp-lead">全部に印がついたら、次のSTEPへ進みましょう。</p><ul class="wdp-check" data-wdp-check="step4"><li><label><input type="checkbox"><span>外周の根太を、建物側から張った</span></label></li><li><label><input type="checkbox"><span>水平器と直角定規で、外周の水平と直角を確かめた</span></label></li><li><label><input type="checkbox"><span>内側の根太を張った</span></label></li><li><label><input type="checkbox"><span>根がらみを入れた</span></label></li><li><label><input type="checkbox"><span>ビスは1か所3〜4本、長さは材の厚みの2倍で留めた</span></label></li></ul>
+<p class="wdp-progress" data-wdp-progress="step4"></p>
+<script>(function(){var k="wdp-check-step4",l=document.querySelector('[data-wdp-check="step4"]'),p=document.querySelector('[data-wdp-progress="step4"]');if(!l)return;var b=l.querySelectorAll("input"),s=[];try{s=JSON.parse(localStorage.getItem(k)||"[]")}catch(e){}function show(){var n=0;b.forEach(function(x){if(x.checked)n++});p.textContent="できたこと "+n+" / "+b.length}b.forEach(function(x,i){x.checked=!!s[i];x.addEventListener("change",function(){var v=[];b.forEach(function(y){v.push(y.checked)});try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}show()})});show()})();</script>
+<p class="wdp-small">チェックは、お使いの端末に記録されます。</p></section>
+<div class="wdp-help"><p>つまずいたら、写真を1枚送ってください。あなたの家の状況に合わせてお答えします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+<nav class="wdp-nav"><a href="#p-step3">← STEP3 基礎をつくる</a><a href="#p-step5">STEP5 天板を張って塗る →</a></nav>
+</div>
+</article><article id="p-step5" class="pv-page"><header class="pv-head"><b>STEP5 天板を張って塗る</b><span>/member/step5/ ・ 会員限定 ・ pages/15-step5.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">STEP5</p><h2>天板を張って塗る</h2><p>張る前に線を引き、全体の長さを確かめます。目地は10mmの治具でそろえ、最後に2回目の塗装で仕上げます。</p></div>
+<section><h3 class="wdp-h">解説動画</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>STEP5 天板を張って塗る</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">張る前に、線を引いて長さを確かめる</h3><div class="wdp-grid"><div class="wdp-card"><h3>ビスの線を引く</h3><p>根太の位置にチョークラインで線。天板1枚につき、根太1本あたりビス2本。140mmの板なら端から30・間80が目安です。</p></div><div class="wdp-card"><h3>全体の長さを計算する</h3><p>板の幅×枚数＋目地10mm×数。例：140×24＋10×23＝3,590mm。</p></div><div class="wdp-card"><h3>仮置きしてから留める</h3><p>「その場合わせ」にしません。上に組むほど、ずれは直せなくなります。</p></div></div></section>
+<section><h3 class="wdp-h">10mmの治具で、すき間をそろえる</h3><p class="wdp-lead">目地10mmは、雨水を流し、風を通して長持ちさせるためです。</p><div class="wdp-grid"><div class="wdp-card"><h3>治具</h3><p>厚さ10mmの木片を2個以上。上にストッパーをつけると落ちません。</p></div><div class="wdp-card"><h3>ビスの頭</h3><p>天板の面より1〜2mm沈めます。</p></div><div class="wdp-card"><h3>反った板</h3><p>両端で10mmを確保。強い反りはバールで（布を当てて）。</p></div></div></section>
+<section><h3 class="wdp-h">塗装は2回</h3><p class="wdp-lead">塗料は屋外木部用の木材保護塗料。おすすめは木部浸透性の水性。3.4Lで約17㎡（2回塗り）。</p><div class="wdp-grid"><div class="wdp-card"><span class="wdp-num">1回目</span><h3>材料が届いたら</h3><p>組んだあとは天板の裏・根太・支柱が塗れません。全部の材料を先に塗ります。切った木口は多めに。</p></div><div class="wdp-card"><span class="wdp-num">2回目</span><h3>完成したら</h3><p>晴れが1〜2日続いた日に。よくかき混ぜ、目地から塗り、木目に沿って薄く塗ります。</p></div></div></section>
+<section><h3 class="wdp-h">チェックリスト</h3><p class="wdp-lead">全部に印がついたら、次のSTEPへ進みましょう。</p><ul class="wdp-check" data-wdp-check="step5"><li><label><input type="checkbox"><span>根太の位置にビスの線を引いた</span></label></li><li><label><input type="checkbox"><span>全体の長さを計算し、両端を決めた</span></label></li><li><label><input type="checkbox"><span>天板を仮置きして確かめた</span></label></li><li><label><input type="checkbox"><span>10mmの治具で目地をそろえて留めた</span></label></li><li><label><input type="checkbox"><span>ビスの頭を1〜2mm沈めた</span></label></li><li><label><input type="checkbox"><span>晴れた日に2回目の塗装をした</span></label></li></ul>
+<p class="wdp-progress" data-wdp-progress="step5"></p>
+<script>(function(){var k="wdp-check-step5",l=document.querySelector('[data-wdp-check="step5"]'),p=document.querySelector('[data-wdp-progress="step5"]');if(!l)return;var b=l.querySelectorAll("input"),s=[];try{s=JSON.parse(localStorage.getItem(k)||"[]")}catch(e){}function show(){var n=0;b.forEach(function(x){if(x.checked)n++});p.textContent="できたこと "+n+" / "+b.length}b.forEach(function(x,i){x.checked=!!s[i];x.addEventListener("change",function(){var v=[];b.forEach(function(y){v.push(y.checked)});try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}show()})});show()})();</script>
+<p class="wdp-small">チェックは、お使いの端末に記録されます。</p></section>
+<div class="wdp-help"><p>つまずいたら、写真を1枚送ってください。あなたの家の状況に合わせてお答えします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+<nav class="wdp-nav"><a href="#p-step4">← STEP4 骨組みを組む</a><a href="#p-step6">STEP6 長持ちさせる →</a></nav>
+</div>
+</article><article id="p-step6" class="pv-page"><header class="pv-head"><b>STEP6 長持ちさせる</b><span>/member/step6/ ・ 会員限定 ・ pages/16-step6.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">STEP6</p><h2>長持ちさせる</h2><p>完成はゴールではなく、メンテナンスのスタートです。点検と塗り直しを続ければ、10〜15年以上使い続けられます。</p></div>
+<section><h3 class="wdp-h">解説動画</h3><div class="wdp-video"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f5f3ec;gap:6px"><span style="font-size:42px">▶</span><span>STEP6 長持ちさせる</span><span style="font-size:12px;opacity:.7">（YouTube動画がここに入ります）</span></div></div>
+<p class="wdp-video-note">動画が見られないときは、ページを再読み込みしてください。それでも見られない場合はご連絡ください。</p></section>
+<section><h3 class="wdp-h">いちばんの点検ポイントは「目地」</h3><p class="wdp-lead">根太と支柱を留めるビスの傷みも、あわせて見てください。</p><div class="wdp-grid"><div class="wdp-card"><h3>日常</h3><p>ほこりを取り、汚れはデッキブラシで水洗いします。</p></div><div class="wdp-card"><h3>定期</h3><p>接合部とすき間を見て、掃除して塗り直します。</p></div><div class="wdp-card"><h3>目地</h3><p>天板の側面と根太の上面が、いちばん長く湿ります。水あかを細いブラシで落として塗ります。</p></div></div></section>
+<section><h3 class="wdp-h">塗り直しの目安</h3><div class="wdp-grid"><div class="wdp-card"><span class="wdp-num">2年</span><h3>最低2年ごと</h3><p>天板の上面・側面・木口</p></div><div class="wdp-card"><span class="wdp-num">5年</span><h3>最低5年ごと</h3><p>天板の下面・根太・根がらみ</p></div><div class="wdp-card"><span class="wdp-num">1〜2年</span><h3>早めに</h3><p>日や手がよく当たる所</p></div></div></section>
+<section><h3 class="wdp-h">完成おめでとうございます</h3><div class="wdp-point"><p><b>完成したデッキの写真を、ぜひ送ってください。</b>一緒に完成を喜ばせてください。完成後のメンテナンスのご相談も受け付けています。</p></div></section>
+<section><h3 class="wdp-h">チェックリスト</h3><p class="wdp-lead">全部に印がついたら、次のSTEPへ進みましょう。</p><ul class="wdp-check" data-wdp-check="step6"><li><label><input type="checkbox"><span>完成したデッキの写真を送った</span></label></li><li><label><input type="checkbox"><span>点検の予定をカレンダーに入れた（2年ごと・5年ごと）</span></label></li><li><label><input type="checkbox"><span>目地とビスの点検をした</span></label></li><li><label><input type="checkbox"><span>マニュアルのチェックリストに記録を残した</span></label></li></ul>
+<p class="wdp-progress" data-wdp-progress="step6"></p>
+<script>(function(){var k="wdp-check-step6",l=document.querySelector('[data-wdp-check="step6"]'),p=document.querySelector('[data-wdp-progress="step6"]');if(!l)return;var b=l.querySelectorAll("input"),s=[];try{s=JSON.parse(localStorage.getItem(k)||"[]")}catch(e){}function show(){var n=0;b.forEach(function(x){if(x.checked)n++});p.textContent="できたこと "+n+" / "+b.length}b.forEach(function(x,i){x.checked=!!s[i];x.addEventListener("change",function(){var v=[];b.forEach(function(y){v.push(y.checked)});try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}show()})});show()})();</script>
+<p class="wdp-small">チェックは、お使いの端末に記録されます。</p></section>
+<div class="wdp-help"><p>つまずいたら、写真を1枚送ってください。あなたの家の状況に合わせてお答えします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで相談する</a></div>
+<nav class="wdp-nav"><a href="#p-step5">← STEP5 天板を張って塗る</a><a href="#p-support">相談・質問 →</a></nav>
+</div>
+</article><article id="p-downloads" class="pv-page"><header class="pv-head"><b>資料ダウンロード</b><span>/member/downloads/ ・ 会員限定 ・ pages/20-downloads.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">資料</p><h2>資料ダウンロード</h2><p>マニュアルはPDFです。スマホで見るときは、ダウンロードしてから開くと読みやすくなります。</p></div>
+<section><h3 class="wdp-h">マニュアル</h3><div class="wdp-steps"><div class="wdp-card wdp-dl"><div><h3>かんたん版マニュアル（21ページ）</h3><p>作業の要点だけをまとめた版。現場に持っていくならこちら。</p></div><a class="wdp-btn" href="［かんたん版PDFのURL］">ダウンロード</a></div><div class="wdp-card wdp-dl"><div><h3>ウッドデッキ実践マニュアル 完全版（108ページ）</h3><p>寸法・手順・注意点をすべて載せた版。B5印刷版は別途お届けします。</p></div><a class="wdp-btn" href="［完全版PDFのURL］">ダウンロード</a></div></div></section>
+<section><h3 class="wdp-h">あなたの家のサイズの図面</h3><p class="wdp-lead">束石の位置・骨組み・高さの内訳・カット表・購入リストを、あなたの家に合わせてお作りします。次の4つを送ってください。</p>
+<ol class="wdp-ol"><li>つくりたいデッキの<b>幅と奥行き</b>（だいたいで大丈夫です）</li><li>窓の下から地面までの<b>高さ</b></li><li>設置場所の<b>写真</b>（正面から1枚、横から1枚）</li><li>使いたい<b>木材</b>（決まっていなければ「おまかせ」）</li></ol>
+<div class="wdp-help" style="margin-top:16px"><p>LINEかメールで送ってください。届いた図面は、このページからではなく、LINEかメールでお送りします。</p><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINEで送る</a></div></section>
+<section><h3 class="wdp-h">材料費の目安を出す</h3><div class="wdp-card wdp-dl"><div><h3>ウッドデッキ計算ツール</h3><p>幅・奥行き・高さを入れるだけで、材料の本数と費用の目安が分かります。</p></div><a class="wdp-btn wdp-ghost" href="［計算ツールのURL］">計算ツールを開く</a></div></section>
+<nav class="wdp-nav"><a href="#p-member">← 会員トップ</a><a href="#p-support">相談・質問 →</a></nav>
+</div>
+</article><article id="p-support" class="pv-page"><header class="pv-head"><b>相談・質問</b><span>/member/support/ ・ 会員限定 ・ pages/21-support.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">相談</p><h2>相談・質問</h2><p>ご購入から180日間、回数無制限でご相談いただけます。地面の傾き、材料の選び方、作業の途中でつまずいたことなど、何でもどうぞ。</p></div>
+<section><h3 class="wdp-h">相談の方法</h3><div class="wdp-grid"><div class="wdp-card"><h3>LINE（いちばん早い）</h3><p>写真をそのまま送れます。</p></div><div class="wdp-card"><h3>メール</h3><p>［メールアドレス］</p></div><div class="wdp-card"><h3>Zoom</h3><p>顔を見て相談したい方は、LINEかメールで希望の日時をお知らせください。</p></div></div><p style="margin-top:16px;text-align:center"><a class="wdp-btn wdp-line" href="［LINE公式のURL］">LINE公式アカウントを友だち追加</a></p></section>
+<section><h3 class="wdp-h">写真の送り方</h3><p class="wdp-lead">写真があると、文章だけより正確にお答えできます。</p><ol class="wdp-ol"><li><b>全体</b>が分かる写真を1枚（少し離れて）</li><li>困っている<b>部分のアップ</b>を1枚</li><li>寸法が関係するときは、<b>メジャーを当てて</b>撮る</li><li>「STEP3の支柱で」のように、<b>どのSTEPか</b>を書き添える</li></ol></section>
+<section><h3 class="wdp-h">返信の目安</h3><div class="wdp-point"><p><b>2日以内にお返事します。</b>作業日の前日までに送っていただくと、当日に間に合います。【要確認：返信日数】</p></div></section>
+<nav class="wdp-nav"><a href="#p-member">← 会員トップ</a><a href="#p-guarantee">返金保証 →</a></nav>
+</div>
+</article><article id="p-guarantee" class="pv-page"><header class="pv-head"><b>返金保証</b><span>/member/guarantee/ ・ 会員限定 ・ pages/22-guarantee.html</span></header><div class="wdp">
+<div class="wdp-hero"><p class="wdp-eyebrow">保証</p><h2>180日間 全額返金保証</h2><p>180日間、サポートを受けながら取り組んでも完成しなかった場合は、代金を全額お返しします。</p></div>
+<section><h3 class="wdp-h">返金保証の詳細</h3><div class="wdp-card"><p>【ここに、記述済みの「返金保証の詳細」（条件と手続き）を貼ってください】</p></div></section>
+<section><h3 class="wdp-h">お申し出の方法</h3><p class="wdp-lead">LINEかメールで「返金保証について」とお知らせください。</p><p style="text-align:center"><a class="wdp-btn wdp-ghost" href="mailto:［メールアドレス］">メールで連絡する</a></p></section>
+<nav class="wdp-nav"><a href="#p-support">← 相談・質問</a><a href="#p-member">会員トップ →</a></nav>
+</div>
+</article></body></html>

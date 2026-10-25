@@ -1,0 +1,74 @@
+/* 日曜大工プログラム 会員サイト
+   WordPress の「外観 → カスタマイズ → 追加CSS」に、このファイルの中身をすべて貼ります。
+   すべて .wdp の中だけに効くので、テーマの見た目は変わりません。 */
+.wdp{--ink:#1b231e;--sub:#4a564d;--line:#dcd5c6;--paper:#f5f3ec;--card:#ffffff;--green:#2c6849;--green-soft:#e3eee7;--wood:#b5652b;--wood-soft:#f6e9dc;--warn:#9a3b22;color:var(--ink);line-height:1.8;font-size:16px;max-width:880px;margin:0 auto}
+.wdp *{box-sizing:border-box}
+.wdp img{max-width:100%;height:auto}
+.wdp a{color:var(--green)}
+.wdp h2,.wdp h3,.wdp h4{color:var(--ink);line-height:1.4;margin:0;padding:0;border:0;background:none}
+.wdp h2::before,.wdp h2::after,.wdp h3::before,.wdp h3::after{content:none}
+.wdp p{margin:0}
+.wdp ul,.wdp ol{margin:0;padding-left:1.4em}
+.wdp section{margin:0 0 40px}
+.wdp .wdp-hero{background:var(--paper);border-radius:12px;padding:32px 28px;margin-bottom:32px}
+.wdp .wdp-eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--green);margin-bottom:6px}
+.wdp .wdp-hero h2{font-size:28px;font-weight:900;margin-bottom:12px}
+.wdp .wdp-hero p{color:var(--sub)}
+.wdp .wdp-h{font-size:21px;font-weight:900;margin-bottom:16px;padding-left:12px;border-left:5px solid var(--green)}
+.wdp .wdp-lead{color:var(--sub);margin-bottom:16px}
+.wdp .wdp-video{position:relative;aspect-ratio:16/9;background:#1b231e;border-radius:10px;overflow:hidden}
+.wdp .wdp-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.wdp .wdp-video-note{font-size:13px;color:var(--sub);margin-top:8px}
+.wdp .wdp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.wdp .wdp-grid>*{min-width:0}
+.wdp .wdp-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.wdp .wdp-card h3{font-size:17px;font-weight:900;margin-bottom:6px}
+.wdp .wdp-card p{font-size:15px;color:var(--sub)}
+.wdp .wdp-num{display:block;font-size:30px;font-weight:900;color:var(--green);line-height:1.2;margin-bottom:4px}
+.wdp .wdp-steps{display:grid;gap:10px}
+.wdp a.wdp-step{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;text-decoration:none;color:var(--ink)}
+.wdp a.wdp-step:hover{border-color:var(--green);background:var(--green-soft)}
+.wdp .wdp-step-no{flex:none;width:56px;height:56px;border-radius:50%;background:var(--green);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:20px;line-height:1}
+.wdp .wdp-step-no small{font-size:9px;letter-spacing:.08em;margin-bottom:2px}
+.wdp .wdp-step-body{min-width:0}
+.wdp .wdp-step-body b{display:block;font-size:17px}
+.wdp .wdp-step-body span{font-size:14px;color:var(--sub)}
+.wdp .wdp-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;counter-reset:f}
+.wdp .wdp-flow>div{background:var(--paper);border-radius:8px;padding:12px 14px;min-width:0}
+.wdp .wdp-flow b{display:block;font-size:15px}
+.wdp .wdp-flow em{font-style:normal;font-size:13px;color:var(--green);font-weight:700}
+.wdp .wdp-flow span{display:block;font-size:13px;color:var(--sub);line-height:1.6}
+.wdp table.wdp-table{width:100%;border-collapse:collapse;font-size:15px;margin:0}
+.wdp .wdp-table th,.wdp .wdp-table td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;background:var(--card)}
+.wdp .wdp-table th{background:var(--paper);white-space:nowrap;font-weight:700}
+.wdp .wdp-scroll{overflow-x:auto}
+.wdp .wdp-check{list-style:none;padding:0;display:grid;gap:8px}
+.wdp .wdp-check label{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;cursor:pointer}
+.wdp .wdp-check input{flex:none;width:20px;height:20px;margin:3px 0 0;accent-color:var(--green)}
+.wdp .wdp-check input:checked+span{color:var(--sub);text-decoration:line-through}
+.wdp .wdp-progress{font-size:14px;color:var(--sub);margin-top:10px}
+.wdp .wdp-point{background:var(--wood-soft);border-radius:10px;padding:16px 20px}
+.wdp .wdp-point b{color:var(--wood)}
+.wdp .wdp-warn{background:#fbebe5;border-radius:10px;padding:16px 20px}
+.wdp .wdp-warn b{color:var(--warn)}
+.wdp .wdp-help{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:var(--green-soft);border-radius:12px;padding:20px 24px}
+.wdp .wdp-help p{flex:1 1 260px}
+.wdp a.wdp-btn{display:inline-block;background:var(--green);color:#fff;font-weight:700;text-decoration:none;border-radius:999px;padding:12px 28px;text-align:center}
+.wdp a.wdp-btn:hover{background:#1f4f37;color:#fff}
+.wdp a.wdp-btn.wdp-line{background:#06c755}
+.wdp a.wdp-btn.wdp-line:hover{background:#05a647}
+.wdp a.wdp-btn.wdp-ghost{background:transparent;color:var(--green);border:2px solid var(--green)}
+.wdp .wdp-nav{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:20px}
+.wdp .wdp-nav a{text-decoration:none;font-weight:700}
+.wdp .wdp-dl{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.wdp .wdp-dl>div{flex:1 1 260px;min-width:0}
+.wdp ol.wdp-ol{display:grid;gap:10px}
+.wdp ol.wdp-ol li::marker{font-weight:900;color:var(--green)}
+.wdp .wdp-small{font-size:13px;color:var(--sub)}
+@media (max-width:600px){
+  .wdp .wdp-hero{padding:24px 18px}
+  .wdp .wdp-hero h2{font-size:23px}
+  .wdp .wdp-card,.wdp .wdp-help,.wdp .wdp-point,.wdp .wdp-warn{padding:16px}
+  .wdp .wdp-table th{white-space:normal}
+}
+@media print{.wdp .wdp-video,.wdp .wdp-nav,.wdp .wdp-help{display:none}}
