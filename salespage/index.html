@@ -235,6 +235,23 @@
     padding: 1.5em 1.3em .4em;
     margin-top: 2em;
   }
+  .avatar {
+    width: 168px; height: 168px;
+    object-fit: cover; object-position: 50% 20%;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 2px var(--gold), 0 8px 20px rgba(20,48,92,.18);
+    margin: -.4em auto 2em;
+  }
+  .avatar-sm {
+    display: inline-block;
+    width: 56px; height: 56px;
+    object-fit: cover; object-position: 50% 20%;
+    border-radius: 50%;
+    border: 2px solid #e8cf8f;
+    vertical-align: middle;
+    margin-right: .6em;
+  }
   .profile .name { font-family: "Noto Serif JP", serif; font-size: 1.3rem; color: var(--navy); margin: 0 0 .6em; }
   .profile ul { padding-left: 1.2em; font-size: .95rem; }
 
@@ -475,6 +492,7 @@
 <section class="alt" id="author">
   <div class="wrap">
     <h2><span class="eyebrow">ABOUT ME</span>はじめまして、りゅう坊です</h2>
+    <img class="avatar" src="img/ryubou.jpg" width="305" height="375" alt="りゅう坊のイラスト">
     <p>35年間、建設現場の監督として働いてきました。体力的にも精神的にもハードな仕事で、仕事に悩み、鬱病に近い状態を経験したこともあります。</p>
     <p>退職後、2018年にネットの世界へ。最初は「自分の経験なんて、誰の役にも立たない」と思っていました。でも、ブログやコラムで発信してみると、「読んでよかった」「参考になった」という声が届くようになったのです。</p>
     <p>そのとき気づいたのは、<span class="marker">自分が「当たり前」だと思っていたことが、誰かにとっては「知りたかったこと」だった</span>という事実でした。</p>
@@ -584,7 +602,7 @@
     <div class="ps">
       <p><strong>追伸</strong></p>
       <p>コンテンツ販売は、人の悩みを解決するための、とっておきの方法だとボクは思っています。あなたの中にある知識や経験は、あなたが思っている以上に価値があります。それを形にするお手伝いができることを、楽しみにしています。</p>
-      <p class="sign">りゅう坊</p>
+      <p class="sign"><img class="avatar-sm" src="img/ryubou.jpg" width="305" height="375" alt="">りゅう坊</p>
     </div>
   </div>
 </section>

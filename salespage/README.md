@@ -6,6 +6,7 @@
 
 - `index.html` … ページ本体（HTMLとCSSのみ。外部から読み込むのはGoogle Fontsだけ）
 - `img/cover.jpg` … ヒーロー画像（導入編の原稿に入っていた表紙画像）
+- `img/ryubou.jpg` … りゅう坊のイラスト（自己紹介と追伸で使用）
 
 ## 公開前に差し替えるところ
 
