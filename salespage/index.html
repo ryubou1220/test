@@ -325,6 +325,7 @@
 
   /* PDF・印刷用 */
   @page { size: A4; margin: 14mm 12mm; }
+  @page :first { margin: 0; }
   @media print {
     html { scroll-behavior: auto; }
     body { font-size: 10pt; line-height: 1.75; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -341,7 +342,9 @@
     .honest p { margin-bottom: .6em; }
     .offer-table { margin-bottom: 1em; }
     .cta { padding: .7em 1em; font-size: 12pt; }
-    .hero { padding: 10mm 0 12mm; }
+    .hero { box-sizing: border-box; height: 296mm; padding: 0 18mm; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+    .hero h1 { font-size: 26pt; }
+    .hero .lead { font-size: 11pt; }
     .hero .cover { max-width: 75%; box-shadow: none; }
     .cta { box-shadow: none; max-width: 110mm; }
     h2, h3, h4 { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
