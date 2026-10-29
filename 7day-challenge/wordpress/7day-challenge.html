@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>7DAYチャレンジ ワークブック</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+
+/* Layout: a 7-day workbook. Sticky progress bar, day tabs, one lesson open at a time; each lesson = reading + highlighter key point + hands-on work sheet. */
+:root {
+  --paper: #f6f7fb;
+  --sheet: #ffffff;
+  --ink: #18213b;
+  --ink-soft: #4a5370;
+  --rule: #dfe3ee;
+  --grid: #e9ecf5;
+  --accent: #2f45c8;
+  --accent-ink: #ffffff;
+  --marker: #ffe55a;
+  --marker-ink: #18213b;
+  --done: #1d8a5b;
+  --warn-bg: #fff4e5;
+  --warn-ink: #8a4b00;
+  --font-display: "Dela Gothic One", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --step--1: 0.84rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.5rem;
+  --step-3: 2.1rem;
+  --step-4: 3rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10142a; --sheet: #171c36; --ink: #e9ecf8; --ink-soft: #a8b0cc;
+    --rule: #2b3253; --grid: #1c2240; --accent: #8c9cff; --accent-ink: #0f1430;
+    --marker: #e8cf3f; --marker-ink: #15192e; --done: #4cc58f;
+    --warn-bg: #2e2412; --warn-ink: #f2c27a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10142a; --sheet: #171c36; --ink: #e9ecf8; --ink-soft: #a8b0cc;
+  --rule: #2b3253; --grid: #1c2240; --accent: #8c9cff; --accent-ink: #0f1430;
+  --marker: #e8cf3f; --marker-ink: #15192e; --done: #4cc58f;
+  --warn-bg: #2e2412; --warn-ink: #f2c27a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sheet); }
+h1, h2, h3 { text-wrap: balance; line-height: 1.35; margin: 0; }
+p { margin: 0; }
+.wrap { max-width: 860px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+mark, .mk { background: linear-gradient(transparent 45%, var(--marker) 45%); color: inherit; padding: 0 2px; }
+button { font-family: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Header */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--sheet); border-bottom: 1px solid var(--rule); }
+.bar-in { display: flex; align-items: center; gap: 16px; padding-block: 10px; }
+.brand { font-family: var(--font-display); font-size: var(--step-0); letter-spacing: 0.02em; white-space: nowrap; }
+.prog { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; justify-content: flex-end; }
+.prog-track { flex: 1; max-width: 220px; height: 8px; background: var(--grid); border-radius: 99px; overflow: hidden; }
+.prog-fill { height: 100%; width: 0; background: var(--done); transition: width .4s ease; }
+.prog-num { font-size: var(--step--1); color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tabs-scroll { overflow-x: auto; scrollbar-width: none; }
+.tabs-scroll::-webkit-scrollbar { display: none; }
+.tabs { display: flex; gap: 6px; padding-block: 0 10px; width: max-content; min-width: 100%; }
+.tab { border: 1px solid var(--rule); background: var(--sheet); color: var(--ink); border-radius: 8px; padding: 6px 12px; font-size: var(--step--1); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.tab:hover { border-color: var(--accent); }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+.tab .tick { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid currentColor; display: inline-grid; place-items: center; font-size: 10px; opacity: .45; }
+.tab.is-done .tick { background: var(--done); border-color: var(--done); color: #fff; opacity: 1; }
+
+/* Cover */
+.cover { padding-block: 40px 8px; display: grid; gap: 18px; }
+.eyebrow { font-size: var(--step--1); font-weight: 700; letter-spacing: 0.12em; color: var(--accent); }
+.cover h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.2rem, 7vw, var(--step-4)); letter-spacing: 0.01em; }
+.cover h1 .seven { display: inline-block; background: var(--marker); color: var(--marker-ink); padding: 0 .18em; transform: rotate(-3deg); margin-right: .08em; }
+.cover .lead { font-size: var(--step-1); color: var(--ink-soft); max-width: 36em; }
+.howto { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 6px; }
+.howto div { background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; font-size: var(--step--1); line-height: 1.6; }
+.howto b { display: block; font-size: var(--step-0); margin-bottom: 2px; }
+@media (max-width: 560px) { .howto { grid-template-columns: 1fr; } }
+
+/* Day sheet */
+main { padding-block: 24px 64px; }
+.sheet { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: clamp(20px, 5vw, 44px); box-shadow: 0 1px 0 var(--rule), 0 12px 30px -18px rgba(24, 33, 59, .25); }
+.day-head { display: grid; grid-template-columns: auto 1fr; gap: 6px 20px; align-items: end; padding-bottom: 22px; border-bottom: 2px dashed var(--rule); margin-bottom: 26px; }
+.day-no { grid-row: span 2; font-family: var(--font-display); font-size: clamp(3.4rem, 12vw, 5.2rem); line-height: .9; color: var(--accent); }
+.day-no small { display: block; font-size: var(--step--1); letter-spacing: .2em; color: var(--ink-soft); font-family: var(--font-body); font-weight: 700; margin-bottom: 6px; }
+.day-head .q { font-size: var(--step--1); font-weight: 700; color: var(--ink-soft); letter-spacing: .06em; }
+.day-head h2 { font-size: clamp(1.35rem, 4vw, var(--step-3)); font-weight: 700; }
+.body { display: grid; gap: 18px; max-width: 38em; }
+.body h3 { font-size: var(--step-1); margin-top: 12px; }
+.voice { border-left: 3px solid var(--rule); padding-left: 14px; color: var(--ink-soft); }
+.list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.list li { position: relative; padding-left: 1.6em; }
+.list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+.list.star li::before { content: "★"; color: var(--marker); -webkit-text-stroke: .5px var(--ink); }
+.vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vs div { border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; font-size: var(--step--1); line-height: 1.6; }
+.vs div b { display: block; font-size: var(--step-0); margin-top: 4px; }
+.vs .win { border-color: var(--accent); }
+@media (max-width: 520px) { .vs { grid-template-columns: 1fr; } }
+.keypoint { background: var(--marker); color: var(--marker-ink); border-radius: 4px; padding: 16px 18px; font-weight: 700; font-size: var(--step-1); line-height: 1.6; transform: rotate(-.4deg); }
+.keypoint small { display: block; font-size: var(--step--1); letter-spacing: .14em; opacity: .7; }
+.note { background: var(--warn-bg); color: var(--warn-ink); border-radius: 10px; padding: 12px 16px; font-size: var(--step--1); line-height: 1.7; }
+.note b { display: block; }
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 2.2em 1fr; gap: 10px; align-items: start; }
+.steps li::before { content: counter(s); font-family: var(--font-display); background: var(--ink); color: var(--sheet); border-radius: 50%; width: 2em; height: 2em; display: grid; place-items: center; font-size: var(--step--1); margin-top: 2px; }
+
+/* Flow */
+.flow-scroll { overflow-x: auto; }
+.flow { display: flex; align-items: center; gap: 6px; width: max-content; padding-block: 4px; }
+.flow span { border: 1.5px solid var(--ink); border-radius: 8px; padding: 6px 10px; font-size: var(--step--1); font-weight: 700; background: var(--sheet); white-space: nowrap; }
+.flow span.hot { background: var(--marker); color: var(--marker-ink); border-color: var(--marker); }
+.flow i { font-style: normal; color: var(--ink-soft); }
+
+/* Work */
+.work { margin-top: 34px; border: 2px solid var(--ink); border-radius: 12px; padding: clamp(16px, 4vw, 28px); display: grid; gap: 16px; position: relative; }
+.work-label { position: absolute; top: -13px; left: 16px; background: var(--ink); color: var(--sheet); font-size: var(--step--1); font-weight: 700; letter-spacing: .1em; padding: 2px 12px; border-radius: 99px; }
+.work h3 { font-size: var(--step-1); }
+.work .hint { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.7; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-weight: 700; font-size: var(--step--1); }
+.field input, .field textarea, .field select { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 10px 12px; line-height: 1.6; }
+.field textarea { min-height: 84px; resize: vertical; }
+.field input:focus, .field textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 99px; padding: 6px 14px; cursor: pointer; font-size: var(--step--1); font-weight: 700; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.out { background: var(--paper); border: 1px dashed var(--accent); border-radius: 10px; padding: 16px; white-space: pre-wrap; line-height: 1.8; min-width: 0; overflow-wrap: anywhere; }
+.out-title { font-size: var(--step-1); font-weight: 700; }
+.out .blank { color: var(--ink-soft); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn { border: 0; border-radius: 8px; padding: 10px 18px; font-weight: 700; font-size: var(--step--1); cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--rule); }
+.btn:hover { filter: brightness(1.08); }
+.toast { font-size: var(--step--1); color: var(--done); font-weight: 700; }
+
+/* Done row */
+.finish { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; padding-top: 22px; border-top: 2px dashed var(--rule); }
+.done-btn { display: inline-flex; align-items: center; gap: 10px; border: 2px solid var(--done); color: var(--done); background: transparent; border-radius: 99px; padding: 10px 20px; font-weight: 700; cursor: pointer; font-size: var(--step-0); }
+.done-btn .box { width: 20px; height: 20px; border-radius: 50%; border: 2px solid currentColor; display: grid; place-items: center; font-size: 12px; }
+.done-btn[aria-pressed="true"] { background: var(--done); color: #fff; }
+.done-btn[aria-pressed="true"] .box { border-color: #fff; }
+.nav-btns { display: flex; gap: 8px; }
+
+/* Bonus checklist */
+.phase { display: grid; gap: 8px; }
+.phase h4 { margin: 10px 0 0; font-size: var(--step-0); display: flex; gap: 10px; align-items: baseline; }
+.phase h4 span { font-family: var(--font-display); font-weight: 400; color: var(--accent); font-size: var(--step--1); letter-spacing: .08em; }
+.check { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; padding: 8px 10px; border-radius: 8px; cursor: pointer; line-height: 1.6; }
+.check:hover { background: var(--paper); }
+.check input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--done); }
+.check input:checked + span { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--done); }
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 480px; font-size: var(--step--1); line-height: 1.6; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 700; color: var(--ink-soft); font-size: 0.78rem; letter-spacing: .08em; }
+.mind { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.mind div { border: 1px solid var(--rule); border-radius: 10px; padding: 14px; display: grid; gap: 6px; font-size: var(--step--1); line-height: 1.7; }
+.mind .stuck { color: var(--ink-soft); }
+.mind .stuck::before { content: "つまずき："; font-weight: 700; }
+.mind b { font-size: var(--step-0); }
+@media (max-width: 560px) { .mind { grid-template-columns: 1fr; } }
+
+footer { padding-block: 0 48px; color: var(--ink-soft); font-size: var(--step--1); text-align: center; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } .keypoint, .cover h1 .seven { transform: none; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <div class="bar-in">
+      <div class="brand">7DAYチャレンジ</div>
+      <div class="prog" aria-label="進捗">
+        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+        <div class="prog-num" id="progNum">0 / 7 日 完了</div>
+      </div>
+    </div>
+    <div class="tabs-scroll">
+      <div class="tabs" role="tablist" id="tabs"></div>
+    </div>
+  </div>
+</header>
+
+<section class="wrap cover" id="cover">
+  <div class="eyebrow">経験と思考を“商品”に変える 7日間ワークブック</div>
+  <h1><span class="seven">7</span>日で、あなたの経験を売れる形にする。</h1>
+  <p class="lead">1日10分。読んで、書いて、チェックをつけるだけ。7日目には「誰に・何を・どこで・どう売るか」と、最初の無料特典の告知文が手元に残ります。</p>
+  <div class="howto">
+    <div><b>① 読む</b>その日のテーマを3分で。黄色いマーカーが要点です。</div>
+    <div><b>② 書く</b>ワーク欄に記入。入力内容はこのブラウザに自動保存されます。</div>
+    <div><b>③ 完了する</b>「今日のワーク完了」を押して、次の日へ進みましょう。</div>
+  </div>
+</section>
+
+<main class="wrap" id="main">
+
+<!-- DAY 1 -->
+<article class="sheet" data-day="1" id="day1" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>01</div>
+    <div class="q">第1日のテーマ</div>
+    <h2>なぜ今“コンテンツ販売”なのか？</h2>
+  </div>
+  <div class="body">
+    <p class="voice">「怪しいビジネスじゃないの？」<br>「稼げるのは一部の人だけでしょ？」</p>
+    <p>よく聞く声です。でも、だったら何？という話。気にするほど行動が止まってしまいます。</p>
+    <p>それよりも、この<mark>「情報を売る」という働き方は、今の時代もっともリスクが低く、収益性が高く、自由度の高いビジネス</mark>です。理由はシンプルです。</p>
+    <ul class="list">
+      <li><b>初期費用ほぼゼロ。</b>ネット環境があればOK。</li>
+      <li><b>在庫不要で、何度でも売れる。</b>商品は“知識”だから。</li>
+      <li><b>作ったら繰り返し販売できる。</b>いわゆるストック型です。</li>
+    </ul>
+    <h3>あなたの「当たり前」が、誰かの「知りたい」</h3>
+    <ul class="list star">
+      <li>過去に失敗したダイエット体験</li>
+      <li>会社で自然と身についた業務効率のコツ</li>
+      <li>子育てで悩んだときの工夫</li>
+    </ul>
+    <p>これらも、誰かにとっては「お金を払ってでも知りたい情報」になります。ここは時代が変わっても“変わらないもの”です。</p>
+    <div class="keypoint"><small>KEY POINT</small>あなたの経験も、知識も、過去の苦労も、すべてが“価値”になる時代。</div>
+    <p>ただし最近は、情報そのものが出尽くして「視点を変える時期」が来ています。それが明日のテーマです。</p>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>「お金を払ってでも知りたい」と思われそうな経験を3つ書き出す</h3>
+    <p class="hint">大きな実績でなくてOK。「失敗して学んだこと」「人より少し得意なこと」「乗り越えた悩み」から探すと見つかります。</p>
+    <div class="field"><label for="d1_a">経験 1</label><input id="d1_a" data-save placeholder="例）産後3か月で−8kg。続かなかった方法と続いた方法の違い"></div>
+    <div class="field"><label for="d1_b">経験 2</label><input id="d1_b" data-save placeholder="例）残業月40時間→10時間にしたExcelとメールの型"></div>
+    <div class="field"><label for="d1_c">経験 3</label><input id="d1_c" data-save placeholder="例）イヤイヤ期の朝支度を15分短くした声かけ"></div>
+  </section>
+</article>
+
+<!-- DAY 2 -->
+<article class="sheet" data-day="2" id="day2" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>02</div>
+    <div class="q">第2日のテーマ</div>
+    <h2>“情報が出尽くした時代”に売れる人がやっている、たった一つのこと</h2>
+  </div>
+  <div class="body">
+    <p class="voice">「情報はもう出尽くしているのでは？」<br>「今さら参入しても遅いのでは？」</p>
+    <p>確かに、検索すれば動画も記事も教材もあふれています。でも<mark>「情報がある」＝「結果が出る」ではありません。</mark></p>
+    <div class="vs">
+      <div>ダイエット方法は山ほどあるのに<b>太っている人はいる</b></div>
+      <div>勉強法の本は山ほどあるのに<b>勉強できない人は多い</b></div>
+    </div>
+    <p>なぜか。答えはカンタンです。今求められているのは、情報ではなく<mark>「導いてくれる人」</mark>だからです。読者が本当に欲しいのは、</p>
+    <ul class="list star">
+      <li>自分に合った道筋</li>
+      <li>迷ったときに背中を押してくれる一言</li>
+      <li>「これで大丈夫だよ」と言ってくれる存在</li>
+    </ul>
+    <p>つまり、“ナビゲーター”としてのあなたです。専門知識や実績がなくても関係ありません。「私はこうやって乗り越えたよ」「こう考えるようになって楽になったよ」という<b>リアルな声</b>こそが、最も価値のあるものになります。</p>
+    <div class="keypoint"><small>KEY POINT</small>売れている人は「情報」ではなく「自分の思考」を売っている。あなたがどう考え、どんな視点を持っているかが最大の武器。</div>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>あなたの“思考”を言葉にする</h3>
+    <p class="hint">DAY1で書いた経験のうち1つを選んで、考え方がどう変わったかを書きます。ここがそのまま発信のネタになります。</p>
+    <div class="field"><label for="d2_overcome">「私はこうやって乗り越えたよ」</label><textarea id="d2_overcome" data-save placeholder="例）完璧な食事制限は3日で挫折。『夜だけ主食を半分』に決めたら半年続いた。"></textarea></div>
+    <div class="row2">
+      <div class="field"><label for="d2_before">以前の考え方</label><input id="d2_before" data-save placeholder="例）やるなら全部ちゃんとやらないと意味がない"></div>
+      <div class="field"><label for="d2_after">今の考え方</label><input id="d2_after" data-save placeholder="例）6割でいいから続けた人が勝つ"></div>
+    </div>
+  </section>
+</article>
+
+<!-- DAY 3 -->
+<article class="sheet" data-day="3" id="day3" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>03</div>
+    <div class="q">第3日のテーマ</div>
+    <h2>まずやるべき、超シンプルな3つの準備</h2>
+  </div>
+  <div class="body">
+    <p>思考を価値として届けるために、何から始めればいいのか。迷わず動くための準備は3つだけです。</p>
+    <h3>① 「誰に向けて届けるか」を決める</h3>
+    <p>いわゆるターゲット設定。細かく考えすぎなくてOKです。おすすめは<mark>「少し前の自分」を思い出すこと。</mark></p>
+    <ul class="list">
+      <li>副業を始めたいけど、何からすればいいか分からなかった自分</li>
+      <li>マインドがブレまくって不安定だった自分</li>
+      <li>やりたいことはあるのに動けなかった自分</li>
+    </ul>
+    <p>その頃の自分に届けるつもりで発信すれば、自然と“刺さる言葉”が出てきます。</p>
+    <h3>② 「どんな経験・思考を伝えるか」を整理する</h3>
+    <p>次の3つの問いに答えるだけ。答えのすべてが、立派な“商品ネタ”になります。</p>
+    <ul class="list star">
+      <li>よく人から相談されることは？</li>
+      <li>自分が乗り越えた“人生の壁”は？</li>
+      <li>あの頃の自分に伝えたい言葉は？</li>
+    </ul>
+    <h3>③ 「どこで発信するか」を仮決めする</h3>
+    <p>Instagram、X、note、LINE、ブログ。正直どこでもいいです。大事なのは「ストレスなく継続できるか」「読んでくれる人がいそうか」の2つだけ。あとで変えても大丈夫です。</p>
+    <div class="keypoint"><small>KEY POINT</small>「誰に」「どんな思考を」「どこで」届けるかを、まず“仮決め”。改善しながら前に進むのが正解（改善主義）。</div>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>3つを仮決めして、1行の宣言にする</h3>
+    <div class="field"><label for="d3_who">① 誰に（少し前の自分）</label><input id="d3_who" data-save placeholder="例）時短勤務で副業時間がとれず焦っていた、2年前の私のようなママ"></div>
+    <div class="field"><label for="d3_q1">② よく人から相談されることは？</label><input id="d3_q1" data-save placeholder="例）仕事の段取り、家事の時短"></div>
+    <div class="field"><label for="d3_q2">② 自分が乗り越えた“人生の壁”は？</label><input id="d3_q2" data-save placeholder="例）復職後、時間が足りずに毎日自己嫌悪だった"></div>
+    <div class="field"><label for="d3_q3">② あの頃の自分に伝えたい言葉は？</label><input id="d3_q3" data-save placeholder="例）全部やらなくていい。やらないことを先に決めよう"></div>
+    <div class="field">
+      <label id="d3_where_l">③ どこで（仮決めでOK・複数可）</label>
+      <div class="chips" id="d3_where" role="group" aria-labelledby="d3_where_l">
+        <button type="button" class="chip" aria-pressed="false" data-v="Instagram">Instagram</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="X">X</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="note">note</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="LINE">LINE</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="ブログ">ブログ</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="Threads">Threads</button>
+        <button type="button" class="chip" aria-pressed="false" data-v="YouTube">YouTube</button>
+      </div>
+    </div>
+    <div class="out" id="d3_out" aria-live="polite"></div>
+  </section>
+</article>
+
+<!-- DAY 4 -->
+<article class="sheet" data-day="4" id="day4" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>04</div>
+    <div class="q">第4日のテーマ</div>
+    <h2>売れる商品と売れない商品の、決定的な違い</h2>
+  </div>
+  <div class="body">
+    <p class="voice">「自分の商品って、売れるのか？」<br>「こんなので本当に買ってもらえるの？」</p>
+    <p>いざ商品を作ろうとすると、必ずぶつかる壁です。そしてそれは、めちゃくちゃ正しい不安です。</p>
+    <h3>内容よりも、伝わり方が大事</h3>
+    <p>衝撃かもしれませんが、「内容がいいから売れる」とは限りません。売れる商品は<mark>“見せ方（構成やパッケージ）”が9割</mark>です。</p>
+    <h3>バカ売れ商品の黄金ルール</h3>
+    <p>「バカ売れ12原則」のうち、特に効くのがこの4つです。</p>
+    <div class="vs">
+      <div>第1原則：簡単さ<b>カンタンにできそう</b></div>
+      <div>第2原則：即時性<b>すぐ結果が出そう</b></div>
+      <div>第5原則：圧倒的ボリューム<b>大量に価値がありそう</b></div>
+      <div>第7原則：裏技・秘密<b>禁断のテクニック感</b></div>
+    </div>
+    <p>たとえば<b>「3日で結果が出る！知る人ぞ知る“裏マインド整理法”」</b>。タイトルだけでも反応がまったく変わります。</p>
+    <p>あなたの思考・経験をそのまま商品にするのではなく、「カンタンそうに」「スピード感を感じられるように」「ちょっと秘密っぽい雰囲気で」という<b>見せ方の工夫</b>をかけましょう。</p>
+    <div class="note"><b>見せ方は工夫しても、約束は盛らない</b>「誰でも必ず」「〇日で月100万」など、中身が裏づけられない表現は景品表示法などに触れるおそれがあり、信頼も失います。“魔法のパッケージ”は、実際に提供できる中身の範囲でかけましょう。</div>
+    <div class="keypoint"><small>KEY POINT</small>売れるかどうかは「中身」よりも「どう見せるか」。</div>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>“魔法のパッケージ”で商品タイトルを作る</h3>
+    <p class="hint">4つの欄を埋めると、下にタイトル案ができます。何パターンか試して、いちばん「読みたくなる」ものを残しましょう。</p>
+    <div class="row2">
+      <div class="field"><label for="d4_time">即時性（期間）</label><input id="d4_time" data-save placeholder="例）3日で / 1日5分で"></div>
+      <div class="field"><label for="d4_result">得られる結果</label><input id="d4_result" data-save placeholder="例）朝のバタバタが消える"></div>
+      <div class="field"><label for="d4_secret">秘密感のある前置き</label><input id="d4_secret" data-save placeholder="例）知る人ぞ知る / 誰も教えてくれなかった"></div>
+      <div class="field"><label for="d4_name">手法の名前</label><input id="d4_name" data-save placeholder="例）“やらないこと”リスト術"></div>
+    </div>
+    <div class="field"><label for="d4_volume">ボリューム感（任意）</label><input id="d4_volume" data-save placeholder="例）テンプレ30枚つき / 全7ステップ"></div>
+    <div class="out" id="d4_out" aria-live="polite"></div>
+    <div class="actions"><button class="btn ghost" type="button" data-copy="d4_out">タイトルをコピー</button><span class="toast" data-toast="d4_out"></span></div>
+  </section>
+</article>
+
+<!-- DAY 5 -->
+<article class="sheet" data-day="5" id="day5" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>05</div>
+    <div class="q">第5日のテーマ</div>
+    <h2>セールスが苦手でも売れる構成パターン</h2>
+  </div>
+  <div class="body">
+    <p class="voice">売ろうとすると緊張する。押し売りみたいでイヤ。自分にはセールス力がない。</p>
+    <p>めちゃくちゃ分かります。でも安心してください。<mark>売れている人って、実は“売っていない”</mark>んです。</p>
+    <p>ゴリゴリ売る代わりに、構成で“欲しくなるように”導いている。つまり、<b>セールスとは「説得」ではなく「構成」</b>です。</p>
+    <h3>初心者でも使える、超王道の型</h3>
+    <ol class="steps">
+      <li>あなたの悩み、私もかつて同じでした</li>
+      <li>でも、その悩みは〇〇が原因だったのです</li>
+      <li>実は△△という方法がありまして……</li>
+      <li>この方法で、私はこう変わりました</li>
+      <li>今だけ特典付きでご案内中です</li>
+    </ol>
+    <p>これに沿って文章や動画を作るだけで、売り込まずに売れる“導線”ができあがります。</p>
+    <h3>セールス＝案内、くらいの気持ちでOK</h3>
+    <p>「売り込み＝悪」というイメージがあると、発信そのものが怖くなります。でも、あなたの商品は「相手の未来を良くする手段」。それを“親切に案内する”のがセールスです。</p>
+    <div class="keypoint"><small>KEY POINT</small>売るのではなく、導く。セールス構成さえ押さえれば、売れる。</div>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>5つの型に沿って、案内文の下書きを作る</h3>
+    <p class="hint">各欄は1〜2文で十分です。埋めるとそのまま投稿やLPに使える文章になります。</p>
+    <div class="field"><label for="d5_1">1. あなたの悩み、私もかつて同じでした</label><textarea id="d5_1" data-save placeholder="例）毎朝怒鳴ってばかりで、出勤前にはもうクタクタ。そんな自分が嫌でした。"></textarea></div>
+    <div class="field"><label for="d5_2">2. その悩みの本当の原因</label><textarea id="d5_2" data-save placeholder="例）原因は気合い不足ではなく、朝に『決めること』が多すぎたことでした。"></textarea></div>
+    <div class="field"><label for="d5_3">3. 実は△△という方法がありまして</label><textarea id="d5_3" data-save placeholder="例）前日の夜に5分だけ“やらないこと”を決める方法です。"></textarea></div>
+    <div class="field"><label for="d5_4">4. この方法で、私はこう変わりました</label><textarea id="d5_4" data-save placeholder="例）朝の支度が15分短くなり、笑って送り出せる日が増えました。"></textarea></div>
+    <div class="field"><label for="d5_5">5. 今だけの特典・ご案内</label><textarea id="d5_5" data-save placeholder="例）今週中に申し込んだ方には、チェックシートを無料でおつけします。"></textarea></div>
+    <div class="out" id="d5_out" aria-live="polite"></div>
+    <div class="actions"><button class="btn ghost" type="button" data-copy="d5_out">案内文をコピー</button><span class="toast" data-toast="d5_out"></span></div>
+  </section>
+</article>
+
+<!-- DAY 6 -->
+<article class="sheet" data-day="6" id="day6" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>06</div>
+    <div class="q">第6日のテーマ</div>
+    <h2>人が“お金を払う”とき、動かされている2つの感情</h2>
+  </div>
+  <div class="body">
+    <p class="voice">構成はできた。でも、本当に買ってもらえるのか不安……。</p>
+    <p>今日は、人がお金を払う裏にある心理を解説します。2つの感情とは<b>「得したい」</b>と<b>「損したくない」</b>。そして強いのは後者です。</p>
+    <p>えっ？と思うかもしれませんが、<mark>人は「欲しいから」ではなく「損をしたくないから」買う</mark>のです。心理学では【損失回避の法則】と呼ばれます。</p>
+    <div class="vs">
+      <div>得したい<b>「これを使えば、月3万円得します」</b></div>
+      <div class="win">損したくない<b>「これを知らないと、月3万円損します」</b></div>
+    </div>
+    <p>ほとんどの人が後者に反応します。“人は損を避けたい生き物”だからです。</p>
+    <h3>損失回避をセールスに使う表現</h3>
+    <ul class="list">
+      <li>今行動しないことで、今後も同じ悩みが続くかもしれません。</li>
+      <li>知っていれば、あなたは〇〇を回避できていたかもしれません。</li>
+      <li>このチャンスを逃すことで、未来の選択肢が一つ減ります。</li>
+    </ul>
+    <p>こうした【失うことへの警告】が、人を行動へと後押しします。</p>
+    <div class="note"><b>あおりすぎは逆効果</b>実際にはない期限や、根拠のない不安をつくる表現は使わないこと。「事実として起きていること」を伝えるからこそ、信頼と行動の両方が手に入ります。</div>
+    <div class="keypoint"><small>KEY POINT</small>「買って得したい」より「買わないと損するかも」が人を動かす。</div>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>「得する表現」を「損を避ける表現」に書き換える</h3>
+    <p class="hint">DAY5の案内文の中で、メリットを伝えている一文を書き換えてみましょう。</p>
+    <div class="field"><label for="d6_gain">得する表現（今の文）</label><textarea id="d6_gain" data-save placeholder="例）この方法で、朝の時間が15分増えます。"></textarea></div>
+    <div class="field"><label for="d6_loss">損を避ける表現（書き換え後）</label><textarea id="d6_loss" data-save placeholder="例）このままだと、1年で約90時間を“朝のバタバタ”に使い続けることになります。"></textarea></div>
+  </section>
+</article>
+
+<!-- DAY 7 -->
+<article class="sheet" data-day="7" id="day7" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>DAY</small>07</div>
+    <div class="q">最終日のテーマ</div>
+    <h2>あなたも挑戦してみませんか？ 無料特典プレゼント戦略</h2>
+  </div>
+  <div class="body">
+    <p>7日間、読んでくださってありがとうございました!(^^)!　このチャレンジが「今からでもできる」と考えるきっかけになっていたら嬉しいです。</p>
+    <h3>ここまでのおさらい</h3>
+    <ol class="steps">
+      <li>なぜ今、コンテンツ販売なのか？</li>
+      <li>情報じゃなく「思考」が売れる時代</li>
+      <li>まずやるべき3つの準備</li>
+      <li>売れる商品と売れない商品の違い</li>
+      <li>売り込まずに売れるセールス構成</li>
+      <li>お金を払ってもらう心理の作り方</li>
+    </ol>
+    <p>そして最終日は、ここからどう一歩踏み出すか。最後の仕上げの目的は3つです。</p>
+    <ul class="list star">
+      <li>これまでの発信を「行動」につなげる</li>
+      <li>無料特典でハードルを下げ、LINEやメルマガに誘導する</li>
+      <li>信頼の総仕上げをする</li>
+    </ul>
+    <p>つまり、<mark>“あなたに連絡したくなる”状態をつくる、ラストの一撃</mark>です。</p>
+    <h3>無料特典プレゼントの流れ</h3>
+    <div class="flow-scroll">
+      <div class="flow">
+        <span>7日間の発信</span><i>→</i><span class="hot">無料特典を告知</span><i>→</i><span>キーワードでコメント</span><i>→</i><span>LINE公式へ案内</span><i>→</i><span>自動配信でPDF送付</span><i>→</i><span class="hot">信頼→商品のご案内</span>
+      </div>
+    </div>
+    <p>特典の例は<b>『ゼロから始めるコンテンツ販売チェックリストPDF』</b>。やるべきことを整理できる全体マップ、必要なツール＆準備物の一覧、つまずきを乗り越えるマインドセット集。“一歩踏み出すための地図”です。<br>このワークブックの最後に、実物をつけています。</p>
+    <div class="keypoint"><small>KEY POINT</small>あなたの知識や経験は、まだ誰かの人生を変えていないだけ。一歩踏み出すことで“自分の価値”に気づき、それが誰かの希望になります。</div>
+  </div>
+  <section class="work">
+    <span class="work-label">TODAY'S WORK</span>
+    <h3>あなたの無料特典と、告知投稿を作る</h3>
+    <div class="field"><label for="d7_name">無料特典の名前</label><input id="d7_name" data-save placeholder="例）ワーママのための『朝15分を取り戻す』チェックシートPDF"></div>
+    <div class="field"><label for="d7_c1">中身 1</label><input id="d7_c1" data-save placeholder="例）前夜5分で書ける“やらないこと”リスト"></div>
+    <div class="field"><label for="d7_c2">中身 2</label><input id="d7_c2" data-save placeholder="例）朝支度の時短タイムテーブル"></div>
+    <div class="field"><label for="d7_c3">中身 3</label><input id="d7_c3" data-save placeholder="例）イライラした朝に読む、心を整える一言集"></div>
+    <div class="row2">
+      <div class="field"><label for="d7_kw">コメントしてもらうキーワード</label><input id="d7_kw" data-save placeholder="例）チェックシート希望"></div>
+      <div class="field"><label for="d7_dest">受け取り先</label><input id="d7_dest" data-save placeholder="例）LINE公式"></div>
+    </div>
+    <div class="out" id="d7_out" aria-live="polite"></div>
+    <div class="actions"><button class="btn ghost" type="button" data-copy="d7_out">告知投稿をコピー</button><span class="toast" data-toast="d7_out"></span></div>
+  </section>
+</article>
+
+<!-- BONUS -->
+<article class="sheet" data-day="bonus" id="bonus" hidden>
+  <div class="day-head">
+    <div class="day-no"><small>BONUS</small>+</div>
+    <div class="q">特典</div>
+    <h2>ゼロから始めるコンテンツ販売チェックリスト</h2>
+  </div>
+  <div class="body" style="max-width:none">
+    <p>やるべきことを迷わず整理するための“地図”です。上から順にチェックしていけば、最初の販売までたどり着けます。</p>
+    <h3>1. 全体マップ</h3>
+    <div class="phase">
+      <h4><span>STEP 1</span>土台づくり</h4>
+      <label class="check"><input type="checkbox" id="b_1"><span>届けたい相手（少し前の自分）を1人に決めた</span></label>
+      <label class="check"><input type="checkbox" id="b_2"><span>商品ネタになる経験・思考を3つ以上書き出した</span></label>
+      <label class="check"><input type="checkbox" id="b_3"><span>発信する場所を1〜2か所に仮決めした</span></label>
+      <label class="check"><input type="checkbox" id="b_4"><span>プロフィールに「誰の、どんな悩みを、どう解決する人か」を書いた</span></label>
+      <h4><span>STEP 2</span>発信と信頼づくり</h4>
+      <label class="check"><input type="checkbox" id="b_5"><span>自分の体験談（失敗→気づき→変化）を3本投稿した</span></label>
+      <label class="check"><input type="checkbox" id="b_6"><span>読者の悩みに答える投稿を3本投稿した</span></label>
+      <label class="check"><input type="checkbox" id="b_7"><span>7DAYチャレンジ形式の連載を1回やり切った</span></label>
+      <h4><span>STEP 3</span>リスト（見込み客）づくり</h4>
+      <label class="check"><input type="checkbox" id="b_8"><span>LINE公式アカウント（またはメルマガ）を開設した</span></label>
+      <label class="check"><input type="checkbox" id="b_9"><span>無料特典（PDFやチェックシート）を1つ作った</span></label>
+      <label class="check"><input type="checkbox" id="b_10"><span>登録したら特典が届く自動配信を設定した</span></label>
+      <label class="check"><input type="checkbox" id="b_11"><span>無料特典の告知投稿を出した</span></label>
+      <h4><span>STEP 4</span>商品化と販売</h4>
+      <label class="check"><input type="checkbox" id="b_12"><span>“魔法のパッケージ”で商品タイトルと中身の構成を決めた</span></label>
+      <label class="check"><input type="checkbox" id="b_13"><span>5つの型でセールス文（案内文）を書いた</span></label>
+      <label class="check"><input type="checkbox" id="b_14"><span>販売ページと決済方法を用意し、特定商取引法に基づく表記を載せた</span></label>
+      <label class="check"><input type="checkbox" id="b_15"><span>LINE登録者に商品を案内した</span></label>
+      <label class="check"><input type="checkbox" id="b_16"><span>購入者の感想を集め、商品と発信を改善した</span></label>
+    </div>
+
+    <h3>2. 必要なツール＆準備物</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>用途</th><th>準備するもの</th><th>ポイント</th></tr></thead>
+        <tbody>
+          <tr><td>作業環境</td><td>スマホ（できればPCも）、ネット環境</td><td>まずは手持ちの機材で十分</td></tr>
+          <tr><td>発信</td><td>Instagram / X / note / Threads など</td><td>続けられる場所を1つ。複数はあとから</td></tr>
+          <tr><td>リスト化</td><td>LINE公式アカウント、またはメルマガ配信サービス</td><td>無料プランから始められる。あいさつメッセージで特典を自動送付</td></tr>
+          <tr><td>特典・教材づくり</td><td>Canva、Googleドキュメント、Keynote など</td><td>PDF書き出しができればOK</td></tr>
+          <tr><td>販売・決済</td><td>note、Brain、Tips、BASE、Stripe など</td><td>手数料と入金サイクルを比べて選ぶ</td></tr>
+          <tr><td>法的表記</td><td>特定商取引法に基づく表記、プライバシーポリシー</td><td>有料販売・個人情報の取得をする前に用意</td></tr>
+          <tr><td>ネタ帳</td><td>メモアプリ（このワークブックのワーク欄も活用）</td><td>相談された内容・読者の言葉をそのまま残す</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3. つまずきポイントを乗り越えるマインドセット集</h3>
+    <div class="mind">
+      <div><span class="stuck">実績がないから自信がない</span><b>「少し前の自分」には、今のあなたが先生。</b>必要なのは権威ではなく、半歩先を歩いた経験です。</div>
+      <div><span class="stuck">情報はもう出尽くしている</span><b>売るのは情報ではなく、あなたの思考。</b>同じ情報でも、誰が・どう導くかで価値が変わります。</div>
+      <div><span class="stuck">何を発信すればいいか分からない</span><b>よく相談されることが、そのままネタ。</b>3つの問いに戻れば、必ず書くことが見つかります。</div>
+      <div><span class="stuck">反応が少なくて心が折れそう</span><b>仮決め → 改善が正解。</b>反応が良かった投稿の「型」を残して、次の投稿に活かしましょう。</div>
+      <div><span class="stuck">売るのが怖い</span><b>セールス＝案内。</b>あなたの商品は相手の未来を良くする手段です。黙っているほうが不親切なこともあります。</div>
+      <div><span class="stuck">完璧に作り込んでから出したい</span><b>6割で出して、感想で仕上げる。</b>最初の購入者の声が、いちばん正確な改善案です。</div>
+    </div>
+  </div>
+  <section class="work">
+    <span class="work-label">MY SUMMARY</span>
+    <h3>7日間のワークをまとめて持ち出す</h3>
+    <p class="hint">ワーク欄に書いた内容を1つのテキストにまとめてコピーできます。メモアプリなどに貼り付けて保管してください。</p>
+    <div class="actions"><button class="btn" type="button" id="copyAll">7日間の回答をまとめてコピー</button><button class="btn ghost" type="button" id="resetAsk">回答をすべて消す</button><span class="toast" id="allToast"></span></div>
+    <div class="actions" id="resetConfirm" hidden><span>このブラウザに保存された回答とチェックをすべて消します。</span><button class="btn" type="button" id="resetYes">消す</button><button class="btn ghost" type="button" id="resetNo">やめる</button></div>
+    <textarea id="allFallback" class="out" style="width:100%;min-height:200px;font:inherit" readonly hidden aria-label="まとめテキスト"></textarea>
+  </section>
+</article>
+
+</main>
+
+<footer class="wrap">7DAYチャレンジ ワークブック ｜ 入力内容はお使いのブラウザにのみ保存されます</footer>
+
+<script>
+(function () {
+  var KEY = "7day-workbook-v1";
+  var DAYS = ["1", "2", "3", "4", "5", "6", "7", "bonus"];
+  var LABELS = { "1": "DAY1", "2": "DAY2", "3": "DAY3", "4": "DAY4", "5": "DAY5", "6": "DAY6", "7": "DAY7", "bonus": "特典" };
+  var state = { fields: {}, done: {}, where: [], checks: {} };
+
+  function load() {
+    try { var raw = localStorage.getItem(KEY); if (raw) { var s = JSON.parse(raw); state.fields = s.fields || {}; state.done = s.done || {}; state.where = s.where || []; state.checks = s.checks || {}; } } catch (e) {}
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function $(id) { return document.getElementById(id); }
+  function val(id) { var v = state.fields[id]; return v ? String(v).trim() : ""; }
+
+  load();
+
+  // Tabs
+  var tabs = $("tabs");
+  DAYS.forEach(function (d) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "tab"; b.setAttribute("role", "tab"); b.dataset.day = d;
+    b.innerHTML = (d === "bonus" ? "" : '<span class="tick" aria-hidden="true">✓</span>') + LABELS[d];
+    b.addEventListener("click", function () { show(d, true); });
+    tabs.appendChild(b);
+  });
+
+  function show(d, scroll) {
+    document.querySelectorAll("article[data-day]").forEach(function (a) { a.hidden = a.dataset.day !== d; });
+    tabs.querySelectorAll(".tab").forEach(function (t) {
+      var on = t.dataset.day === d;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      if (on && t.scrollIntoView) t.scrollIntoView({ block: "nearest", inline: "nearest" });
+    });
+    try { history.replaceState(null, "", "#" + (d === "bonus" ? "bonus" : "day" + d)); } catch (e) {}
+    try { localStorage.setItem(KEY + "-tab", d); } catch (e) {}
+    if (scroll) { var m = $("main"); var top = m.getBoundingClientRect().top + window.scrollY - document.querySelector(".bar").offsetHeight - 8; window.scrollTo({ top: Math.max(0, top), behavior: "smooth" }); }
+  }
+
+  // Finish rows
+  document.querySelectorAll("article[data-day]").forEach(function (a) {
+    var d = a.dataset.day, i = DAYS.indexOf(d);
+    var row = document.createElement("div"); row.className = "finish";
+    var html = "";
+    if (d !== "bonus") html += '<button type="button" class="done-btn" data-done="' + d + '" aria-pressed="false"><span class="box" aria-hidden="true">✓</span>今日のワーク完了</button>';
+    else html += "<span></span>";
+    html += '<div class="nav-btns">';
+    if (i > 0) html += '<button type="button" class="btn ghost" data-go="' + DAYS[i - 1] + '">← ' + LABELS[DAYS[i - 1]] + "</button>";
+    if (i < DAYS.length - 1) html += '<button type="button" class="btn" data-go="' + DAYS[i + 1] + '">' + LABELS[DAYS[i + 1]] + " へ →</button>";
+    html += "</div>";
+    row.innerHTML = html;
+    a.appendChild(row);
+  });
+  document.addEventListener("click", function (e) {
+    var go = e.target.closest("[data-go]"); if (go) { show(go.dataset.go, true); return; }
+    var dn = e.target.closest("[data-done]");
+    if (dn) { var d = dn.dataset.done; state.done[d] = !state.done[d]; save(); renderProgress(); if (state.done[d] && d !== "7") show(DAYS[DAYS.indexOf(d) + 1], true); }
+  });
+
+  function renderProgress() {
+    var n = 0;
+    for (var i = 1; i <= 7; i++) if (state.done[String(i)]) n++;
+    $("progFill").style.width = (n / 7 * 100) + "%";
+    $("progNum").textContent = n === 7 ? "7 / 7 日 完了！おつかれさまでした" : n + " / 7 日 完了";
+    tabs.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("is-done", !!state.done[t.dataset.day]); });
+    document.querySelectorAll("[data-done]").forEach(function (b) { var on = !!state.done[b.dataset.done]; b.setAttribute("aria-pressed", on ? "true" : "false"); b.lastChild.textContent = on ? "完了しました" : "今日のワーク完了"; });
+  }
+
+  // Fields
+  document.querySelectorAll("[data-save]").forEach(function (el) {
+    if (state.fields[el.id] != null) el.value = state.fields[el.id];
+    el.addEventListener("input", function () { state.fields[el.id] = el.value; save(); renderOutputs(); });
+  });
+  document.querySelectorAll("#d3_where .chip").forEach(function (c) {
+    c.setAttribute("aria-pressed", state.where.indexOf(c.dataset.v) >= 0 ? "true" : "false");
+    c.addEventListener("click", function () {
+      var v = c.dataset.v, i = state.where.indexOf(v);
+      if (i >= 0) state.where.splice(i, 1); else state.where.push(v);
+      c.setAttribute("aria-pressed", i >= 0 ? "false" : "true"); save(); renderOutputs();
+    });
+  });
+  document.querySelectorAll(".check input").forEach(function (cb) {
+    cb.checked = !!state.checks[cb.id];
+    cb.addEventListener("change", function () { state.checks[cb.id] = cb.checked; save(); });
+  });
+
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function slot(id, fallback) { var v = val(id); return v ? esc(v) : '<span class="blank">' + fallback + "</span>"; }
+
+  function d4Text() {
+    var t = val("d4_time"), r = val("d4_result"), s = val("d4_secret"), n = val("d4_name"), v = val("d4_volume");
+    if (!t && !r && !s && !n) return "";
+    var title = (t ? t : "") + (r ? r : "") + (t || r ? "！" : "") + (s ? s : "") + (n ? n : "");
+    return title + (v ? "【" + v + "】" : "");
+  }
+  function d5Text() {
+    var parts = ["d5_1", "d5_2", "d5_3", "d5_4", "d5_5"].map(val).filter(Boolean);
+    return parts.join("\n\n");
+  }
+  function d7Text() {
+    var name = val("d7_name"); if (!name) return "";
+    var items = ["d7_c1", "d7_c2", "d7_c3"].map(val).filter(Boolean);
+    var kw = val("d7_kw") || "欲しいです", dest = val("d7_dest") || "LINE公式";
+    var s = "7日間、読んでくださってありがとうございました！\n\nここまで読んでくれたあなたに、無料プレゼントを用意しました。\n\n『" + name + "』\n";
+    if (items.length) s += "\nこの特典には、\n" + items.map(function (x) { return "・" + x; }).join("\n") + "\nを詰め込みました。\n";
+    s += "\n【受け取り方法】\n「" + kw + "」とコメントしてください。\n確認後、" + dest + "のリンクをお送りします。\n登録いただくと、自動でPDFが届きます。\n\nあなたの経験は、まだ誰かの人生を変えていないだけ。\n一歩、踏み出してみませんか？";
+    return s;
+  }
+
+  function renderOutputs() {
+    var where = state.where.length ? esc(state.where.join("・")) : '<span class="blank">（発信場所）</span>';
+    $("d3_out").innerHTML = '<div class="out-title">私は、' + slot("d3_who", "（誰に）") + " に向けて、<br>" + slot("d3_q3", "（伝えたい言葉・思考）") + " を、<br>" + where + " で届けます。</div>";
+    var t4 = d4Text();
+    $("d4_out").innerHTML = t4 ? '<div class="out-title">' + esc(t4) + "</div>" : '<span class="blank">ここにタイトル案が表示されます</span>';
+    var t5 = d5Text();
+    $("d5_out").innerHTML = t5 ? esc(t5) : '<span class="blank">5つの欄を埋めると、ここに案内文がつながって表示されます</span>';
+    var t7 = d7Text();
+    $("d7_out").innerHTML = t7 ? esc(t7) : '<span class="blank">特典の名前を入れると、ここに告知投稿の下書きができます</span>';
+  }
+
+  function copyText(text, toastEl, fallbackEl) {
+    function ok() { toastEl.textContent = "コピーしました"; setTimeout(function () { toastEl.textContent = ""; }, 2000); }
+    function fail() {
+      if (fallbackEl) { fallbackEl.hidden = false; fallbackEl.value = text; fallbackEl.focus(); fallbackEl.select(); }
+      toastEl.textContent = "自動コピーできませんでした。表示されたテキストを選択してコピーしてください";
+    }
+    try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); }
+  }
+  document.querySelectorAll("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var id = b.dataset.copy, toast = document.querySelector('[data-toast="' + id + '"]');
+      var text = id === "d4_out" ? d4Text() : id === "d5_out" ? d5Text() : d7Text();
+      if (!text) { toast.textContent = "先に欄を埋めてください"; return; }
+      copyText(text, toast, null);
+      if (!navigator.clipboard) { var r = document.createRange(); r.selectNodeContents($(id)); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+    });
+  });
+
+  function summary() {
+    var L = [];
+    L.push("■ 7DAYチャレンジ まとめ", "");
+    L.push("【DAY1 価値になる経験】", "1. " + val("d1_a"), "2. " + val("d1_b"), "3. " + val("d1_c"), "");
+    L.push("【DAY2 私の思考】", "乗り越え方：" + val("d2_overcome"), "以前：" + val("d2_before"), "今：" + val("d2_after"), "");
+    L.push("【DAY3 仮決め】", "誰に：" + val("d3_who"), "よく相談されること：" + val("d3_q1"), "乗り越えた壁：" + val("d3_q2"), "伝えたい言葉：" + val("d3_q3"), "どこで：" + state.where.join("・"), "");
+    L.push("【DAY4 商品タイトル】", d4Text(), "");
+    L.push("【DAY5 案内文】", d5Text(), "");
+    L.push("【DAY6 損失回避の書き換え】", "前：" + val("d6_gain"), "後：" + val("d6_loss"), "");
+    L.push("【DAY7 無料特典の告知】", d7Text());
+    return L.join("\n");
+  }
+  $("copyAll").addEventListener("click", function () { copyText(summary(), $("allToast"), $("allFallback")); });
+  $("resetAsk").addEventListener("click", function () { $("resetConfirm").hidden = false; });
+  $("resetNo").addEventListener("click", function () { $("resetConfirm").hidden = true; });
+  $("resetYes").addEventListener("click", function () {
+    state = { fields: {}, done: {}, where: [], checks: {} }; save();
+    document.querySelectorAll("[data-save]").forEach(function (el) { el.value = ""; });
+    document.querySelectorAll(".check input").forEach(function (cb) { cb.checked = false; });
+    document.querySelectorAll("#d3_where .chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    $("resetConfirm").hidden = true; renderOutputs(); renderProgress();
+    $("allToast").textContent = "すべて消しました";
+  });
+
+  // Initial view
+  var start = "1";
+  var h = (location.hash || "").replace("#", "");
+  if (/^day[1-7]$/.test(h)) start = h.slice(3); else if (h === "bonus") start = "bonus";
+  else { try { var t = localStorage.getItem(KEY + "-tab"); if (t && DAYS.indexOf(t) >= 0) start = t; } catch (e) {} }
+  renderOutputs(); renderProgress(); show(start, false);
+})();
+</script>
+</body>
+</html>
