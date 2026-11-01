@@ -2,7 +2,7 @@
 
   python3 course-guides/src/build.py
 
-src/stepN.md → stepN.html（確認用）と stepN.pdf（A4・配布用）
+src/*.md → *.html（確認用）と stepN.pdf（A4・配布用）
 """
 import pathlib
 import re
@@ -15,7 +15,7 @@ FONT = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ze
 
 def main():
     pages = []
-    for md in sorted(SRC.glob("step*.md")):
+    for md in sorted(SRC.glob("*.md")):
         accent = re.search(r'^accent:\s*"([^"]+)"', md.read_text(encoding="utf-8"), re.M).group(1)
         out = ROOT / f"{md.stem}.html"
         subprocess.run(["pandoc", str(md), "-s", "-o", str(out), "--css", str(SRC / "guide.css"),

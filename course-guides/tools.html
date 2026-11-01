@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>道具あれこれ帳</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#b5652b}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">道具あれこれ帳</h1>
+<p class="subtitle">週末DIY 5ステップ講座・オリジナルウッドデッキ
+日曜大工プログラム　購入特典</p>
+</header>
+<p>道具は、一度に全部そろえなくて大丈夫です。作品ごとに、必要なものを少しずつ足していきます。高い道具は借りる、一度しか使わない作業は頼む、ちょっとした道具は端材で作る。この帳面は、そのための手引きです。</p>
+<h2 id="そろえる順番表">1. そろえる順番表</h2>
+<p>作品ごとに「ここで初めて必要になる道具」だけを並べました。前の作品の道具は、そのまま使い続けます。</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>作品</th>
+<th>新しく必要になる道具</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>STEP1 踏み台</td>
+<td>さしがね、メジャー、鉛筆、ノコギリ、インパクトドライバー、3mmのドリルビット、保護メガネ、手袋</td>
+</tr>
+<tr class="even">
+<td>STEP2 プランター台</td>
+<td>まっすぐな長い定規、すき間ゲージ（自作）</td>
+</tr>
+<tr class="odd">
+<td>STEP3 囲炉裏テーブル</td>
+<td>水平器（30cm以上）、カッターと金属の定規、防じんマスク</td>
+</tr>
+<tr class="even">
+<td>STEP4 木製門扉</td>
+<td>スコップ、穴掘り器、練り舟とクワ、水糸と杭、突き棒（自作）</td>
+</tr>
+<tr class="odd">
+<td>ウッドデッキ</td>
+<td>電動丸ノコ、チョークライン、クランプ、タンパー（自作）、直角定規（自作）、受け台（自作）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>電動工具は、DIY用で十分です。プロ用は重く、値段も高くなります。</p>
+</blockquote>
+<h2 id="買う借りる頼む作る">2. 買う・借りる・頼む・作る</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>向いている道具・作業</th>
+<th>ポイント</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>買う</strong></td>
+<td>さしがね、メジャー、ノコギリ、インパクトドライバー、水平器</td>
+<td>どの作品でも使う。長く使うものから買う</td>
+</tr>
+<tr class="even">
+<td><strong>借りる</strong></td>
+<td>穴掘り器、電動丸ノコ（デッキまで買わない場合）</td>
+<td>ホームセンターの工具レンタルを使う。買う前に店で聞いてみる</td>
+</tr>
+<tr class="odd">
+<td><strong>頼む</strong></td>
+<td>木材のカット、長い材料の運搬</td>
+<td>カットサービス（1カット数十円ほど）、軽トラックの貸し出し</td>
+</tr>
+<tr class="even">
+<td><strong>作る</strong></td>
+<td>すき間ゲージ、タンパー、直角定規、受け台</td>
+<td>作品の余りの木で作れる（次の章）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="端材でつくる治具">3. 端材でつくる治具</h2>
+<p>治具（じぐ）は、同じ作業を正確にくり返すための手作りの道具です。どれも作品の余りの木で作れます。寸法は目安です。手元の材料に合わせてください。</p>
+<h3 id="すき間ゲージ">すき間ゲージ</h3>
+<p>板と板のすき間をそろえる道具です。厚さを、作品のすき間に合わせて作ります（プランター台・囲炉裏テーブルは5mm、門扉は12mm、デッキはマニュアルの目地の幅）。</p>
+<svg width="520" height="170" viewBox="0 0 520 170" role="img" aria-label="すき間ゲージの図。薄い板の上に、横向きの角材をストッパーとして留めたT字の形">
+<rect x="40" y="60" width="140" height="22" fill="#f1e3d0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="102" y="82" width="16" height="70" fill="#e8c9a0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="300" y="60" width="16" height="92" fill="#e8c9a0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="316" y="60" width="60" height="22" fill="#f1e3d0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="240" y="60" width="60" height="22" fill="#f1e3d0" stroke="#1b231e" stroke-width="2"></rect>
+<line x1="300" y1="160" x2="316" y2="160" stroke="#b5652b" stroke-width="2"></line>
+<text x="308" y="30" font-size="15" text-anchor="middle" fill="#1b231e">横から見た図</text>
+<text x="110" y="30" font-size="15" text-anchor="middle" fill="#1b231e">前から見た図</text>
+<text x="390" y="125" font-size="14" fill="#b5652b">すき間の厚さ</text>
+<text x="390" y="76" font-size="14" fill="#1b231e">ストッパー</text>
+</svg>
+<ul>
+<li><strong>材料：</strong>
+すき間と同じ厚さの板（ベニヤ板など）を幅40×長さ100mmほど。上に2×4材の端材をストッパーとして留める</li>
+<li><strong>使い方：</strong>
+板の上にストッパーを引っかけて、すき間に差し込む。2個以上作り、両端にはさむ（長い板は中央にも）</li>
+<li><strong>コツ：</strong>
+ストッパーがあると、すき間から下に落ちない</li>
+</ul>
+<h3 id="の直角定規">3：4：5の直角定規</h3>
+<p>ウッドデッキの基礎で、束石の直角を確かめる大きな三角定規です。</p>
+<svg width="520" height="260" viewBox="0 0 520 260" role="img" aria-label="直角定規の図。90cmと120cmの板を直角に組み、150cmの板を斜めに渡した三角形">
+<polygon points="60,220 60,40 300,220" fill="none" stroke="#1b231e" stroke-width="14" stroke-linejoin="round" opacity="0.15"></polygon>
+<line x1="60" y1="220" x2="60" y2="40" stroke="#b5652b" stroke-width="10"></line>
+<line x1="60" y1="220" x2="300" y2="220" stroke="#b5652b" stroke-width="10"></line>
+<line x1="60" y1="40" x2="300" y2="220" stroke="#b5652b" stroke-width="10"></line>
+<rect x="60" y="200" width="20" height="20" fill="none" stroke="#1b231e" stroke-width="2"></rect>
+<text x="30" y="135" font-size="15" fill="#1b231e" text-anchor="middle">90cm</text>
+<text x="180" y="248" font-size="15" fill="#1b231e" text-anchor="middle">120cm</text>
+<text x="205" y="118" font-size="15" fill="#1b231e">150cm</text>
+<text x="330" y="80" font-size="14" fill="#1b231e">3：4：5の三角形は</text>
+<text x="330" y="102" font-size="14" fill="#1b231e">かならず直角になる</text>
+</svg>
+<ul>
+<li><strong>材料：</strong> 1×4材や2×4材の端材を3本</li>
+<li><strong>作り方：</strong>
+板の端から測って、90cm・120cm・150cmの位置に印をつけ、印どうしがぴったり合うように三角形に組んでビスで留める</li>
+<li><strong>使い方：</strong>
+直角にしたい角に当てる。仕上げに、四隅の対角線を2本測って確かめる</li>
+</ul>
+<h3 id="タンパー">タンパー</h3>
+<p>束石の下や穴の底の砕石を、突き固める道具です。</p>
+<svg width="520" height="300" viewBox="0 0 520 300" role="img" aria-label="タンパーの図。太い角材の上部に、横向きの持ち手を留めた形">
+<rect x="230" y="70" width="44" height="210" fill="#e8c9a0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="170" y="70" width="164" height="22" fill="#f1e3d0" stroke="#1b231e" stroke-width="2"></rect>
+<line x1="230" y1="292" x2="274" y2="292" stroke="#b5652b" stroke-width="2"></line>
+<text x="252" y="50" font-size="15" text-anchor="middle" fill="#1b231e">持ち手（2×4材）</text>
+<text x="290" y="200" font-size="15" fill="#1b231e">4×4材（約9cm角）</text>
+<text x="290" y="290" font-size="14" fill="#b5652b">底を平らに切る</text>
+</svg>
+<ul>
+<li><strong>材料：</strong>
+4×4材（約9cm角）を長さ900mmほど、持ち手に2×4材を300mmほど</li>
+<li><strong>作り方：</strong>
+4×4材の上の端に、持ち手を横向きにビス4本で留める。底は直角に、平らに切る</li>
+<li><strong>使い方：</strong>
+持ち手を両手で持ち、持ち上げては落とすをくり返す。砕石が沈まなくなったら完了</li>
+</ul>
+<h3 id="突き棒">突き棒</h3>
+<p>コンクリートの中の空気を抜く棒です。2×4材の端材を長さ900mmほどに切るだけで作れます。門扉の柱のまわりに、少しずつ差し込んでは抜きます。</p>
+<h3 id="根太の受け台">根太の受け台</h3>
+<p>1人で長い根太を張るときに、反対側の端を支える台です。</p>
+<svg width="520" height="260" viewBox="0 0 520 260" role="img" aria-label="受け台の図。床板の上に立てた角材の上部に、横向きの受け材を留めたL字の台">
+<rect x="160" y="220" width="200" height="22" fill="#f1e3d0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="240" y="70" width="38" height="150" fill="#e8c9a0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="278" y="70" width="80" height="22" fill="#f1e3d0" stroke="#1b231e" stroke-width="2"></rect>
+<rect x="290" y="40" width="160" height="30" fill="none" stroke="#b5652b" stroke-width="2" stroke-dasharray="6 4"></rect>
+<text x="370" y="30" font-size="14" fill="#b5652b">根太をここにのせる</text>
+<text x="70" y="150" font-size="15" fill="#1b231e">2×4材を立てる</text>
+<text x="370" y="236" font-size="15" fill="#1b231e">台（2×6材）</text>
+</svg>
+<ul>
+<li><strong>材料：</strong>
+台に2×6材300mm、柱に2×4材、受けに2×4材100mmほど</li>
+<li><strong>作り方：</strong> 柱の長さは「根太の下の端の高さ −
+台の厚み38mm」。柱を台に立ててビスで留め、柱の上に受けを横向きに留める</li>
+<li><strong>使い方：</strong>
+根太の片方の端を受けにのせ、もう片方を支柱に仮留めする。クランプと組み合わせると、さらに安定する</li>
+</ul>
+<h2 id="道具の使い方のコツ">4. 道具の使い方のコツ</h2>
+<h3 id="さしがね">さしがね</h3>
+<ul>
+<li>短い方を材料の側面にぴったり当て、長い方に沿って線を引く</li>
+<li>上の面に引いたら、側面にも線を回す。切るときの目安になる</li>
+<li>鉛筆は削って、細い線で。赤い鉛筆は木の上で見やすい</li>
+</ul>
+<h3 id="水平器">水平器</h3>
+<ul>
+<li>気泡が、2本の線のちょうど真ん中にあれば水平（垂直）</li>
+<li>柱の垂直は、となり合う2つの面に当てて見る。1つの面だけでは、もう一方に傾いていても分からない</li>
+<li>当てる向きを左右反対にしても気泡が同じ位置なら、その水平器は正確</li>
+</ul>
+<h3 id="インパクトドライバー">インパクトドライバー</h3>
+<ul>
+<li>ビスの頭に合ったビット（コーススレッドなら多くは＋2番）を使う</li>
+<li>本体をビスとまっすぐに構え、しっかり押しつけながら回す。押しが弱いと、ビスの頭の溝がつぶれる</li>
+<li>打ち始めはゆっくり。ビスが立ってから力を入れる</li>
+<li>天板のビスは、頭が面から1〜2mm沈んだところで止める</li>
+</ul>
+<h3 id="のこぎり">のこぎり</h3>
+<ul>
+<li>日本のノコギリは、引くときに切れる。押すときは力を抜く</li>
+<li>切り始めは、親指の爪を刃の横に当てて位置を決め、軽く数回引いて溝をつくる</li>
+<li>刃の長さ全体を使って、ゆっくり大きく引く</li>
+</ul>
+<h3 id="電動丸ノコ">電動丸ノコ</h3>
+<ul>
+<li>刃の出は、材料の厚みより少し出るくらいに合わせる</li>
+<li>丸ノコの真後ろに立たない。斜め後ろに立つ</li>
+<li>切り落とす側が下に落ちる位置に台を置く。刃がはさまると、手前に跳ね返る（キックバック）</li>
+<li>刃の交換や、角度・深さを変えるときは、必ず電源を抜く</li>
+<li>保護メガネを必ずかける。刃が止まるまで手を離さない</li>
+</ul>
+<h2 id="監修者の道具箱">5. 監修者の道具箱</h2>
+<p>35年の現場とDIYで、実際に使い続けている道具です。道具は、高いものより、手になじむものを。ホームセンターで実際に持ってみて、重さと握りやすさを確かめてから選んでください。</p>
+<h3 id="電動丸ノコリョービ">電動丸ノコ（リョービ）</h3>
+<p>【野村さんのひとこと：この丸ノコを選んだ理由、使っていてよかったところ】</p>
+<p>※リョービの電動工具は、現在は京セラのブランドで販売されています。</p>
+<h3 id="のこぎりゼットソー">のこぎり（ゼットソー）</h3>
+<p>替え刃式のノコギリです。切れ味が落ちたら、刃だけを取り替えられます。</p>
+<p>【野村さんのひとこと：ゼットソーを選んだ理由、使っていてよかったところ】</p>
+<h3 id="インパクトドライバーリョービ">インパクトドライバー（リョービ）</h3>
+<p>【野村さんのひとこと：このインパクトドライバーを選んだ理由、使っていてよかったところ】</p>
+</body>
+</html>
