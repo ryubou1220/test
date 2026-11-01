@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>STEP1　踏み台をつくる</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#2c6849}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">STEP1　踏み台をつくる</h1>
+<p class="subtitle">週末DIY
+5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+</header>
+<table>
+<thead>
+<tr class="header">
+<th>材料費</th>
+<th>作業時間</th>
+<th>大きさ（幅×奥行き×高さ）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>約2,600円</td>
+<td>半日</td>
+<td>430×300×250mm（高さは200・250・300mmから選べる）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="このstepで覚えること">このSTEPで覚えること</h2>
+<p>STEP1は、すべての作業の基本が詰まった踏み台です。ここで覚える4つの作業は、ウッドデッキづくりで何百回とくり返します。</p>
+<ol type="1">
+<li><strong>さしがねで、直角の線を引く</strong>　まっすぐ切れるかどうかは、線で決まります。</li>
+<li><strong>線に沿って、まっすぐ切る</strong>　ノコギリでも丸ノコでもかまいません。</li>
+<li><strong>下穴をあけて、ビスで留める</strong>　木が割れず、ビスも曲がりません。</li>
+<li><strong>対角線で、直角を確かめる</strong>　2本の対角線が同じ長さなら直角です。</li>
+</ol>
+<blockquote>
+<p><strong>ウッドデッキでは：</strong>
+対角線の確認は、デッキの基礎で束石の位置を決めるときに、そのまま使います。</p>
+</blockquote>
+<h2 id="材料と道具">材料と道具</h2>
+<table>
+<thead>
+<tr class="header">
+<th>材料</th>
+<th>規格</th>
+<th>数量</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2×4材</td>
+<td>38×89mm　長さ1,820mm</td>
+<td>1本</td>
+<td>500円</td>
+</tr>
+<tr class="even">
+<td>2×6材</td>
+<td>38×140mm　長さ1,820mm</td>
+<td>1本</td>
+<td>900円</td>
+</tr>
+<tr class="odd">
+<td>コーススレッド（ビス）</td>
+<td>長さ75mm（使うのは20本）</td>
+<td>1箱</td>
+<td>500円</td>
+</tr>
+<tr class="even">
+<td>木工用ボンド</td>
+<td>屋外に置くなら屋外用</td>
+<td>1本</td>
+<td>500円</td>
+</tr>
+<tr class="odd">
+<td>サンドペーパー</td>
+<td>#120</td>
+<td>2枚</td>
+<td>200円</td>
+</tr>
+<tr class="even">
+<td><strong>合計</strong></td>
+<td></td>
+<td></td>
+<td><strong>約2,600円</strong></td>
+</tr>
+</tbody>
+</table>
+<p>屋外に置くなら、防腐処理したSPF材か、ウエスタンレッドシダーを選びます。</p>
+<p><strong>道具：</strong>
+さしがね、メジャー、鉛筆、ノコギリ（または丸ノコ）、インパクトドライバー（またはドライバードリル）、下穴用のドリルビット3mm、保護メガネ、手袋。クランプとスコヤ（小さな直角定規）があると便利です。</p>
+<p><strong>工具を持っていない方へ：</strong>
+ホームセンターのカットサービス（1カット数十円ほど）なら、教材のカット表を見せるだけで切ってもらえます。組み立てから始められます。</p>
+<blockquote>
+<p><strong>2×6材は約914mm余ります。</strong>
+STEP2のプランター台で使うので、捨てずにとっておいてください。</p>
+</blockquote>
+<h2 id="線の引き方と切り方">線の引き方と切り方</h2>
+<p>切る部品は次のとおりです。</p>
+<table>
+<thead>
+<tr class="header">
+<th>材料</th>
+<th>部品</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2×4材</td>
+<td>脚 212mm×4本、幕板 354mm×2本（余り約249mm）</td>
+</tr>
+<tr class="even">
+<td>2×6材</td>
+<td>天板 300mm×3枚（余り約914mm）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="線を引く">線を引く</h3>
+<ol type="1">
+<li><strong>端をそろえる。</strong>
+買ってきた材料の端は、直角でないことが多いものです。まず5mmほど切り落とします。</li>
+<li><strong>長さに印をつける。</strong>
+切りそろえた端から測ります。</li>
+<li><strong>さしがねで直角の線を引く。</strong>
+さしがねの短い方を材料の側面に当てて線を引き、側面にも線を回します。</li>
+<li><strong>捨てる側に×印をつける。</strong>
+切る位置を間違えないためです。</li>
+</ol>
+<h3 id="切る">切る</h3>
+<ul>
+<li><strong>線の外側（×印の側）を切ります。</strong>
+刃には約3mmの厚みがあるので、線の上を切ると部品がその分短くなります。</li>
+<li><strong>印は1本切るごとにつけます。</strong>
+まとめて印をつけると、刃の厚みの分ずつずれていきます。</li>
+<li><strong>同じ部品を並べて確かめます。</strong>
+脚4本を立てて並べ、高さのずれが2mm以内かを見ます。</li>
+</ul>
+<h2 id="組み立て">組み立て</h2>
+<p>順番は「下穴 → ボンド → ビス」です。</p>
+<h3 id="前と後ろの枠をつくる">1. 前と後ろの枠をつくる</h3>
+<p>脚2本の間に幕板をはさみ、幕板の上の面と脚の上の端をそろえます。脚の外側から幕板の木口（切り口）に向けて3mmの下穴を2か所あけ、木口にボンドを塗って、75mmのビスを2本ずつ打ちます。同じ枠をもう1組つくります。</p>
+<blockquote>
+<p>ビスは材料の端から20mm以上離します。近すぎると木が割れます。</p>
+</blockquote>
+<h3 id="天板を張る">2. 天板を張る</h3>
+<p>平らな床に枠を2つ立て、天板を1枚、端に合わせてのせます。両端を、下穴をあけてからビス2本ずつで留めます。</p>
+<p>ここで<strong>対角線を2本測ります。どちらも約524mmなら直角</strong>です。違っていたら、枠を押して直します。直角が出たら、残りの2枚を5mmのすき間をあけて留めます（すき間には5mmの板や定規をはさみます）。</p>
+<h3 id="仕上げる">3. 仕上げる</h3>
+<p>天板の角と縁をサンドペーパーで丸めます（面取り）。平らな床に置いて、がたつきがないか確かめます。屋外に置くなら塗料を2回塗ります。木口は特にしっかり塗ってください。</p>
+<h2 id="できあがりチェック">できあがりチェック</h2>
+<p>全部できたら、STEP1は修了です。</p>
+<ul>
+<li>平らな床で、がたつかない</li>
+<li>乗っても、きしまない・たわまない</li>
+<li>天板のすき間が、3本ともそろっている</li>
+<li>ビスの頭が、天板の面から出ていない</li>
+<li>角が丸く、さわっても痛くない</li>
+<li>対角線を測って、直角を確かめられた</li>
+</ul>
+<h2 id="うまくいかなかったときは">うまくいかなかったときは</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>症状</th>
+<th>原因と直し方</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>がたつく</td>
+<td>脚の長さがそろっていない。いちばん長い脚の底を削るか、1〜2mm切る</td>
+</tr>
+<tr class="even">
+<td>木が割れた</td>
+<td>下穴がないか、ビスが端に近すぎる。割れた部品は作り直す（余った材料で足ります）</td>
+</tr>
+<tr class="odd">
+<td>天板がななめ</td>
+<td>直角が出ていない。ビスを1本ゆるめて枠を押し、対角線をそろえてから締め直す</td>
+</tr>
+</tbody>
+</table>
+<h2 id="次は-step2プランター台">次は STEP2「プランター台」</h2>
+<p>STEP1で余った2×6材を使って、すき間をそろえて板を張る練習をします。ウッドデッキの床板張りと同じ作業です。完成した踏み台の写真を、ぜひ送ってください。</p>
+</body>
+</html>

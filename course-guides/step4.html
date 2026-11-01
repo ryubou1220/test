@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>STEP4　木製門扉をつくる</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#7a55a8}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">STEP4　木製門扉をつくる</h1>
+<p class="subtitle">週末DIY
+5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+</header>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>材料費</th>
+<th>作業時間</th>
+<th>大きさ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>約1.4万円</td>
+<td>2日（間にコンクリートを固める）</td>
+<td>片開き　扉 幅900×高さ1,200mm（柱の内側920mm）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="このstepで覚えること">このSTEPで覚えること</h2>
+<ol type="1">
+<li><strong>穴を掘り、コンクリートで柱を建てる</strong>　デッキの束石を据える作業と同じです。</li>
+<li><strong>柱の垂直を、2つの方向から確かめる</strong>　水平器を柱の2つの面に当てます。</li>
+<li><strong>筋交いで、扉が垂れないようにする</strong>　向きを間違えると効きません。斜め切りもここで覚えます。</li>
+<li><strong>金物を付け、まわりのすき間を均等にする</strong>　蝶番・ラッチ・戸当たりを付けます。</li>
+</ol>
+<h2 id="掘る前に必ず確かめること">掘る前に、必ず確かめること</h2>
+<blockquote>
+<ul>
+<li><strong>地中に水道管・ガス管・電線が通っていないか。</strong>
+家の図面や、メーターの位置を見て確かめます。</li>
+<li><strong>敷地の境界の内側か。</strong>
+お隣との境界ぎりぎりなら、先に話しておきます。</li>
+<li><strong>コンクリートはアルカリ性で、手が荒れます。</strong>
+ゴム手袋と保護メガネを使います。</li>
+</ul>
+</blockquote>
+<h2 id="材料と道具">材料と道具</h2>
+<table>
+<thead>
+<tr class="header">
+<th>材料</th>
+<th>規格</th>
+<th>数量</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4×4材（門柱）</td>
+<td>89×89mm　長さ1,820mm　防腐処理材</td>
+<td>2本</td>
+<td>5,000円</td>
+</tr>
+<tr class="even">
+<td>1×4材（扉の板・戸当たり）</td>
+<td>19×89mm　長さ2,440mm</td>
+<td>5本</td>
+<td>2,250円</td>
+</tr>
+<tr class="odd">
+<td>2×4材（横桟・筋交い）</td>
+<td>38×89mm　長さ1,820mm</td>
+<td>2本</td>
+<td>1,000円</td>
+</tr>
+<tr class="even">
+<td>Tヒンジ（門扉用の蝶番）</td>
+<td>ステンレス　長さ200mm程度</td>
+<td>2個</td>
+<td>1,500円</td>
+</tr>
+<tr class="odd">
+<td>ゲートラッチ（留め金）</td>
+<td>屋外用</td>
+<td>1個</td>
+<td>1,000円</td>
+</tr>
+<tr class="even">
+<td>コーススレッド</td>
+<td>長さ45mm</td>
+<td>1箱</td>
+<td>600円</td>
+</tr>
+<tr class="odd">
+<td>インスタントコンクリート</td>
+<td>25kg（水を混ぜるだけ）</td>
+<td>4袋</td>
+<td>2,400円</td>
+</tr>
+<tr class="even">
+<td>砕石</td>
+<td>20kg</td>
+<td>1袋</td>
+<td>400円</td>
+</tr>
+<tr class="odd">
+<td><strong>合計</strong></td>
+<td></td>
+<td></td>
+<td><strong>約14,150円</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>道具：</strong>
+STEP1〜3の道具一式（水平器も）に、スコップと穴掘り器（ダブルスコップ）、練り舟とクワ（またはバケツと移植ごて）、突き棒（2×4の端材でよい）、水糸・杭・仮留め用の板、ゴム手袋が加わります。</p>
+<p><strong>今ある門柱や塀の柱に付けるとき：</strong>
+柱を建てる作業は省けます。柱の内側の間隔が920mmになるよう、扉の幅と板の枚数を調整してください。ブロック塀に木の柱を付けるときは、ブロック用のアンカーを使い、塀の強度を必ず確かめてください。</p>
+<h2 id="寸法と切る部品">寸法と切る部品</h2>
+<table>
+<thead>
+<tr class="header">
+<th>部品</th>
+<th>材料</th>
+<th>寸法と数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>門柱</td>
+<td>4×4材</td>
+<td>1,800mm×2本</td>
+</tr>
+<tr class="even">
+<td>扉の板</td>
+<td>1×4材</td>
+<td>1,200mm×9枚</td>
+</tr>
+<tr class="odd">
+<td>横桟</td>
+<td>2×4材</td>
+<td>900mm×2本</td>
+</tr>
+<tr class="even">
+<td>筋交い</td>
+<td>2×4材</td>
+<td>長い辺 約1,090mm×1本</td>
+</tr>
+<tr class="odd">
+<td>戸当たり</td>
+<td>1×4材</td>
+<td>1,200mm×1本</td>
+</tr>
+</tbody>
+</table>
+<p>柱は地面から1,300mm出し、地中に500mm埋めます。</p>
+<p><strong>扉の板の割付け：</strong> すき間 ＝（900 − 89×9）÷ 8 ＝
+約12.4mm。12mmの端材をゲージにして並べると、両端がちょうど900mmにそろいます。STEP2のすき間ゲージと同じやり方です。</p>
+<h2 id="筋交いの向きいちばん大事">筋交いの向き（いちばん大事）</h2>
+<blockquote>
+<p><strong>蝶番側の下から、取っ手側の上へ。</strong></p>
+<p>扉は、取っ手側が下がろうとします。筋交いがその力を蝶番側の下に伝えて、扉が垂れるのを防ぎます。<strong>逆向きに付けると、ほとんど効きません。</strong></p>
+</blockquote>
+<p><strong>斜め切りのしかた：</strong>
+筋交いは少し長めに切っておきます。扉を裏返し、横桟の間に筋交いの材をのせ（蝶番側の下から、取っ手側の上へ）、横桟の縁に沿って上下2か所に線を引きます。角度は約46°になります。線の外側を、ゆっくり切ります。最初の数回は、ノコギリを軽く引きます。</p>
+<h2 id="日目-柱を建てる">1日目　柱を建てる</h2>
+<p>この日は、コンクリートを固めて終わりです。</p>
+<ol type="1">
+<li><strong>位置を出して、穴を掘る。</strong>
+杭と水糸で、柱を立てる線を張ります。2本の柱の中心の間隔は1,009mmです。柱の位置に、直径約250mm・深さ550mmの穴を掘り、底に砕石を50mm入れて、突き棒でしっかり突き固めます。</li>
+<li><strong>柱を立てて、垂直を出す。</strong>
+柱を穴に立て、2方向から仮留めの板で支えます（板は杭に留めます）。水平器を柱の2つの面に当てて、どちらも垂直になるまで調整します。2本目も同じように立て、柱の内側の間隔が上でも下でも920mm、高さ（地面から1,300mm）がそろっているか確かめます。</li>
+<li><strong>コンクリートを入れて、固める。</strong>
+インスタントコンクリートに水を混ぜ、穴に少しずつ入れて、棒で突いて空気を抜きます。入れ終わったら、もう一度2本の柱の垂直と間隔を確かめます。上の面は柱に向かって山形に盛り、雨水がたまらないようにします。2日以上そのまま固めます。扉はこの間につくります。</li>
+</ol>
+<blockquote>
+<p><strong>ウッドデッキでは：</strong>
+「水糸で位置を出す」「穴を掘って突き固める」「2方向から垂直を見る」は、デッキの束石と束柱の作業そのものです。デッキでは、これを十数か所くり返します。</p>
+</blockquote>
+<h2 id="日目-扉をつくって吊る">2日目　扉をつくって、吊る</h2>
+<p>順番は「板 → 横桟 → 筋交い → 金物」です。</p>
+<ol type="1">
+<li><strong>板を並べて、横桟を留める。</strong>
+平らな場所に、扉の板9枚を表を下にして並べ、すき間に12mmのゲージをはさみます。板の上と下の端から120mmの位置に横桟をのせ、<strong>対角線が両方とも約1,500mmになるよう直角を出します。</strong>
+横桟の上から、板1枚につき2本ずつ45mmのビスで留めます。</li>
+<li><strong>筋交いを入れる。</strong>
+斜めに切った筋交いを横桟の間にぴったり入れ、板1枚につき2本ずつ留めます。</li>
+<li><strong>扉を吊る。</strong>
+扉の下に50mmの台（2×4の端材を寝かせたもの＋薄い板）をかませ、柱の間に置きます。両側のすき間が10mmずつになるよう位置を決め、Tヒンジの長い方を横桟に、短い方を蝶番側の柱に留めます。台を外して開け閉めし、こすれる所がないか確かめます。</li>
+<li><strong>戸当たりとラッチを付ける。</strong>
+取っ手側の柱の内側に戸当たりを付け、ラッチを取り付けます。</li>
+</ol>
+<h2 id="できあがりチェック">できあがりチェック</h2>
+<ul>
+<li>柱が2本とも、2つの面で垂直</li>
+<li>扉のまわりのすき間が、左右10mm・下50mmでそろっている</li>
+<li>扉を開けたまま手を離しても、取っ手側が下がらない</li>
+<li>閉めると戸当たりで止まり、ラッチがかかる</li>
+<li>柱のまわりのコンクリートに、水がたまらない</li>
+</ul>
+<h2 id="うまくいかなかったときは">うまくいかなかったときは</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>症状</th>
+<th>原因と直し方</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>扉が下がって地面をこする</td>
+<td>筋交いの向きが逆か、すき間がある。向きを確かめ、筋交いの端をぴったり当て直す</td>
+</tr>
+<tr class="even">
+<td>上と下ですき間が違う</td>
+<td>柱が傾いているか、扉が直角でない。扉の対角線を測り直し、蝶番の位置で調整する</td>
+</tr>
+<tr class="odd">
+<td>ラッチがかからない</td>
+<td>扉が少し下がっている。ラッチの受け側の位置を下げて付け直す</td>
+</tr>
+</tbody>
+</table>
+<h2 id="いよいよ卒業制作ウッドデッキ">いよいよ卒業制作「ウッドデッキ」</h2>
+<p>切る・留める（STEP1）、板を張る（STEP2）、枠を組む（STEP3）、柱を建てる（STEP4）。ウッドデッキに必要な作業は、すべて身につきました。</p>
+</body>
+</html>

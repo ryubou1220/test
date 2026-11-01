@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>STEP5　卒業制作　ウッドデッキ</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#1b231e}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">STEP5　卒業制作　ウッドデッキ</h1>
+<p class="subtitle">週末DIY
+5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+</header>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>材料費</th>
+<th>作業時間</th>
+<th>進め方</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>約10〜30万円（大きさと木材による）</td>
+<td>1日まるごとなら9〜12日、日曜日だけなら2〜3か月</td>
+<td>オリジナルウッドデッキ
+日曜大工プログラム（図面・マニュアル・解説動画・180日サポート）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ここまでに身につけたこと">ここまでに身につけたこと</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>STEP</th>
+<th>作品</th>
+<th>技術</th>
+<th>デッキのどこで使うか</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>踏み台</td>
+<td>切る・留める・対角線で直角</td>
+<td>すべての作業。束石の位置決め</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>プランター台</td>
+<td>すき間をそろえて板を張る・割付け</td>
+<td>床板張り</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>囲炉裏テーブル</td>
+<td>枠を組み、水平をとる</td>
+<td>根太・根がらみの骨組み</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>木製門扉</td>
+<td>柱を建て、垂直を出す</td>
+<td>束石・支柱の基礎</td>
+</tr>
+</tbody>
+</table>
+<p>卒業制作では、これらをすべて使って、あなたの家のウッドデッキをつくります。</p>
+<h2 id="つのステップで進める">6つのステップで進める</h2>
+<p>くわしい手順は「かんたん版マニュアル（21ページ）」と、ウッドデッキの解説動画（全19本のスライド）で説明しています。ここでは全体の流れと、いちばん大事なポイントだけをまとめます。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>ステップ</th>
+<th>やること</th>
+<th>いちばん大事なポイント</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1　計画する</td>
+<td>大きさ・高さ・束石の位置・材料と予算</td>
+<td>支柱の長さは、仕上がりの高さから引き算で決める。束石は1,200mm前後の間隔</td>
+</tr>
+<tr class="even">
+<td>2　そろえる</td>
+<td>道具・安全な使い方・木材・1回目の塗装</td>
+<td>組む前に、全部の材料を塗る（組んだあとは裏が塗れない）</td>
+</tr>
+<tr class="odd">
+<td>3　基礎をつくる</td>
+<td>束石・直角・高さ・支柱</td>
+<td>直角は3：4：5と対角線で。支柱は10mm短く立てる</td>
+</tr>
+<tr class="even">
+<td>4　骨組みを組む</td>
+<td>サンドイッチ工法・外周の根太・内側の根太</td>
+<td>全体の水平は外周の根太で決まる。ビスは1か所3〜4本</td>
+</tr>
+<tr class="odd">
+<td>5　天板を張って塗る</td>
+<td>線を引く・治具で目地をそろえる・仕上げの塗装</td>
+<td>張る前に全体の長さを計算し、仮置きしてから留める</td>
+</tr>
+<tr class="even">
+<td>6　長持ちさせる</td>
+<td>点検と塗り直し</td>
+<td>天板の上面は最低2年ごと、下面は最低5年ごとに塗り直す</td>
+</tr>
+</tbody>
+</table>
+<h2 id="step14の技術が生きる場面">STEP1〜4の技術が生きる場面</h2>
+<ul>
+<li><strong>対角線（STEP1）：</strong>
+束石の位置を決めたら、四隅の対角線を測って直角を確かめます。たとえば束石の中心が3,434×1,634mmなら、対角線は約3,803mmです。</li>
+<li><strong>割付け（STEP2）：</strong>
+床板の全体の長さは「板の幅×枚数＋目地×数」。張る前に計算して、両端を決めてから留めます。</li>
+<li><strong>枠と水平（STEP3）：</strong>
+外周の根太から張り始め、水平器と直角定規で何度も確かめます。1人のときは、クランプや受け台で根太を支えて仮留めします。</li>
+<li><strong>垂直と基礎（STEP4）：</strong>
+束石は地面のかたさに合わせて下地をつくり、50mmほど埋めます。支柱は2つの面で垂直を見ます。</li>
+</ul>
+<h2 id="あなたの家のサイズの図面を依頼する">あなたの家のサイズの図面を依頼する</h2>
+<p>次の4つを、LINEかメールで送ってください。束石の位置・骨組み・高さの内訳・カット表・購入リストを、あなたの家に合わせてお作りします。</p>
+<ol type="1">
+<li>つくりたいデッキの幅と奥行き（だいたいで大丈夫です）</li>
+<li>窓の下から地面までの高さ</li>
+<li>設置場所の写真（正面から1枚、横から1枚）</li>
+<li>使いたい木材（決まっていなければ「おまかせ」）</li>
+</ol>
+<h2 id="困ったら写真を1枚">困ったら、写真を1枚</h2>
+<p>180日間、回数の制限なく相談できます。地面の傾き、材料の選び方、作業の途中でつまずいたこと。写真を送っていただければ、あなたの家の状況に合わせてお答えします。</p>
+<p>LINE：［LINE公式のURL］</p>
+</body>
+</html>

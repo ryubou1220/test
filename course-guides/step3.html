@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>STEP3　囲炉裏テーブルをつくる</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#a4521c}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">STEP3　囲炉裏テーブルをつくる</h1>
+<p class="subtitle">週末DIY
+5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+</header>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>材料費</th>
+<th>作業時間</th>
+<th>大きさ（幅×奥行き×高さ）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>約7,100円（炉の道具は別）</td>
+<td>1〜2日</td>
+<td>1,010×720×350mm（中央の3枚がふた）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="このstepで覚えること">このSTEPで覚えること</h2>
+<p>ふたを外すと炉になる、家族で囲める囲炉裏テーブルです。監修者が自宅のデッキで使い続けているものをもとにしています。</p>
+<ol type="1">
+<li><strong>4本の幕板で四角い枠を組み、対角線で直角を出す</strong>　デッキの外周の大引・根太と同じです。</li>
+<li><strong>脚を垂直に付け、水平を確かめる</strong>　デッキの束柱と同じです。</li>
+<li><strong>受け材を入れて、開口部をつくる</strong>　デッキの点検口と同じつくりです。</li>
+<li><strong>火を使う場所を、燃えない材料で守る</strong>　炉の底と内側にケイカル板（燃えない板）を使います。</li>
+</ol>
+<h2 id="材料と炉のタイプ">材料と炉のタイプ</h2>
+<h3 id="本体の材料">本体の材料</h3>
+<table>
+<thead>
+<tr class="header">
+<th>材料</th>
+<th>規格</th>
+<th>数量</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2×6材</td>
+<td>38×140mm　長さ1,820mm</td>
+<td>4本</td>
+<td>3,600円</td>
+</tr>
+<tr class="even">
+<td>2×4材</td>
+<td>38×89mm　長さ1,820mm</td>
+<td>3本</td>
+<td>1,500円</td>
+</tr>
+<tr class="odd">
+<td>コーススレッド</td>
+<td>長さ75mm（使うのは約90本）</td>
+<td>1箱</td>
+<td>1,000円</td>
+</tr>
+<tr class="even">
+<td>ケイカル板</td>
+<td>厚さ6mm　455×910mm。カッターで切れる</td>
+<td>1枚</td>
+<td>1,000円</td>
+</tr>
+<tr class="odd">
+<td><strong>合計</strong></td>
+<td></td>
+<td></td>
+<td><strong>約7,100円</strong></td>
+</tr>
+</tbody>
+</table>
+<p>デッキの上や屋外に置くので、防腐処理したSPF材かウエスタンレッドシダーを選びます。</p>
+<h3 id="炉は2つのタイプから選ぶ">炉は2つのタイプから選ぶ</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>炭火タイプ</th>
+<th>カセットコンロ・飾り炉タイプ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>炉の道具</td>
+<td>ステンレスの角型バット（外寸約250×250mm、深さ80mm以下）、囲炉裏用の灰、五徳、炭、火ばさみ、火消し壺</td>
+<td>カセットコンロ（幅約340×奥行き約280mm、高さ110mm以下）。飾り炉なら砂利や灰、LEDキャンドル</td>
+</tr>
+<tr class="even">
+<td>追加の作業</td>
+<td>炉の内側の木部にもケイカル板を貼り、耐熱塗料スプレー（600℃程度）で仕上げる</td>
+<td>なし</td>
+</tr>
+<tr class="odd">
+<td>使える場所</td>
+<td>屋外・デッキの上だけ</td>
+<td>室内やマンションのベランダでも</td>
+</tr>
+</tbody>
+</table>
+<p><strong>道具：</strong>
+STEP1・2と同じものに、水平器（30cm以上）、カッターと金属の定規（ケイカル板を切る）、防じんマスク（ケイカル板を削るとき）が加わります。</p>
+<h2 id="寸法と切る部品">寸法と切る部品</h2>
+<table>
+<thead>
+<tr class="header">
+<th>部品</th>
+<th>材料</th>
+<th>寸法と数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>天板</td>
+<td>2×6材</td>
+<td>720mm×4枚、160mm×6枚</td>
+</tr>
+<tr class="even">
+<td>ふた</td>
+<td>2×6材</td>
+<td>396mm×3枚</td>
+</tr>
+<tr class="odd">
+<td>受け材</td>
+<td>2×6材（縦に使う）</td>
+<td>874mm×2本</td>
+</tr>
+<tr class="even">
+<td>幕板</td>
+<td>2×4材（縦に使う）</td>
+<td>950mm×2本、584mm×2本</td>
+</tr>
+<tr class="odd">
+<td>脚</td>
+<td>2×4材</td>
+<td>312mm×4本</td>
+</tr>
+<tr class="even">
+<td>炉受け</td>
+<td>2×4材（横に使う）</td>
+<td>362mm×2本</td>
+</tr>
+<tr class="odd">
+<td>炉床</td>
+<td>ケイカル板</td>
+<td>470×362mm×1枚</td>
+</tr>
+</tbody>
+</table>
+<p>天板は2×6材7枚とすき間5mmで、幅1,010mm。STEP2の割付けと同じ考え方です。開口部は真ん中の3枚分で<strong>430×400mm</strong>。カセットコンロが入り、つまみを回す手も入る大きさにしています。</p>
+<blockquote>
+<p><strong>切るときのポイント：</strong>
+脚4本は長さを必ずそろえます（ずれるとテーブルが揺れます）。天板の短い板（160mm）とふた（396mm）は、切ったら印をつけて分けておきます。</p>
+</blockquote>
+<p><strong>ケイカル板の切り方：</strong>
+金属の定規を当て、カッターで何度か筋を入れてから、机の角で折ります。切り口はサンドペーパーで整えます（防じんマスクをつけて）。炭火タイプは、取り付ける前に耐熱塗料スプレーを2〜3回に分けて薄く吹き、屋外でよく乾かします。</p>
+<h2 id="組み立て1-骨組み">組み立て1　骨組み</h2>
+<p>順番は「枠 → 脚 → 受け材 → 炉受け」です。</p>
+<ol type="1">
+<li><strong>幕板で四角い枠を組む。</strong>
+長い幕板2本で、短い幕板2本の両端をはさみます（幕板はすべて縦に立てます）。下穴をあけ、角ごとにビス2本で留めます。外寸は950×660mm。<strong>対角線がどちらも約1,157mmなら直角</strong>です。</li>
+<li><strong>脚を付けて、水平を確かめる。</strong>
+枠の4つの角の内側に脚を当て、脚の上の端と幕板の上の端をそろえます。長い幕板と短い幕板の両方から、ビスを2本ずつ打ちます。起こして平らな床に置き、水平器を枠の上にのせて、前後・左右とも水平か確かめます。</li>
+<li><strong>受け材を入れる。</strong>
+2×6材を縦にして、短い幕板の間に入れ、上の端を幕板とそろえます。位置は、受け材の中心が天板の前の端から160mmと560mmです。短い幕板の外側から、ビス2本ずつで留めます。</li>
+<li><strong>炉受けと炉床を付ける。</strong>
+2×4材を寝かせて受け材の間に渡し、下の面を受け材の下の端とそろえて留めます。炉受けの上に、ケイカル板の炉床をのせます。</li>
+</ol>
+<blockquote>
+<p><strong>ウッドデッキでは：</strong> 「外周の枠で直角を出す →
+脚で水平をとる →
+内側に受け材を足す」は、デッキの骨組みとまったく同じ順番です。</p>
+</blockquote>
+<h2 id="組み立て2-天板ふた炉">組み立て2　天板・ふた・炉</h2>
+<ol type="1">
+<li><strong>天板を張る。</strong>
+720mmの板4枚を、左右に2枚ずつ、すき間5mmで張ります（STEP2のすき間ゲージを使います）。真ん中の3列は、160mmの短い板を前と後ろに張り、開口部側の端を受け材の中心にそろえます。<strong>天板の対角線が約1,240mmなら、まっすぐ張れています。</strong></li>
+<li><strong>ふたをのせる。</strong>
+396mmの板3枚を開口部にのせます。前後に2mmずつすき間があれば、指で持ち上げられます。ふたは留めずに、のせるだけです。</li>
+<li><strong>塗装する。</strong>
+天板とふたの角を丸め、屋外用の塗料を2回塗ります。</li>
+</ol>
+<blockquote>
+<p><strong>注意：</strong>
+炉の内側の木部には、塗料を塗らないでください。燃えやすくなります。</p>
+</blockquote>
+<h3 id="炭火タイプの仕上げ">炭火タイプの仕上げ</h3>
+<p>受け材の内側にケイカル板（430×96mm×2枚）を貼り、炉床と内側を耐熱塗料スプレーで仕上げます。炉床にバットを置き、灰を3cm以上入れて、炭と五徳をのせます。<strong>バットと木部の間は30mm以上</strong>あけます。</p>
+<h3 id="カセットコンロ飾り炉タイプの仕上げ">カセットコンロ・飾り炉タイプの仕上げ</h3>
+<p>炉床にカセットコンロを横長に置くと、五徳が天板とほぼ同じ高さになります。コンロの両側に、手を入れてつまみを回せるすき間があるか確かめます。ふたを閉めるときは、コンロを出します。</p>
+<h2 id="火を使うときの約束">火を使うときの約束</h2>
+<blockquote>
+<ul>
+<li><strong>炭火は屋外だけで使います。</strong>
+室内やテントの中では使いません（一酸化炭素中毒の危険があります）。</li>
+<li>火が付いている間は、その場を離れません。そばに水を入れたバケツを置きます。</li>
+<li>使い終わった炭は火消し壺に入れます。灰が冷えるまで、ふたを閉めません。</li>
+<li>カセットコンロは、ボンベのまわりに熱がこもらないよう、大きな鍋や鉄板を使いません。</li>
+<li>初めて火を入れるときは、弱火で焼き付けます（炭火タイプ）。</li>
+</ul>
+</blockquote>
+<h2 id="できあがりチェック">できあがりチェック</h2>
+<ul>
+<li>平らな床で、がたつかない</li>
+<li>水平器で、前後・左右とも水平</li>
+<li>枠の対角線の差が3mm以内</li>
+<li>ふたが、引っかからずに外せる</li>
+<li>ふたをのせると、天板と面がそろう</li>
+<li>炉の中に、木がむき出しの所がない（炭火タイプ）</li>
+<li>耐熱塗料がよく乾いている（炭火タイプ）</li>
+</ul>
+<p>側面に板を張ると、箱型にもアレンジできます。</p>
+<h2 id="次は-step4木製門扉">次は STEP4「木製門扉」</h2>
+<p>柱を地面に建てて、扉を吊ります。穴を掘ってコンクリートで柱を固め、垂直と水平を出す作業は、ウッドデッキの基礎（束石）と同じです。</p>
+</body>
+</html>

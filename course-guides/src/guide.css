@@ -1,0 +1,16 @@
+@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
