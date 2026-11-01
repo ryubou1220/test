@@ -1,0 +1,25 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-11-01T09:00:00Z" },
+  "lists": "css",
+  "title": "週末DIY 5ステップ講座 解説動画",
+  "cover": "cover",
+  "order": ["cover", "road", "howto",
+    "s1-title", "s1-materials", "s1-cut", "s1-build", "s1-check",
+    "s2-title", "s2-layout", "s2-build", "s2-check",
+    "s3-title", "s3-materials", "s3-frame", "s3-top", "s3-fire", "s3-check",
+    "s4-title", "s4-safety", "s4-day1", "s4-brace", "s4-day2", "s4-check",
+    "s5-bridge", "closing"],
+  "sections": {
+    "intro": { "description": "講座の全体像と、動画の見かた", "start": "cover" },
+    "step1": { "description": "STEP1 踏み台：切る・留める・直角を出す", "start": "s1-title" },
+    "step2": { "description": "STEP2 プランター台：すき間をそろえて板を張る", "start": "s2-title" },
+    "step3": { "description": "STEP3 囲炉裏テーブル：枠を組み、水平をとる", "start": "s3-title" },
+    "step4": { "description": "STEP4 木製門扉：柱を建て、垂直を出す", "start": "s4-title" },
+    "step5": { "description": "STEP5 卒業制作：ウッドデッキへ", "start": "s5-bridge" }
+  },
+  "faces": {
+    "zen-kaku-gothic-new": { "family": "Zen Kaku Gothic New", "href": "https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" }
+  },
+  "designSystems": []
+}
