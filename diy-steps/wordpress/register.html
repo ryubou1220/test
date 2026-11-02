@@ -1,0 +1,218 @@
+<!--
+  ===== はじめての木工 4ステップ：無料登録ページ（WordPress用） =====
+  使い方：固定ページに「カスタムHTML」ブロックを1つ置き、このファイルの中身をすべて貼り付けます。
+  ページテンプレートは「1カラム」や「全幅」など、サイドバーのないものがおすすめです。
+
+  ▼ 差し替えるところ（ページ上では黄色で表示）
+  1. シリーズ名・講師名・プロフィール
+  2. 登録フォーム … 「ここから」「ここまで」の間を、メール配信サービスの埋め込みコードに置き換える
+     （配信サービス側で、登録後の移動先を「お礼ページ」のURLに設定してください）
+  3. プライバシーポリシーのURL
+-->
+<style>
+  .diy-lp {
+    --diy-bg: #fbfaf7; --diy-surface: #ffffff; --diy-ink: #24302a; --diy-muted: #5d6a62; --diy-line: #dfe3dc;
+    --diy-forest: #2f5d46; --diy-pine: #c98b4a; --diy-pine-soft: #f6ebdd; --diy-cta: #c2571a;
+    background: var(--diy-bg); color: var(--diy-ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 18px; line-height: 1.9; letter-spacing: .02em;
+  }
+  .diy-lp *, .diy-lp *::before, .diy-lp *::after { box-sizing: border-box; }
+  .diy-lp p { margin: 0 0 1em; }
+  .diy-lp h1, .diy-lp h2, .diy-lp h3 { font-family: inherit; color: var(--diy-ink); font-weight: 800; text-wrap: balance; letter-spacing: .02em; }
+  .diy-lp h2 { font-size: clamp(1.4rem, 5vw, 1.8rem); line-height: 1.5; margin: 0 0 1em; padding: 0; border: 0; background: none; }
+  .diy-lp h2 .diy-label { display: block; font-size: .8rem; letter-spacing: .15em; color: var(--diy-pine); margin-bottom: .3em; }
+  .diy-lp h3 { font-size: 1.15rem; line-height: 1.6; margin: 0 0 .4em; padding: 0; border: 0; background: none; }
+  .diy-lp .diy-band { padding-block: 56px; }
+  .diy-lp .diy-band.diy-alt { background: var(--diy-surface); border-block: 1px solid var(--diy-line); }
+  .diy-lp .diy-wrap { max-width: 700px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+  .diy-lp .todo { background: #fff3a8; color: #6b5500; outline: 1px dashed currentColor; border-radius: 3px; padding: 0 .25em; }
+
+  .diy-lp .diy-hero { background: var(--diy-forest); color: #fff; padding-block: 48px 56px; }
+  .diy-lp .diy-hero h1 { color: #fff; font-size: clamp(1.9rem, 7.5vw, 2.9rem); line-height: 1.35; font-weight: 900; margin: .3em 0 .5em; }
+  .diy-lp .diy-series { display: inline-block; font-size: .85rem; letter-spacing: .1em; border: 1px solid currentColor; border-radius: 999px; padding: .2em 1em; }
+  .diy-lp .diy-free { display: inline-flex; align-items: baseline; gap: .4em; background: var(--diy-pine); color: #24302a; font-weight: 700; border-radius: 6px; padding: .2em .8em; margin-bottom: 1.4em; }
+  .diy-lp .diy-free b { font-size: 1.4rem; }
+  .diy-lp .diy-stool { display: block; width: 100%; max-width: 360px; height: auto; margin: 8px auto 0; }
+
+  .diy-lp .diy-form-card { background: var(--diy-surface); color: var(--diy-ink); border-radius: 10px; padding: 24px 20px; box-shadow: 0 10px 30px rgba(0,0,0,.18); margin-top: 28px; }
+  .diy-lp .diy-form-card .diy-sub { color: var(--diy-muted); font-size: .9rem; }
+  /* 配信サービスのフォームにも効くよう、要素名で指定しています */
+  .diy-lp .diy-form label { display: block; font-weight: 700; font-size: .95rem; margin: 0 0 4px; }
+  .diy-lp .diy-form input[type="text"], .diy-lp .diy-form input[type="email"] {
+    display: block; width: 100%; font: inherit; font-size: 1.05rem; padding: 12px 14px; margin: 0 0 14px;
+    border: 2px solid var(--diy-line); border-radius: 8px; background: #fff; color: var(--diy-ink);
+  }
+  .diy-lp .diy-form input:focus { outline: 3px solid var(--diy-pine); outline-offset: 1px; border-color: var(--diy-forest); }
+  .diy-lp .diy-form button, .diy-lp .diy-form input[type="submit"] {
+    display: block; width: 100%; font: inherit; font-weight: 700; font-size: 1.15rem; line-height: 1.5;
+    background: var(--diy-cta); color: #fff; border: 0; border-radius: 999px; padding: 16px; cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,.25);
+  }
+  .diy-lp .diy-form .diy-req { color: var(--diy-cta); font-size: .8rem; margin-left: .4em; }
+  .diy-lp .diy-note { font-size: .8rem; color: var(--diy-muted); margin: 10px 0 0; line-height: 1.7; }
+  .diy-lp .diy-thanks { background: var(--diy-pine-soft); border-radius: 8px; padding: 12px 14px; margin-top: 10px; }
+
+  .diy-lp .diy-gets { display: grid; gap: 14px; }
+  @media (min-width: 560px) { .diy-lp .diy-gets { grid-template-columns: 1fr 1fr; } }
+  .diy-lp .diy-get { background: var(--diy-surface); border: 1px solid var(--diy-line); border-radius: 10px; padding: 18px; min-width: 0; }
+  .diy-lp .diy-kind { font-size: .8rem; font-weight: 700; color: var(--diy-pine); letter-spacing: .1em; }
+  .diy-lp .diy-get p { margin: 0; font-size: .95rem; color: var(--diy-muted); }
+
+  .diy-lp ul.diy-checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .diy-lp ul.diy-checks li { position: relative; padding-left: 2em; margin: 0; }
+  .diy-lp ul.diy-checks li::before { content: "✓"; position: absolute; left: 0; top: .15em; width: 1.3em; height: 1.3em; line-height: 1.3em; text-align: center; border-radius: 4px; background: var(--diy-forest); color: #fff; font-size: .9em; font-weight: 700; }
+
+  .diy-lp ol.diy-steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .diy-lp .diy-step { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 14px; align-items: center; margin: 0;
+    background: var(--diy-surface); border: 1px solid var(--diy-line); border-left: 8px solid var(--diy-pine); border-radius: 6px; padding: 14px 16px; }
+  .diy-lp .diy-step:nth-child(2) { margin-left: 4%; }
+  .diy-lp .diy-step:nth-child(3) { margin-left: 8%; }
+  .diy-lp .diy-step:nth-child(4) { margin-left: 12%; }
+  .diy-lp .diy-no { font-weight: 900; color: var(--diy-forest); font-size: .9rem; white-space: nowrap; }
+  .diy-lp .diy-name { font-weight: 700; min-width: 0; }
+  .diy-lp .diy-price { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .diy-lp .diy-meta { grid-column: 2 / 4; font-size: .85rem; color: var(--diy-muted); }
+  .diy-lp .diy-step.diy-is-free { border-left-color: var(--diy-forest); background: var(--diy-pine-soft); }
+  .diy-lp .diy-step.diy-is-free .diy-price { color: var(--diy-forest); }
+  .diy-lp .diy-set { margin-top: 16px; padding: 14px 16px; border: 2px dashed var(--diy-pine); border-radius: 10px; font-size: .95rem; }
+
+  .diy-lp .diy-profile { display: grid; grid-template-columns: 88px 1fr; gap: 16px; align-items: start; }
+  .diy-lp .diy-avatar { width: 88px; height: 88px; border-radius: 50%; background: var(--diy-pine-soft); border: 2px solid var(--diy-pine); display: grid; place-items: center; font-weight: 900; color: var(--diy-pine); font-size: 1.6rem; }
+  .diy-lp .diy-profile p { font-size: .95rem; }
+
+  .diy-lp dl.diy-faq { margin: 0; }
+  .diy-lp dl.diy-faq dt { font-weight: 700; margin-top: 1.2em; }
+  .diy-lp dl.diy-faq dt::before { content: "Q. "; color: var(--diy-forest); }
+  .diy-lp dl.diy-faq dd { margin: .3em 0 0; color: var(--diy-muted); font-size: .95rem; }
+  .diy-lp .diy-foot { text-align: center; font-size: .85rem; color: var(--diy-muted); padding-block: 24px; }
+  .diy-lp .diy-foot a { color: inherit; }
+</style>
+
+<div class="diy-lp">
+  <div class="diy-hero">
+    <div class="diy-wrap">
+      <span class="diy-series"><span class="todo">はじめての木工 4ステップ</span></span>
+      <h1>はじめての木工は、<br>踏み台から。</h1>
+      <div class="diy-free">STEP1 教材 <b>無料</b> プレゼント</div>
+      <p>教材PDF（6ページ）と解説動画で、材料の切り出しから組み立てまで、手順を一つずつお伝えします。登録すると、その場で受け取れます。</p>
+      <svg class="diy-stool" viewBox="0 0 360 200" role="img" aria-label="踏み台のイラスト">
+        <g fill="none" stroke="#f6ebdd" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M70 70 L290 70 L300 84 L60 84 Z" fill="#c98b4a"/>
+          <path d="M84 84 L76 176 M98 84 L94 176 M276 84 L284 176 M262 84 L266 176 M84 132 L276 132"/>
+          <path d="M40 186 L320 186" stroke-dasharray="2 8"/>
+        </g>
+        <text x="180" y="50" text-anchor="middle" fill="#f6ebdd" font-size="14" font-family="sans-serif">STEP1　踏み台</text>
+      </svg>
+
+      <div class="diy-form-card" id="diy-form">
+        <h3>STEP1の教材を無料で受け取る</h3>
+        <p class="diy-sub">登録後の画面で、すぐに教材PDFと解説動画をご覧いただけます。作り方のコツも、メールで数回お届けします。</p>
+        <div class="diy-form">
+          <!-- ▼▼▼ ここから：メール配信サービスの埋め込みコードに置き換える ▼▼▼ -->
+          <form class="diy-sample-form" novalidate>
+            <label for="diy-name">お名前<span class="diy-req">必須</span></label>
+            <input id="diy-name" name="name" type="text" autocomplete="name" placeholder="例）山田 太郎" required>
+            <label for="diy-mail">メールアドレス<span class="diy-req">必須</span></label>
+            <input id="diy-mail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="例）taro@example.com" required>
+            <button type="submit">無料で教材を受け取る</button>
+            <p class="diy-thanks" hidden></p>
+          </form>
+          <!-- ▲▲▲ ここまで ▲▲▲ -->
+        </div>
+        <p class="diy-note">ご登録いただいたメールアドレスに、木工のコツや教材のご案内をお送りします。配信はいつでも1クリックで解除できます。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="diy-band">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">CONTENTS</span>受け取れるもの</h2>
+      <div class="diy-gets">
+        <div class="diy-get">
+          <div class="diy-kind">教材PDF</div>
+          <h3>踏み台の作り方（6ページ）</h3>
+          <p>必要な材料と道具、木材の切り出し方、組み立ての順番を、図解でまとめています。</p>
+        </div>
+        <div class="diy-get">
+          <div class="diy-kind">解説動画</div>
+          <h3>手元が見える作業動画</h3>
+          <p>PDFだけではわかりにくい、のこぎりの当て方やネジの打ち方を、実際の作業でお見せします。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diy-band diy-alt">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">FOR YOU</span>こんな方に向けて作りました</h2>
+      <ul class="diy-checks">
+        <li>木工をやってみたいけれど、何から作ればいいかわからない</li>
+        <li>家で使うものを、自分の手で作ってみたい</li>
+        <li>定年後や休日に、じっくり取り組める趣味がほしい</li>
+        <li>本や動画を見ても、手順が飛ばされていてつまずいた経験がある</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="diy-band">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">ROADMAP</span>踏み台から、門扉まで。<br>4つのステップ</h2>
+      <ol class="diy-steps">
+        <li class="diy-step diy-is-free"><span class="diy-no">STEP1</span><span class="diy-name">踏み台</span><span class="diy-price">無料</span><span class="diy-meta">教材PDF 6ページ・解説動画</span></li>
+        <li class="diy-step"><span class="diy-no">STEP2</span><span class="diy-name">プランター台</span><span class="diy-price">980円</span><span class="diy-meta">教材PDF 6ページ・解説動画</span></li>
+        <li class="diy-step"><span class="diy-no">STEP3</span><span class="diy-name">囲炉裏テーブル</span><span class="diy-price">1,980円</span><span class="diy-meta">教材PDF 7ページ・解説動画</span></li>
+        <li class="diy-step"><span class="diy-no">STEP4</span><span class="diy-name">木製門扉</span><span class="diy-price">1,980円</span><span class="diy-meta">教材PDF 7ページ・解説動画</span></li>
+      </ol>
+      <div class="diy-set">STEP2〜4は、3つまとめたセット <b>3,980円</b>（単品合計4,940円から<b>960円</b>お得）もご用意しています。</div>
+    </div>
+  </div>
+
+  <div class="diy-band diy-alt">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">PROFILE</span>講師について</h2>
+      <div class="diy-profile">
+        <div class="diy-avatar" aria-hidden="true">木</div>
+        <div>
+          <p><strong><span class="todo">講師名</span></strong></p>
+          <p><span class="todo">プロフィールをここに入れます（例：建設現場で35年。退職後に木工を始め、自宅の家具や門扉を手作りしている など）</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diy-band">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">FAQ</span>よくあるご質問</h2>
+      <dl class="diy-faq">
+        <dt>木工はまったくの初めてです。大丈夫ですか？</dt>
+        <dd>はい。STEP1の踏み台は、初めての方に向けて選んだ作品です。材料の買い方から順番にお伝えします。</dd>
+        <dt>どんな道具が必要ですか？</dt>
+        <dd>教材PDFの最初のページに、必要な道具と材料の一覧を載せています。ホームセンターでそろうものを中心にしています。</dd>
+        <dt>登録すると、売り込みのメールがたくさん届きませんか？</dt>
+        <dd>お届けするのは、作り方のコツを中心とした数通のメールです。STEP2以降のご案内はその中の数回だけで、配信はいつでも1クリックで解除できます。</dd>
+      </dl>
+      <p style="text-align:center;margin-top:2em;"><a href="#diy-form" style="color:var(--diy-cta);font-weight:700;">▲ 無料登録フォームへ戻る</a></p>
+    </div>
+  </div>
+
+  <div class="diy-foot">
+    <a href="#">プライバシーポリシー</a>（<span class="todo">URLを設定</span>）
+  </div>
+</div>
+
+<script>
+  // 見本のフォーム用です。配信サービスのフォームに置き換えたら、このscriptは削除してかまいません。
+  document.querySelectorAll('.diy-sample-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = form.querySelector('input[name="name"]');
+      var mail = form.querySelector('input[name="email"]');
+      var msg = form.querySelector('.diy-thanks');
+      msg.textContent = (!name.value.trim() || !mail.checkValidity() || !mail.value.trim())
+        ? 'お名前と、正しい形式のメールアドレスを入力してください。'
+        : '見本のフォームです。実際の運用では、ここでお礼ページに移動します。';
+      msg.hidden = false;
+    });
+  });
+</script>

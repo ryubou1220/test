@@ -1,0 +1,145 @@
+<title>STEP1 教材受け取りページ</title>
+<!-- WordPress用ファイル wordpress/thanks.html の確認用プレビュー。WordPressでテーマの中に入ったときの見え方に近づけるため、背景色だけ追加しています。 -->
+<style>body { background: #fbfaf7; margin: 0; }</style>
+<style>
+  .diy-lp {
+    --diy-bg: #fbfaf7; --diy-surface: #ffffff; --diy-ink: #24302a; --diy-muted: #5d6a62; --diy-line: #dfe3dc;
+    --diy-forest: #2f5d46; --diy-pine: #c98b4a; --diy-pine-soft: #f6ebdd; --diy-cta: #c2571a;
+    background: var(--diy-bg); color: var(--diy-ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 18px; line-height: 1.9; letter-spacing: .02em;
+  }
+  .diy-lp *, .diy-lp *::before, .diy-lp *::after { box-sizing: border-box; }
+  .diy-lp p { margin: 0 0 1em; }
+  .diy-lp h1, .diy-lp h2, .diy-lp h3 { font-family: inherit; color: var(--diy-ink); font-weight: 800; text-wrap: balance; letter-spacing: .02em; padding: 0; border: 0; background: none; }
+  .diy-lp h2 { font-size: clamp(1.35rem, 5vw, 1.7rem); line-height: 1.5; margin: 0 0 1em; }
+  .diy-lp h2 .diy-label { display: block; font-size: .8rem; letter-spacing: .15em; color: var(--diy-pine); margin-bottom: .3em; }
+  .diy-lp h3 { font-size: 1.1rem; line-height: 1.6; margin: 0 0 .3em; }
+  .diy-lp .diy-band { padding-block: 48px; }
+  .diy-lp .diy-band.diy-alt { background: var(--diy-surface); border-block: 1px solid var(--diy-line); }
+  .diy-lp .diy-wrap { max-width: 700px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+  .diy-lp .todo { background: #fff3a8; color: #6b5500; outline: 1px dashed currentColor; border-radius: 3px; padding: 0 .25em; }
+
+  .diy-lp .diy-hero { background: var(--diy-forest); color: #fff; padding-block: 44px; text-align: center; }
+  .diy-lp .diy-hero h1 { color: #fff; font-size: clamp(1.6rem, 6.5vw, 2.3rem); line-height: 1.4; font-weight: 900; margin: 0 0 .5em; }
+  .diy-lp .diy-hero p { margin: 0; opacity: .95; }
+  .diy-lp .diy-nb { display: inline-block; }
+
+  .diy-lp .diy-receive { display: grid; gap: 16px; }
+  .diy-lp .diy-card { background: var(--diy-surface); border: 1px solid var(--diy-line); border-radius: 10px; padding: 20px; min-width: 0; }
+  .diy-lp .diy-kind { font-size: .8rem; font-weight: 700; color: var(--diy-pine); letter-spacing: .1em; }
+  .diy-lp .diy-btn {
+    display: block; text-align: center; text-decoration: none; font-weight: 700; font-size: 1.1rem; line-height: 1.5;
+    background: var(--diy-cta); color: #fff; border-radius: 999px; padding: 14px 16px; margin-top: 12px;
+    box-shadow: 0 4px 0 rgba(0,0,0,.25);
+  }
+  .diy-lp .diy-btn:hover { filter: brightness(.95); color: #fff; }
+  .diy-lp .diy-btn:focus-visible { outline: 3px solid var(--diy-pine); outline-offset: 3px; }
+  .diy-lp .diy-btn.diy-quiet { background: var(--diy-forest); }
+  .diy-lp .diy-btn small { display: block; font-size: .8rem; font-weight: 500; opacity: .9; }
+  .diy-lp .diy-video { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background: #1f2622; border-radius: 8px; overflow: hidden; margin-top: 10px; display: grid; place-items: center; color: #dfe3dc; font-size: .9rem; text-align: center; padding: 12px; }
+  .diy-lp .diy-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  .diy-lp .diy-mailnote { background: var(--diy-pine-soft); border-radius: 10px; padding: 16px 18px; font-size: .95rem; }
+  .diy-lp .diy-mailnote p:last-child { margin-bottom: 0; }
+
+  .diy-lp ol.diy-howto { counter-reset: diy; list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+  .diy-lp ol.diy-howto li { counter-increment: diy; position: relative; padding-left: 3em; margin: 0; }
+  .diy-lp ol.diy-howto li::before { content: counter(diy); position: absolute; left: 0; top: .1em; width: 2.1em; height: 2.1em; border-radius: 50%; background: var(--diy-forest); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .diy-lp ol.diy-howto p { margin: 0; color: var(--diy-muted); font-size: .95rem; }
+
+  .diy-lp table.diy-schedule { width: 100%; border-collapse: collapse; font-size: .95rem; margin: 0; }
+  .diy-lp table.diy-schedule th, .diy-lp table.diy-schedule td { border: 0; border-bottom: 1px solid var(--diy-line); padding: .6em .4em; text-align: left; vertical-align: top; background: none; }
+  .diy-lp table.diy-schedule th { white-space: nowrap; color: var(--diy-forest); width: 7em; }
+
+  .diy-lp .diy-products { display: grid; gap: 12px; }
+  .diy-lp .diy-product { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; background: var(--diy-surface); border: 1px solid var(--diy-line); border-left: 8px solid var(--diy-pine); border-radius: 6px; padding: 14px 16px; }
+  .diy-lp .diy-product .diy-pname { font-weight: 700; min-width: 0; }
+  .diy-lp .diy-product .diy-pprice { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .diy-lp .diy-product .diy-pmeta { grid-column: 1 / -1; font-size: .85rem; color: var(--diy-muted); }
+  .diy-lp .diy-product a { grid-column: 1 / -1; color: var(--diy-forest); font-weight: 700; font-size: .95rem; }
+  .diy-lp .diy-setbox { margin-top: 18px; border: 3px solid var(--diy-pine); border-radius: 12px; padding: 20px; background: var(--diy-surface); text-align: center; }
+  .diy-lp .diy-setbox .diy-amount { font-size: 2rem; font-weight: 900; color: var(--diy-cta); line-height: 1.3; font-variant-numeric: tabular-nums; }
+  .diy-lp .diy-setbox .diy-save { display: inline-block; background: var(--diy-pine-soft); border-radius: 999px; padding: .1em 1em; font-weight: 700; font-size: .95rem; margin-bottom: .6em; }
+  .diy-lp .diy-small { font-size: .85rem; color: var(--diy-muted); }
+  .diy-lp .diy-foot { text-align: center; font-size: .85rem; color: var(--diy-muted); padding-block: 24px; }
+</style>
+
+<div class="diy-lp">
+  <div class="diy-hero">
+    <div class="diy-wrap">
+      <h1><span class="diy-nb">ご登録</span><span class="diy-nb">ありがとうございます。</span><br><span class="diy-nb">STEP1の教材を</span><span class="diy-nb">お受け取りください。</span></h1>
+      <p>このページから、踏み台の教材PDFと解説動画をご覧いただけます。</p>
+    </div>
+  </div>
+
+  <div class="diy-band">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">STEP1</span>踏み台の教材</h2>
+      <div class="diy-receive">
+        <div class="diy-card">
+          <div class="diy-kind">教材PDF（6ページ）</div>
+          <h3>踏み台の作り方</h3>
+          <p class="diy-small">印刷して作業台のそばに置いておくと便利です。</p>
+          <a class="diy-btn" href="#" target="_blank" rel="noopener">教材PDFを開く<small><span class="todo">PDFのURLを設定</span></small></a>
+        </div>
+        <div class="diy-card">
+          <div class="diy-kind">解説動画</div>
+          <h3>手元が見える作業動画</h3>
+          <div class="diy-video">
+            <!-- ▼ YouTubeの「共有」→「埋め込む」で表示されるiframeを、この下に貼り付けてください（この説明文は消してかまいません） -->
+            <span class="todo">ここに解説動画（YouTube限定公開）を埋め込みます</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diy-band diy-alt">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">HOW TO</span>この順番で進めてください</h2>
+      <ol class="diy-howto">
+        <li><h3>PDFの1ページ目で、材料と道具を確認する</h3><p>ホームセンターでそろうものがほとんどです。</p></li>
+        <li><h3>動画を一度、最後まで見る</h3><p>作業の全体の流れをつかんでから始めると、迷いにくくなります。</p></li>
+        <li><h3>PDFを見ながら、一工程ずつ作る</h3><p>一日で仕上げる必要はありません。週末に少しずつ進めてください。</p></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="diy-band">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">MAIL</span>これから届くメール</h2>
+      <table class="diy-schedule">
+        <tr><th>今すぐ</th><td>教材のURLをメールでもお送りします（このページを閉じても大丈夫です）</td></tr>
+        <tr><th>1日後</th><td>ホームセンターで木材を選ぶときのコツ</td></tr>
+        <tr><th>3日後</th><td>まっすぐ切れないときに見直してほしいところ</td></tr>
+        <tr><th>5日後〜</th><td>完成写真の募集と、STEP2以降の作品のご紹介</td></tr>
+      </table>
+      <div class="diy-mailnote" style="margin-top:18px;">
+        <p><strong>メールが届かないときは</strong></p>
+        <p>迷惑メールのフォルダに入っていないか確認してください。<span class="todo">送信元のアドレス</span> を「連絡先」に登録しておくと、確実に届くようになります。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="diy-band diy-alt">
+    <div class="diy-wrap">
+      <h2><span class="diy-label">NEXT</span>踏み台ができたら、次はこちら</h2>
+      <p>このシリーズは、作品ごとに一段ずつ技術が身につく順番で作っています。踏み台を作ってみて「次も作りたい」と思ったら、ご覧ください。</p>
+      <div class="diy-products">
+        <div class="diy-product"><span class="diy-pname">STEP2　プランター台</span><span class="diy-pprice">980円</span><span class="diy-pmeta">教材PDF 6ページ・解説動画</span><a href="#" target="_blank" rel="noopener">詳しく見る（インフォトップ）→</a></div>
+        <div class="diy-product"><span class="diy-pname">STEP3　囲炉裏テーブル</span><span class="diy-pprice">1,980円</span><span class="diy-pmeta">教材PDF 7ページ・解説動画</span><a href="#" target="_blank" rel="noopener">詳しく見る（インフォトップ）→</a></div>
+        <div class="diy-product"><span class="diy-pname">STEP4　木製門扉</span><span class="diy-pprice">1,980円</span><span class="diy-pmeta">教材PDF 7ページ・解説動画</span><a href="#" target="_blank" rel="noopener">詳しく見る（インフォトップ）→</a></div>
+      </div>
+      <div class="diy-setbox">
+        <h3>STEP2〜4 セット</h3>
+        <div class="diy-amount">3,980円</div>
+        <div class="diy-save">単品合計4,940円から 960円お得</div>
+        <a class="diy-btn" href="#" target="_blank" rel="noopener">セットを詳しく見る<small>インフォトップの販売ページへ進みます（<span class="todo">URLを設定</span>）</small></a>
+      </div>
+      <p class="diy-small" style="margin-top:14px;">お支払いと教材のお届けは、インフォトップが行います。</p>
+    </div>
+  </div>
+
+  <div class="diy-foot"><span class="todo">講師名</span>　|　はじめての木工 4ステップ</div>
+</div>
