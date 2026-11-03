@@ -264,6 +264,22 @@
   .profile ul { padding-left: 1.2em; font-size: .95rem; }
 
   /* offer */
+  .price-story {
+    background: var(--bg-alt);
+    border-radius: var(--radius);
+    padding: 1.4em 1.3em .4em;
+    margin-bottom: 2em;
+  }
+  .now-line {
+    font-family: "Noto Serif JP", serif;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: var(--navy);
+    text-align: center;
+    border-block: 1px solid var(--line);
+    padding: .9em 0;
+    margin: 1.4em 0;
+  }
   .offer {
     background: #fff;
     border: 3px solid var(--gold);
@@ -364,12 +380,12 @@
     h2, h3, h4 { break-after: avoid; page-break-after: avoid; break-inside: avoid; page-break-inside: avoid; }
     p, li { orphans: 3; widows: 3; }
     img, .card, .curriculum li, .worries li, .imagine, .conclusion, .honest, .fit .box,
-    .profile, .bonus, .price, .cta-box, .faq details, .offer-table tr, .legal tr, .ps, .avatar, .offer {
+    .profile, .bonus, .price, .cta-box, .price-story, .now-line, #whynow .wrap, .faq details, .offer-table tr, .legal tr, .ps, .avatar, .offer {
       break-inside: avoid; page-break-inside: avoid;
     }
     .cards.three { grid-template-columns: repeat(3, 1fr); }
     .fit { grid-template-columns: 1.3fr 1fr; }
-    #empathy, #proposal, #author, #offer, #faq, #closing, #tokushoho { break-before: page; page-break-before: always; }
+    #empathy, #proposal, #author, #faq, #closing, #tokushoho { break-before: page; page-break-before: always; }
     .offer { padding: 6mm 5mm; }
     .price .amount { font-size: 2rem; }
     .faq summary::after { content: none; }
@@ -559,7 +575,15 @@
     <p>退職を前に「この先は年金だけか」と不安になり、2018年にネットの世界へ飛び込みました。パソコンに詳しかったわけでも、文章を書く仕事をしていたわけでもありません。最初は「現場一筋の自分の経験なんて、誰の役にも立たない」と思っていました。</p>
     <p>でも、ブログやコラムで現場のことを書いてみると、「読んでよかった」「参考になった」という声が届くようになりました。若手社員向けのコラムを依頼され、電子書籍も出版しました。</p>
     <p>そのとき気づいたのは、<span class="marker">自分が「当たり前」だと思っていたことが、誰かにとっては「知りたかったこと」だった</span>という事実でした。</p>
-    <p>正直にお伝えすると、ボクは大きな実績を挙げたトップランナーではありません。でも、だからこそ、同じ年代でこれから一歩を踏み出す方の気持ちが、よくわかるつもりです。若い成功者が「簡単ですよ」と言うのと、同じように会社勤めを終えた人間が「こうやったらできましたよ」と言うのとでは、聞こえ方がまったく違うはずです。</p>
+    <h3>正直にお伝えします</h3>
+    <p>ボクには、「月収○百万円」のような大きな実績はありません。あるのは、次の3つです。</p>
+    <ul class="examples">
+      <li>35年間の会社員生活</li>
+      <li>情報販売の講座に、100万円以上をかけて学んできたこと</li>
+      <li>コラムの執筆依頼をいただき、電子書籍を出版してきたこと</li>
+    </ul>
+    <p>大きな成果を約束することはできません。でも、お金と時間をかけて遠回りしてきたからこそ、<span class="marker">あなたには同じ遠回りをさせない</span>自信があります。</p>
+    <p>それに、若い成功者が「簡単ですよ」と言うのと、同じように会社勤めを終えた人間が「こうやったらできましたよ」と言うのとでは、聞こえ方がまったく違うはずです。</p>
     <p>「今さら」と思う気持ちも、よくわかります。でも、経験を積んだ今だからこそ語れることがあります。あなたと同じ目線で、一歩ずつ一緒に進んでいきたい。そう考えて、このプログラムを作りました。</p>
 
     <div class="profile">
@@ -567,6 +591,7 @@
       <ul>
         <li>サラリーマン生活35年（建設現場監督）を経て退職</li>
         <li>2018年よりネット市場に参入。大手ASPでコンテンツ販売を開始し、ブログ・コラムの執筆や電子書籍を出版</li>
+        <li>情報販売の講座に100万円以上をかけて学び、その遠回りの経験をもとにコンテンツフリーダムを作成</li>
         <li>現場監督の経験からコラムの依頼を受け、「若手社員向け建設業界の豆知識」を執筆</li>
         <li>電子書籍「問題は現場で起きているシリーズ」「捉え方の変換」などを出版</li>
         <li>現在、建設関連事業と情報関連事業を兼ね、コンテンツの企画・構成・作成を手掛ける</li>
@@ -579,6 +604,14 @@
 <section id="offer">
   <div class="wrap">
     <h2><span class="eyebrow">OFFER</span>プログラムの内容と価格</h2>
+    <div class="price-story">
+      <p>はっきり言います。ボクはこれまで、<strong>情報販売の講座に100万円以上</strong>をかけてきました。</p>
+      <p>高額な講座で学んでも、すぐに結果が出たわけではありません。教わったことが多すぎて、何から手をつければいいかわからない。専門用語ばかりで、自分の経験をどう商品にすればいいのか見えない。そんな遠回りを、何度も繰り返しました。</p>
+      <p>だからこそ、わかったことがあります。初めての人に本当に必要なのは、たくさんの情報ではなく、<span class="marker">「迷わない順番」</span>だということです。</p>
+      <p>コンテンツフリーダムは、ボクが100万円以上かけて学び、遠回りしながら身につけてきたことを、初めての人がつまずかない順番に整理し直したものです。</p>
+      <p>コンテンツ販売を教える講座には、10万円を超えるものも少なくありません。でも、それは50代・60代の方が「まず試してみよう」と思える金額ではないと、ボクは考えています。高い授業料を払うより、まず一つ目の商品を作ってみること。そのほうが、ずっと多くのことが学べるからです。</p>
+      <p>だから、始めやすい金額でお届けすることにしました。</p>
+    </div>
     <div class="offer">
       <table class="offer-table">
         <tr><th>商品名</th><td>コンテンツフリーダム ～経済的自由への道～</td></tr>
@@ -651,6 +684,17 @@
       <summary>どのくらいで収入になりますか？</summary>
       <div class="a"><p>正直にお伝えすると、売れるまでには時間がかかります。始めた初日に売れることはほとんどありませんし、成果には個人差があります。このプログラムは、焦らず一歩ずつ積み上げていくための道筋をお伝えするものです。最終回の「フォロー編」では、数字が出ない時期にどう続けるか、商品とレターをどう直していくかも具体的にお伝えしています。</p></div>
     </details>
+  </div>
+</section>
+
+<!-- ================= なぜ、今なのか ================= -->
+<section id="whynow">
+  <div class="wrap">
+    <h2><span class="eyebrow">WHY NOW</span>なぜ、今なのか</h2>
+    <p>人生100年時代と言われます。定年を迎えてからの時間は、20年、30年と続きます。ひとつの会社と年金だけに頼る生き方は、もう当たり前ではなくなりました。</p>
+    <p>一方で今は、<strong>個人が自分の経験を、インターネットで直接届けられる時代</strong>です。昔なら出版社を通さなければ出せなかった本も、今は電子書籍として、自分の手で出すことができます。</p>
+    <p class="now-line">経験を積んだ人が、その経験で収入を得られる。<br>そんな時代に、ボクたちは立っています。</p>
+    <p>始めるのが早いほど、積み上がる時間は長くなります。「いつか」ではなく、<span class="marker">経験が手元にある今から</span>、始めてみませんか。</p>
   </div>
 </section>
 
