@@ -1,0 +1,17 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-11-04T10:00:00Z" },
+  "lists": "css",
+  "title": "丁張り入門 解説動画",
+  "cover": "cover",
+  "order": ["cover", "why", "tools", "height", "string", "mark", "drop", "care", "closing"],
+  "sections": {
+    "intro": { "description": "丁張りとは何か、なぜ必要か、道具", "start": "cover" },
+    "steps": { "description": "高さをそろえる・水糸と直角・位置を写す・下がり寸法", "start": "height" },
+    "end": { "description": "気をつけることと、相談の案内", "start": "care" }
+  },
+  "faces": {
+    "zen-kaku-gothic-new": { "family": "Zen Kaku Gothic New", "href": "https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" }
+  },
+  "designSystems": []
+}
