@@ -1,0 +1,17 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-11-04T09:00:00Z" },
+  "lists": "css",
+  "title": "1人作業のコツ 解説動画",
+  "cover": "cover",
+  "order": ["cover", "safety", "carry", "measure", "support", "tack", "boards", "helpday", "closing"],
+  "sections": {
+    "intro": { "description": "1人でデッキをつくるときの考え方と安全", "start": "cover" },
+    "tips": { "description": "運ぶ・測る・支える・留める・張るの5つのコツ", "start": "carry" },
+    "end": { "description": "手伝いを頼む日と、相談の案内", "start": "helpday" }
+  },
+  "faces": {
+    "zen-kaku-gothic-new": { "family": "Zen Kaku Gothic New", "href": "https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" }
+  },
+  "designSystems": []
+}
