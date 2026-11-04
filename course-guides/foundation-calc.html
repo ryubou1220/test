@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>基礎の材料計算シート</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#2c6849}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">基礎の材料計算シート</h1>
+<p class="subtitle">オリジナルウッドデッキ 日曜大工プログラム　購入特典</p>
+</header>
+<p>束石の数、砕石とモルタルの量、支柱の長さを、順番に計算するシートです。図面セットをお持ちの方は、図面の数字と見比べながら使ってください。</p>
+<h2 id="束石の数">1. 束石の数</h2>
+<p>束石は、中心と中心の間隔が <strong>1,200mm前後</strong> になるように並べます。</p>
+<blockquote>
+<p><strong>1列の束石の数 ＝ 中心から中心までの長さ ÷ 1,200 を切り上げ ＋ 1</strong></p>
+</blockquote>
+<p>例：幅3,600×奥行き1,800mのデッキで、束石の中心どうしが横3,434mm・縦1,634mmのとき</p>
+<ul>
+<li>横：3,434 ÷ 1,200 ＝ 2.86 → 切り上げて3 → ＋1 ＝ <strong>4個</strong>（間隔は約1,145mm）</li>
+<li>縦：1,634 ÷ 1,200 ＝ 1.36 → 切り上げて2 → ＋1 ＝ <strong>3列</strong>（間隔は約817mm）</li>
+<li>合計：4 × 3 ＝ <strong>12個</strong></li>
+</ul>
+<table class="write">
+<tr>
+<th style="width:40%">
+あなたのデッキ
+</th>
+<th style="width:30%">
+横
+</th>
+<th style="width:30%">
+縦
+</th>
+</tr>
+<tr>
+<td>
+束石の中心から中心まで（mm）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+÷1,200 を切り上げ ＋1（個）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+束石の間隔（mm）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<b>束石の合計（横×縦）</b>
+</td>
+<td colspan="2">
+</td>
+</tr>
+</table>
+<p>束石は、割れや欠けに備えて <strong>1個多め</strong> に買っておくと安心です。</p>
+<h2 id="砕石の量">2. 砕石の量</h2>
+<p>束石の下には、砕石を敷いて突き固めます。厚さは地面のかたさで変わります。</p>
+<table>
+<thead>
+<tr class="header">
+<th>地面のかたさ</th>
+<th>砕石の厚さの目安</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>やわらかい（移植ごてで掘れる）</td>
+<td>50〜100mm</td>
+</tr>
+<tr class="even">
+<td>ふつう（スコップで掘る）</td>
+<td>50mm</td>
+</tr>
+<tr class="odd">
+<td>かたい（ほぐさないと掘れない）</td>
+<td>埋めて突き固めるだけでもよい</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>砕石の量（L） ＝ 穴のたて（m）× 穴のよこ（m）× 砕石の厚さ（m）× 1,000 × 束石の数</strong></p>
+</blockquote>
+<p>例：穴が300×300mm、砕石の厚さ50mm、束石12個なら</p>
+<p>0.3 × 0.3 × 0.05 × 1,000 × 12 ＝ <strong>54L</strong></p>
+<p>砕石の袋は、重さ（kg）で売られています。袋に書かれた量（L）か、お店の人に「何Lぶんか」を確かめて、必要な袋の数を出してください。突き固めると量が減るので、<strong>2割ほど多め</strong> に買います。</p>
+<h2 id="モルタルの量">3. モルタルの量</h2>
+<p>束石は、砕石の上にモルタルを敷いて据えます。モルタルは <strong>セメント1：砂3</strong>（量の割合）で混ぜます。混ぜるだけのインスタントモルタルも使えます。</p>
+<blockquote>
+<p><strong>モルタルの量（L） ＝ 穴のたて（m）× 穴のよこ（m）× モルタルの厚さ（m）× 1,000 × 束石の数</strong></p>
+</blockquote>
+<p>例：穴が300×300mm、モルタルの厚さ30mm、束石12個なら</p>
+<p>0.3 × 0.3 × 0.03 × 1,000 × 12 ＝ <strong>約32L</strong></p>
+<p>インスタントモルタルは、袋に「できあがりの量」が書かれています。それで割って、袋の数を出します。こちらも <strong>2割ほど多め</strong> にします。</p>
+<table class="write">
+<tr>
+<th style="width:40%">
+あなたのデッキ
+</th>
+<th style="width:30%">
+砕石
+</th>
+<th style="width:30%">
+モルタル
+</th>
+</tr>
+<tr>
+<td>
+穴の大きさ（たて×よこ mm）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+厚さ（mm）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+束石の数（個）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+必要な量（L）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+2割多めにした量（L）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+1袋の量（L）
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<b>買う袋の数</b>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<h2 id="支柱の長さ">4. 支柱の長さ</h2>
+<p>丁張りの水糸を <strong>天板の上の面の高さ</strong> に張り、水糸から束石の上の面までの寸法（下がり寸法）を、束石ごとに測ります（「丁張り入門」の手順7）。</p>
+<blockquote>
+<p><strong>支柱の長さ ＝ 下がり寸法 − 天板の厚み（38mm）− 10mm</strong></p>
+</blockquote>
+<p>地面が傾いていると、束石ごとに支柱の長さが変わります。下の表に、束石の番号ごとに書き込んでください。番号は、建物側の左から順に「A1、A2…」、次の列を「B1、B2…」とすると分かりやすくなります。</p>
+<table class="write">
+<tr>
+<th style="width:16%">
+束石
+</th>
+<th style="width:28%">
+下がり寸法（mm）
+</th>
+<th style="width:28%">
+支柱の長さ（mm）
+</th>
+<th style="width:28%">
+切ったら✓
+</th>
+</tr>
+<tr>
+<td>
+A1
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+A2
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+A3
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+A4
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+B1
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+B2
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+B3
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+B4
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+C1
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+C2
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+C3
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+C4
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<blockquote>
+<p>切った支柱には、束石の番号を鉛筆で書いておきます。立てるときに迷いません。</p>
+</blockquote>
+<h2 id="買い物リスト">5. 買い物リスト</h2>
+<table class="write">
+<tr>
+<th style="width:40%">
+材料
+</th>
+<th style="width:20%">
+数量
+</th>
+<th style="width:20%">
+単価
+</th>
+<th style="width:20%">
+金額
+</th>
+</tr>
+<tr>
+<td>
+束石（羽子板付き）
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+砕石
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+モルタル（またはセメントと砂）
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+丁張りの杭・貫板
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+水糸・釘
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<b>合計</b>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<p>計算に自信がないときは、この表の写真を送ってください。一緒に確かめます。</p>
+</body>
+</html>

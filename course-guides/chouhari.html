@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>丁張り（遣り方）入門</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#a4521c}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">丁張り（遣り方）入門</h1>
+<p class="subtitle">オリジナルウッドデッキ 日曜大工プログラム　購入特典</p>
+</header>
+<p>ウッドデッキの出来は、基礎で決まります。そして基礎の出来は、<strong>位置と高さの「基準」</strong>で決まります。建設の現場では、工事の最初に必ず「丁張り（ちょうはり）」をかけて、この基準をつくります。家庭のデッキでも、同じ考え方が使えます。</p>
+<h2 id="丁張りとは">丁張りとは</h2>
+<p>デッキをつくる場所の<strong>外側</strong>に杭と板（貫板）で囲いをつくり、その上に、位置と高さの基準を写しておくものです。</p>
+<ul>
+<li><strong>位置の基準：</strong> 貫板の上に釘を打ち、水糸を張る。水糸の線が、束石の中心の線になる</li>
+<li><strong>高さの基準：</strong> 貫板の上の面を、全部同じ高さにそろえる。水糸の高さが、そのまま基準の高さになる</li>
+</ul>
+<blockquote>
+<p><strong>なぜ外側につくるのか：</strong> 束石の穴を掘ると、地面につけた印は消えてしまいます。外側の丁張りなら、掘っても、基準は残ります。水糸を外して掘り、また張れば、同じ位置と高さがいつでも戻ってきます。</p>
+</blockquote>
+<h2 id="道具と材料">道具と材料</h2>
+<table>
+<thead>
+<tr class="header">
+<th>もの</th>
+<th>目安</th>
+<th>数（四角いデッキの場合）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>杭</td>
+<td>30〜45mm角の角材、長さ600〜900mm。先を斜めに切ってとがらせる</td>
+<td>12本（角ごとに3本）</td>
+</tr>
+<tr class="even">
+<td>貫板</td>
+<td>厚さ15mm前後、幅90mm前後の板。長さ900〜1,200mm</td>
+<td>8枚（角ごとに2枚）</td>
+</tr>
+<tr class="odd">
+<td>水糸</td>
+<td>目立つ色（黄・ピンク）</td>
+<td>1巻</td>
+</tr>
+<tr class="even">
+<td>釘</td>
+<td>長さ30〜50mm</td>
+<td>ひとつかみ</td>
+</tr>
+<tr class="odd">
+<td>水平器・長い定規</td>
+<td>定規は、まっすぐな角材（1.8m以上）でよい</td>
+<td>各1</td>
+</tr>
+<tr class="even">
+<td>下げ振り</td>
+<td>糸の先に重りのついた道具</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>ハンマー（大きめ）</td>
+<td>杭を打つ</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>メジャー・マーカー</td>
+<td></td>
+<td>各1</td>
+</tr>
+</tbody>
+</table>
+<p>あると便利：<strong>水盛り管</strong>（透明なホースに水を入れて、離れた所の高さをそろえる道具）。ホームセンターで手に入ります。</p>
+<h2 id="丁張りの形">丁張りの形</h2>
+<svg width="620" height="430" viewBox="0 0 620 430" role="img" aria-label="上から見た丁張りの図。デッキの四隅の外側に、杭と貫板でL字の囲いがあり、その間に水糸が十字に張られている。水糸の交点が束石の中心になる">
+<rect x="150" y="110" width="320" height="210" fill="#f6efe3" stroke="#c9b9a0" stroke-width="2" stroke-dasharray="6 5"></rect> <text x="310" y="222" font-size="15" text-anchor="middle" fill="#8a7a62">デッキをつくる場所</text> <g fill="#c99a63" stroke="#8a5a2b" stroke-width="2"> <rect x="60" y="40" width="130" height="12"></rect><rect x="60" y="40" width="12" height="130"></rect>
+<rect x="430" y="40" width="130" height="12"></rect><rect x="548" y="40" width="12" height="130"></rect> <rect x="60" y="378" width="130" height="12"></rect><rect x="60" y="260" width="12" height="130"></rect> <rect x="430" y="378" width="130" height="12"></rect><rect x="548" y="260" width="12" height="130"></rect> </g> <g fill="#1b231e">
+<rect x="56" y="36" width="12" height="12"></rect><rect x="186" y="36" width="12" height="12"></rect><rect x="56" y="166" width="12" height="12"></rect> <rect x="426" y="36" width="12" height="12"></rect><rect x="552" y="36" width="12" height="12"></rect><rect x="552" y="166" width="12" height="12"></rect>
+<rect x="56" y="382" width="12" height="12"></rect><rect x="186" y="382" width="12" height="12"></rect><rect x="56" y="256" width="12" height="12"></rect> <rect x="426" y="382" width="12" height="12"></rect><rect x="552" y="382" width="12" height="12"></rect><rect x="552" y="256" width="12" height="12"></rect> </g> <g stroke="#d4482a" stroke-width="2">
+<line x1="150" y1="46" x2="150" y2="384"></line><line x1="470" y1="46" x2="470" y2="384"></line> <line x1="66" y1="110" x2="554" y2="110"></line><line x1="66" y1="320" x2="554" y2="320"></line> </g> <g fill="#ffffff" stroke="#1b231e" stroke-width="2"> <circle cx="150" cy="110" r="7"></circle><circle cx="470" cy="110" r="7"></circle><circle cx="150" cy="320" r="7"></circle><circle cx="470" cy="320" r="7"></circle> </g>
+<text x="200" y="30" font-size="14" fill="#1b231e">貫板</text> <text x="20" y="30" font-size="14" fill="#1b231e">杭</text> <text x="478" y="100" font-size="14" fill="#d4482a">水糸</text> <text x="160" y="140" font-size="14" fill="#1b231e">交点＝束石の中心</text>
+</svg>
+<p>角ごとに杭を3本打ち、L字に貫板を2枚打ち付けます。デッキの角から500mm〜1mほど外側に離すと、掘る作業のじゃまになりません。</p>
+<h2 id="手順">手順</h2>
+<h3 id="高さの基準を決める">1. 高さの基準を決める</h3>
+<p>動かないものを、高さの基準（ベンチマーク）にします。たとえば、<strong>掃き出し窓の下の枠</strong>や、<strong>建物の基礎の上の面</strong>です。そこから「デッキの天板の上の面は、何mm下か」を、図面の高さの内訳で決めておきます。</p>
+<h3 id="杭を打ち貫板を付ける">2. 杭を打ち、貫板を付ける</h3>
+<p>デッキの4つの角の外側に、杭を3本ずつ打ちます。杭はまっすぐ、ぐらつかないように深く打ちます。杭の外側に、貫板をL字に2枚打ち付けます。このときはまだ、仮留めで大丈夫です。</p>
+<h3 id="貫板の高さを全部そろえる">3. 貫板の高さを、全部そろえる</h3>
+<p>これが丁張りでいちばん大事な作業です。<strong>貫板の上の面を、デッキの天板の上の面と同じ高さ</strong>にそろえます。</p>
+<ol type="1">
+<li>1か所目の貫板の上の面を、基準から測って決めた高さに合わせ、しっかり留める</li>
+<li>長い定規をのせて水平器で見ながら、となりの貫板に同じ高さを写す（水盛り管があれば、それを使う）</li>
+<li>写した高さに合わせて、となりの貫板を留める。これを一周くり返す</li>
+<li>一周して、最初の貫板に戻ったときに高さが合っていれば完了</li>
+</ol>
+<blockquote>
+<p>一周して最初に戻ったとき、ずれが出ていたら、どこかで写し間違えています。ずれが大きいときは、もう一度やり直します。</p>
+</blockquote>
+<h3 id="水糸を張る">4. 水糸を張る</h3>
+<p>貫板の上に、束石の中心の線の位置を測って釘を打ち、向かい合う貫板の釘どうしに水糸を張ります。外周の4本の線ができたら、内側の束石の列の線も同じように張ります。</p>
+<p>水糸は、指ではじくと「ピン」と鳴るくらいに、強く張ります。</p>
+<h3 id="直角を確かめる">5. 直角を確かめる</h3>
+<p>水糸の交点で、直角を確かめます。</p>
+<ul>
+<li>交点から、片方の水糸に沿って3の長さ（例：900mm）、もう片方に4の長さ（1,200mm）の印をつけ、その間が5の長さ（1,500mm）なら直角</li>
+<li>最後に、外周の四隅の交点で対角線を2本測り、同じ長さになっていれば完了</li>
+</ul>
+<p>ずれていたら、貫板の上の釘の位置をずらして直します。<strong>丁張りなら、何度でもやり直せます。</strong></p>
+<h3 id="束石の位置を地面に写す">6. 束石の位置を地面に写す</h3>
+<p>水糸の交点から下げ振りを下ろし、重りの先が指す地面に印をつけます。ここが束石の中心です。印をつけたら、水糸を外して穴を掘ります（貫板の釘は残しておきます）。</p>
+<h3 id="高さを測る">7. 高さを測る</h3>
+<p>穴を掘って束石を据えたら、もう一度水糸を張ります。<strong>水糸から束石の上の面までの寸法（下がり寸法）</strong>を、束石ごとに測ります。</p>
+<svg width="620" height="330" viewBox="0 0 620 330" role="img" aria-label="横から見た図。左右の杭と貫板の上に水糸が張られ、水糸から下の束石の上の面までが下がり寸法。束石は地面に一部埋まっている">
+<rect x="40" y="40" width="14" height="250" fill="#c99a63" stroke="#8a5a2b" stroke-width="2"></rect> <rect x="566" y="40" width="14" height="250" fill="#c99a63" stroke="#8a5a2b" stroke-width="2"></rect> <rect x="54" y="60" width="40" height="18" fill="#e8c9a0" stroke="#8a5a2b" stroke-width="2"></rect> <rect x="526" y="60" width="40" height="18" fill="#e8c9a0" stroke="#8a5a2b" stroke-width="2"></rect>
+<line x1="54" y1="60" x2="566" y2="60" stroke="#d4482a" stroke-width="2"></line> <line x1="0" y1="250" x2="620" y2="250" stroke="#8a7a62" stroke-width="2"></line> <rect x="270" y="210" width="80" height="60" fill="#d7d3cb" stroke="#1b231e" stroke-width="2"></rect> <line x1="310" y1="60" x2="310" y2="210" stroke="#1b231e" stroke-width="2" stroke-dasharray="6 4"></line>
+<line x1="300" y1="60" x2="320" y2="60" stroke="#1b231e" stroke-width="2"></line> <line x1="300" y1="210" x2="320" y2="210" stroke="#1b231e" stroke-width="2"></line> <text x="330" y="140" font-size="15" fill="#1b231e">下がり寸法</text> <text x="100" y="50" font-size="14" fill="#d4482a">水糸（＝天板の上の面の高さ）</text> <text x="360" y="245" font-size="14" fill="#1b231e">束石</text>
+<text x="10" y="275" font-size="14" fill="#8a7a62">地面</text> <text x="60" y="110" font-size="14" fill="#1b231e">貫板</text>
+</svg>
+<p>水糸を天板の上の面の高さにしておけば、支柱の長さは、束石ごとに次の式で出せます。</p>
+<blockquote>
+<p><strong>支柱の長さ ＝ 下がり寸法 − 天板の厚み（38mm）− 10mm</strong></p>
+<p>10mmは、支柱を根太より少し短くして、天板に当たらないようにするための分です（サンドイッチ工法）。</p>
+</blockquote>
+<p>例：下がり寸法が400mmなら、400 − 38 − 10 ＝ <strong>352mm</strong>。地面が傾いていても、束石ごとに測れば、それぞれの支柱の長さがわかります。「基礎の材料計算シート」の表に書き込んでください。</p>
+<h2 id="気をつけること">気をつけること</h2>
+<ul>
+<li><strong>杭と貫板に、ぶつからない・足をかけない。</strong> 少し動いただけで、基準が狂います。作業の合間に、ときどき高さを確かめ直します</li>
+<li><strong>掘る前に、地中の管と線を確かめる。</strong> 水道管・ガス管・電線が通っていないか、家の図面やメーターの位置で確かめます</li>
+<li><strong>敷地の境界の内側に打つ。</strong> お隣との境界に近いときは、先に話しておきます</li>
+<li><strong>丁張りは、基礎ができるまで残す。</strong> 支柱を立て、根太の高さを決めるときにも使えます</li>
+</ul>
+<h2 id="小さなデッキなら">小さなデッキなら</h2>
+<p>幅2m以下くらいの小さなデッキなら、建物側に杭を2本、反対側に2本打って水糸を張るだけの「簡易な丁張り」でも十分です。高さは、杭に印をつけてそろえます。迷ったら、設置場所の写真を送ってください。</p>
+</body>
+</html>
