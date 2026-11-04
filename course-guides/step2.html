@@ -170,7 +170,7 @@ header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom
 h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
 h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
 p{margin:0 0 .7em}
-table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
 th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
 th{background:#f3eee4}
 blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
@@ -178,13 +178,17 @@ blockquote p:last-child{margin:0}
 ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
 li{margin:.15em 0}
 .warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#3f73b8}</style></head>
 <body>
 <header id="title-block-header">
 <h1 class="title">STEP2　プランター台をつくる</h1>
-<p class="subtitle">週末DIY
-5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+<p class="subtitle">週末DIY 5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
 </header>
 <table>
 <thead>
@@ -254,24 +258,20 @@ li{margin:.15em 0}
 </tbody>
 </table>
 <p>STEP1から始めていない場合は、2×6材1,820mmを1本（約900円）と、コーススレッド75mm（約500円）を追加してください。鉢を置くので、屋外用の塗料を塗っておくと長持ちします。</p>
-<p><strong>道具：</strong>
-STEP1と同じです。新しく、まっすぐな長い定規（なければ2×4材の端材）を使います。</p>
+<p><strong>道具：</strong> STEP1と同じです。新しく、まっすぐな長い定規（なければ2×4材の端材）を使います。</p>
 <h2 id="寸法の決め方">寸法の決め方</h2>
 <h3 id="奥行き割付け">奥行き（割付け）</h3>
 <p>先に、板の幅とすき間から全体の寸法を決めます。</p>
 <blockquote>
-<p>奥行き ＝ 板の幅×枚数 ＋ すき間×（枚数−1） 89×3 ＋ 5×2 ＝
-<strong>277mm</strong></p>
+<p>奥行き ＝ 板の幅×枚数 ＋ すき間×（枚数−1） 89×3 ＋ 5×2 ＝ <strong>277mm</strong></p>
 </blockquote>
 <p>根太の長さを277mmにしておけば、板を細く割く必要がありません。</p>
 <h3 id="根太の間隔">根太の間隔</h3>
 <blockquote>
-<p>間隔 ＝（幅 − 根太の厚み）÷ 2 （600 − 38）÷ 2 ＝
-<strong>約281mm</strong>（中心から中心まで）</p>
+<p>間隔 ＝（幅 − 根太の厚み）÷ 2 （600 − 38）÷ 2 ＝ <strong>約281mm</strong>（中心から中心まで）</p>
 </blockquote>
 <blockquote>
-<p><strong>ウッドデッキでは：</strong>
-床板の枚数も、まったく同じ式で決めます。</p>
+<p><strong>ウッドデッキでは：</strong> 床板の枚数も、まったく同じ式で決めます。</p>
 </blockquote>
 <h3 id="切る部品">切る部品</h3>
 <table>
@@ -297,8 +297,7 @@ STEP1と同じです。新しく、まっすぐな長い定規（なければ2×
 <p>順番は「根太 → 1枚目 → 直角 → 残り」です。</p>
 <h3 id="根太を並べる">1. 根太を並べる</h3>
 <p>平らな床に根太3本を立てて並べます。両端の根太の外側を600mmに、真ん中の根太を中央（両端から約281mm）に置きます。根太の上の面に、中心線を鉛筆で引いておきます。これがビスを打つ線になります。</p>
-<h3 id="枚目を張って直角を確かめる">2.
-1枚目を張って、直角を確かめる</h3>
+<h3 id="枚目を張って直角を確かめる">2. 1枚目を張って、直角を確かめる</h3>
 <p>1枚目の床板を、根太の手前の端にそろえてのせ、両端の根太に1本ずつ、下穴をあけて仮留めします。3枚とも並べてから、全体の<strong>対角線を2本測ります。どちらも約661mmなら直角</strong>です。直角が出たら、1枚目を全部の根太にビス2本ずつで留めます。</p>
 <h3 id="すき間ゲージで残りを張る">3. すき間ゲージで残りを張る</h3>
 <p>1枚目との間に、すき間ゲージを2か所はさみ、2枚目を押しつけて留めます。3枚目も同じように張ります。最後の板の外側が、根太の端とそろえば正解です。</p>
@@ -318,10 +317,6 @@ STEP1と同じです。新しく、まっすぐな長い定規（なければ2×
 </ul>
 <h2 id="うまくいかなかったときは">うまくいかなかったときは</h2>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>症状</th>
@@ -344,8 +339,7 @@ STEP1と同じです。新しく、まっすぐな長い定規（なければ2×
 </tbody>
 </table>
 <blockquote>
-<p><strong>ウッドデッキでは：</strong>
-床板が20枚以上になると、すき間のずれが積み重なります。STEP2の「ゲージをはさむ」「線を引いてから打つ」が、そのままデッキの仕上がりを決めます。</p>
+<p><strong>ウッドデッキでは：</strong> 床板が20枚以上になると、すき間のずれが積み重なります。STEP2の「ゲージをはさむ」「線を引いてから打つ」が、そのままデッキの仕上がりを決めます。</p>
 </blockquote>
 <h2 id="次は-step3囲炉裏テーブル">次は STEP3「囲炉裏テーブル」</h2>
 <p>脚と枠を組み、天板の真ん中に炉をつくります。炭火を使う本格派と、飾り炉・カセットコンロ用の手軽なタイプから選べます。</p>

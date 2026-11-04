@@ -170,7 +170,7 @@ header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom
 h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
 h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
 p{margin:0 0 .7em}
-table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
 th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
 th{background:#f3eee4}
 blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
@@ -178,20 +178,19 @@ blockquote p:last-child{margin:0}
 ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
 li{margin:.15em 0}
 .warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#1b231e}</style></head>
 <body>
 <header id="title-block-header">
 <h1 class="title">STEP5　卒業制作　ウッドデッキ</h1>
-<p class="subtitle">週末DIY
-5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+<p class="subtitle">週末DIY 5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
 </header>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>材料費</th>
@@ -203,19 +202,12 @@ li{margin:.15em 0}
 <tr class="odd">
 <td>約10〜30万円（大きさと木材による）</td>
 <td>1日まるごとなら9〜12日、日曜日だけなら2〜3か月</td>
-<td>オリジナルウッドデッキ
-日曜大工プログラム（図面・マニュアル・解説動画・180日サポート）</td>
+<td>オリジナルウッドデッキ 日曜大工プログラム（図面・マニュアル・解説動画・180日サポート）</td>
 </tr>
 </tbody>
 </table>
 <h2 id="ここまでに身につけたこと">ここまでに身につけたこと</h2>
 <table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>STEP</th>
@@ -255,11 +247,6 @@ li{margin:.15em 0}
 <h2 id="つのステップで進める">6つのステップで進める</h2>
 <p>くわしい手順は「かんたん版マニュアル（21ページ）」と、ウッドデッキの解説動画（全19本のスライド）で説明しています。ここでは全体の流れと、いちばん大事なポイントだけをまとめます。</p>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>ステップ</th>
@@ -302,14 +289,10 @@ li{margin:.15em 0}
 </table>
 <h2 id="step14の技術が生きる場面">STEP1〜4の技術が生きる場面</h2>
 <ul>
-<li><strong>対角線（STEP1）：</strong>
-束石の位置を決めたら、四隅の対角線を測って直角を確かめます。たとえば束石の中心が3,434×1,634mmなら、対角線は約3,803mmです。</li>
-<li><strong>割付け（STEP2）：</strong>
-床板の全体の長さは「板の幅×枚数＋目地×数」。張る前に計算して、両端を決めてから留めます。</li>
-<li><strong>枠と水平（STEP3）：</strong>
-外周の根太から張り始め、水平器と直角定規で何度も確かめます。1人のときは、クランプや受け台で根太を支えて仮留めします。</li>
-<li><strong>垂直と基礎（STEP4）：</strong>
-束石は地面のかたさに合わせて下地をつくり、50mmほど埋めます。支柱は2つの面で垂直を見ます。</li>
+<li><strong>対角線（STEP1）：</strong> 束石の位置を決めたら、四隅の対角線を測って直角を確かめます。たとえば束石の中心が3,434×1,634mmなら、対角線は約3,803mmです。</li>
+<li><strong>割付け（STEP2）：</strong> 床板の全体の長さは「板の幅×枚数＋目地×数」。張る前に計算して、両端を決めてから留めます。</li>
+<li><strong>枠と水平（STEP3）：</strong> 外周の根太から張り始め、水平器と直角定規で何度も確かめます。1人のときは、クランプや受け台で根太を支えて仮留めします。</li>
+<li><strong>垂直と基礎（STEP4）：</strong> 束石は地面のかたさに合わせて下地をつくり、50mmほど埋めます。支柱は2つの面で垂直を見ます。</li>
 </ul>
 <h2 id="あなたの家のサイズの図面を依頼する">あなたの家のサイズの図面を依頼する</h2>
 <p>次の4つを、LINEかメールで送ってください。束石の位置・骨組み・高さの内訳・カット表・購入リストを、あなたの家に合わせてお作りします。</p>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ウッドデッキ メンテナンス手帳</title>
+  <style>
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">@page{size:A4;margin:16mm 16mm 18mm}
+body{font-family:"Zen Kaku Gothic New","IPAPGothic","Noto Sans CJK JP","Noto Sans JP","Hiragino Sans","WenQuanYi Zen Hei",sans-serif;color:#1b231e;font-size:10.5pt;line-height:1.85;max-width:44em;margin:0 auto}
+header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom:1.2em;padding-bottom:.6em}
+.title{font-size:20pt;line-height:1.35;margin:0}
+.subtitle{font-size:11pt;color:#4a564d;margin:.2em 0 0;font-weight:400}
+h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
+h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
+p{margin:0 0 .7em}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
+th{background:#f3eee4}
+blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
+blockquote p:last-child{margin:0}
+ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
+li{margin:.15em 0}
+.warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#7a55a8}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ウッドデッキ メンテナンス手帳</h1>
+<p class="subtitle">オリジナルウッドデッキ 日曜大工プログラム　購入特典</p>
+</header>
+<p>完成はゴールではなく、メンテナンスのスタートです。天然木は、どんな木でもいずれ劣化します。けれど、点検と塗り直しを続ければ、10〜15年以上使い続けられます。この手帳に、あなたのデッキの記録を残していってください。</p>
+<h2 id="わが家のウッドデッキ">わが家のウッドデッキ</h2>
+<table class="write">
+<tr>
+<th style="width:28%">
+完成した日
+</th>
+<td>
+　　　　年　　　月　　　日
+</td>
+</tr>
+<tr>
+<th>
+大きさ
+</th>
+<td>
+幅　　　　mm × 奥行き　　　　mm × 高さ　　　　mm
+</td>
+</tr>
+<tr>
+<th>
+木材
+</th>
+<td>
+</td>
+</tr>
+<tr>
+<th>
+塗料（商品名・色）
+</th>
+<td>
+</td>
+</tr>
+<tr>
+<th>
+ビス（長さ・材質）
+</th>
+<td>
+</td>
+</tr>
+<tr>
+<th>
+いっしょにつくった人
+</th>
+<td>
+</td>
+</tr>
+</table>
+<div class="box">
+完成写真を貼る
+</div>
+<table class="write">
+<tr>
+<th style="width:28%">
+ひとこと
+</th>
+<td>
+</td>
+</tr>
+<tr>
+<th>
+</th>
+<td>
+</td>
+</tr>
+</table>
+<h2 id="塗り直しの目安">塗り直しの目安</h2>
+<table>
+<thead>
+<tr class="header">
+<th>場所</th>
+<th>目安</th>
+<th>次の予定</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>天板の上面・側面・木口</td>
+<td><strong>最低2年ごと</strong></td>
+<td>　　　　年　　月ごろ</td>
+</tr>
+<tr class="even">
+<td>天板の下面・根太・根がらみ</td>
+<td><strong>最低5年ごと</strong></td>
+<td>　　　　年　　月ごろ</td>
+</tr>
+<tr class="odd">
+<td>日や手がよく当たる所（踏み台のまわり、手すりなど）</td>
+<td><strong>1〜2年で早めに</strong></td>
+<td>　　　　年　　月ごろ</td>
+</tr>
+</tbody>
+</table>
+<p>スマートフォンのカレンダーに、次の予定を入れておくと忘れません。</p>
+<h2 id="塗り直しのしかた">塗り直しのしかた</h2>
+<ol type="1">
+<li><strong>天気を選ぶ。</strong> 晴れが1〜2日続いたあとの、晴れた日に塗ります。木が湿っていると、塗料が染み込みません。</li>
+<li><strong>掃除する。</strong> ほこりを掃き、汚れはデッキブラシで水洗いします。目地の水あかは、細いブラシで落とします。よく乾かします。</li>
+<li><strong>塗る。</strong> 塗料はよくかき混ぜます。目地のような塗りにくい所から塗り、目立つ所は最後に。木目に沿って、薄く塗ります。木口（切り口）は塗料をよく吸うので、多めに塗ります。</li>
+<li><strong>2回目を塗る。</strong> 1回目がよく乾いてから、もう一度塗ります。</li>
+</ol>
+<blockquote>
+<p>前と同じ塗料を使うと、色むらが出にくくなります。上の「わが家のウッドデッキ」に、塗料の名前と色を書いておいてください。</p>
+</blockquote>
+<div class="page">
+
+</div>
+<h2 id="点検のポイント">点検のポイント</h2>
+<h3 id="いちばん大事なのは目地">いちばん大事なのは「目地」</h3>
+<p>雨水は目地（板と板のすき間）を伝って下へ流れます。そのため、<strong>天板の側面と根太の上面が、いちばん長く湿ったまま</strong>になります。ここが傷みやすい場所です。</p>
+<h3 id="もうひとつの弱点は根太と支柱を留めるビス">もうひとつの弱点は「根太と支柱を留めるビス」</h3>
+<p>サンドイッチ工法では、支柱を根太で両側から挟んでビスで留めています。デッキの寿命は、このビスで決まります。</p>
+<h3 id="点検チェックリスト">点検チェックリスト</h3>
+<table>
+<thead>
+<tr class="header">
+<th>いつ</th>
+<th>見る所</th>
+<th>チェック</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ふだん</td>
+<td>ほこりや落ち葉がたまっていない</td>
+<td>□</td>
+</tr>
+<tr class="even">
+<td>ふだん</td>
+<td>汚れは、デッキブラシで水洗い</td>
+<td>□</td>
+</tr>
+<tr class="odd">
+<td>季節ごと</td>
+<td>目地に、水あかや土がつまっていない</td>
+<td>□</td>
+</tr>
+<tr class="even">
+<td>季節ごと</td>
+<td>天板に、ささくれ・割れ・反りがない</td>
+<td>□</td>
+</tr>
+<tr class="odd">
+<td>季節ごと</td>
+<td>ビスの頭が浮いていない（浮いていたら締め直す）</td>
+<td>□</td>
+</tr>
+<tr class="even">
+<td>年に1回</td>
+<td>天板の色があせて、水をはじかなくなっていない</td>
+<td>□</td>
+</tr>
+<tr class="odd">
+<td>年に1回</td>
+<td>床下をのぞいて、根太と支柱を留めるビスにさびや緩みがない</td>
+<td>□</td>
+</tr>
+<tr class="even">
+<td>年に1回</td>
+<td>支柱の根元や束石のまわりに、水がたまっていない</td>
+<td>□</td>
+</tr>
+<tr class="odd">
+<td>年に1回</td>
+<td>歩いて、きしみ・たわみ・ぐらつきがない</td>
+<td>□</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>水をはじくかの確かめ方：</strong> 天板に水を少したらしてみます。玉になって転がれば、まだ大丈夫。すぐに染み込んで色が濃くなるなら、塗り直しの時期です。</p>
+</blockquote>
+<h2 id="こんなときは">こんなときは</h2>
+<table>
+<thead>
+<tr class="header">
+<th>気づいたこと</th>
+<th>すること</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ビスの頭が浮いている</td>
+<td>締め直す。木がやせて効かないときは、少しずらして新しいビスを打つ</td>
+</tr>
+<tr class="even">
+<td>天板の一部が割れた・腐った</td>
+<td>その1枚だけ外して、同じ寸法の板に取り替える。取り替えた板は、先に塗っておく</td>
+</tr>
+<tr class="odd">
+<td>ささくれがある</td>
+<td>サンドペーパーで削って、その部分を塗り直す</td>
+</tr>
+<tr class="even">
+<td>床下のビスがさびている</td>
+<td>早めにステンレスのビスに打ち替える。デッキの寿命にかかわる</td>
+</tr>
+<tr class="odd">
+<td>ぐらつく・たわむ</td>
+<td>写真を撮って、ご相談ください</td>
+</tr>
+</tbody>
+</table>
+<h2 id="点検の記録">点検の記録</h2>
+<table class="write">
+<tr>
+<th style="width:18%">
+日付
+</th>
+<th style="width:42%">
+見たこと・気づいたこと
+</th>
+<th style="width:40%">
+したこと
+</th>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<h2 id="塗り直しの記録">塗り直しの記録</h2>
+<table class="write">
+<tr>
+<th style="width:18%">
+日付
+</th>
+<th style="width:30%">
+塗った場所
+</th>
+<th style="width:30%">
+塗料（商品名・色）
+</th>
+<th style="width:22%">
+回数・天気
+</th>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+</table>
+<p>完成後のメンテナンスについても、いつでもご相談ください。気になる所の写真を送っていただければ、直し方をお伝えします。</p>
+<p>LINE：［LINE公式のURL］</p>
+</body>
+</html>

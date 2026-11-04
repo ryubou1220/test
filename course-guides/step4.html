@@ -170,7 +170,7 @@ header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom
 h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
 h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
 p{margin:0 0 .7em}
-table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
 th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
 th{background:#f3eee4}
 blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
@@ -178,20 +178,19 @@ blockquote p:last-child{margin:0}
 ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
 li{margin:.15em 0}
 .warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#7a55a8}</style></head>
 <body>
 <header id="title-block-header">
 <h1 class="title">STEP4　木製門扉をつくる</h1>
-<p class="subtitle">週末DIY
-5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+<p class="subtitle">週末DIY 5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
 </header>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>材料費</th>
@@ -217,12 +216,9 @@ li{margin:.15em 0}
 <h2 id="掘る前に必ず確かめること">掘る前に、必ず確かめること</h2>
 <blockquote>
 <ul>
-<li><strong>地中に水道管・ガス管・電線が通っていないか。</strong>
-家の図面や、メーターの位置を見て確かめます。</li>
-<li><strong>敷地の境界の内側か。</strong>
-お隣との境界ぎりぎりなら、先に話しておきます。</li>
-<li><strong>コンクリートはアルカリ性で、手が荒れます。</strong>
-ゴム手袋と保護メガネを使います。</li>
+<li><strong>地中に水道管・ガス管・電線が通っていないか。</strong> 家の図面や、メーターの位置を見て確かめます。</li>
+<li><strong>敷地の境界の内側か。</strong> お隣との境界ぎりぎりなら、先に話しておきます。</li>
+<li><strong>コンクリートはアルカリ性で、手が荒れます。</strong> ゴム手袋と保護メガネを使います。</li>
 </ul>
 </blockquote>
 <h2 id="材料と道具">材料と道具</h2>
@@ -292,10 +288,8 @@ li{margin:.15em 0}
 </tr>
 </tbody>
 </table>
-<p><strong>道具：</strong>
-STEP1〜3の道具一式（水平器も）に、スコップと穴掘り器（ダブルスコップ）、練り舟とクワ（またはバケツと移植ごて）、突き棒（2×4の端材でよい）、水糸・杭・仮留め用の板、ゴム手袋が加わります。</p>
-<p><strong>今ある門柱や塀の柱に付けるとき：</strong>
-柱を建てる作業は省けます。柱の内側の間隔が920mmになるよう、扉の幅と板の枚数を調整してください。ブロック塀に木の柱を付けるときは、ブロック用のアンカーを使い、塀の強度を必ず確かめてください。</p>
+<p><strong>道具：</strong> STEP1〜3の道具一式（水平器も）に、スコップと穴掘り器（ダブルスコップ）、練り舟とクワ（またはバケツと移植ごて）、突き棒（2×4の端材でよい）、水糸・杭・仮留め用の板、ゴム手袋が加わります。</p>
+<p><strong>今ある門柱や塀の柱に付けるとき：</strong> 柱を建てる作業は省けます。柱の内側の間隔が920mmになるよう、扉の幅と板の枚数を調整してください。ブロック塀に木の柱を付けるときは、ブロック用のアンカーを使い、塀の強度を必ず確かめてください。</p>
 <h2 id="寸法と切る部品">寸法と切る部品</h2>
 <table>
 <thead>
@@ -334,41 +328,30 @@ STEP1〜3の道具一式（水平器も）に、スコップと穴掘り器（�
 </tbody>
 </table>
 <p>柱は地面から1,300mm出し、地中に500mm埋めます。</p>
-<p><strong>扉の板の割付け：</strong> すき間 ＝（900 − 89×9）÷ 8 ＝
-約12.4mm。12mmの端材をゲージにして並べると、両端がちょうど900mmにそろいます。STEP2のすき間ゲージと同じやり方です。</p>
+<p><strong>扉の板の割付け：</strong> すき間 ＝（900 − 89×9）÷ 8 ＝ 約12.4mm。12mmの端材をゲージにして並べると、両端がちょうど900mmにそろいます。STEP2のすき間ゲージと同じやり方です。</p>
 <h2 id="筋交いの向きいちばん大事">筋交いの向き（いちばん大事）</h2>
 <blockquote>
 <p><strong>蝶番側の下から、取っ手側の上へ。</strong></p>
 <p>扉は、取っ手側が下がろうとします。筋交いがその力を蝶番側の下に伝えて、扉が垂れるのを防ぎます。<strong>逆向きに付けると、ほとんど効きません。</strong></p>
 </blockquote>
-<p><strong>斜め切りのしかた：</strong>
-筋交いは少し長めに切っておきます。扉を裏返し、横桟の間に筋交いの材をのせ（蝶番側の下から、取っ手側の上へ）、横桟の縁に沿って上下2か所に線を引きます。角度は約46°になります。線の外側を、ゆっくり切ります。最初の数回は、ノコギリを軽く引きます。</p>
+<p><strong>斜め切りのしかた：</strong> 筋交いは少し長めに切っておきます。扉を裏返し、横桟の間に筋交いの材をのせ（蝶番側の下から、取っ手側の上へ）、横桟の縁に沿って上下2か所に線を引きます。角度は約46°になります。線の外側を、ゆっくり切ります。最初の数回は、ノコギリを軽く引きます。</p>
 <h2 id="日目-柱を建てる">1日目　柱を建てる</h2>
 <p>この日は、コンクリートを固めて終わりです。</p>
 <ol type="1">
-<li><strong>位置を出して、穴を掘る。</strong>
-杭と水糸で、柱を立てる線を張ります。2本の柱の中心の間隔は1,009mmです。柱の位置に、直径約250mm・深さ550mmの穴を掘り、底に砕石を50mm入れて、突き棒でしっかり突き固めます。</li>
-<li><strong>柱を立てて、垂直を出す。</strong>
-柱を穴に立て、2方向から仮留めの板で支えます（板は杭に留めます）。水平器を柱の2つの面に当てて、どちらも垂直になるまで調整します。2本目も同じように立て、柱の内側の間隔が上でも下でも920mm、高さ（地面から1,300mm）がそろっているか確かめます。</li>
-<li><strong>コンクリートを入れて、固める。</strong>
-インスタントコンクリートに水を混ぜ、穴に少しずつ入れて、棒で突いて空気を抜きます。入れ終わったら、もう一度2本の柱の垂直と間隔を確かめます。上の面は柱に向かって山形に盛り、雨水がたまらないようにします。2日以上そのまま固めます。扉はこの間につくります。</li>
+<li><strong>位置を出して、穴を掘る。</strong> 杭と水糸で、柱を立てる線を張ります。2本の柱の中心の間隔は1,009mmです。柱の位置に、直径約250mm・深さ550mmの穴を掘り、底に砕石を50mm入れて、突き棒でしっかり突き固めます。</li>
+<li><strong>柱を立てて、垂直を出す。</strong> 柱を穴に立て、2方向から仮留めの板で支えます（板は杭に留めます）。水平器を柱の2つの面に当てて、どちらも垂直になるまで調整します。2本目も同じように立て、柱の内側の間隔が上でも下でも920mm、高さ（地面から1,300mm）がそろっているか確かめます。</li>
+<li><strong>コンクリートを入れて、固める。</strong> インスタントコンクリートに水を混ぜ、穴に少しずつ入れて、棒で突いて空気を抜きます。入れ終わったら、もう一度2本の柱の垂直と間隔を確かめます。上の面は柱に向かって山形に盛り、雨水がたまらないようにします。2日以上そのまま固めます。扉はこの間につくります。</li>
 </ol>
 <blockquote>
-<p><strong>ウッドデッキでは：</strong>
-「水糸で位置を出す」「穴を掘って突き固める」「2方向から垂直を見る」は、デッキの束石と束柱の作業そのものです。デッキでは、これを十数か所くり返します。</p>
+<p><strong>ウッドデッキでは：</strong> 「水糸で位置を出す」「穴を掘って突き固める」「2方向から垂直を見る」は、デッキの束石と束柱の作業そのものです。デッキでは、これを十数か所くり返します。</p>
 </blockquote>
 <h2 id="日目-扉をつくって吊る">2日目　扉をつくって、吊る</h2>
 <p>順番は「板 → 横桟 → 筋交い → 金物」です。</p>
 <ol type="1">
-<li><strong>板を並べて、横桟を留める。</strong>
-平らな場所に、扉の板9枚を表を下にして並べ、すき間に12mmのゲージをはさみます。板の上と下の端から120mmの位置に横桟をのせ、<strong>対角線が両方とも約1,500mmになるよう直角を出します。</strong>
-横桟の上から、板1枚につき2本ずつ45mmのビスで留めます。</li>
-<li><strong>筋交いを入れる。</strong>
-斜めに切った筋交いを横桟の間にぴったり入れ、板1枚につき2本ずつ留めます。</li>
-<li><strong>扉を吊る。</strong>
-扉の下に50mmの台（2×4の端材を寝かせたもの＋薄い板）をかませ、柱の間に置きます。両側のすき間が10mmずつになるよう位置を決め、Tヒンジの長い方を横桟に、短い方を蝶番側の柱に留めます。台を外して開け閉めし、こすれる所がないか確かめます。</li>
-<li><strong>戸当たりとラッチを付ける。</strong>
-取っ手側の柱の内側に戸当たりを付け、ラッチを取り付けます。</li>
+<li><strong>板を並べて、横桟を留める。</strong> 平らな場所に、扉の板9枚を表を下にして並べ、すき間に12mmのゲージをはさみます。板の上と下の端から120mmの位置に横桟をのせ、<strong>対角線が両方とも約1,500mmになるよう直角を出します。</strong> 横桟の上から、板1枚につき2本ずつ45mmのビスで留めます。</li>
+<li><strong>筋交いを入れる。</strong> 斜めに切った筋交いを横桟の間にぴったり入れ、板1枚につき2本ずつ留めます。</li>
+<li><strong>扉を吊る。</strong> 扉の下に50mmの台（2×4の端材を寝かせたもの＋薄い板）をかませ、柱の間に置きます。両側のすき間が10mmずつになるよう位置を決め、Tヒンジの長い方を横桟に、短い方を蝶番側の柱に留めます。台を外して開け閉めし、こすれる所がないか確かめます。</li>
+<li><strong>戸当たりとラッチを付ける。</strong> 取っ手側の柱の内側に戸当たりを付け、ラッチを取り付けます。</li>
 </ol>
 <h2 id="できあがりチェック">できあがりチェック</h2>
 <ul>
@@ -380,10 +363,6 @@ STEP1〜3の道具一式（水平器も）に、スコップと穴掘り器（�
 </ul>
 <h2 id="うまくいかなかったときは">うまくいかなかったときは</h2>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>症状</th>

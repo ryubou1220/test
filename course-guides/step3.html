@@ -170,7 +170,7 @@ header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom
 h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
 h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
 p{margin:0 0 .7em}
-table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
 th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
 th{background:#f3eee4}
 blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
@@ -178,20 +178,19 @@ blockquote p:last-child{margin:0}
 ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
 li{margin:.15em 0}
 .warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#a4521c}</style></head>
 <body>
 <header id="title-block-header">
 <h1 class="title">STEP3　囲炉裏テーブルをつくる</h1>
-<p class="subtitle">週末DIY
-5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+<p class="subtitle">週末DIY 5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
 </header>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>材料費</th>
@@ -262,11 +261,6 @@ li{margin:.15em 0}
 <p>デッキの上や屋外に置くので、防腐処理したSPF材かウエスタンレッドシダーを選びます。</p>
 <h3 id="炉は2つのタイプから選ぶ">炉は2つのタイプから選ぶ</h3>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -292,8 +286,7 @@ li{margin:.15em 0}
 </tr>
 </tbody>
 </table>
-<p><strong>道具：</strong>
-STEP1・2と同じものに、水平器（30cm以上）、カッターと金属の定規（ケイカル板を切る）、防じんマスク（ケイカル板を削るとき）が加わります。</p>
+<p><strong>道具：</strong> STEP1・2と同じものに、水平器（30cm以上）、カッターと金属の定規（ケイカル板を切る）、防じんマスク（ケイカル板を削るとき）が加わります。</p>
 <h2 id="寸法と切る部品">寸法と切る部品</h2>
 <table>
 <thead>
@@ -343,40 +336,28 @@ STEP1・2と同じものに、水平器（30cm以上）、カッターと金属�
 </table>
 <p>天板は2×6材7枚とすき間5mmで、幅1,010mm。STEP2の割付けと同じ考え方です。開口部は真ん中の3枚分で<strong>430×400mm</strong>。カセットコンロが入り、つまみを回す手も入る大きさにしています。</p>
 <blockquote>
-<p><strong>切るときのポイント：</strong>
-脚4本は長さを必ずそろえます（ずれるとテーブルが揺れます）。天板の短い板（160mm）とふた（396mm）は、切ったら印をつけて分けておきます。</p>
+<p><strong>切るときのポイント：</strong> 脚4本は長さを必ずそろえます（ずれるとテーブルが揺れます）。天板の短い板（160mm）とふた（396mm）は、切ったら印をつけて分けておきます。</p>
 </blockquote>
-<p><strong>ケイカル板の切り方：</strong>
-金属の定規を当て、カッターで何度か筋を入れてから、机の角で折ります。切り口はサンドペーパーで整えます（防じんマスクをつけて）。炭火タイプは、取り付ける前に耐熱塗料スプレーを2〜3回に分けて薄く吹き、屋外でよく乾かします。</p>
+<p><strong>ケイカル板の切り方：</strong> 金属の定規を当て、カッターで何度か筋を入れてから、机の角で折ります。切り口はサンドペーパーで整えます（防じんマスクをつけて）。炭火タイプは、取り付ける前に耐熱塗料スプレーを2〜3回に分けて薄く吹き、屋外でよく乾かします。</p>
 <h2 id="組み立て1-骨組み">組み立て1　骨組み</h2>
 <p>順番は「枠 → 脚 → 受け材 → 炉受け」です。</p>
 <ol type="1">
-<li><strong>幕板で四角い枠を組む。</strong>
-長い幕板2本で、短い幕板2本の両端をはさみます（幕板はすべて縦に立てます）。下穴をあけ、角ごとにビス2本で留めます。外寸は950×660mm。<strong>対角線がどちらも約1,157mmなら直角</strong>です。</li>
-<li><strong>脚を付けて、水平を確かめる。</strong>
-枠の4つの角の内側に脚を当て、脚の上の端と幕板の上の端をそろえます。長い幕板と短い幕板の両方から、ビスを2本ずつ打ちます。起こして平らな床に置き、水平器を枠の上にのせて、前後・左右とも水平か確かめます。</li>
-<li><strong>受け材を入れる。</strong>
-2×6材を縦にして、短い幕板の間に入れ、上の端を幕板とそろえます。位置は、受け材の中心が天板の前の端から160mmと560mmです。短い幕板の外側から、ビス2本ずつで留めます。</li>
-<li><strong>炉受けと炉床を付ける。</strong>
-2×4材を寝かせて受け材の間に渡し、下の面を受け材の下の端とそろえて留めます。炉受けの上に、ケイカル板の炉床をのせます。</li>
+<li><strong>幕板で四角い枠を組む。</strong> 長い幕板2本で、短い幕板2本の両端をはさみます（幕板はすべて縦に立てます）。下穴をあけ、角ごとにビス2本で留めます。外寸は950×660mm。<strong>対角線がどちらも約1,157mmなら直角</strong>です。</li>
+<li><strong>脚を付けて、水平を確かめる。</strong> 枠の4つの角の内側に脚を当て、脚の上の端と幕板の上の端をそろえます。長い幕板と短い幕板の両方から、ビスを2本ずつ打ちます。起こして平らな床に置き、水平器を枠の上にのせて、前後・左右とも水平か確かめます。</li>
+<li><strong>受け材を入れる。</strong> 2×6材を縦にして、短い幕板の間に入れ、上の端を幕板とそろえます。位置は、受け材の中心が天板の前の端から160mmと560mmです。短い幕板の外側から、ビス2本ずつで留めます。</li>
+<li><strong>炉受けと炉床を付ける。</strong> 2×4材を寝かせて受け材の間に渡し、下の面を受け材の下の端とそろえて留めます。炉受けの上に、ケイカル板の炉床をのせます。</li>
 </ol>
 <blockquote>
-<p><strong>ウッドデッキでは：</strong> 「外周の枠で直角を出す →
-脚で水平をとる →
-内側に受け材を足す」は、デッキの骨組みとまったく同じ順番です。</p>
+<p><strong>ウッドデッキでは：</strong> 「外周の枠で直角を出す → 脚で水平をとる → 内側に受け材を足す」は、デッキの骨組みとまったく同じ順番です。</p>
 </blockquote>
 <h2 id="組み立て2-天板ふた炉">組み立て2　天板・ふた・炉</h2>
 <ol type="1">
-<li><strong>天板を張る。</strong>
-720mmの板4枚を、左右に2枚ずつ、すき間5mmで張ります（STEP2のすき間ゲージを使います）。真ん中の3列は、160mmの短い板を前と後ろに張り、開口部側の端を受け材の中心にそろえます。<strong>天板の対角線が約1,240mmなら、まっすぐ張れています。</strong></li>
-<li><strong>ふたをのせる。</strong>
-396mmの板3枚を開口部にのせます。前後に2mmずつすき間があれば、指で持ち上げられます。ふたは留めずに、のせるだけです。</li>
-<li><strong>塗装する。</strong>
-天板とふたの角を丸め、屋外用の塗料を2回塗ります。</li>
+<li><strong>天板を張る。</strong> 720mmの板4枚を、左右に2枚ずつ、すき間5mmで張ります（STEP2のすき間ゲージを使います）。真ん中の3列は、160mmの短い板を前と後ろに張り、開口部側の端を受け材の中心にそろえます。<strong>天板の対角線が約1,240mmなら、まっすぐ張れています。</strong></li>
+<li><strong>ふたをのせる。</strong> 396mmの板3枚を開口部にのせます。前後に2mmずつすき間があれば、指で持ち上げられます。ふたは留めずに、のせるだけです。</li>
+<li><strong>塗装する。</strong> 天板とふたの角を丸め、屋外用の塗料を2回塗ります。</li>
 </ol>
 <blockquote>
-<p><strong>注意：</strong>
-炉の内側の木部には、塗料を塗らないでください。燃えやすくなります。</p>
+<p><strong>注意：</strong> 炉の内側の木部には、塗料を塗らないでください。燃えやすくなります。</p>
 </blockquote>
 <h3 id="炭火タイプの仕上げ">炭火タイプの仕上げ</h3>
 <p>受け材の内側にケイカル板（430×96mm×2枚）を貼り、炉床と内側を耐熱塗料スプレーで仕上げます。炉床にバットを置き、灰を3cm以上入れて、炭と五徳をのせます。<strong>バットと木部の間は30mm以上</strong>あけます。</p>
@@ -385,8 +366,7 @@ STEP1・2と同じものに、水平器（30cm以上）、カッターと金属�
 <h2 id="火を使うときの約束">火を使うときの約束</h2>
 <blockquote>
 <ul>
-<li><strong>炭火は屋外だけで使います。</strong>
-室内やテントの中では使いません（一酸化炭素中毒の危険があります）。</li>
+<li><strong>炭火は屋外だけで使います。</strong> 室内やテントの中では使いません（一酸化炭素中毒の危険があります）。</li>
 <li>火が付いている間は、その場を離れません。そばに水を入れたバケツを置きます。</li>
 <li>使い終わった炭は火消し壺に入れます。灰が冷えるまで、ふたを閉めません。</li>
 <li>カセットコンロは、ボンベのまわりに熱がこもらないよう、大きな鍋や鉄板を使いません。</li>

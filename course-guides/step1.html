@@ -170,7 +170,7 @@ header#title-block-header{border-bottom:3px solid var(--a,#2c6849);margin-bottom
 h2{font-size:13.5pt;margin:1.6em 0 .5em;padding-left:.5em;border-left:5px solid var(--a,#2c6849);break-after:avoid}
 h3{font-size:11pt;margin:1.2em 0 .3em;break-after:avoid}
 p{margin:0 0 .7em}
-table{border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
+table{display:table;overflow:visible;border-collapse:collapse;width:100%;margin:.4em 0 1em;font-size:9.8pt;break-inside:avoid}
 th,td{border:1px solid #d6cfbf;padding:.35em .6em;text-align:left;vertical-align:top}
 th{background:#f3eee4}
 blockquote{margin:1em 0;padding:.7em 1em;background:#f6f1e8;border-left:4px solid var(--a,#2c6849);break-inside:avoid}
@@ -178,13 +178,17 @@ blockquote p:last-child{margin:0}
 ol,ul{padding-left:1.4em;margin:.3em 0 .8em}
 li{margin:.15em 0}
 .warn{background:#fbebe5;border-left-color:#9a3b22}
+table.write{width:100%;table-layout:fixed}
+table.write td{height:9mm}
+table.write th{white-space:nowrap}
+.box{border:1.5px dashed #b0a58f;border-radius:2mm;height:55mm;display:flex;align-items:center;justify-content:center;color:#8a8170;font-size:9pt;margin:.4em 0 1em}
+.page{break-before:page}
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap"><style>:root{--a:#2c6849}</style></head>
 <body>
 <header id="title-block-header">
 <h1 class="title">STEP1　踏み台をつくる</h1>
-<p class="subtitle">週末DIY
-5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
+<p class="subtitle">週末DIY 5ステップ講座　解説テキスト（動画と一緒にお読みください）</p>
 </header>
 <table>
 <thead>
@@ -211,8 +215,7 @@ li{margin:.15em 0}
 <li><strong>対角線で、直角を確かめる</strong>　2本の対角線が同じ長さなら直角です。</li>
 </ol>
 <blockquote>
-<p><strong>ウッドデッキでは：</strong>
-対角線の確認は、デッキの基礎で束石の位置を決めるときに、そのまま使います。</p>
+<p><strong>ウッドデッキでは：</strong> 対角線の確認は、デッキの基礎で束石の位置を決めるときに、そのまま使います。</p>
 </blockquote>
 <h2 id="材料と道具">材料と道具</h2>
 <table>
@@ -264,13 +267,10 @@ li{margin:.15em 0}
 </tbody>
 </table>
 <p>屋外に置くなら、防腐処理したSPF材か、ウエスタンレッドシダーを選びます。</p>
-<p><strong>道具：</strong>
-さしがね、メジャー、鉛筆、ノコギリ（または丸ノコ）、インパクトドライバー（またはドライバードリル）、下穴用のドリルビット3mm、保護メガネ、手袋。クランプとスコヤ（小さな直角定規）があると便利です。</p>
-<p><strong>工具を持っていない方へ：</strong>
-ホームセンターのカットサービス（1カット数十円ほど）なら、教材のカット表を見せるだけで切ってもらえます。組み立てから始められます。</p>
+<p><strong>道具：</strong> さしがね、メジャー、鉛筆、ノコギリ（または丸ノコ）、インパクトドライバー（またはドライバードリル）、下穴用のドリルビット3mm、保護メガネ、手袋。クランプとスコヤ（小さな直角定規）があると便利です。</p>
+<p><strong>工具を持っていない方へ：</strong> ホームセンターのカットサービス（1カット数十円ほど）なら、教材のカット表を見せるだけで切ってもらえます。組み立てから始められます。</p>
 <blockquote>
-<p><strong>2×6材は約914mm余ります。</strong>
-STEP2のプランター台で使うので、捨てずにとっておいてください。</p>
+<p><strong>2×6材は約914mm余ります。</strong> STEP2のプランター台で使うので、捨てずにとっておいてください。</p>
 </blockquote>
 <h2 id="線の引き方と切り方">線の引き方と切り方</h2>
 <p>切る部品は次のとおりです。</p>
@@ -294,23 +294,16 @@ STEP2のプランター台で使うので、捨てずにとっておいてくだ
 </table>
 <h3 id="線を引く">線を引く</h3>
 <ol type="1">
-<li><strong>端をそろえる。</strong>
-買ってきた材料の端は、直角でないことが多いものです。まず5mmほど切り落とします。</li>
-<li><strong>長さに印をつける。</strong>
-切りそろえた端から測ります。</li>
-<li><strong>さしがねで直角の線を引く。</strong>
-さしがねの短い方を材料の側面に当てて線を引き、側面にも線を回します。</li>
-<li><strong>捨てる側に×印をつける。</strong>
-切る位置を間違えないためです。</li>
+<li><strong>端をそろえる。</strong> 買ってきた材料の端は、直角でないことが多いものです。まず5mmほど切り落とします。</li>
+<li><strong>長さに印をつける。</strong> 切りそろえた端から測ります。</li>
+<li><strong>さしがねで直角の線を引く。</strong> さしがねの短い方を材料の側面に当てて線を引き、側面にも線を回します。</li>
+<li><strong>捨てる側に×印をつける。</strong> 切る位置を間違えないためです。</li>
 </ol>
 <h3 id="切る">切る</h3>
 <ul>
-<li><strong>線の外側（×印の側）を切ります。</strong>
-刃には約3mmの厚みがあるので、線の上を切ると部品がその分短くなります。</li>
-<li><strong>印は1本切るごとにつけます。</strong>
-まとめて印をつけると、刃の厚みの分ずつずれていきます。</li>
-<li><strong>同じ部品を並べて確かめます。</strong>
-脚4本を立てて並べ、高さのずれが2mm以内かを見ます。</li>
+<li><strong>線の外側（×印の側）を切ります。</strong> 刃には約3mmの厚みがあるので、線の上を切ると部品がその分短くなります。</li>
+<li><strong>印は1本切るごとにつけます。</strong> まとめて印をつけると、刃の厚みの分ずつずれていきます。</li>
+<li><strong>同じ部品を並べて確かめます。</strong> 脚4本を立てて並べ、高さのずれが2mm以内かを見ます。</li>
 </ul>
 <h2 id="組み立て">組み立て</h2>
 <p>順番は「下穴 → ボンド → ビス」です。</p>
@@ -336,10 +329,6 @@ STEP2のプランター台で使うので、捨てずにとっておいてくだ
 </ul>
 <h2 id="うまくいかなかったときは">うまくいかなかったときは</h2>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
 <thead>
 <tr class="header">
 <th>症状</th>

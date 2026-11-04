@@ -19,7 +19,7 @@ def main():
         accent = re.search(r'^accent:\s*"([^"]+)"', md.read_text(encoding="utf-8"), re.M).group(1)
         out = ROOT / f"{md.stem}.html"
         subprocess.run(["pandoc", str(md), "-s", "-o", str(out), "--css", str(SRC / "guide.css"),
-                        "--embed-resources", "-V", "document-css=false"], check=True)
+                        "--embed-resources", "--columns=400", "-V", "document-css=false"], check=True)
         html = out.read_text(encoding="utf-8")
         html = html.replace("</head>", f"{FONT}<style>:root{{--a:{accent}}}</style></head>", 1)
         out.write_text(html, encoding="utf-8")
