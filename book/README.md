@@ -30,6 +30,7 @@ book/
 ```bash
 cd book
 make epub    # dist/monozukuri-kimo.epub を生成
+make docx    # dist/monozukuri-kimo.docx（Word 原稿）を生成。要 Node.js と docx パッケージ
 make count   # 章ごとの文字数を表示
 ```
 

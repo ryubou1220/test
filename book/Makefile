@@ -3,8 +3,12 @@ CHAPTERS := $(sort $(wildcard manuscript/*.md))
 OUT      := dist/monozukuri-kimo.epub
 COVER    := $(wildcard cover.jpg)
 
-.PHONY: epub count clean
+.PHONY: epub docx count clean
 epub: $(OUT)
+
+# Word 原稿（docx パッケージが必要: npm install docx）
+docx:
+	node tools/build-docx.js
 
 $(OUT): metadata.yaml $(CHAPTERS) style.css
 	mkdir -p dist
@@ -19,4 +23,4 @@ count:
 	@printf '%6d  合計\n' $$(cat $(CHAPTERS) | LC_ALL=C.UTF-8 wc -m)
 
 clean:
-	rm -f $(OUT)
+	rm -f $(OUT) dist/monozukuri-kimo.docx
