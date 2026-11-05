@@ -1,0 +1,6 @@
+body { font-family: serif; line-height: 1.9; }
+h1 { font-size: 1.5em; margin: 2em 0 1.5em; }
+h2 { font-size: 1.15em; margin-top: 2em; border-bottom: 1px solid #999; }
+p { text-indent: 1em; margin: 0.4em 0; }
+li p, blockquote p { text-indent: 0; }
+table { border-collapse: collapse; }
