@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"M PLUS Rounded 1c","IPAGothic",sans-serif;color:#3D2E22;background:#ddd}
+.page{width:1080px;height:1350px;position:relative;overflow:hidden;background:#FFF8EE}
+.plank{position:absolute;left:0;right:0;height:70px;background:repeating-linear-gradient(90deg,#D49A5C 0 3px,#C98A4B 3px 110px,#CF9455 110px 113px,#C78748 113px 240px)}
+.plank.t{top:0}.plank.b{bottom:0}
+.in{position:absolute;top:110px;left:80px;right:80px}
+.top{display:flex;align-items:center;gap:20px}
+.gift{background:#E8742E;color:#fff;font-weight:800;font-size:30px;padding:10px 30px;border-radius:50px;letter-spacing:.06em}
+.course{font-size:28px;font-weight:800;color:#8E5A2B}
+.num{font-size:38px;font-weight:800;color:#4E8A3E;margin-top:30px;letter-spacing:.06em}
+h1{font-size:76px;font-weight:800;line-height:1.22;margin-top:6px}
+h1 span{color:#4E8A3E}
+.catch{font-size:32px;font-weight:800;margin-top:18px;color:#8E5A2B;line-height:1.5}
+.card{margin-top:30px;background:#fff;border:5px solid #3D2E22;border-radius:36px;padding:22px 42px}
+.row{display:flex;gap:22px;align-items:flex-start;padding:13px 0;border-bottom:3px dashed #E7D6C2}
+.row:last-child{border:none}
+.ck{flex:none;width:52px;height:52px;border-radius:14px;background:#4E8A3E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800}
+.row b{font-size:32px;font-weight:800;line-height:1.35;display:block}
+.row small{font-size:25px;font-weight:700;color:#7A6352;display:block;margin-top:4px}
+.end{position:absolute;left:80px;right:80px;bottom:105px;text-align:center;font-size:34px;font-weight:800;background:#3D2E22;color:#fff;border-radius:60px;padding:22px}
+.end span{color:#FFC86B}
+.pdf{position:absolute;top:270px;right:80px;width:150px;height:190px;background:#fff;border:5px solid #3D2E22;border-radius:14px;transform:rotate(8deg);box-shadow:10px 10px 0 #E7D6C2}
+.pdf::before{content:"PDF";position:absolute;top:22px;left:-14px;background:#E8742E;color:#fff;font-weight:800;font-size:30px;padding:4px 14px;border-radius:8px}
+.pdf i{position:absolute;left:24px;right:24px;height:9px;background:#E7D6C2;border-radius:5px}
+/* feedback */
+.chat{margin-top:28px;display:flex;flex-direction:column;gap:16px}
+.photo{align-self:flex-end;width:440px;background:#fff;border:5px solid #3D2E22;border-radius:30px 30px 6px 30px;padding:18px}
+.photo .img{height:150px;border-radius:16px;background:#F3E3CF;position:relative;overflow:hidden}
+.shelf{position:absolute;left:100px;right:100px;bottom:20px;top:20px;border:14px solid #C98A4B;border-bottom-width:16px}
+.shelf::after{content:"";position:absolute;left:0;right:0;top:50%;height:12px;background:#C98A4B;transform:translateY(-50%)}
+.photo p{font-size:24px;font-weight:800;margin-top:12px}
+.reply{align-self:flex-start;width:820px;background:#fff;border:5px solid #3D2E22;border-radius:30px 30px 30px 6px;padding:18px 34px 10px}
+.reply .who{font-size:24px;font-weight:800;color:#8E5A2B;margin-bottom:8px}
+.reply .row b{font-size:31px}
+.ck.o{background:#E8742E}
+.note{margin-top:22px;text-align:center;font-size:25px;font-weight:700;color:#7A6352}
+</style></head><body>
+
+<section class="page" id="b1">
+  <div class="plank t"></div>
+  <div class="in">
+    <div class="top"><div class="gift">🎁 今だけの購入特典</div></div>
+    <div class="num">特典 ①</div>
+    <h1>失敗しない<br><span>道具選び</span>＆<br>買い物リスト</h1>
+    <p class="catch">「何を買えばいいの？」で<br>手が止まるのは、今日で終わり。</p>
+    <div class="card">
+      <div class="row"><div class="ck">✓</div><div><b>ホームセンターでそのまま使える<br>チェックリスト</b></div></div>
+      <div class="row"><div class="ck">✓</div><div><b>店頭で迷わないコツ</b><small>反りのない木材の見分け方・ネジの長さの決め方</small></div></div>
+      <div class="row"><div class="ck">✓</div><div><b>予算別おすすめ道具セット</b><small>5,000円 ／ 10,000円 ／ 20,000円</small></div></div>
+    </div>
+  </div>
+  <div class="pdf"><i style="top:80px"></i><i style="top:104px"></i><i style="top:128px;right:50px"></i><i style="top:152px"></i></div>
+  <div class="end">ムダな買い物ゼロで、<span>今週末から</span>作り始められる</div>
+  <div class="plank b"></div>
+</section>
+
+<section class="page" id="b2">
+  <div class="plank t"></div>
+  <div class="in">
+    <div class="top"><div class="gift">🎁 今だけの購入特典</div></div>
+    <div class="num">特典 ②</div>
+    <h1>完成作品の<br><span>個別フィードバック</span></h1>
+    <p class="catch">あなたの作品を、講師が直接見てアドバイス</p>
+    <div class="chat">
+      <div class="photo"><div class="img"><div class="shelf"></div></div><p>📷 初めての棚、できました！</p></div>
+      <div class="reply">
+        <div class="who">講師より</div>
+        <div class="row"><div class="ck">✓</div><div><b>うまくできているところ</b></div></div>
+        <div class="row"><div class="ck o">✓</div><div><b>次に直すともっと良くなるところ</b></div></div>
+      </div>
+    </div>
+    <p class="note">※購入日から30日以内に提出された作品が対象（1回）</p>
+  </div>
+  <div class="end">「これで合ってる？」の不安が消えて、<span>2作目が変わる</span></div>
+  <div class="plank b"></div>
+</section>
+</body></html>

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--wood:#C98A4B;--wood-d:#8E5A2B;--ink:#3D2E22;--green:#4E8A3E;--green-l:#E6F1DF;--cream:#FFF8EE;--line:#E7D6C2;--orange:#E8742E}
+body{font-family:"M PLUS Rounded 1c","IPAGothic",sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;padding:16mm 15mm 14mm;position:relative;overflow:hidden;page-break-after:always;background:#fff}
+.page:last-child{page-break-after:auto}
+.foot{position:absolute;bottom:8mm;left:15mm;right:15mm;display:flex;justify-content:space-between;font-size:8.5pt;color:#A08A75;border-top:1px solid var(--line);padding-top:2.5mm}
+h2{font-size:21pt;font-weight:800;display:flex;align-items:center;gap:3mm;margin-bottom:2mm}
+h2 .no{background:var(--wood);color:#fff;font-size:11pt;border-radius:20px;padding:1mm 4mm}
+.sub{font-size:10.5pt;color:#7A6352;margin-bottom:6mm;font-weight:700}
+h3{font-size:13pt;font-weight:800;margin:4mm 0 2mm;padding-left:3mm;border-left:5px solid var(--wood)}
+p,li,td,th{font-size:10pt;line-height:1.65;font-weight:500}
+b{font-weight:800}
+
+/* cover */
+.cover{background:var(--cream);padding:0}
+.cover .plank{position:absolute;left:0;right:0;height:26mm;background:repeating-linear-gradient(90deg,#D49A5C 0 2px,#C98A4B 2px 40px,#CF9455 40px 42px,#C78748 42px 90px);}
+.cover .plank.t{top:0}.cover .plank.b{bottom:0}
+.cover .in{position:absolute;top:58mm;left:18mm;right:18mm}
+.badge{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:13pt;padding:2mm 6mm;border-radius:30px;letter-spacing:.08em}
+.course{font-size:15pt;font-weight:800;color:var(--wood-d);margin-top:8mm}
+.cover h1{font-size:40pt;font-weight:800;line-height:1.25;margin-top:3mm}
+.cover h1 span{color:var(--green)}
+.cover .lead{font-size:13pt;font-weight:700;margin-top:8mm;line-height:1.8;color:#5C4635}
+.toc{margin-top:12mm;background:#fff;border:2.5px solid var(--ink);border-radius:5mm;padding:6mm 8mm}
+.toc div{display:flex;justify-content:space-between;font-size:12pt;font-weight:700;padding:2mm 0;border-bottom:1.5px dashed var(--line)}
+.toc div:last-child{border:none}
+.toc em{font-style:normal;color:var(--wood-d)}
+.tools-ill{position:absolute;right:18mm;bottom:36mm}
+
+/* tables */
+table{width:100%;border-collapse:collapse}
+th{background:var(--ink);color:#fff;font-weight:700;padding:2mm 3mm;text-align:left;font-size:9.5pt}
+td{border-bottom:1px solid var(--line);padding:1.05mm 3mm;vertical-align:top;line-height:1.45}
+tr.st td{background:#F7EDE1;font-weight:800;color:var(--wood-d);font-size:9.8pt;padding:0.9mm 3mm}
+.m{white-space:nowrap;display:inline-block;font-size:8pt;font-weight:800;border-radius:3mm;padding:0 2.2mm;margin-right:1mm}
+.m.must{background:var(--orange);color:#fff}
+.m.nice{background:var(--green-l);color:var(--green)}
+
+/* checklist */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+.box{border:2px solid var(--line);border-radius:4mm;padding:4mm 5mm}
+.box h4{font-size:11.5pt;font-weight:800;margin-bottom:2mm;display:flex;align-items:center;gap:2mm}
+.ck{list-style:none}
+.ck li{display:flex;gap:2.5mm;align-items:flex-start;padding:1.1mm 0;border-bottom:1px dotted var(--line);font-size:9.6pt}
+.ck li:last-child{border:none}
+.ck li::before{content:"";flex:none;width:4mm;height:4mm;border:1.8px solid var(--ink);border-radius:1mm;margin-top:1mm}
+.ck small{display:block;color:#8A735F;font-size:8.3pt;line-height:1.4}
+.memo{margin-top:5mm;border:2px dashed var(--wood);border-radius:4mm;padding:4mm 5mm}
+.memo h4{font-size:11pt;font-weight:800;color:var(--wood-d)}
+.memo .ln{height:7.5mm;border-bottom:1px solid var(--line)}
+
+/* tips */
+.tip{display:flex;gap:4mm;margin-bottom:2mm}.tip div{line-height:1.5}
+.tip .n{flex:none;width:8mm;height:8mm;border-radius:50%;background:var(--green);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:10pt}
+.tip b{display:block;font-size:10.5pt}
+.callout{background:var(--green-l);border-radius:4mm;padding:2.5mm 5mm;margin-top:2mm}
+.callout.o{background:#FDEBDD}
+.formula{text-align:center;font-size:14pt;font-weight:800;background:var(--cream);border:2px solid var(--wood);border-radius:4mm;padding:2.5mm;margin:1mm 0 2.5mm}
+.formula span{color:var(--orange)}
+
+/* budget */
+.plan{border:2.5px solid var(--ink);border-radius:5mm;margin-bottom:5mm;overflow:hidden}
+.plan .hd{display:flex;align-items:center;justify-content:space-between;padding:3mm 5mm;color:#fff}
+.plan .hd b{font-size:15pt}
+.plan .hd span{font-size:10pt;font-weight:700}
+.plan .bd{display:grid;grid-template-columns:1.25fr 1fr;gap:4mm;padding:3.5mm 5mm}
+.plan td{padding:1.2mm 2mm;font-size:9.4pt}
+.plan td:last-child{text-align:right;white-space:nowrap}
+.plan tr.sum td{border:none;font-weight:800;border-top:2px solid var(--ink)}
+.plan .who{font-size:9.4pt;line-height:1.6}
+.plan .who>b:first-child{display:block;font-size:10pt;margin-bottom:1mm}
+.p1 .hd{background:var(--green)}.p2 .hd{background:var(--wood)}.p3 .hd{background:var(--ink)}
+.note{font-size:8.5pt;color:#8A735F;line-height:1.6}
+.list td{font-size:9.3pt;padding:0.9mm 2.5mm}.list tr.st td{padding:0.7mm 2.5mm}</style></head><body>
+
+<!-- 1 cover -->
+<section class="page cover">
+  <div class="plank t"></div>
+  <div class="in">
+    <div class="badge">購入者特典 ①</div>
+    <div class="course">週末DIY ５ステップ講座</div>
+    <h1>失敗しない<br><span>道具選び</span>＆<br>買い物リスト</h1>
+    <p class="lead">「何を買えばいいの？」で手が止まるのは、今日で終わり。<br>このPDFを持って、ホームセンターへ行きましょう。</p>
+    <div class="toc">
+      <div>5ステップ別　道具・材料一覧<em>p.2</em></div>
+      <div>ホームセンター用　買い物チェックリスト<em>p.3</em></div>
+      <div>店頭で迷わないコツ（木材・ネジ）<em>p.4</em></div>
+      <div>予算別おすすめ道具セット<em>p.5</em></div>
+    </div>
+  </div>
+  <div class="plank b"></div>
+</section>
+
+<!-- 2 list -->
+<section class="page">
+  <h2><span class="no">PART 1</span>5ステップ別　道具・材料一覧</h2>
+  <p class="sub"><span class="m must">最低限</span>これがないと進めない　／　<span class="m nice">あると便利</span>作業がラク・きれいになる</p>
+  <table class="list">
+    <tr><th style="width:29%">道具・材料</th><th style="width:15%">区分</th><th>選び方・ひとこと</th></tr>
+    <tr class="st"><td colspan="3">STEP 1　計画・採寸</td></tr>
+    <tr><td>メジャー（コンベックス）</td><td><span class="m must">最低限</span></td><td>幅19mm・長さ5.5mが扱いやすい。ロック付きを選ぶ</td></tr>
+    <tr><td>さしがね（曲尺）</td><td><span class="m must">最低限</span></td><td>直角の線を引くのに必須。30cm程度でOK</td></tr>
+    <tr><td>鉛筆・消しゴム</td><td><span class="m must">最低限</span></td><td>ボールペンは塗装で浮いてくるので鉛筆を使う</td></tr>
+    <tr><td>方眼ノート</td><td><span class="m nice">あると便利</span></td><td>設計図と木取り図をかいておくと、買い忘れを防げる</td></tr>
+    <tr class="st"><td colspan="3">STEP 2　木材カット</td></tr>
+    <tr><td>のこぎり（替刃式）</td><td><span class="m must">最低限</span></td><td>刃渡り250mm前後。切れなくなったら刃だけ交換できる</td></tr>
+    <tr><td>クランプ ×2本</td><td><span class="m must">最低限</span></td><td>材料を固定する「もう一本の手」。F型が万能</td></tr>
+    <tr><td>ソーガイド</td><td><span class="m nice">あると便利</span></td><td>のこぎりを当てるだけで、まっすぐ・直角に切れる</td></tr>
+    <tr><td>ジグソー／丸ノコ</td><td><span class="m nice">あると便利</span></td><td>2作目以降で検討。最初はお店のカットサービスで十分</td></tr>
+    <tr class="st"><td colspan="3">STEP 3　下穴あけ</td></tr>
+    <tr><td>充電式ドリルドライバー</td><td><span class="m must">最低限</span></td><td>穴あけとネジ締めの両方ができる。10.8V以上が目安</td></tr>
+    <tr><td>下穴用ドリルビット</td><td><span class="m must">最低限</span></td><td>2.5mm〜3mm。ネジの太さに合わせて選ぶ（p.4参照）</td></tr>
+    <tr><td>皿取り錐（さらとりきり）</td><td><span class="m nice">あると便利</span></td><td>ネジ頭が沈み、表面がフラットに仕上がる</td></tr>
+    <tr class="st"><td colspan="3">STEP 4　組み立て</td></tr>
+    <tr><td>プラスビット（#2）</td><td><span class="m must">最低限</span></td><td>ドライバーに付属していることが多い。なめにくいものを</td></tr>
+    <tr><td>木工用ボンド</td><td><span class="m must">最低限</span></td><td>ネジ＋ボンドで強度が大きく上がる。速乾タイプが便利</td></tr>
+    <tr><td>コーススレッド（木ネジ）</td><td><span class="m must">最低限</span></td><td>長さは板の厚みで決める（p.4）。細めの「スリム」が割れにくい</td></tr>
+    <tr><td>インパクトドライバー</td><td><span class="m nice">あると便利</span></td><td>長いネジもラクに締まる。2x材を使うなら欲しい</td></tr>
+    <tr class="st"><td colspan="3">STEP 5　塗装・仕上げ</td></tr>
+    <tr><td>紙やすり（#120・#240）</td><td><span class="m must">最低限</span></td><td>#120で角を落とし、#240で表面を整える</td></tr>
+    <tr><td>水性塗料（ステイン／オイル）</td><td><span class="m must">最低限</span></td><td>水性なら室内でも扱いやすく、筆も水で洗える</td></tr>
+    <tr><td>刷毛・ウエス・マステ</td><td><span class="m must">最低限</span></td><td>ウエス（古布）は拭き取り用、マステは塗り分けに</td></tr>
+    <tr><td>電動サンダー</td><td><span class="m nice">あると便利</span></td><td>広い面のやすりがけが一気に終わる</td></tr>
+    <tr class="st"><td colspan="3">全ステップ共通（安全）</td></tr>
+    <tr><td>保護メガネ・防じんマスク</td><td><span class="m must">最低限</span></td><td>切りくず・粉じんから目と喉を守る</td></tr>
+    <tr><td>作業マット／ブルーシート</td><td><span class="m nice">あると便利</span></td><td>床や床材を傷・塗料から守る</td></tr>
+  </table>
+  <div class="foot"><span>週末DIY ５ステップ講座　購入者特典①</span><span>2</span></div>
+</section>
+
+<!-- 3 checklist -->
+<section class="page">
+  <h2><span class="no">PART 2</span>買い物チェックリスト</h2>
+  <p class="sub">スマホで開くか印刷して、売り場でチェックしながら回りましょう。</p>
+  <div class="cols">
+    <div class="box">
+      <h4>🧰 工具売り場</h4>
+      <ul class="ck">
+        <li><div>メジャー（5.5m）</div></li>
+        <li><div>さしがね</div></li>
+        <li><div>のこぎり（替刃式）<small>お店でカットするなら後回しでOK</small></div></li>
+        <li><div>クランプ ×2本</div></li>
+        <li><div>充電式ドリルドライバー</div></li>
+        <li><div>下穴用ビット（2.5〜3mm）</div></li>
+        <li><div>プラスビット #2<small>本体付属なら不要</small></div></li>
+        <li><div>保護メガネ・防じんマスク</div></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>🪵 木材売り場</h4>
+      <ul class="ck">
+        <li><div>木材　種類：＿＿＿＿　本数：＿＿<small>反り・割れがないか確認（p.4）</small></div></li>
+        <li><div>木材　種類：＿＿＿＿　本数：＿＿</div></li>
+        <li><div>予備の木材 1本<small>切り間違いの保険に</small></div></li>
+        <li><div>カットサービスの申込み<small>寸法を書いた木取り図を持参</small></div></li>
+      </ul>
+      <h4 style="margin-top:4mm">🔩 金物売り場</h4>
+      <ul class="ck">
+        <li><div>コーススレッド　長さ：＿＿mm<small>必要本数＋2割多めに</small></div></li>
+        <li><div>木工用ボンド</div></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>🎨 塗料売り場</h4>
+      <ul class="ck">
+        <li><div>紙やすり #120・#240</div></li>
+        <li><div>水性塗料　色：＿＿＿＿</div></li>
+        <li><div>刷毛（30〜50mm幅）</div></li>
+        <li><div>ウエス・マスキングテープ</div></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>✅ レジに行く前に</h4>
+      <ul class="ck">
+        <li><div>木材が車に載る長さか？<small>軽トラ貸出・配送サービスも確認</small></div></li>
+        <li><div>ネジの長さは板の厚みに合っているか？</div></li>
+        <li><div>ビットの太さはネジに合っているか？</div></li>
+        <li><div>家にあるもの（ボンド・やすり等）を二重買いしていないか？</div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="memo">
+    <h4>📝 メモ（作るもの・寸法・予算）</h4>
+    <div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
+  </div>
+  <div class="foot"><span>週末DIY ５ステップ講座　購入者特典①</span><span>3</span></div>
+</section>
+
+<!-- 4 tips -->
+<section class="page">
+  <h2><span class="no">PART 3</span>店頭で迷わないコツ</h2>
+  <p class="sub">ここを押さえるだけで、「買ってから失敗に気づく」がなくなります。</p>
+
+  <h3>反りのない木材の見分け方</h3>
+  <div class="tip"><div class="n">1</div><div><b>木口（こぐち）からのぞく</b>板の端を目の高さに持ち、長い方向を見通します。弓なりに曲がっていたら反りあり。</div></div>
+  <div class="tip"><div class="n">2</div><div><b>平らな台に置いてみる</b>四隅を押してカタカタ動くものは「ねじれ」があります。売り場の床や台の上で確認を。</div></div>
+  <div class="tip"><div class="n">3</div><div><b>割れ・抜けそうな節をチェック</b>木口のひび割れや、黒く縁どられた節は避けます。ネジを打つ場所の近くは特に注意。</div></div>
+  <div class="tip"><div class="n">4</div><div><b>同じ種類なら、軽すぎず重すぎないもの</b>極端に重いものは水分が多く、乾くうちに反りやすい傾向があります。</div></div>
+  <div class="tip"><div class="n">5</div><div><b>木目がまっすぐ通ったものを選ぶ</b>木目が斜めに走る板は、加工後に曲がりやすくなります。</div></div>
+  <div class="callout"><b>💡 迷ったら「集成材」</b>　小さな木片を貼り合わせた集成材は反りが少なく、初心者の1作目に向いています。</div>
+
+  <h3>ネジの長さの決め方</h3>
+  <div class="formula">ネジの長さ ＝ 固定する板の厚み × <span>2.5〜3倍</span></div>
+  <table>
+    <tr><th>固定する板</th><th>厚み</th><th>ネジの長さの目安</th><th>下穴ビット</th></tr>
+    <tr><td>合板・集成材（薄）</td><td>12mm</td><td>30〜35mm</td><td>2.5mm</td></tr>
+    <tr><td>1x材（ワンバイ）</td><td>19mm</td><td>45〜50mm</td><td>2.5〜3mm</td></tr>
+    <tr><td>2x材（ツーバイ）</td><td>38mm</td><td>75〜90mm</td><td>3mm</td></tr>
+  </table>
+  <div class="callout o" style="margin-top:3mm"><b>⚠ 突き抜けチェック</b>　板の面同士を重ねて留めるときは、<b>2枚の合計の厚み −3mm 以内</b>に。<br>例：19mm＋19mm＝38mm → 35mm以下のネジを選ぶ。</div>
+  <div class="tip" style="margin-top:3mm"><div class="n">!</div><div><b>板の端から2cm以内に打つときは、必ず下穴を</b>下穴はネジの太さの6〜7割が目安。下穴なしだと、端から割れる原因になります。</div></div>
+
+  <h3>ほかにも知っておくと得すること</h3>
+  <p>・木材の<b>カットサービス</b>は1カット数十円程度から。木取り図を見せれば、まっすぐ正確に切ってもらえます。<br>
+  ・<b>工具の無料貸出</b>や<b>軽トラック貸出</b>をしているホームセンターもあります。サービスカウンターで確認を。<br>
+  ・<b>ネジは2割多め</b>に。打ち損じや紛失はよくあることです。</p>
+  <div class="foot"><span>週末DIY ５ステップ講座　購入者特典①</span><span>4</span></div>
+</section>
+
+<!-- 5 budget -->
+<section class="page">
+  <h2><span class="no">PART 4</span>予算別おすすめ道具セット</h2>
+  <p class="sub">いま持っている道具を引いて、自分に合うセットから始めましょう。</p>
+
+  <div class="plan p1">
+    <div class="hd"><b>5,000円セット</b><span>まずは1作目を作ってみたい人</span></div>
+    <div class="bd">
+      <table>
+        <tr><td>メジャー・さしがね・鉛筆</td><td>約1,500円</td></tr>
+        <tr><td>クランプ ×2</td><td>約1,000円</td></tr>
+        <tr><td>手回しドライバー＋キリ</td><td>約800円</td></tr>
+        <tr><td>紙やすり・ボンド・保護メガネ</td><td>約1,200円</td></tr>
+        <tr class="sum"><td>合計</td><td>約4,500円</td></tr>
+      </table>
+      <div class="who"><b>こんな人に</b>小物入れ・スツールなど小さめの作品から。<br>木材は<b>カットサービス</b>を使い、ドリルはお店の<b>無料貸出</b>を活用すれば、電動工具なしでも完成できます。</div>
+    </div>
+  </div>
+
+  <div class="plan p2">
+    <div class="hd"><b>10,000円セット</b><span>講座の5ステップをひと通りこなしたい人（おすすめ）</span></div>
+    <div class="bd">
+      <table>
+        <tr><td>充電式ドリルドライバー（10.8V）</td><td>約5,000円</td></tr>
+        <tr><td>下穴ビット・皿取り錐</td><td>約1,000円</td></tr>
+        <tr><td>メジャー・さしがね・鉛筆</td><td>約1,500円</td></tr>
+        <tr><td>F型クランプ ×2</td><td>約1,500円</td></tr>
+        <tr><td>紙やすり・ボンド・保護メガネ</td><td>約1,000円</td></tr>
+        <tr class="sum"><td>合計</td><td>約10,000円</td></tr>
+      </table>
+      <div class="who"><b>こんな人に</b>棚・ベンチ・プランターカバーなど、ネジを何十本も使う作品に。<br>ドリルドライバーがあるだけで、作業時間と仕上がりが大きく変わります。</div>
+    </div>
+  </div>
+
+  <div class="plan p3">
+    <div class="hd"><b>20,000円セット</b><span>DIYを長く続けたい人</span></div>
+    <div class="bd">
+      <table>
+        <tr><td>インパクトドライバー（エントリー機）</td><td>約9,000円</td></tr>
+        <tr><td>ソーガイド＋替刃式のこぎり</td><td>約3,500円</td></tr>
+        <tr><td>電動サンダー</td><td>約3,500円</td></tr>
+        <tr><td>F型クランプ ×2・ビット類</td><td>約2,500円</td></tr>
+        <tr><td>計測・安全・仕上げ用品</td><td>約1,500円</td></tr>
+        <tr class="sum"><td>合計</td><td>約20,000円</td></tr>
+      </table>
+      <div class="who"><b>こんな人に</b>2x材を使った家具や屋外作品に挑戦したい人。<br>自分で切れて、長いネジもラクに締まり、仕上げもきれい。2作目、3作目の幅が広がります。</div>
+    </div>
+  </div>
+  <p class="note">※ 価格は一般的なホームセンター・通販での目安です。店舗や時期により異なります。<br>※ 木材・ネジ・塗料などの材料費は、作る作品ごとに別途かかります。</p>
+  <div class="foot"><span>週末DIY ５ステップ講座　購入者特典①</span><span>5</span></div>
+</section>
+</body></html>
