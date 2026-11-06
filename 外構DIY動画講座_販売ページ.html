@@ -1,0 +1,514 @@
+<title>外構DIY 動画講座</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 施工図面のような一枚もの。コンクリートグレーの地に、水糸（蛍光ピンク）1本だけを強調色として通す */
+:root {
+  --bg: #eef0f1;          /* コンクリート */
+  --surface: #ffffff;
+  --ink: #1b2a3d;         /* ブランドの紺に寄せた墨色 */
+  --muted: #5b6876;
+  --line: #c9cfd5;
+  --string: #e0346b;      /* 水糸 */
+  --string-soft: #fbe3eb;
+  --gravel: #a9b1b9;
+  --concrete: #d7dbdf;
+  --earth: #b9a68c;
+  --ph-bg: #fff3c4;       /* 差し替え箇所 */
+  --ph-fg: #6b5200;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15191e; --surface: #1d232a; --ink: #e6eaee; --muted: #9aa6b2; --line: #333c46;
+    --string: #ff5c8d; --string-soft: #3a1f2a; --gravel: #59626c; --concrete: #3b434c; --earth: #6e604e;
+    --ph-bg: #3d3416; --ph-fg: #f2d67a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15191e; --surface: #1d232a; --ink: #e6eaee; --muted: #9aa6b2; --line: #333c46;
+  --string: #ff5c8d; --string-soft: #3a1f2a; --gravel: #59626c; --concrete: #3b434c; --earth: #6e604e;
+  --ph-bg: #3d3416; --ph-fg: #f2d67a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1040px; margin: 0 auto; }
+.narrow { max-width: 680px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.35; margin: 0; }
+h2 { font-size: clamp(1.5rem, 3.6vw, 2.1rem); font-weight: 900; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; }
+a { color: inherit; }
+.ph { background: var(--ph-bg); color: var(--ph-fg); padding: 0 .25em; border-radius: 3px; font-weight: 500; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* 見本の注意書き */
+.notice { font-size: .82rem; color: var(--muted); padding-block: 12px; border-bottom: 1px dashed var(--line); }
+
+/* 水糸ライン：見出しの下に張る */
+.string { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.string::before, .string::after { content: ""; width: 9px; height: 9px; border: 2px solid var(--string); border-radius: 50%; flex: none; }
+.string span { flex: 1; height: 2px; background: var(--string); }
+.label { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .12em; color: var(--string); font-weight: 500; }
+
+section { padding-block: clamp(56px, 9vw, 96px); }
+section + section { border-top: 1px solid var(--line); }
+.sec-head { display: grid; gap: 6px; margin-bottom: 36px; }
+
+/* ボタン */
+.btns { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem; text-decoration: none;
+  padding: 14px 26px; border-radius: 4px; border: 2px solid var(--ink); transition: transform .15s ease;
+}
+.btn.primary { background: var(--ink); color: var(--bg); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn:hover { transform: translateY(-2px); }
+.btn:focus-visible, summary:focus-visible { outline: 3px solid var(--string); outline-offset: 3px; }
+
+/* ヒーロー */
+.hero { padding-block: clamp(40px, 7vw, 80px) clamp(48px, 8vw, 88px); }
+.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(28px, 5vw, 56px); align-items: center; }
+.hero-grid > * { min-width: 0; }
+.hero h1 { font-size: clamp(2rem, 5.6vw, 3.4rem); font-weight: 900; letter-spacing: .01em; }
+.hero h1 em { font-style: normal; color: var(--string); }
+.hero .lead { margin-top: 22px; color: var(--muted); font-size: 1.02rem; }
+.hero .btns { margin-top: 30px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; padding: 0; list-style: none; }
+.tags li { font-size: .82rem; border: 1px solid var(--line); background: var(--surface); padding: 2px 10px; border-radius: 999px; }
+.section-fig { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 18px 10px; }
+.section-fig svg { width: 100%; height: auto; display: block; }
+.section-fig figcaption { font-size: .78rem; color: var(--muted); margin-top: 6px; }
+svg text { font-family: var(--font-mono); font-size: 12px; fill: var(--muted); }
+svg .t-strong { fill: var(--ink); font-weight: 500; }
+svg .t-string { fill: var(--string); font-weight: 500; }
+
+/* 悩み */
+.worries { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0; margin: 0; list-style: none; }
+.worries li { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 14px 16px 14px 44px; position: relative; min-width: 0; }
+.worries li::before { content: ""; position: absolute; left: 16px; top: 21px; width: 14px; height: 14px; border: 2px solid var(--muted); border-radius: 2px; }
+
+/* 原因 */
+.cause { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 56px); align-items: start; }
+.cause > * { min-width: 0; }
+.cause p + p { margin-top: 1em; }
+.checklist { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--ink); }
+.checklist li { display: grid; grid-template-columns: 5.5em 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.checklist .k { font-family: var(--font-display); font-weight: 900; color: var(--string); }
+
+/* 特徴 */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.features > div { min-width: 0; border-top: 2px solid var(--ink); padding-top: 16px; display: grid; gap: 10px; align-content: start; }
+.features .n { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+
+/* 講師 */
+.teacher { display: grid; grid-template-columns: 180px 1fr; gap: 32px; align-items: start; }
+.teacher > * { min-width: 0; }
+.avatar { aspect-ratio: 1; max-width: 100%; border: 1px dashed var(--line); border-radius: 4px; display: grid; place-items: center; text-align: center; font-size: .8rem; color: var(--muted); background: var(--surface); }
+.teacher blockquote { margin: 18px 0 0; padding-left: 16px; border-left: 2px solid var(--string); color: var(--muted); }
+
+/* カリキュラム */
+.curr-meta { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 20px; color: var(--muted); }
+.curr-meta b { color: var(--ink); font-family: var(--font-mono); font-size: 1.15rem; }
+.chapters { display: grid; gap: 10px; }
+details.ch { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+details.ch summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 3em 1fr auto; gap: 12px; align-items: baseline; padding: 14px 18px; }
+details.ch summary::-webkit-details-marker { display: none; }
+details.ch summary .no { font-family: var(--font-mono); color: var(--string); font-weight: 500; }
+details.ch summary .ttl { font-family: var(--font-display); font-weight: 700; min-width: 0; }
+details.ch summary .cnt { font-size: .82rem; color: var(--muted); white-space: nowrap; }
+details.ch summary .cnt::after { content: "＋"; margin-left: 10px; font-family: var(--font-mono); }
+details.ch[open] summary .cnt::after { content: "－"; }
+details.ch ol { margin: 0; padding: 0 18px 14px calc(18px + 3em + 12px); display: grid; gap: 4px; }
+details.ch li { padding-left: .2em; }
+.free { font-size: .72rem; color: var(--string); border: 1px solid var(--string); border-radius: 999px; padding: 0 8px; margin-left: 6px; white-space: nowrap; vertical-align: 2px; }
+
+/* 特典・対象 */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.two > * { min-width: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 22px; display: grid; gap: 12px; align-content: start; }
+.panel ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.panel.no { background: transparent; border-style: dashed; }
+.small { font-size: .85rem; color: var(--muted); }
+
+/* 声 */
+.voices { border: 1px dashed var(--line); border-radius: 4px; padding: 32px 20px; text-align: center; color: var(--muted); }
+
+/* 価格 */
+.price-box { background: var(--surface); border: 2px solid var(--ink); border-radius: 6px; padding: clamp(24px, 5vw, 44px); display: grid; gap: 18px; }
+.price { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.6rem, 8vw, 3.8rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.price small { font-size: 1rem; font-weight: 500; margin-left: .3em; color: var(--muted); }
+.price-box ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.price-box li { padding-left: 1.4em; position: relative; }
+.price-box li::before { content: ""; position: absolute; left: 0; top: .78em; width: .8em; height: 2px; background: var(--string); }
+.aside { background: var(--string-soft); border-radius: 4px; padding: 16px 18px; font-size: .92rem; }
+
+/* FAQ */
+.faq { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; padding: 16px 2.2em 16px 0; position: relative; font-weight: 700; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: "Q"; font-family: var(--font-mono); color: var(--string); margin-right: .8em; }
+.faq summary::after { content: "＋"; position: absolute; right: 4px; top: 16px; font-family: var(--font-mono); color: var(--muted); }
+.faq details[open] summary::after { content: "－"; }
+.faq .a { padding: 0 0 18px 1.8em; color: var(--muted); }
+
+/* 最後 */
+.closing { text-align: left; display: grid; gap: 18px; }
+footer { border-top: 1px solid var(--line); padding-block: 28px 40px; font-size: .82rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 24px; }
+
+@media (max-width: 760px) {
+  .hero-grid, .cause, .two, .teacher { grid-template-columns: 1fr; }
+  .features { grid-template-columns: 1fr; }
+  .worries { grid-template-columns: 1fr; }
+  .teacher .avatar { width: 120px; }
+  details.ch ol { padding-left: 18px; padding-left: calc(18px + 1.2em); }
+  .btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+</style>
+
+<div class="wrap">
+  <p class="notice">販売ページの見本です。<span class="ph">【 】</span>の部分はご自身の情報に差し替えてください。</p>
+</div>
+
+<!-- ヒーロー -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="label">GAIKOU DIY / VIDEO COURSE</p>
+      <h1>DIYの失敗は、<br>腕より<em>「段取り」</em>で<br>決まる。</h1>
+      <div class="string" aria-hidden="true"><span></span></div>
+      <p class="lead">土間コンクリート・ブロック積み・砂利敷き・防草シート・ウッドデッキ基礎。施工管理の現場で使っている「段取り」と「チェックの目」を、DIY向けにまとめた動画講座です。</p>
+      <div class="btns">
+        <a class="btn primary" href="#curriculum">講座の内容を見る</a>
+        <a class="btn ghost" href="#curriculum">無料プレビューを見る</a>
+      </div>
+      <ul class="tags">
+        <li>全24レッスン</li><li>約4時間</li><li>買い切り</li><li>スマホで視聴可</li>
+      </ul>
+    </div>
+
+    <figure class="section-fig" style="margin:0">
+      <svg viewBox="0 0 520 330" role="img" aria-labelledby="figT">
+        <title id="figT">土間コンクリートの断面図。建物から離れる方向に水勾配をとり、コンクリート、ワイヤーメッシュ、砕石路盤の順に重なる</title>
+        <!-- 建物 -->
+        <rect x="20" y="40" width="44" height="250" fill="var(--line)"/>
+        <text x="42" y="30" text-anchor="middle" class="t-strong">建物</text>
+        <!-- 地盤 -->
+        <polygon points="64,206 470,214 470,290 64,290" fill="var(--earth)" opacity=".55"/>
+        <!-- 砕石 -->
+        <polygon points="64,166 470,174 470,214 64,206" fill="var(--gravel)"/>
+        <g fill="var(--bg)" opacity=".7">
+          <circle cx="100" cy="186" r="3"/><circle cx="140" cy="194" r="2.5"/><circle cx="180" cy="184" r="3"/><circle cx="220" cy="196" r="2.5"/>
+          <circle cx="260" cy="188" r="3"/><circle cx="300" cy="198" r="2.5"/><circle cx="340" cy="190" r="3"/><circle cx="380" cy="200" r="2.5"/><circle cx="420" cy="192" r="3"/>
+        </g>
+        <!-- コンクリート -->
+        <polygon points="64,118 470,126 470,174 64,166" fill="var(--concrete)" stroke="var(--ink)" stroke-width="1.5"/>
+        <!-- メッシュ -->
+        <line x1="72" y1="146" x2="462" y2="154" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <!-- 水糸と勾配 -->
+        <line x1="64" y1="100" x2="470" y2="108" stroke="var(--string)" stroke-width="2"/>
+        <circle cx="64" cy="100" r="4" fill="none" stroke="var(--string)" stroke-width="2"/>
+        <circle cx="470" cy="108" r="4" fill="none" stroke="var(--string)" stroke-width="2"/>
+        <path d="M300 82 L360 83.2" stroke="var(--string)" stroke-width="2" fill="none"/>
+        <path d="M352 78 L362 83.3 L352 88.4" stroke="var(--string)" stroke-width="2" fill="none"/>
+        <text x="140" y="88" class="t-string">水勾配 1〜2%（目安）</text>
+        <!-- 寸法 -->
+        <g stroke="var(--muted)" stroke-width="1">
+          <line x1="486" y1="126" x2="486" y2="174"/><line x1="480" y1="126" x2="492" y2="126"/><line x1="480" y1="174" x2="492" y2="174"/>
+          <line x1="486" y1="174" x2="486" y2="214"/><line x1="480" y1="214" x2="492" y2="214"/>
+        </g>
+        <!-- 引出し -->
+        <text x="80" y="242" class="t-strong">コンクリート</text>
+        <line x1="150" y1="236" x2="170" y2="150" stroke="var(--muted)"/>
+        <text x="190" y="242">メッシュ＋スペーサー</text>
+        <line x1="240" y1="230" x2="250" y2="152" stroke="var(--muted)"/>
+        <text x="80" y="268">砕石路盤（転圧）</text>
+        <text x="80" y="312">建物から離れる方向へ水を流す</text>
+      </svg>
+      <figcaption>3章「土間コンクリート」で扱う断面の考え方。厚みは現場条件で変わります。</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+  <!-- 悩み -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">CHECK</p>
+        <h2>こんなことで迷っていませんか？</h2>
+      </div>
+      <ul class="worries">
+        <li>動画を見ながらやってみたけれど、なぜか水たまりができた</li>
+        <li>防草シートを敷いたのに、1年で雑草が出てきた</li>
+        <li>砂利やコンクリートを何袋買えばいいか、毎回わからない</li>
+        <li>生コンを頼むか、自分で練るか決められない</li>
+        <li>どこまで自分でやってよくて、どこから業者に頼むべきか分からない</li>
+        <li>業者の見積もりが高いのか安いのか判断できない</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 原因 -->
+  <section>
+    <div class="wrap cause">
+      <div>
+        <div class="sec-head">
+          <p class="label">CAUSE</p>
+          <h2>DIYの失敗の多くは、作業の前に決まっています</h2>
+          <div class="string" aria-hidden="true"><span></span></div>
+        </div>
+        <p>外構DIYでよくあるのが、ひび割れ、水たまり、傾いたブロック、すぐ生える雑草です。原因をたどると、コテの使い方やブロックの積み方よりも前に行き着くことがよくあります。</p>
+        <p>プロの現場では、作業を始める前に「高さ・勾配・数量・工程・安全」を必ず決めます。この講座では、その段取りの部分から順番にお伝えします。</p>
+      </div>
+      <ul class="checklist">
+        <li><span class="k">高さ</span><span>仕上がりの高さを決めないまま掘り始めた</span></li>
+        <li><span class="k">勾配</span><span>水がどこへ流れるかを考えていなかった</span></li>
+        <li><span class="k">路盤</span><span>転圧が足りなかった</span></li>
+        <li><span class="k">数量</span><span>材料が途中で足りなくなり、作業が中断した</span></li>
+        <li><span class="k">工程</span><span>天気と気温を見ずに打設日を決めた</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 特徴 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">FEATURES</p>
+        <h2>この講座の3つの特徴</h2>
+      </div>
+      <div class="features">
+        <div>
+          <p class="n">01</p>
+          <h3>作業のコツより「段取り」から教えます</h3>
+          <p>現場調査、採寸、高さと水勾配の決め方、数量計算、工程の組み方。作業に入る前の準備に1章を使います。ここができていれば、手順の多くはその流れで決まっていきます。</p>
+        </div>
+        <div>
+          <p class="n">02</p>
+          <h3>「できたかどうか」を自分で確かめられます</h3>
+          <p>現場監督が完成検査で見ている高さ・勾配・通り・ひび・排水のポイントを、DIY向けのチェックリストにしました。作り終えたあとに、自分で品質を確かめられます。</p>
+        </div>
+        <div>
+          <p class="n">03</p>
+          <h3>「やらないほうがいいこと」もはっきり伝えます</h3>
+          <p>高いブロック塀、擁壁、排水の切り替え、電気工事など、DIYで手を出すと危険だったり法令に関わったりする工事があります。どこから業者に頼むべきか、その判断基準もお伝えします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 講師 -->
+  <section>
+    <div class="wrap teacher">
+      <div class="avatar"><span><span class="ph">【講師の写真】</span><br>現場での写真がおすすめ</span></div>
+      <div>
+        <p class="label">INSTRUCTOR</p>
+        <h2 style="margin-top:6px"><span class="ph">【現場監督〇〇】</span></h2>
+        <p style="margin-top:14px"><span class="ph">【〇〇】</span>施工管理技士。<span class="ph">【土木・外構】</span>の現場で<span class="ph">【〇〇年】</span>、工程・品質・安全・見積もりの管理を担当。</p>
+        <blockquote>職人さんの技術は一朝一夕では身につきません。ただ、失敗しないための段取りは誰でも覚えられます。現場で毎日やっていることを、DIYをする方にもお伝えしたくてこの講座を作りました。</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- カリキュラム -->
+  <section id="curriculum">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">CURRICULUM</p>
+        <h2>カリキュラム</h2>
+      </div>
+      <div class="curr-meta">
+        <span><b>8</b> 章</span><span><b>24</b> レッスン</span><span>約 <b>4</b> 時間</span><span><span class="free" style="margin:0">無料</span> のレッスンは購入前に見られます</span>
+      </div>
+      <div class="chapters">
+        <details class="ch" open>
+          <summary><span class="no">00</span><span class="ttl">はじめに</span><span class="cnt">2レッスン</span></summary>
+          <ol>
+            <li>この講座で作れるもの・学べること<span class="free">無料</span></li>
+            <li>DIYでやっていい範囲・業者に頼むべき範囲<span class="free">無料</span></li>
+          </ol>
+        </details>
+        <details class="ch" open>
+          <summary><span class="no">01</span><span class="ttl">段取り — ここがいちばん大事</span><span class="cnt">4レッスン</span></summary>
+          <ol>
+            <li>現場調査と採寸（高低差・雨水の流れ・埋設物・境界）</li>
+            <li>高さと水勾配の決め方<span class="free">無料</span></li>
+            <li>数量計算と材料・道具の手配</li>
+            <li>工程表と天気の読み方・安全対策</li>
+          </ol>
+        </details>
+        <details class="ch">
+          <summary><span class="no">02</span><span class="ttl">砂利敷き・防草シート</span><span class="cnt">3レッスン</span></summary>
+          <ol>
+            <li>整地と転圧</li>
+            <li>防草シートの張り方（重ね代・ピン・建物際の処理）</li>
+            <li>砂利の敷き方とよくある失敗</li>
+          </ol>
+        </details>
+        <details class="ch">
+          <summary><span class="no">03</span><span class="ttl">土間コンクリート</span><span class="cnt">6レッスン</span></summary>
+          <ol>
+            <li>掘削と路盤づくり</li>
+            <li>型枠と水勾配</li>
+            <li>ワイヤーメッシュとスペーサー</li>
+            <li>生コン手配か手練りかの判断<span class="free">無料</span></li>
+            <li>打設と金ゴテ仕上げ</li>
+            <li>養生と失敗例（ひび割れ・水たまりの原因）</li>
+          </ol>
+        </details>
+        <details class="ch">
+          <summary><span class="no">04</span><span class="ttl">ブロック積み（花壇・土留め程度）</span><span class="cnt">4レッスン</span></summary>
+          <ol>
+            <li>基礎と根入れ</li>
+            <li>水糸と1段目の据え付け</li>
+            <li>積み方・目地・天端の仕上げ</li>
+            <li>やってはいけないブロック塀</li>
+          </ol>
+        </details>
+        <details class="ch">
+          <summary><span class="no">05</span><span class="ttl">ウッドデッキ基礎</span><span class="cnt">2レッスン</span></summary>
+          <ol>
+            <li>束石の配置と水平出し</li>
+            <li>束柱・大引きまでの段取り</li>
+          </ol>
+        </details>
+        <details class="ch">
+          <summary><span class="no">06</span><span class="ttl">仕上げ・品質チェック</span><span class="cnt">2レッスン</span></summary>
+          <ol>
+            <li>自主検査チェックリスト</li>
+            <li>写真記録とメンテナンス</li>
+          </ol>
+        </details>
+        <details class="ch">
+          <summary><span class="no">07</span><span class="ttl">業者に頼むとき</span><span class="cnt">1レッスン</span></summary>
+          <ol>
+            <li>見積書の見方と業者の選び方<span class="free">無料</span></li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 特典・対象 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">BONUS &amp; FOR YOU</p>
+        <h2>受講特典と、この講座が向いている方</h2>
+      </div>
+      <div class="two">
+        <div class="panel">
+          <h3>受講特典<span class="ph" style="font-size:.8rem;margin-left:.5em">案</span></h3>
+          <ul>
+            <li>自主検査チェックリスト（PDF）</li>
+            <li>施工別の材料・道具リスト（PDF）</li>
+            <li>工程表テンプレート</li>
+            <li><span class="ph">【数量計算シート（別売 980円）の割引クーポン】</span></li>
+          </ul>
+          <p class="small">特典は実際に用意できるものだけを残してください。</p>
+        </div>
+        <div class="panel">
+          <h3>向いている方</h3>
+          <ul>
+            <li>庭・駐車場まわりを自分で整えたい方</li>
+            <li>一度DIYで失敗して、原因を知りたい方</li>
+            <li>業者に頼む前に、工事の流れと相場感をつかんでおきたい方</li>
+            <li>工具の扱いには少し慣れていて、次は外構に挑戦したい方</li>
+          </ul>
+        </div>
+        <div class="panel no" style="grid-column:1/-1">
+          <h3>向いていない方</h3>
+          <ul>
+            <li>高さのあるブロック塀や擁壁を自分で作りたい方（安全上・法令上の理由から、この講座では扱いません）</li>
+            <li>動画を見るだけで作業はしない予定の方</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 声 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">VOICE</p>
+        <h2>受講者の声</h2>
+      </div>
+      <div class="voices"><span class="ph">【発売後、実際にいただいた感想を本人の許可を得て掲載】</span></div>
+    </div>
+  </section>
+
+  <!-- 価格 -->
+  <section id="price">
+    <div class="wrap narrow">
+      <div class="sec-head">
+        <p class="label">PRICE</p>
+        <h2>価格</h2>
+      </div>
+      <div class="price-box">
+        <p><b>外構DIY 動画講座</b>（全24レッスン・約4時間）</p>
+        <p class="price">¥19,800<small>税込</small></p>
+        <ul>
+          <li>買い切り。期限なしで何度でも見られます</li>
+          <li>スマホ・タブレット・PCで視聴できます</li>
+          <li><span class="ph">【質問対応：購入から〇日間、〇〇で受付】</span></li>
+        </ul>
+        <a class="btn primary" href="#price">講座を購入する</a>
+        <p class="small"><span class="ph">【ボタンのリンク先に決済ページのURLを設定】</span></p>
+        <p class="aside">業者に土間コンクリートを頼むと、広さによっては数十万円かかることもあります。段取りを覚えて自分でやるか、内容を理解したうえで業者に頼むか。どちらを選んでも、この講座の知識が役に立ちます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap narrow">
+      <div class="sec-head">
+        <p class="label">FAQ</p>
+        <h2>よくある質問</h2>
+      </div>
+      <div class="faq">
+        <details><summary>DIYはほぼ初めてです。ついていけますか？</summary><p class="a">道具の名前や使い方から説明しています。ただし土間コンクリートは作業量が多く時間との勝負なので、まず砂利敷き・防草シートから始めることをおすすめします。</p></details>
+        <details><summary>必要な道具はどれくらいかかりますか？</summary><p class="a">施工内容によって変わります。転圧機やミキサーのように使う回数が少ないものは、レンタルで済ませる判断基準もお伝えしています。</p></details>
+        <details><summary>一人で作業できますか？</summary><p class="a">砂利敷き・防草シート・小さなブロック花壇は一人でもできます。土間コンクリートの打設は、短い時間で作業を終える必要があるため、2人以上をおすすめします。</p></details>
+        <details><summary>寒い時期・暑い時期でも施工できますか？</summary><p class="a">コンクリートやモルタルは気温の影響を受けます。避けるべき条件と、どうしても施工するときの注意点を3章で説明しています。</p></details>
+        <details><summary>自分の家の場合はどうすればいいか相談できますか？</summary><p class="a">写真を送っていただき30分でアドバイスする「外構プラン オンライン相談」を別途ご用意しています。<span class="ph">【リンク】</span></p></details>
+        <details><summary>返金はできますか？</summary><p class="a"><span class="ph">【返金ポリシーを記載】</span></p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 最後 -->
+  <section>
+    <div class="wrap narrow closing">
+      <p class="label">LAST</p>
+      <h2>失敗しない段取りを、<br>現場監督と一緒に。</h2>
+      <div class="string" aria-hidden="true"><span></span></div>
+      <p>外構は、一度作ると何年も毎日目にする場所です。だからこそ、勢いで始めずに段取りから整えてほしいと思っています。</p>
+      <div class="btns"><a class="btn primary" href="#price">講座を購入する — ¥19,800（税込）</a></div>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer>
+    <span><span class="ph">【現場監督〇〇】</span></span>
+    <span><span class="ph">【特定商取引法に基づく表記】</span></span>
+    <span><span class="ph">【プライバシーポリシー】</span></span>
+    <span><span class="ph">【お問い合わせ】</span></span>
+  </footer>
+</div>
