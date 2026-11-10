@@ -1,0 +1,636 @@
+<title>うちの庭プラン</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="写真3枚と13の質問で、あなたの庭専用のウッドデッキプランが届きます。DIYでも業者依頼でも使えるプランです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a sales letter in one reading column, opened by a top-view deck drawing (a real plan sheet) beside the headline; wider bands for types and pricing. */
+:root {
+  --bg: #F2F4EF;
+  --surface: #FFFFFF;
+  --ink: #1A231F;
+  --muted: #56635B;
+  --line: #D3DBD3;
+  --accent: #2E5B45;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E1EBE3;
+  --wood: #B06D33;
+  --wood-soft: #F3E6D8;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111714; --surface: #19211D; --ink: #E4EBE6; --muted: #9AA8A0; --line: #2D3933;
+    --accent: #84BC98; --accent-ink: #0E1611; --accent-soft: #1F2E26;
+    --wood: #D99A5E; --wood-soft: #2E241B; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111714; --surface: #19211D; --ink: #E4EBE6; --muted: #9AA8A0; --line: #2D3933;
+  --accent: #84BC98; --accent-ink: #0E1611; --accent-soft: #1F2E26;
+  --wood: #D99A5E; --wood-soft: #2E241B; color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.letter { max-width: 680px; margin: 0 auto; }
+section { padding-block: 72px; }
+section + section { border-top: 1px solid var(--line); }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.45;
+  text-wrap: balance;
+  word-break: auto-phrase;
+  margin: 0;
+}
+h1 { font-size: clamp(30px, 5.2vw, 48px); font-weight: 900; letter-spacing: 0.01em; }
+h2 { font-size: clamp(24px, 3.6vw, 32px); font-weight: 900; }
+h3 { font-size: 19px; font-weight: 700; }
+p { margin: 0; }
+.stack { display: flex; flex-direction: column; gap: 20px; }
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.lead { font-size: 18px; color: var(--muted); }
+mark {
+  background: linear-gradient(transparent 62%, var(--wood-soft) 62%);
+  color: inherit;
+  font-weight: 700;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 56px; padding: 0 28px;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: var(--font-display); font-weight: 700; font-size: 17px;
+  border-radius: 6px; text-decoration: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 60%, #000);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:focus-visible { outline: 3px solid var(--wood); outline-offset: 3px; }
+.btn-note { font-size: 13px; color: var(--muted); }
+
+/* Hero */
+.hero { padding-block: 56px 72px; }
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 48px;
+  align-items: center;
+}
+.hero-copy { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.hero-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+
+.sheet {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 16px;
+  min-width: 0;
+}
+.sheet svg { display: block; width: 100%; height: auto; }
+.sheet-title {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px;
+  border-top: 1px solid var(--line);
+  margin-top: 12px; padding-top: 10px;
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.sheet-title b { color: var(--ink); font-weight: 500; }
+
+/* SVG drawing */
+.d-wall { fill: var(--line); }
+.d-wall-hatch { stroke: var(--muted); stroke-width: 0.6; opacity: .45; }
+.d-window { fill: var(--surface); stroke: var(--ink); stroke-width: 1.2; }
+.d-deck { fill: var(--wood-soft); stroke: var(--wood); stroke-width: 2; }
+.d-board { stroke: var(--wood); stroke-width: 0.8; opacity: .55; }
+.d-step { fill: var(--wood-soft); stroke: var(--wood); stroke-width: 1.4; }
+.d-shade { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 6 4; }
+.d-dim { stroke: var(--muted); stroke-width: 0.9; fill: none; }
+.d-tick { stroke: var(--muted); stroke-width: 0.9; }
+.d-text { fill: var(--ink); font-family: var(--font-mono); font-size: 12px; }
+.d-text-s { fill: var(--muted); font-family: var(--font-mono); font-size: 10.5px; }
+.d-label { fill: var(--ink); font-family: var(--font-body); font-size: 12px; font-weight: 500; }
+.d-label-accent { fill: var(--accent); font-family: var(--font-body); font-size: 12px; font-weight: 700; }
+.d-faucet { fill: var(--surface); stroke: var(--accent); stroke-width: 1.6; }
+.d-ground { fill: var(--accent-soft); }
+
+/* Checklist */
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.checks li {
+  display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; align-items: start;
+  padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+}
+.box {
+  width: 20px; height: 20px; margin-top: 5px;
+  border: 2px solid var(--accent); border-radius: 3px; position: relative;
+}
+.box::after {
+  content: ""; position: absolute; left: 5px; top: 1px; width: 5px; height: 10px;
+  border: solid var(--accent); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg);
+}
+
+/* Story */
+.quote-line {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: clamp(20px, 3vw, 26px); line-height: 1.6;
+  padding-left: 20px; border-left: 4px solid var(--wood);
+}
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.steps li { display: flex; flex-direction: column; gap: 8px; padding: 24px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+.step-no { font-family: var(--font-mono); font-size: 13px; color: var(--wood); letter-spacing: 0.08em; }
+.steps p { color: var(--muted); font-size: 15px; }
+
+/* Measure hint */
+.measure {
+  display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 20px; align-items: center;
+  padding: 20px; background: var(--accent-soft); border-radius: 4px;
+}
+.measure svg { width: 100%; height: auto; display: block; }
+.measure p { font-size: 15px; }
+
+/* Types */
+.types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.type {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 22px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+}
+.type-tag { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); letter-spacing: 0.06em; }
+.type p { font-size: 15px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+.chip { font-size: 12.5px; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+
+/* Fork */
+.fork { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.fork-card { display: flex; flex-direction: column; gap: 14px; padding: 28px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+.fork-card ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 4px; }
+.fork-who { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; color: var(--wood); }
+
+/* Pricing */
+.prices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.price {
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 28px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+}
+.price.featured { border: 2px solid var(--accent); }
+.price-head { display: flex; flex-direction: column; gap: 4px; }
+.price-badge {
+  align-self: flex-start; font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 3px;
+  background: var(--accent); color: var(--accent-ink);
+}
+.price-amount { font-family: var(--font-display); font-weight: 900; font-size: 34px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.price-amount small { font-size: 14px; font-weight: 500; color: var(--muted); }
+.price-for { font-size: 14px; color: var(--muted); }
+.price ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.price li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 8px; }
+.price li::before { content: ""; width: 8px; height: 8px; margin-top: 10px; background: var(--wood); border-radius: 1px; }
+.price .btn { margin-top: auto; width: 100%; }
+.btn-ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+.credit {
+  margin-top: 20px; padding: 16px 20px; border: 1px dashed var(--wood); border-radius: 4px;
+  font-size: 15px; background: var(--surface);
+}
+
+/* FAQ */
+.faq { display: flex; flex-direction: column; gap: 10px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 18px 48px 18px 20px; position: relative;
+  font-family: var(--font-display); font-weight: 700; font-size: 16.5px; line-height: 1.6;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 20px; color: var(--accent);
+}
+.faq details[open] summary::after { content: "−"; }
+.faq summary:focus-visible { outline: 3px solid var(--wood); outline-offset: -3px; border-radius: 4px; }
+.faq .a { padding: 0 20px 20px; color: var(--muted); font-size: 15px; }
+
+/* Final CTA */
+.final { background: var(--accent); color: var(--accent-ink); border-top: none !important; }
+.final .eyebrow { color: var(--accent-ink); opacity: .8; }
+.final .btn { background: var(--accent-ink); color: var(--accent); box-shadow: none; }
+.final .btn-note { color: var(--accent-ink); opacity: .8; }
+.final .need { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.final .need li { padding-left: 20px; position: relative; }
+.final .need li::before { content: ""; position: absolute; left: 0; top: .8em; width: 10px; height: 2px; background: currentColor; }
+.ps { font-size: 15px; padding-top: 20px; border-top: 1px solid color-mix(in srgb, var(--accent-ink) 30%, transparent); }
+
+footer { padding-block: 32px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .types { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prices { grid-template-columns: minmax(0, 1fr); max-width: 480px; margin: 0 auto; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  section { padding-block: 56px; }
+  .types, .fork { grid-template-columns: minmax(0, 1fr); }
+  .measure { grid-template-columns: minmax(0, 1fr); }
+  .measure svg { max-width: 220px; }
+  .btn { width: 100%; }
+  .hero-cta { align-items: stretch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}
+</style>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Uchi-no-Niwa Plan</p>
+        <h1>ウッドデッキ、ほしい。<br>でも、うちの庭には何をどう作ればいい？</h1>
+        <p class="lead">写真3枚と、13の質問に答えるだけ。<br>あなたの庭専用のデッキプランをお届けします。自分で作る人にも、業者に頼む人にも使えるプランです。</p>
+        <div class="hero-cta">
+          <a class="btn" href="#apply">無料で庭を診断する</a>
+          <span class="btn-note">スマホで5分。しつこい営業はしません。</span>
+        </div>
+      </div>
+
+      <figure class="sheet" style="margin:0" aria-label="プランの見本：南向き・子育てタイプのデッキ平面図">
+        <svg viewBox="0 0 600 430" role="img" aria-labelledby="planTitle">
+          <title id="planTitle">デッキ平面図の見本。幅3640mm、奥行き1820mm、床高400mm。ステップ、シェード、立水栓付き。</title>
+          <defs>
+            <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="8" class="d-wall-hatch"/>
+            </pattern>
+          </defs>
+          <!-- ground -->
+          <rect x="30" y="80" width="540" height="260" class="d-ground" rx="2"/>
+          <!-- house wall -->
+          <rect x="30" y="40" width="540" height="40" class="d-wall"/>
+          <rect x="30" y="40" width="540" height="40" fill="url(#hatch)"/>
+          <text x="40" y="34" class="d-text-s">住宅外壁</text>
+          <!-- window -->
+          <rect x="198" y="68" width="204" height="12" class="d-window"/>
+          <text x="300" y="62" text-anchor="middle" class="d-label">掃き出し窓 W1690</text>
+          <!-- deck -->
+          <rect x="80" y="80" width="440" height="220" class="d-deck"/>
+          <g>
+            <line x1="80" y1="98.3" x2="520" y2="98.3" class="d-board"/>
+            <line x1="80" y1="116.7" x2="520" y2="116.7" class="d-board"/>
+            <line x1="80" y1="135" x2="520" y2="135" class="d-board"/>
+            <line x1="80" y1="153.3" x2="520" y2="153.3" class="d-board"/>
+            <line x1="80" y1="171.7" x2="520" y2="171.7" class="d-board"/>
+            <line x1="80" y1="190" x2="520" y2="190" class="d-board"/>
+            <line x1="80" y1="208.3" x2="520" y2="208.3" class="d-board"/>
+            <line x1="80" y1="226.7" x2="520" y2="226.7" class="d-board"/>
+            <line x1="80" y1="245" x2="520" y2="245" class="d-board"/>
+            <line x1="80" y1="263.3" x2="520" y2="263.3" class="d-board"/>
+            <line x1="80" y1="281.7" x2="520" y2="281.7" class="d-board"/>
+          </g>
+          <!-- shade -->
+          <rect x="96" y="92" width="250" height="150" class="d-shade"/>
+          <text x="108" y="113" class="d-label-accent">シェード（夏だけ張る）</text>
+          <!-- floor height -->
+          <text x="420" y="200" text-anchor="middle" class="d-label">床高 400</text>
+          <text x="420" y="218" text-anchor="middle" class="d-text-s">窓下端との段差 ±0</text>
+          <!-- step -->
+          <rect x="250" y="300" width="100" height="28" class="d-step"/>
+          <text x="300" y="319" text-anchor="middle" class="d-label">ステップ</text>
+          <!-- faucet -->
+          <circle cx="490" cy="322" r="8" class="d-faucet"/>
+          <text x="476" y="326" text-anchor="end" class="d-label-accent">立水栓</text>
+          <!-- module dimension (910 grid) -->
+          <line x1="80" y1="360" x2="520" y2="360" class="d-dim"/>
+          <line x1="80" y1="352" x2="80" y2="368" class="d-tick"/>
+          <line x1="190" y1="354" x2="190" y2="366" class="d-tick"/>
+          <line x1="300" y1="354" x2="300" y2="366" class="d-tick"/>
+          <line x1="410" y1="354" x2="410" y2="366" class="d-tick"/>
+          <line x1="520" y1="352" x2="520" y2="368" class="d-tick"/>
+          <text x="135" y="354" text-anchor="middle" class="d-text-s">910</text>
+          <text x="245" y="354" text-anchor="middle" class="d-text-s">910</text>
+          <text x="355" y="354" text-anchor="middle" class="d-text-s">910</text>
+          <text x="465" y="354" text-anchor="middle" class="d-text-s">910</text>
+          <!-- overall width -->
+          <line x1="80" y1="394" x2="520" y2="394" class="d-dim"/>
+          <line x1="80" y1="386" x2="80" y2="402" class="d-tick"/>
+          <line x1="520" y1="386" x2="520" y2="402" class="d-tick"/>
+          <text x="300" y="389" text-anchor="middle" class="d-text">3,640</text>
+          <!-- depth -->
+          <line x1="548" y1="80" x2="548" y2="300" class="d-dim"/>
+          <line x1="540" y1="80" x2="556" y2="80" class="d-tick"/>
+          <line x1="540" y1="300" x2="556" y2="300" class="d-tick"/>
+          <text x="562" y="194" class="d-text" transform="rotate(90 562 194)" text-anchor="middle">1,820</text>
+          <!-- north -->
+          <g transform="translate(560 14)">
+            <path d="M0 18 L6 2 L12 18 L6 14 Z" fill="var(--ink)"/>
+            <text x="6" y="30" text-anchor="middle" class="d-text-s">N</text>
+          </g>
+        </svg>
+        <figcaption class="sheet-title">
+          <span><b>PLAN 見本</b>　南向き・子育てタイプ</span>
+          <span>単位 mm ／ 910モジュール</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="wrap letter stack">
+      <p class="eyebrow">こんなこと、ありませんか</p>
+      <h2>庭はあるのに、ほとんど出ていない。</h2>
+      <ul class="checks">
+        <li><span class="box" aria-hidden="true"></span><span>窓の外に段差があって、外に出るのがおっくう</span></li>
+        <li><span class="box" aria-hidden="true"></span><span>毎年、夏の草むしりが憂うつ</span></li>
+        <li><span class="box" aria-hidden="true"></span><span>道路や隣の家からの視線が気になって、庭でくつろげない</span></li>
+        <li><span class="box" aria-hidden="true"></span><span>ウッドデッキに憧れはあるけれど、うちの庭に合うのか分からない</span></li>
+        <li><span class="box" aria-hidden="true"></span><span>業者に見積もりを頼むと、断りにくくなりそうで気が重い</span></li>
+        <li><span class="box" aria-hidden="true"></span><span>自分で作れるのか、業者に頼むべきなのか、決められない</span></li>
+      </ul>
+      <p>ひとつでも当てはまるなら、このページはあなたのためのものです。</p>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section>
+    <div class="wrap letter stack">
+      <p class="eyebrow">わたしたちが気づいたこと</p>
+      <h2>止まっていた理由は、「作り方」ではありませんでした。</h2>
+      <p>わたしたちは6年間、ウッドデッキの設計図と作り方をお届けしてきました。</p>
+      <p>そのあいだに、「いつかデッキを作りたい」という声をたくさん聞きました。けれど、実際に作り始める人は、そのうちのほんの一部でした。</p>
+      <p>理由を聞いていくと、のこぎりや工具の話はほとんど出てきません。みなさんが迷っていたのは、もっと手前のことでした。</p>
+      <p class="quote-line">うちの庭に、何を、どのくらいの大きさで作ればいいのか。</p>
+      <p>ここが決まらないうちは、作り方の本を読んでも、業者に相談しても、先に進めません。</p>
+      <p>だから、作り方の前に<mark>「あなたの庭のためのプラン」</mark>をお届けすることにしました。それが「うちの庭プラン」です。</p>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section>
+    <div class="wrap stack">
+      <div class="letter stack" style="width:100%">
+        <p class="eyebrow">診断の流れ</p>
+        <h2>写真を撮って、質問に答えるだけ。</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="step-no">STEP 1</span>
+          <h3>庭の写真を3枚撮る</h3>
+          <p>室内から窓越しに見た庭、庭の全体、窓の下の段差。スマホで撮った写真で十分です。</p>
+        </li>
+        <li>
+          <span class="step-no">STEP 2</span>
+          <h3>13の質問に答える</h3>
+          <p>庭の向き、広さ、家族のこと、庭でしたいこと。「分からない」と答えても大丈夫です。</p>
+        </li>
+        <li>
+          <span class="step-no">STEP 3</span>
+          <h3>診断結果が届く</h3>
+          <p>おすすめのタイプ、サイズ、費用の目安、DIYの難しさをお伝えします。ここまで無料です。</p>
+        </li>
+      </ol>
+      <div class="letter" style="width:100%">
+        <div class="measure">
+          <svg viewBox="0 0 180 130" role="img" aria-label="窓の下端から地面までの高さの測り方">
+            <rect x="20" y="10" width="70" height="70" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>
+            <line x1="55" y1="10" x2="55" y2="80" stroke="var(--ink)" stroke-width="1"/>
+            <rect x="0" y="80" width="110" height="8" fill="var(--line)"/>
+            <rect x="0" y="118" width="180" height="6" fill="var(--wood)" opacity=".5"/>
+            <line x1="130" y1="80" x2="130" y2="118" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="122" y1="80" x2="138" y2="80" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="122" y1="118" x2="138" y2="118" stroke="var(--accent)" stroke-width="2"/>
+            <line x1="90" y1="80" x2="122" y2="80" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="142" y="104" font-family="var(--font-mono)" font-size="11" fill="var(--accent)">ここ</text>
+            <text x="4" y="112" font-family="var(--font-body)" font-size="10" fill="var(--muted)">地面</text>
+          </svg>
+          <p><strong>測るのは1か所だけ。</strong>窓の下端から地面までの高さです。この数字で、デッキの床の高さと、段差がなくなるかどうかが決まります。メジャーがなければ「だいたい膝くらい」でもかまいません。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES -->
+  <section>
+    <div class="wrap stack">
+      <div class="letter stack" style="width:100%">
+        <p class="eyebrow">庭のタイプ</p>
+        <h2>同じデッキでも、家によって正解が違います。</h2>
+        <p>診断では、庭の向き、家族、困っていることから、あなたの庭のタイプを見立てます。デッキだけでなく、組み合わせると暮らしが変わるものまで一緒にご提案します。</p>
+      </div>
+      <div class="types">
+        <article class="type">
+          <span class="type-tag">南向き × 小さな子ども</span>
+          <h3>見守りファミリーデッキ</h3>
+          <p>キッチンから目が届く遊び場に。夏の照り返し対策と、水遊びのあとの片付けまで考えます。</p>
+          <div class="chips"><span class="chip">デッキ</span><span class="chip">シェード</span><span class="chip">立水栓</span></div>
+        </article>
+        <article class="type">
+          <span class="type-tag">犬と暮らす</span>
+          <h3>足ふき不要のドッグデッキ</h3>
+          <p>雨上がりでも足が汚れにくい出入り口に。脱走しにくい囲い方も一緒に考えます。</p>
+          <div class="chips"><span class="chip">デッキ</span><span class="chip">フェンス</span><span class="chip">足洗い場</span></div>
+        </article>
+        <article class="type">
+          <span class="type-tag">草むしりがつらい</span>
+          <h3>手入れゼロの庭</h3>
+          <p>デッキで覆う場所と、防草シートや人工芝にする場所を分けて、草の生える面積を減らします。</p>
+          <div class="chips"><span class="chip">人工木デッキ</span><span class="chip">防草シート</span><span class="chip">人工芝</span></div>
+        </article>
+        <article class="type">
+          <span class="type-tag">道路から丸見え</span>
+          <h3>人目を気にしない縁側</h3>
+          <p>デッキの高さと目隠しの高さをそろえて、座ったときに視線が合わない位置を探します。</p>
+          <div class="chips"><span class="chip">デッキ</span><span class="chip">目隠しフェンス</span></div>
+        </article>
+        <article class="type">
+          <span class="type-tag">段差が大きい</span>
+          <h3>つまずかない出入り口</h3>
+          <p>窓の高さに床をそろえ、ゆるやかな階段と手すりで、高齢のご家族も出やすくします。</p>
+          <div class="chips"><span class="chip">低床デッキ</span><span class="chip">階段</span><span class="chip">手すり</span></div>
+        </article>
+        <article class="type">
+          <span class="type-tag">夜も外で過ごしたい</span>
+          <h3>晩酌テラス</h3>
+          <p>テーブルと椅子が置ける奥行きを確保し、足元の照明で夜も使える場所にします。</p>
+          <div class="chips"><span class="chip">デッキ</span><span class="chip">照明</span><span class="chip">目隠し</span></div>
+        </article>
+      </div>
+      <p class="letter btn-note" style="width:100%">デッキが向いていない庭だと分かったときは、そのままお伝えし、タイルや砂利など別の方法をご提案します。</p>
+    </div>
+  </section>
+
+  <!-- FORK -->
+  <section>
+    <div class="wrap stack">
+      <div class="letter stack" style="width:100%">
+        <p class="eyebrow">作り方はあとで決められます</p>
+        <h2>自分で作っても、業者に頼んでも、同じプランが使えます。</h2>
+        <p>「DIYにするか、業者にするか」は、プランを見てから決めれば大丈夫です。どちらに進んでも、プランがそのまま役に立ちます。</p>
+      </div>
+      <div class="fork">
+        <div class="fork-card">
+          <span class="fork-who">DIY</span>
+          <h3>自分で作るなら</h3>
+          <ul>
+            <li>寸法入りの設計図</li>
+            <li>材料リストとカット表</li>
+            <li>写真付きの手順書</li>
+          </ul>
+          <p class="btn-note">ホームセンターで材料を買うところから、組み上げるまで迷わず進めます。</p>
+        </div>
+        <div class="fork-card">
+          <span class="fork-who">業者に依頼</span>
+          <h3>業者に頼むなら</h3>
+          <ul>
+            <li>そのまま渡せる仕様書</li>
+            <li>複数の業者に同じ条件で見積もりを依頼できる</li>
+            <li>金額の比べ方のポイント</li>
+          </ul>
+          <p class="btn-note">「何を作りたいか」を自分の言葉で伝えられるので、営業に流されずに選べます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="price">
+    <div class="wrap stack">
+      <div class="letter stack" style="width:100%">
+        <p class="eyebrow">料金</p>
+        <h2>まずは無料の診断から。</h2>
+        <p>診断結果を見て、もっと具体的に知りたくなったら、プランへお進みください。</p>
+      </div>
+      <div class="prices">
+        <div class="price">
+          <div class="price-head">
+            <h3>庭診断</h3>
+            <p class="price-amount">0<small> 円</small></p>
+            <p class="price-for">うちの庭に合うか知りたい方に</p>
+          </div>
+          <ul>
+            <li>あなたの庭のタイプ</li>
+            <li>おすすめのサイズと床の高さ</li>
+            <li>費用の目安（DIY ／ 業者）</li>
+            <li>DIYの難しさ（5段階）</li>
+          </ul>
+          <a class="btn btn-ghost" href="#apply">無料で診断する</a>
+        </div>
+        <div class="price featured">
+          <div class="price-head">
+            <span class="price-badge">おすすめ</span>
+            <h3>うちの庭プラン</h3>
+            <p class="price-amount">4,980<small> 円（税込）</small></p>
+            <p class="price-for">何を作るかを決めたい方に</p>
+          </div>
+          <ul>
+            <li>あなたの庭の写真に、デッキの配置を書き込み</li>
+            <li>完成イメージ</li>
+            <li>サイズ、床の高さ、階段の有無</li>
+            <li>組み合わせの提案（日よけ、目隠し、水まわり）</li>
+            <li>段階プラン（まずここまで、次にこれ）</li>
+            <li>DIYと業者の費用比較</li>
+          </ul>
+          <a class="btn" href="#apply">診断から始める</a>
+        </div>
+        <div class="price">
+          <div class="price-head">
+            <h3>プラン ＋ 作れる一式</h3>
+            <p class="price-amount">19,800<small> 円（税込）</small></p>
+            <p class="price-for">すぐに作る・頼む準備をしたい方に</p>
+          </div>
+          <ul>
+            <li>「うちの庭プラン」の内容すべて</li>
+            <li>寸法入りの設計図</li>
+            <li>材料リストとカット表</li>
+            <li>手順書</li>
+            <li>業者に渡せる仕様書</li>
+            <li>オンライン相談 1回</li>
+          </ul>
+          <a class="btn btn-ghost" href="#apply">診断から始める</a>
+        </div>
+      </div>
+      <p class="credit letter" style="width:100%"><strong>プラン代は、あとで差し引きます。</strong>「うちの庭プラン」を購入したあとに「作れる一式」へ進む場合、お支払い済みの4,980円を差し引いた14,820円でお申し込みいただけます。</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="wrap letter stack">
+      <p class="eyebrow">よくある質問</p>
+      <h2>申し込む前に</h2>
+      <div class="faq">
+        <details>
+          <summary>DIYにするか業者に頼むか、まだ決めていません。</summary>
+          <p class="a">決めていなくて大丈夫です。診断とプランは、どちらに進んでも使える内容になっています。プランを見てから決める方がほとんどです。</p>
+        </details>
+        <details>
+          <summary>庭の広さをきちんと測れません。</summary>
+          <p class="a">だいたいの数字でかまいません。歩幅で「縦に5歩、横に3歩」のような答え方でも診断できます。必要な場合は、こちらから測り方をご案内します。</p>
+        </details>
+        <details>
+          <summary>庭が狭いのですが、診断してもらえますか。</summary>
+          <p class="a">はい。910mm四方の1マスから組み立てる設計なので、掃き出し窓の前だけの小さなデッキもご提案できます。あとから広げられるように作ることもできます。</p>
+        </details>
+        <details>
+          <summary>デッキは向いていない、と言われることはありますか。</summary>
+          <p class="a">あります。日当たりや湿気、地面の状態によっては、デッキよりタイルや砂利のほうが長持ちする場合があります。そのときは正直にお伝えし、別の方法をご提案します。</p>
+        </details>
+        <details>
+          <summary>無料診断のあと、営業の連絡が来ますか。</summary>
+          <p class="a">診断結果をお送りするだけです。電話をかけることはありません。プランが必要になったときに、ご自身でお申し込みください。</p>
+        </details>
+        <details>
+          <summary>業者を紹介してもらえますか。</summary>
+          <p class="a">「作れる一式」に入っている仕様書をお近くの業者さんに渡していただくと、同じ条件で見積もりを比べられます。どの業者に頼むかは、ご自身で自由に選べます。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final" id="apply">
+    <div class="wrap letter stack">
+      <p class="eyebrow">無料の庭診断</p>
+      <h2>まずは、窓から庭の写真を1枚。</h2>
+      <p>診断に必要なのは、次の3つだけです。</p>
+      <ul class="need">
+        <li>庭の写真3枚（室内から窓越し、庭の全体、窓の下の段差）</li>
+        <li>窓の下端から地面までの高さ（だいたいでOK）</li>
+        <li>13の質問への回答（約5分）</li>
+      </ul>
+      <div class="hero-cta">
+        <a class="btn" href="#apply" data-replace="診断フォームのURLに差し替え">無料診断フォームへ進む</a>
+        <span class="btn-note">診断結果は7日以内にメールでお届けします。</span>
+      </div>
+      <p class="ps"><strong>追伸</strong>　ウッドデッキは、作り方よりも先に「何を作るか」が決まると、驚くほど話が進みます。迷っている時間を、庭で過ごす時間に変えていきましょう。まずは写真を1枚、撮るところから始めてみてください。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap letter">
+    <p>© うちの庭プラン　／　運営：［屋号］</p>
+  </div>
+</footer>
