@@ -1,0 +1,27 @@
+@page { size: A4; margin: 16mm 16mm 18mm; }
+* { box-sizing: border-box; }
+body { font-family: "IPAPGothic","IPAGothic","Yu Gothic","Hiragino Sans",sans-serif; color:#3a3033; font-size:10.5pt; line-height:1.75; margin:0; }
+.cover { height: 262mm; min-height:262mm; display:flex; flex-direction:column; justify-content:center; text-align:center; page-break-after:always;
+  background: linear-gradient(160deg,#f8eef1 0%,#fff 60%); border-radius:6mm; padding: 20mm; }
+.cover .tag { display:inline-block; margin:0 auto 10mm; padding:2mm 6mm; border:1px solid #8c4a5e; color:#8c4a5e; border-radius:20mm; font-size:10pt; letter-spacing:.1em; }
+.cover h1 { font-size:26pt; line-height:1.4; color:#8c4a5e; margin:0 0 6mm; }
+.cover .sub { font-size:12pt; color:#6b5a60; }
+.cover .from { margin-top:24mm; font-size:10pt; color:#8a7a80; }
+h2 { color:#8c4a5e; font-size:15pt; border-bottom:2px solid #8c4a5e; padding-bottom:1.5mm; margin:0 0 4mm; }
+h3 { color:#8c4a5e; font-size:11.5pt; margin:5mm 0 2mm; }
+.step { page-break-before: always; }
+.time { display:inline-block; background:#8c4a5e; color:#fff; font-size:9pt; padding:.5mm 3mm; border-radius:10mm; margin-left:3mm; vertical-align:middle; }
+.q { border:1px solid #d9c2c9; border-radius:3mm; padding:3mm 4mm; margin:0 0 4mm; break-inside:avoid; }
+.q .label { font-weight:bold; color:#8c4a5e; }
+.q .hint { font-size:9pt; color:#8a7a80; }
+.lines { margin-top:2mm; }
+.lines div { border-bottom:1px dashed #cdb8be; height:8mm; }
+.box { background:#f8eef1; border-radius:3mm; padding:3mm 5mm; margin:3mm 0 4mm; break-inside:avoid; }
+.ex { font-size:9.5pt; color:#6b5a60; }
+.fill { font-size:11.5pt; line-height:2.3; }
+.blank { display:inline-block; min-width:52mm; border-bottom:1.5px solid #8c4a5e; }
+ul.check { list-style:none; padding-left:0; } ul.check li::before { content:"□ "; color:#8c4a5e; }
+table { width:100%; border-collapse:collapse; font-size:9.5pt; } th,td { border:1px solid #d9c2c9; padding:2mm; vertical-align:top; } th { background:#f8eef1; color:#8c4a5e; }
+.cta { border:2px solid #8c4a5e; border-radius:4mm; padding:5mm 6mm; margin-top:6mm; break-inside:avoid; }
+.cta .t { font-weight:bold; color:#8c4a5e; font-size:12pt; }
+.small { font-size:8.5pt; color:#8a7a80; }
