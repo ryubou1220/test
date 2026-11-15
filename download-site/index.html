@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Atelier Kumo ダウンロード</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 1カラム。上で「コードを入力」、その下に開いた商品のファイル一覧、最後に使い方とサポート */
+:root {
+  --bg: #f5f7f8;
+  --surface: #ffffff;
+  --ink: #14232e;
+  --muted: #5a6b76;
+  --line: #d9e1e5;
+  --accent: #1f6f78;
+  --accent-ink: #ffffff;
+  --pop: #e8b931;
+  --tag: #e6f0f1;
+  --danger: #b3412e;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  --radius: 10px;
+  color-scheme: light;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a21; --surface: #16242d; --ink: #e6eef2; --muted: #9aaeb9; --line: #2a3d48;
+    --accent: #5fc0c9; --accent-ink: #0b1a1f; --pop: #f0c85a; --tag: #1d3640; --danger: #f08a75; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a21; --surface: #16242d; --ink: #e6eef2; --muted: #9aaeb9; --line: #2a3d48;
+  --accent: #5fc0c9; --accent-ink: #0b1a1f; --pop: #f0c85a; --tag: #1d3640; --danger: #f08a75; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.8;
+}
+.wrap {
+  max-width: 820px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--pop); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.4; margin: 0; }
+.eyebrow { font-family: var(--font-data); font-size: .76rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.sample-note { background: var(--pop); color: #14232e; font-size: .8rem; text-align: center; padding: 6px 16px; }
+
+header.site { background: var(--surface); border-bottom: 1px solid var(--line); }
+header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.logo { font-family: var(--font-display); font-weight: 900; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; }
+.logo svg { width: 28px; height: 28px; flex: none; }
+.header-tag { font-size: .82rem; color: var(--muted); }
+
+.intro { padding-block: 48px 8px; display: grid; gap: 10px; }
+.intro h1 { font-size: clamp(1.6rem, 4.4vw, 2.3rem); font-weight: 900; }
+.intro p { margin: 0; color: var(--muted); max-width: 36em; }
+
+.unlock {
+  margin-block: 28px 40px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 24px; display: grid; gap: 14px;
+}
+.unlock label { font-weight: 700; font-family: var(--font-display); }
+.unlock .row { display: flex; flex-wrap: wrap; gap: 10px; }
+.unlock input {
+  flex: 1 1 240px; min-width: 0; font: inherit; font-family: var(--font-data); letter-spacing: .06em;
+  font-size: 1.1rem; text-transform: uppercase;
+  color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px;
+}
+.btn {
+  font: inherit; font-weight: 700; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 22px; border-radius: 999px; border: 2px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink);
+}
+.btn:hover { filter: brightness(1.08); }
+.btn[disabled] { opacity: .6; cursor: wait; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.hint { margin: 0; font-size: .85rem; color: var(--muted); }
+.hint code { font-family: var(--font-data); background: var(--tag); padding: 1px 6px; border-radius: 4px; color: var(--ink); }
+.msg { margin: 0; font-size: .9rem; font-weight: 500; }
+.msg.err { color: var(--danger); }
+.msg.ok { color: var(--accent); }
+
+.library { display: grid; gap: 16px; margin-bottom: 56px; }
+.library-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.library-head h2 { font-size: 1.3rem; font-weight: 900; }
+.linklike { font: inherit; font-size: .85rem; background: none; border: 0; color: var(--muted); text-decoration: underline; cursor: pointer; padding: 0; }
+.empty {
+  border: 1px dashed var(--line); border-radius: var(--radius); padding: 28px 24px;
+  color: var(--muted); text-align: center; font-size: .95rem;
+}
+.item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.item-head { padding: 18px 22px 14px; display: grid; gap: 4px; border-bottom: 1px solid var(--line); }
+.item-head h3 { font-size: 1.12rem; font-weight: 700; }
+.item-meta { font-size: .82rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.item-note { margin: 0; padding: 12px 22px; font-size: .88rem; color: var(--muted); background: var(--tag); }
+.files { list-style: none; margin: 0; padding: 0; }
+.files li { display: flex; align-items: center; gap: 14px; padding: 14px 22px; border-top: 1px solid var(--line); }
+.files li:first-child { border-top: 0; }
+.fmt {
+  flex: none; width: 58px; text-align: center; font-family: var(--font-data); font-size: .72rem; font-weight: 500;
+  letter-spacing: .06em; padding: 4px 0; border-radius: 4px; background: var(--ink); color: var(--bg);
+}
+.file-info { flex: 1; min-width: 0; }
+.file-info b { display: block; font-weight: 500; overflow-wrap: anywhere; }
+.file-info span { font-family: var(--font-data); font-size: .78rem; color: var(--muted); }
+.files .btn { padding: 7px 16px; font-size: .88rem; flex: none; }
+@media (max-width: 480px) {
+  .files li { flex-wrap: wrap; }
+  .files .btn { width: 100%; }
+}
+
+.guide { padding-block: 48px; border-top: 1px solid var(--line); display: grid; gap: 24px; }
+.guide h2 { font-size: 1.3rem; font-weight: 900; }
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 20px; }
+.guide-grid div { min-width: 0; }
+.guide-grid h3 { font-size: 1rem; margin-bottom: 4px; }
+.guide-grid p { margin: 0; font-size: .9rem; color: var(--muted); }
+.support { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; display: grid; gap: 6px; }
+.support b { font-family: var(--font-display); }
+.copy-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.copy-row code { font-family: var(--font-data); font-size: .95rem; user-select: all; }
+.copy-btn { font: inherit; font-size: .8rem; cursor: pointer; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 2px 12px; }
+
+footer.site { padding-block: 28px; font-size: .8rem; color: var(--muted); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<div class="sample-note" id="sample-note">これはサンプルです。お試し用コード <b>SNS-2026</b> / <b>TEMPLATE-15</b> / <b>PRICE-48</b></div>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><path d="M9 21a5 5 0 0 1 1.2-9.8A6.5 6.5 0 0 1 22.6 13 4 4 0 0 1 23 21z" fill="var(--accent-ink)"/></svg>
+      <span id="shop-name">Atelier Kumo</span>
+    </div>
+    <span class="header-tag">ご購入者さま専用ページ</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <div class="eyebrow">Downloads</div>
+    <h1>ご購入ありがとうございます</h1>
+    <p>購入完了メールに書かれている「ダウンロードコード」を入力すると、商品のファイルが表示されます。複数の商品を購入された場合は、コードを1つずつ入力してください。</p>
+  </section>
+
+  <form class="unlock" id="unlock-form" autocomplete="off">
+    <label for="code">ダウンロードコード</label>
+    <div class="row">
+      <input id="code" name="code" placeholder="例：ABCD-1234" spellcheck="false" autocapitalize="characters" required>
+      <button class="btn" id="unlock-btn" type="submit">ファイルを表示</button>
+    </div>
+    <p class="hint">コードは大文字・小文字を区別しません。メールが見つからないときは、迷惑メールフォルダもご確認ください。</p>
+    <p class="msg" id="msg" role="status" hidden></p>
+  </form>
+
+  <section class="library" aria-labelledby="lib-title">
+    <div class="library-head">
+      <h2 id="lib-title">ダウンロードできる商品</h2>
+      <button class="linklike" id="forget" type="button" hidden>この端末の記録を消す</button>
+    </div>
+    <div id="items"></div>
+  </section>
+
+  <section class="guide" aria-labelledby="guide-title">
+    <h2 id="guide-title">ダウンロードについて</h2>
+    <div class="guide-grid">
+      <div><h3>スマホでうまく保存できない</h3><p>ZIPや動画はファイルが大きいため、パソコンでのダウンロードをおすすめします。iPhoneでは「ファイル」アプリに保存されます。</p></div>
+      <div><h3>ZIPファイルの開き方</h3><p>Windowsは右クリックして「すべて展開」、Macはダブルクリックで開けます。</p></div>
+      <div><h3>あとでもう一度ダウンロードしたい</h3><p>このページは何度でも使えます。この端末で入力したコードは記録されるので、次からは入力しなくても表示されます。</p></div>
+    </div>
+    <div class="support">
+      <b>うまくいかないときは</b>
+      <span>ご注文番号と商品名を添えて、メールでご連絡ください。<span id="support-hours">平日 10:00〜18:00（2営業日以内に返信）</span></span>
+      <div class="copy-row"><code id="support-email">support@example.com</code><button class="copy-btn" id="copy-email" type="button">コピー</button></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">ダウンロードしたファイルは、ご購入者さまご本人のみご利用いただけます。再配布・転売はご遠慮ください。</div>
+</footer>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const STORE_KEY = "kumo-download-codes";
+  const normalize = (c) => c.trim().toUpperCase().replace(/\s+/g, "");
+  const fromB64 = (s) => Uint8Array.from(atob(s), (ch) => ch.charCodeAt(0));
+  const esc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const safeUrl = (u) => { try { const x = new URL(u); return x.protocol === "https:" ? x.href : "#"; } catch { return "#"; } };
+
+  let products = [];
+  const unlocked = new Map(); // id -> { files, note }
+
+  const loadCodes = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); } catch { return []; } };
+  const saveCodes = (codes) => { try { localStorage.setItem(STORE_KEY, JSON.stringify(codes)); } catch {} };
+
+  async function tryDecrypt(code, locked) {
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(code), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", salt: fromB64(locked.salt), iterations: locked.iterations, hash: "SHA-256" },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+    );
+    try {
+      const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: fromB64(locked.iv) }, key, fromB64(locked.data));
+      return JSON.parse(new TextDecoder().decode(plain));
+    } catch { return null; }
+  }
+
+  async function unlockWith(code) {
+    const hits = [];
+    await Promise.all(products.map(async (p) => {
+      if (unlocked.has(p.id)) return;
+      const payload = await tryDecrypt(code, p.locked);
+      if (payload) { unlocked.set(p.id, payload); hits.push(p); }
+    }));
+    return hits;
+  }
+
+  function render() {
+    const list = products.filter((p) => unlocked.has(p.id));
+    $("forget").hidden = list.length === 0;
+    if (!list.length) {
+      $("items").innerHTML = '<div class="empty">まだ表示できる商品はありません。<br>上の欄にダウンロードコードを入力してください。</div>';
+      return;
+    }
+    $("items").innerHTML = list.map((p) => {
+      const u = unlocked.get(p.id);
+      return `<article class="item">
+        <div class="item-head">
+          <div class="eyebrow">${esc(p.category)}</div>
+          <h3>${esc(p.name)}</h3>
+          <div class="item-meta"><span>${esc(p.summary)}</span><span>最終更新 ${esc(p.updated)}</span></div>
+        </div>
+        ${u.note ? `<p class="item-note">${esc(u.note)}</p>` : ""}
+        <ul class="files">${u.files.map((f) => `
+          <li>
+            <span class="fmt">${esc(f.format)}</span>
+            <div class="file-info"><b>${esc(f.label)}</b><span>${esc(f.size)}</span></div>
+            <a class="btn" href="${esc(safeUrl(f.url))}" target="_blank" rel="noopener">${f.format === "VIDEO" ? "視聴する" : "ダウンロード"}</a>
+          </li>`).join("")}
+        </ul>
+      </article>`;
+    }).join("");
+  }
+
+  function showMsg(text, kind) { const m = $("msg"); m.textContent = text; m.className = "msg " + kind; m.hidden = false; }
+
+  $("unlock-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const code = normalize($("code").value);
+    if (!code) { showMsg("ダウンロードコードを入力してください。", "err"); return; }
+    const btn = $("unlock-btn");
+    btn.disabled = true; btn.textContent = "確認しています…";
+    try {
+      const hits = await unlockWith(code);
+      if (hits.length) {
+        const codes = loadCodes(); if (!codes.includes(code)) { codes.push(code); saveCodes(codes); }
+        showMsg(`「${hits.map((p) => p.name).join("」「")}」を表示しました。`, "ok");
+        $("code").value = "";
+        render();
+      } else if (products.some((p) => unlocked.has(p.id))) {
+        showMsg("このコードの商品はすでに表示されているか、コードが違います。メールのコードをもう一度ご確認ください。", "err");
+      } else {
+        showMsg("コードが違うようです。購入完了メールに書かれたコードを、そのままコピーして貼り付けてください。", "err");
+      }
+    } finally {
+      btn.disabled = false; btn.textContent = "ファイルを表示";
+    }
+  });
+
+  $("forget").addEventListener("click", () => {
+    saveCodes([]); unlocked.clear(); render();
+    showMsg("この端末に記録したコードを消しました。", "ok");
+  });
+
+  $("copy-email").addEventListener("click", async () => {
+    const t = $("support-email").textContent;
+    try { await navigator.clipboard.writeText(t); $("copy-email").textContent = "コピーしました"; }
+    catch { const r = document.createRange(); r.selectNodeContents($("support-email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  });
+
+  async function start() {
+    render();
+    try {
+      const res = await fetch("products.json", { cache: "no-store" });
+      const data = await res.json();
+      products = data.products;
+      if (data.shop) {
+        $("shop-name").textContent = data.shop.name;
+        $("support-email").textContent = data.shop.supportEmail;
+        $("support-hours").textContent = data.shop.supportHours;
+        document.title = data.shop.name + " ダウンロード";
+      }
+    } catch {
+      showMsg("商品情報を読み込めませんでした。時間をおいてページを再読み込みしてください。", "err");
+      return;
+    }
+    for (const code of loadCodes()) await unlockWith(code);
+    render();
+  }
+  start();
+})();
+</script>
+</body>
+</html>
