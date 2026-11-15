@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>コンテンツ・フリーダム｜受講者専用ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #B00000; --red-dark: #7A0000; --ink: #2A1A1A; --sub: #6B5A55;
+    --bg: #FFFBF7; --card: #FFFFFF; --pale: #F6E3DE; --line: #EAD9D2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Meiryo', sans-serif; background: var(--bg); color: var(--ink);
+         font-size: 18px; line-height: 1.7; }
+  a { color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* header */
+  .hero { background: radial-gradient(circle at 85% 10%, #D11A1A 0%, var(--red) 45%, var(--red-dark) 100%); color: #fff; padding: 56px 0 64px; }
+  .hero small { display: block; color: #FFE3DC; font-weight: 700; letter-spacing: .15em; font-size: 15px; }
+  .hero h1 { font-size: clamp(30px, 6vw, 52px); font-weight: 900; line-height: 1.3; margin: 10px 0 14px; }
+  .hero p { font-size: 19px; color: #FFEDE8; font-weight: 700; }
+  .hero .btn { margin-top: 28px; }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 12px 26px;
+         border-radius: 999px; font-weight: 900; font-size: 18px; text-decoration: none; border: 2px solid transparent; cursor: pointer; }
+  .btn-main { background: #fff; color: var(--red); box-shadow: 0 10px 24px rgba(60,0,0,.25); font-size: 20px; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-line { background: #fff; color: var(--red); border-color: var(--red); }
+  .btn.is-pending { background: #EFE6E2; color: #9A8A85; border-color: #EFE6E2; pointer-events: none; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+
+  /* sections */
+  section { padding: 56px 0 8px; }
+  .eyebrow { color: var(--red); font-weight: 900; letter-spacing: .12em; font-size: 15px; }
+  h2 { font-size: clamp(26px, 4.5vw, 36px); font-weight: 900; margin: 6px 0 8px; }
+  .lead { color: var(--sub); font-weight: 700; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+  .step { background: var(--card); border-radius: 22px; padding: 24px; box-shadow: 0 10px 30px rgba(120,0,0,.08); }
+  .step b { display: inline-flex; width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: #fff;
+            align-items: center; justify-content: center; font-size: 22px; }
+  .step h3 { font-size: 21px; margin-top: 12px; }
+  .step p { color: var(--sub); font-size: 16px; font-weight: 700; }
+
+  .map { margin-top: 24px; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 30px rgba(120,0,0,.10); background: #fff; }
+  .map img { display: block; width: 100%; height: auto; }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 24px; }
+  .card { background: var(--card); border-radius: 22px; padding: 26px; box-shadow: 0 10px 30px rgba(120,0,0,.08); display: flex; flex-direction: column; }
+  .card .tag { align-self: flex-start; background: var(--pale); color: var(--red); font-weight: 900; font-size: 14px; border-radius: 999px; padding: 4px 14px; }
+  .card h3 { font-size: 23px; font-weight: 900; margin-top: 10px; line-height: 1.45; }
+  .card p { color: var(--sub); font-weight: 700; font-size: 16px; margin-top: 4px; }
+  .card .btns { margin-top: auto; padding-top: 16px; }
+  .card .btn { min-height: 52px; font-size: 16px; padding: 10px 20px; }
+
+  .zip { margin-top: 24px; background: var(--ink); color: #fff; border-radius: 24px; padding: 30px; display: flex; flex-wrap: wrap;
+         align-items: center; justify-content: space-between; gap: 18px; }
+  .zip h3 { font-size: 24px; font-weight: 900; }
+  .zip p { color: #E6D8D3; font-weight: 700; font-size: 16px; }
+
+  .help { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 24px; }
+  .note { background: #fff; border: 2px solid var(--line); border-radius: 22px; padding: 26px; }
+  .note h3 { font-size: 21px; font-weight: 900; color: var(--red); margin-bottom: 8px; }
+  .note li { margin-left: 1.2em; color: var(--sub); font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+  .note dl { display: grid; grid-template-columns: 7.5em 1fr; gap: 6px 10px; font-size: 16px; font-weight: 700; }
+  .note dt { color: var(--ink); } .note dd { color: var(--sub); }
+
+  footer { margin-top: 64px; padding: 28px 0 40px; border-top: 2px solid var(--line); color: #9A8A85; font-size: 14px; font-weight: 700; text-align: center; }
+
+  @media (max-width: 760px) {
+    .steps, .grid, .help { grid-template-columns: 1fr; }
+    .hero { padding: 40px 0 48px; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  ───────────────────────────────────────────────
+  りゅう坊さんへ：ここを書き換えるだけで更新できます
+  ・動画のURL ……… LECTURES の video に入れてください（空欄のときは「準備中」と表示されます）
+  ・まだ無い教材 … files フォルダに入れて、file の名前を書いてください
+  ───────────────────────────────────────────────
+-->
+<script>
+const LECTURES = [
+  { no: "第1回", name: "導入編",           desc: "情報販売・コンテンツ販売の基本を知る",           video: "", slides: "", zukai: "" },
+  { no: "第2回", name: "基礎知識編",       desc: "ビジネスの全体像をつかむ",                     video: "", slides: "", zukai: "files/zukai-lecture02.png" },
+  { no: "第3回", name: "商品作成編",       desc: "“たった一人”のための商品を作る３ステップ",      video: "", slides: "files/lecture03-slides.pdf", zukai: "files/zukai-lecture03.png" },
+  { no: "第4回", name: "商品販売編",       desc: "商品ページ（セールスレター）の書き方",          video: "", slides: "", zukai: "" },
+  { no: "第5回", name: "集客編",           desc: "人を呼ぶ導線を整える",                         video: "", slides: "", zukai: "" },
+  { no: "第6回", name: "フォロー編",       desc: "始めた後の壁と、続けていくための考え方",        video: "", slides: "", zukai: "files/zukai-lecture06.png" },
+  { no: "第7回", name: "マインドセット編", desc: "経験を届け続けるための、５つの心の持ち方",      video: "", slides: "files/lecture07-slides.pdf", text: "files/lecture07-text.pdf", zukai: "files/zukai-lecture07.png" },
+];
+const BONUSES = [
+  { no: "特典1", name: "コンテンツ販売を始める前の順番シート", desc: "何から始めればいいかを、順番に確認できます", pdf: "", word: "" },
+  { no: "特典2", name: "ペルソナ作成オリジナルシート", desc: "６つのSTEPで“たった一人”を浮き彫りにします", pdf: "files/bonus02-persona-sheet.pdf", word: "files/bonus02-persona-sheet.docx" },
+  { no: "特典3", name: "商品ページがかんたんに作れる下書きシート", desc: "埋めていくだけで、商品ページの下書きができます", pdf: "", word: "" },
+  { no: "特典4", name: "電子書籍『ひとりビジネスという選択』", desc: "ひとりビジネスという働き方を知るための一冊です", pdf: "", word: null },
+  { no: "特典5", name: "マインドセット・ワークブック（７日間）", desc: "１日１テーマ、書き込んで心を整えます", pdf: "files/bonus05-mindset-workbook.pdf", word: "files/bonus05-mindset-workbook.docx" },
+  { no: "特典6", name: "経験の棚卸しシート", desc: "経験を書き出して、商品のタネを見つけます", pdf: "files/bonus06-experience-sheet.pdf", word: "files/bonus06-experience-sheet.docx" },
+  { no: "特典7", name: "つまずいたときの立て直しガイド", desc: "手が止まったときに開く、場面別のヒント集です", pdf: "files/bonus07-recovery-guide.pdf", word: "files/bonus07-recovery-guide.docx" },
+  { no: "特典8", name: "よくある質問集", desc: "受講中によくいただく質問と、その答えです", pdf: "files/bonus08-faq.pdf", word: "files/bonus08-faq.docx" },
+];
+</script>
+
+<header class="hero">
+  <div class="wrap">
+    <small>コンテンツ・フリーダム　〜経済的自由への道〜</small>
+    <h1>受講者専用ページ</h1>
+    <p>ご購入いただき、ありがとうございます。<br>講義の動画と教材は、すべてこのページから受け取れます。</p>
+    <a class="btn btn-main" href="files/guide.pdf" target="_blank" rel="noopener">まずは「受講ガイド」を開く（PDF）</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <div class="eyebrow">STEP</div>
+    <h2>使い方は、かんたん３ステップ</h2>
+    <div class="steps">
+      <div class="step"><b>1</b><h3>受講ガイドを読む</h3><p>進め方と、教材の使い方がわかります</p></div>
+      <div class="step"><b>2</b><h3>講義を順番に見る</h3><p>第1回から順番に、動画を見ていきます</p></div>
+      <div class="step"><b>3</b><h3>特典を使ってみる</h3><p>講義のあとに、書き込みシートで形にします</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">MAP</div>
+    <h2>全７回の地図</h2>
+    <p class="lead">いま、どこを学んでいるのかを確かめたいときに見てください。</p>
+    <div class="map"><img src="files/zukai-map.png" alt="全7回の地図。知る（導入編・基礎知識編）、作る（商品作成編）、届ける（商品販売編・集客編）、続ける（フォロー編・マインドセット編）"></div>
+  </section>
+
+  <section id="lectures">
+    <div class="eyebrow">LECTURE</div>
+    <h2>講義（全７回）</h2>
+    <p class="lead">動画は第1回から順番に。スライドと図解は、復習に使ってください。</p>
+    <div class="grid" id="lecture-list"></div>
+    <p class="lead" style="font-size:14px;margin-top:14px">※動画のナレーションはAI音声です。台本はすべて監修者りゅう坊が書き、内容を確認しています。</p>
+  </section>
+
+  <section id="bonuses">
+    <div class="eyebrow">BONUS</div>
+    <h2>受講者特典（全８点）</h2>
+    <p class="lead">印刷して手で書くならPDF、パソコンで書き込むならWordが便利です。</p>
+    <div class="grid" id="bonus-list"></div>
+
+    <div class="zip">
+      <div>
+        <h3>まとめてダウンロード</h3>
+        <p>教材をすべて１つのZIPファイルで受け取れます。</p>
+      </div>
+      <a class="btn btn-main" href="files/content-freedom-materials.zip" download>ZIPをダウンロード</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">HELP</div>
+    <h2>困ったときは</h2>
+    <div class="help">
+      <div class="note">
+        <h3>質問・サポート</h3>
+        <dl>
+          <dt>質問の方法</dt><dd>［メール・LINEなど］</dd>
+          <dt>受付期間</dt><dd>［ご購入日から○日間 など］</dd>
+          <dt>返信の目安</dt><dd>［○営業日以内 など］</dd>
+        </dl>
+        <div class="btns">
+          <a class="btn btn-line" href="files/bonus08-faq.pdf" target="_blank" rel="noopener">よくある質問集</a>
+          <a class="btn btn-line" href="files/bonus07-recovery-guide.pdf" target="_blank" rel="noopener">立て直しガイド</a>
+        </div>
+      </div>
+      <div class="note">
+        <h3>ご利用にあたって</h3>
+        <ul>
+          <li>このページと教材は、ご購入いただいたご本人だけがご利用ください。第三者への共有・転載・転売は禁止です。</li>
+          <li>講座の内容は、結果や収入を約束するものではありません。成果には個人差があります。</li>
+          <li>特典の記入例に登場する人物は、架空のものです。</li>
+          <li>教材の作成やデザインの一部に、AIツールを活用しています。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Copyright © りゅう坊 All Rights Reserved.</footer>
+
+<script>
+  // 空欄のリンクは「準備中」のボタンとして表示する
+  function button(label, href, cls, opts = {}) {
+    if (!href) return `<span class="btn ${cls} is-pending">${label}（準備中）</span>`;
+    const dl = opts.download ? " download" : ' target="_blank" rel="noopener"';
+    return `<a class="btn ${cls}" href="${href}"${dl}>${label}</a>`;
+  }
+  document.getElementById("lecture-list").innerHTML = LECTURES.map((l) => `
+    <div class="card">
+      <span class="tag">${l.no}</span>
+      <h3>${l.name}</h3>
+      <p>${l.desc}</p>
+      <div class="btns">
+        ${button("▶ 動画を見る", l.video, "btn-red")}
+        ${button("スライド＋読み原稿", l.slides, "btn-line")}
+        ${l.text ? button("講義資料", l.text, "btn-line") : ""}
+        ${l.zukai ? button("図解", l.zukai, "btn-line") : ""}
+      </div>
+    </div>`).join("");
+  document.getElementById("bonus-list").innerHTML = BONUSES.map((b) => `
+    <div class="card">
+      <span class="tag">${b.no}</span>
+      <h3>${b.name}</h3>
+      <p>${b.desc}</p>
+      <div class="btns">
+        ${button("PDFで見る", b.pdf, "btn-red")}
+        ${b.word !== null ? button("Wordでダウンロード", b.word, "btn-line", { download: true }) : ""}
+      </div>
+    </div>`).join("");
+</script>
+</body>
+</html>
