@@ -85,28 +85,28 @@
   ───────────────────────────────────────────────
   りゅう坊さんへ：ここを書き換えるだけで更新できます
   ・動画のURL ……… LECTURES の video に入れてください（空欄のときは「準備中」と表示されます）
-  ・まだ無い教材 … files フォルダに入れて、file の名前を書いてください
+  ・教材を差し替える … files フォルダの同じ名前のファイルを入れ替えてください
   ───────────────────────────────────────────────
 -->
 <script>
 const LECTURES = [
-  { no: "第1回", name: "導入編",           desc: "情報販売・コンテンツ販売の基本を知る",           video: "", slides: "", zukai: "" },
-  { no: "第2回", name: "基礎知識編",       desc: "ビジネスの全体像をつかむ",                     video: "", slides: "", zukai: "files/zukai-lecture02.png" },
-  { no: "第3回", name: "商品作成編",       desc: "“たった一人”のための商品を作る３ステップ",      video: "", slides: "files/lecture03-slides.pdf", zukai: "files/zukai-lecture03.png" },
-  { no: "第4回", name: "商品販売編",       desc: "商品ページ（セールスレター）の書き方",          video: "", slides: "", zukai: "" },
-  { no: "第5回", name: "集客編",           desc: "人を呼ぶ導線を整える",                         video: "", slides: "", zukai: "" },
-  { no: "第6回", name: "フォロー編",       desc: "始めた後の壁と、続けていくための考え方",        video: "", slides: "", zukai: "files/zukai-lecture06.png" },
-  { no: "第7回", name: "マインドセット編", desc: "経験を届け続けるための、５つの心の持ち方",      video: "", slides: "files/lecture07-slides.pdf", text: "files/lecture07-text.pdf", zukai: "files/zukai-lecture07.png" },
+  { no: "第1講義", name: "導入編",           desc: "情報販売・コンテンツ販売の基本を知る",           video: "", pdf: "files/lecture01.pdf", zukai: "" },
+  { no: "第2講義", name: "基礎知識編",       desc: "ビジネスの全体像をつかむ",                     video: "", pdf: "files/lecture02.pdf", zukai: "files/zukai-lecture02.png" },
+  { no: "第3講義", name: "商品作成編",       desc: "“たった一人”のための商品を作る３ステップ",      video: "", pdf: "files/lecture03.pdf", zukai: "files/zukai-lecture03.png" },
+  { no: "第4講義", name: "商品販売編",       desc: "商品ページ（セールスレター）の書き方",          video: "", pdf: "files/lecture04.pdf", zukai: "" },
+  { no: "第5講義", name: "集客編",           desc: "人を呼ぶ導線を整える",                         video: "", pdf: "files/lecture05.pdf", zukai: "" },
+  { no: "第6講義", name: "フォロー編",       desc: "始めた後の壁と、続けていくための考え方",        video: "", pdf: "files/lecture06.pdf", zukai: "files/zukai-lecture06.png" },
+  { no: "第7講義", name: "マインドセット編", desc: "経験を届け続けるための、５つの心の持ち方",      video: "", pdf: "files/lecture07.pdf", zukai: "files/zukai-lecture07.png" },
 ];
 const BONUSES = [
-  { no: "特典1", name: "コンテンツ販売を始める前の順番シート", desc: "何から始めればいいかを、順番に確認できます", pdf: "", word: "" },
-  { no: "特典2", name: "ペルソナ作成オリジナルシート", desc: "６つのSTEPで“たった一人”を浮き彫りにします", pdf: "files/bonus02-persona-sheet.pdf", word: "files/bonus02-persona-sheet.docx" },
-  { no: "特典3", name: "商品ページがかんたんに作れる下書きシート", desc: "埋めていくだけで、商品ページの下書きができます", pdf: "", word: "" },
-  { no: "特典4", name: "電子書籍『ひとりビジネスという選択』", desc: "ひとりビジネスという働き方を知るための一冊です", pdf: "", word: null },
-  { no: "特典5", name: "マインドセット・ワークブック（７日間）", desc: "１日１テーマ、書き込んで心を整えます", pdf: "files/bonus05-mindset-workbook.pdf", word: "files/bonus05-mindset-workbook.docx" },
-  { no: "特典6", name: "経験の棚卸しシート", desc: "経験を書き出して、商品のタネを見つけます", pdf: "files/bonus06-experience-sheet.pdf", word: "files/bonus06-experience-sheet.docx" },
-  { no: "特典7", name: "つまずいたときの立て直しガイド", desc: "手が止まったときに開く、場面別のヒント集です", pdf: "files/bonus07-recovery-guide.pdf", word: "files/bonus07-recovery-guide.docx" },
-  { no: "特典8", name: "よくある質問集", desc: "受講中によくいただく質問と、その答えです", pdf: "files/bonus08-faq.pdf", word: "files/bonus08-faq.docx" },
+  { no: "特典1", name: "コンテンツ販売を始める前の順番シート", desc: "何から始めればいいかを、順番に確認できます", pdf: "files/bonus01.pdf" },
+  { no: "特典2", name: "ペルソナ作成オリジナルシート", desc: "“たった一人”のお客様を浮き彫りにします", pdf: "files/bonus02.pdf" },
+  { no: "特典3", name: "商品ページがかんたんに作れる下書きシート", desc: "埋めていくだけで、商品ページの下書きができます", pdf: "files/bonus03.pdf" },
+  { no: "特典4", name: "電子書籍『ひとりビジネスという選択』", desc: "ひとりビジネスという働き方を知るための一冊です", pdf: "files/bonus04.pdf" },
+  { no: "特典5", name: "マインドセット・ワークブック（７日間）", desc: "１日１テーマ、書き込んで心を整えます", pdf: "files/bonus05.pdf" },
+  { no: "特典6", name: "経験の棚卸しシート", desc: "経験を書き出して、商品のタネを見つけます", pdf: "files/bonus06.pdf" },
+  { no: "特典7", name: "つまずいたときの立て直しガイド", desc: "手が止まったときに開く、場面別のヒント集です", pdf: "files/bonus07.pdf" },
+  { no: "特典8", name: "よくある質問集", desc: "受講中によくいただく質問と、その答えです", pdf: "files/bonus08.pdf" },
 ];
 </script>
 
@@ -126,7 +126,7 @@ const BONUSES = [
     <h2>使い方は、かんたん３ステップ</h2>
     <div class="steps">
       <div class="step"><b>1</b><h3>受講ガイドを読む</h3><p>進め方と、教材の使い方がわかります</p></div>
-      <div class="step"><b>2</b><h3>講義を順番に見る</h3><p>第1回から順番に、動画を見ていきます</p></div>
+      <div class="step"><b>2</b><h3>講義を順番に見る</h3><p>第1講義から順番に、動画を見ていきます</p></div>
       <div class="step"><b>3</b><h3>特典を使ってみる</h3><p>講義のあとに、書き込みシートで形にします</p></div>
     </div>
   </section>
@@ -141,7 +141,7 @@ const BONUSES = [
   <section id="lectures">
     <div class="eyebrow">LECTURE</div>
     <h2>講義（全７回）</h2>
-    <p class="lead">動画は第1回から順番に。スライドと図解は、復習に使ってください。</p>
+    <p class="lead">動画は第1講義から順番に。講義資料と図解は、復習に使ってください。</p>
     <div class="grid" id="lecture-list"></div>
     <p class="lead" style="font-size:14px;margin-top:14px">※動画のナレーションはAI音声です。台本はすべて監修者りゅう坊が書き、内容を確認しています。</p>
   </section>
@@ -149,7 +149,7 @@ const BONUSES = [
   <section id="bonuses">
     <div class="eyebrow">BONUS</div>
     <h2>受講者特典（全８点）</h2>
-    <p class="lead">印刷して手で書くならPDF、パソコンで書き込むならWordが便利です。</p>
+    <p class="lead">書き込み式のシートは、印刷して手で書き込むのがおすすめです。</p>
     <div class="grid" id="bonus-list"></div>
 
     <div class="zip">
@@ -173,8 +173,8 @@ const BONUSES = [
           <dt>返信の目安</dt><dd>［○営業日以内 など］</dd>
         </dl>
         <div class="btns">
-          <a class="btn btn-line" href="files/bonus08-faq.pdf" target="_blank" rel="noopener">よくある質問集</a>
-          <a class="btn btn-line" href="files/bonus07-recovery-guide.pdf" target="_blank" rel="noopener">立て直しガイド</a>
+          <a class="btn btn-line" href="files/bonus08.pdf" target="_blank" rel="noopener">よくある質問集</a>
+          <a class="btn btn-line" href="files/bonus07.pdf" target="_blank" rel="noopener">立て直しガイド</a>
         </div>
       </div>
       <div class="note">
@@ -207,8 +207,7 @@ const BONUSES = [
       <p>${l.desc}</p>
       <div class="btns">
         ${button("▶ 動画を見る", l.video, "btn-red")}
-        ${button("スライド＋読み原稿", l.slides, "btn-line")}
-        ${l.text ? button("講義資料", l.text, "btn-line") : ""}
+        ${button("講義資料（PDF）", l.pdf, "btn-line")}
         ${l.zukai ? button("図解", l.zukai, "btn-line") : ""}
       </div>
     </div>`).join("");
@@ -219,7 +218,6 @@ const BONUSES = [
       <p>${b.desc}</p>
       <div class="btns">
         ${button("PDFで見る", b.pdf, "btn-red")}
-        ${b.word !== null ? button("Wordでダウンロード", b.word, "btn-line", { download: true }) : ""}
       </div>
     </div>`).join("");
 </script>
