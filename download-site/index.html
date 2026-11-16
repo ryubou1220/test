@@ -72,10 +72,26 @@
 
   footer { margin-top: 64px; padding: 28px 0 40px; border-top: 2px solid var(--line); color: #9A8A85; font-size: 14px; font-weight: 700; text-align: center; }
 
+
+  /* in-page viewer (PDF / video / image) */
+  .viewer { position: fixed; inset: 0; background: rgba(30,10,10,.72); display: none; z-index: 50; padding: 24px; }
+  .viewer.open { display: flex; align-items: center; justify-content: center; }
+  .viewer-box { background: #fff; border-radius: 20px; width: min(1100px, 100%); height: min(92vh, 100%); display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+  .viewer-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 2px solid var(--line); }
+  .viewer-head h3 { flex: 1; font-size: 18px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .viewer-head .btn { min-height: 44px; padding: 6px 18px; font-size: 15px; width: auto; }
+  .viewer-body { flex: 1; background: #F3EEEC; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .viewer-body iframe { width: 100%; height: 100%; border: 0; background: #fff; }
+  .viewer-body img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .viewer-body.video { background: #000; }
+  .viewer-body.video iframe { aspect-ratio: 16 / 9; height: auto; max-height: 100%; }
+
   @media (max-width: 760px) {
     .steps, .grid, .help { grid-template-columns: 1fr; }
     .hero { padding: 40px 0 48px; }
     .btn { width: 100%; }
+    .viewer { padding: 0; }
+    .viewer-box { border-radius: 0; height: 100%; }
   }
 </style>
 </head>
@@ -220,6 +236,67 @@ const BONUSES = [
         ${button("PDFで見る", b.pdf, "btn-red")}
       </div>
     </div>`).join("");
+</script>
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title">
+  <div class="viewer-box">
+    <div class="viewer-head">
+      <h3 id="viewer-title"></h3>
+      <a class="btn btn-line" id="viewer-open" href="#" target="_blank" rel="noopener">別の画面で開く</a>
+      <button class="btn btn-red" id="viewer-close" type="button">閉じる ✕</button>
+    </div>
+    <div class="viewer-body" id="viewer-body"></div>
+  </div>
+</div>
+
+<script>
+  // 動画・PDF・図解を、ページを離れずにその場で開く
+  (function () {
+    const viewer = document.getElementById("viewer"), body = document.getElementById("viewer-body");
+    const title = document.getElementById("viewer-title"), openLink = document.getElementById("viewer-open");
+    const narrow = () => window.matchMedia("(max-width: 760px)").matches;
+    function youtubeId(url) {
+      const m = url.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{11})/);
+      return m && m[1];
+    }
+    function show(kind, href, label) {
+      body.className = "viewer-body" + (kind === "video" ? " video" : "");
+      if (kind === "video") {
+        body.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${youtubeId(href)}?rel=0&autoplay=1" title="${label}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      } else if (kind === "pdf") {
+        body.innerHTML = `<iframe src="${href}#view=FitH" title="${label}"></iframe>`;
+      } else {
+        body.innerHTML = `<img src="${href}" alt="${label}">`;
+      }
+      title.textContent = label;
+      openLink.href = href;
+      viewer.classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("viewer-close").focus();
+    }
+    function hide() {
+      viewer.classList.remove("open");
+      body.innerHTML = "";  // 動画を止める
+      document.body.style.overflow = "";
+    }
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest("a[href]");
+      if (!a || a.id === "viewer-open" || a.hasAttribute("download")) return;
+      const href = a.getAttribute("href");
+      let kind = null;
+      if (youtubeId(href)) kind = "video";
+      else if (/\.pdf$/i.test(href)) kind = narrow() ? null : "pdf";  // スマホは標準のPDF表示のほうが読みやすい
+      else if (/\.(png|jpe?g)$/i.test(href)) kind = "image";
+      if (!kind) return;
+      e.preventDefault();
+      const card = a.closest(".card");
+      const name = card ? card.querySelector("h3").textContent : "";
+      const label = (name ? name + "｜" : "") + a.textContent.replace("▶", "").trim();
+      show(kind, href, label);
+    });
+    document.getElementById("viewer-close").addEventListener("click", hide);
+    viewer.addEventListener("click", (e) => { if (e.target === viewer) hide(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && viewer.classList.contains("open")) hide(); });
+  })();
 </script>
 </body>
 </html>
