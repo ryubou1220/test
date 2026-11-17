@@ -1,0 +1,446 @@
+<title>楽学講座 企画書</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=M+PLUS+1+Code:wght@500;700&display=swap">
+<style>
+/* Layout: すごろく盤のように「マス」を進む構成。ヒーロー → 学びすごろく → 90分の流れ → チーム → サイト設計 → ロードマップ */
+:root{
+  --bg:#f3f6fb;          /* 方眼ノートの青白 */
+  --paper:#ffffff;
+  --ink:#16213e;         /* 濃紺インク */
+  --muted:#5b6785;
+  --line:#d5dceb;
+  --sun:#ffc531;         /* サイコロの黄 */
+  --sun-ink:#3a2a00;
+  --mint:#14a38b;        /* 社会ステージ */
+  --sky:#2f6fe4;         /* 仕事ステージ */
+  --berry:#e2477a;       /* ビジネスステージ */
+  --chip:#e8edf7;
+  --f-display:"Dela Gothic One","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;
+  --f-mono:"M PLUS 1 Code",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1526;--paper:#18203a;--ink:#eef2fb;--muted:#a6b1cc;--line:#2c3757;
+  --sun:#ffcf4d;--sun-ink:#2a1f00;--mint:#3cc9ae;--sky:#6b9cff;--berry:#ff6f9b;--chip:#222c4a;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1526;--paper:#18203a;--ink:#eef2fb;--muted:#a6b1cc;--line:#2c3757;
+  --sun:#ffcf4d;--sun-ink:#2a1f00;--mint:#3cc9ae;--sky:#6b9cff;--berry:#ff6f9b;--chip:#222c4a;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.8;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px;background-attachment:fixed}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h2{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.3}
+h3{font-size:1.1rem;font-weight:700;line-height:1.5}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.lead{color:var(--muted);max-width:40em}
+.head{display:grid;gap:10px;margin-bottom:28px}
+.panel{background:var(--paper);border:2px solid var(--ink);border-radius:14px}
+
+/* Hero */
+.hero{padding-block:48px 24px}
+.hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:center}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(2.6rem,8vw,5rem);line-height:1.1;letter-spacing:.02em}
+.hero h1 .r{display:inline-block;background:var(--sun);color:var(--sun-ink);padding:0 .12em;border-radius:.12em;transform:rotate(-3deg)}
+.motto{font-size:clamp(1.1rem,2.6vw,1.4rem);font-weight:700;margin-top:18px}
+.hero .lead{margin-top:12px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{font-size:.82rem;background:var(--chip);padding:4px 12px;border-radius:999px;font-weight:500}
+.dice-box{display:grid;place-items:center;padding:28px;gap:14px}
+.dice{width:132px;height:132px;background:var(--sun);border:3px solid var(--ink);border-radius:24px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:18px;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:transform .15s}
+.dice:hover{transform:translate(-2px,-2px)}
+.dice:focus-visible{outline:3px solid var(--sky);outline-offset:4px}
+.dice span{width:20px;height:20px;border-radius:50%;background:var(--ink);place-self:center;visibility:hidden}
+.dice span.on{visibility:visible}
+.dice.roll{animation:roll .45s ease}
+@keyframes roll{0%{transform:rotate(0)}50%{transform:rotate(200deg) scale(.9)}100%{transform:rotate(360deg)}}
+.dice-out{text-align:center;min-height:3.6em;font-size:.95rem}
+.dice-out b{display:block;font-size:1.05rem}
+.small{font-size:.82rem;color:var(--muted)}
+
+/* Sugoroku */
+.stage-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.stage-tabs button{font:inherit;font-weight:700;border:2px solid var(--ink);background:var(--paper);color:var(--ink);padding:8px 16px;border-radius:999px;cursor:pointer}
+.stage-tabs button[aria-selected="true"]{background:var(--c);color:#fff;border-color:var(--c)}
+.stage-tabs button:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sq{background:var(--paper);border:2px solid var(--ink);border-radius:12px;padding:14px;display:grid;gap:6px;align-content:start;min-width:0;position:relative}
+.sq .no{font-family:var(--f-mono);font-size:.75rem;color:#fff;background:var(--c);border-radius:6px;padding:1px 8px;justify-self:start}
+.sq p{font-size:.88rem;color:var(--muted);line-height:1.6}
+.sq .play{font-size:.8rem;border-top:1px dashed var(--line);padding-top:6px;margin-top:4px;color:var(--ink)}
+.sq .play::before{content:"遊び方 ";font-weight:700;color:var(--c)}
+.sq.goal{background:var(--c);color:#fff;border-color:var(--c)}
+.sq.goal p,.sq.goal .play{color:#fff}
+.sq.goal .no{background:#fff;color:var(--c)}
+.sq.goal .play::before{color:#fff}
+.stage-note{margin-top:16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.stage-note b{font-family:var(--f-display);font-weight:400;color:var(--c)}
+
+/* 90 min */
+.timeline{display:grid;grid-template-columns:15fr 30fr 30fr 15fr;gap:6px;margin-bottom:14px}
+.seg{background:var(--chip);border-radius:10px;padding:12px;min-width:0}
+.seg:nth-child(1){background:var(--sun);color:var(--sun-ink)}
+.seg .t{font-family:var(--f-mono);font-size:.78rem}
+.seg h3{font-size:1rem}
+.seg p{font-size:.85rem}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.rule{padding:16px;border-left:4px solid var(--sun);background:var(--paper)}
+.rule h3{font-size:1rem}
+.rule p{font-size:.88rem;color:var(--muted)}
+
+/* Team */
+.org{display:grid;gap:16px}
+.chief{padding:18px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chief .badge{font-family:var(--f-display);background:var(--sun);color:var(--sun-ink);border-radius:10px;padding:6px 12px;font-size:1.1rem}
+.chief p{font-size:.9rem;opacity:.85}
+.teams{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.team{padding:18px;display:grid;gap:8px;align-content:start;min-width:0}
+.team .role{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.team ul{margin:0;padding-left:1.1em;font-size:.88rem}
+.team .who{font-size:.8rem;background:var(--chip);border-radius:8px;padding:6px 10px}
+.team .who b{color:var(--ink)}
+.phase-team{margin-top:20px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:620px;background:var(--paper);font-size:.88rem}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--chip);font-weight:700}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Site map */
+.sitemap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.page{padding:14px;min-width:0;display:grid;gap:4px;align-content:start}
+.page .path{font-family:var(--f-mono);font-size:.75rem;color:var(--sky)}
+.page p{font-size:.85rem;color:var(--muted);line-height:1.6}
+.price{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.plan{padding:18px;display:grid;gap:6px;align-content:start}
+.plan .yen{font-family:var(--f-display);font-size:1.6rem;font-variant-numeric:tabular-nums}
+.plan.pick{background:var(--sun);color:var(--sun-ink)}
+.plan p{font-size:.85rem}
+
+/* Quiz */
+.quiz{padding:22px;display:grid;gap:14px;max-width:680px}
+.quiz .q{font-weight:700;font-size:1.05rem}
+.opts{display:grid;gap:8px}
+.opts button{font:inherit;text-align:left;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:10px;padding:10px 14px;cursor:pointer}
+.opts button:hover{background:var(--chip)}
+.opts button:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.opts button.ok{background:var(--mint);color:#fff;border-color:var(--mint)}
+.opts button.ng{background:var(--berry);color:#fff;border-color:var(--berry)}
+.quiz .exp{font-size:.9rem;background:var(--chip);border-radius:10px;padding:10px 14px}
+.qbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:8px 18px;cursor:pointer}
+.btn:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* Roadmap */
+.road{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.step{padding:16px;display:grid;gap:6px;align-content:start;min-width:0}
+.step .when{font-family:var(--f-mono);font-size:.78rem;color:var(--muted)}
+.step ul{margin:0;padding-left:1.1em;font-size:.86rem}
+.next{margin-top:24px;padding:20px;background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.next ol{margin:8px 0 0;padding-left:1.3em}
+footer{padding-block:32px 48px;color:var(--muted);font-size:.82rem;text-align:center}
+
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:1fr}
+  .board,.sitemap{grid-template-columns:repeat(2,1fr)}
+  .teams,.rules,.price,.road{grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .board,.sitemap,.teams,.rules,.price,.road,.timeline{grid-template-columns:1fr}
+  section{padding-block:40px}
+}
+@media (prefers-reduced-motion:reduce){.dice.roll{animation:none}.dice{transition:none}}
+</style>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">企画案 ・ 主宰 りゅう坊</p>
+      <h1><span class="r">楽</span>学講座</h1>
+      <p class="motto">楽しくなければ、学びじゃない。</p>
+      <p class="lead">社会に出て「知らなかった…」となりがちなことから、仕事の基本、ビジネスの仕組みまで。すごろくのようにマスを進みながら、遊んで覚える講座です。</p>
+      <div class="tags">
+        <span class="tag">対象：高校生〜社会人3年目</span>
+        <span class="tag">1回90分</span>
+        <span class="tag">全3ステージ・24マス</span>
+        <span class="tag">オンライン＋対面</span>
+      </div>
+    </div>
+    <div class="panel dice-box">
+      <div class="dice" id="dice" role="button" tabindex="0" aria-label="サイコロを振って今日の講座を決める">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="dice-out" id="diceOut" aria-live="polite"><b>サイコロを振ってみよう</b><span class="small">出た目で今日の講座が決まる演出（トップページ案）</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="map">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">カリキュラム</p>
+      <h2>学びすごろく</h2>
+      <p class="lead">社会の基礎 → 仕事の基礎 → ビジネスの3ステージ。各ステージ8マスで、最後のマスは「ゴール課題」。修了ごとに段位が上がります。</p>
+    </div>
+    <div class="stage-tabs" role="tablist" aria-label="ステージ">
+      <button role="tab" id="t0" aria-selected="true" style="--c:var(--mint)" data-i="0">ステージ1 社会の基礎</button>
+      <button role="tab" id="t1" aria-selected="false" style="--c:var(--sky)" data-i="1">ステージ2 仕事の基礎</button>
+      <button role="tab" id="t2" aria-selected="false" style="--c:var(--berry)" data-i="2">ステージ3 ビジネス</button>
+    </div>
+    <div class="board" id="board" role="tabpanel"></div>
+    <div class="stage-note" id="stageNote"></div>
+  </div>
+</section>
+
+<section id="format">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">1回の流れ</p>
+      <h2>90分の型</h2>
+      <p class="lead">どの講座もこの型で作ります。講師が変わっても「楽しい」が保てるように、型そのものを楽学の商品にします。</p>
+    </div>
+    <div class="timeline">
+      <div class="seg"><p class="t">0–15分</p><h3>つかみ</h3><p>クイズかお題で、まず笑う・驚く。</p></div>
+      <div class="seg"><p class="t">15–45分</p><h3>体験</h3><p>ゲームやロールプレイで、やってみる。</p></div>
+      <div class="seg"><p class="t">45–75分</p><h3>ワーク</h3><p>チームで考えて、発表する。</p></div>
+      <div class="seg"><p class="t">75–90分</p><h3>ふりかえり</h3><p>持ち帰る一言を書いて、スタンプ。</p></div>
+    </div>
+    <div class="rules">
+      <div class="rule"><h3>講義は1回15分まで</h3><p>話を聞くだけの時間を連続15分以内に制限。残りは手と口を動かす時間。</p></div>
+      <div class="rule"><h3>点数より笑い</h3><p>ゲームは競争より協力型を中心に。間違えた人ほど盛り上がる仕掛けを入れる。</p></div>
+      <div class="rule"><h3>明日使える1個</h3><p>毎回「明日から使えること」を1つだけ決めて、カードにして持ち帰る。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">チーム編成</p>
+      <h2>楽学チーム</h2>
+      <p class="lead">学長りゅう坊のもとに5つの班。最初は3〜5人で兼任し、受講者が増えるにつれて班ごとに人を増やします。</p>
+    </div>
+    <div class="org">
+      <div class="panel chief">
+        <span class="badge">学長</span>
+        <div><h3>りゅう坊（プロデューサー）</h3><p>楽学のコンセプトを守る最終判断役。講座の「楽しいかどうか」チェックは学長がすべて通す。看板講師も兼ねる。</p></div>
+      </div>
+      <div class="teams">
+        <div class="panel team">
+          <p class="role">CURRICULUM</p>
+          <h3>カリキュラム班</h3>
+          <ul><li>24マスの内容と教材づくり</li><li>ゲスト講師との内容すり合わせ</li><li>理解度クイズの作成</li></ul>
+          <p class="who"><b>向いている人：</b>教えるのが好き、資料づくりが得意</p>
+        </div>
+        <div class="panel team">
+          <p class="role">FUN DESIGN</p>
+          <h3>あそび開発班</h3>
+          <ul><li>ゲーム・ロールプレイの設計</li><li>すごろく、段位、スタンプの仕組み</li><li>講座のMC・場の盛り上げ</li></ul>
+          <p class="who"><b>向いている人：</b>ボードゲーム好き、企画好き</p>
+        </div>
+        <div class="panel team">
+          <p class="role">LECTURERS</p>
+          <h3>講師団</h3>
+          <ul><li>専門マスを担当するゲスト講師</li><li>税理士、人事、営業、経営者など</li><li>90分の型に沿って登壇</li></ul>
+          <p class="who"><b>向いている人：</b>現場経験がある社会人</p>
+        </div>
+        <div class="panel team">
+          <p class="role">MEDIA</p>
+          <h3>広報・Web班</h3>
+          <ul><li>サイト更新、SNS、ショート動画</li><li>講座の様子の撮影と発信</li><li>申込フォームの管理</li></ul>
+          <p class="who"><b>向いている人：</b>SNSや動画編集が好き</p>
+        </div>
+        <div class="panel team">
+          <p class="role">OPERATIONS</p>
+          <h3>運営事務局</h3>
+          <ul><li>会場・日程・配信の準備</li><li>受講料の管理、問い合わせ対応</li><li>アンケート集計</li></ul>
+          <p class="who"><b>向いている人：</b>段取りと整理が得意</p>
+        </div>
+        <div class="panel team">
+          <p class="role">COMMUNITY</p>
+          <h3>コミュニティ班</h3>
+          <ul><li>受講生のLINE / Discord運営</li><li>修了生を「先輩サポーター」に</li><li>交流会・もくもく会の開催</li></ul>
+          <p class="who"><b>向いている人：</b>人と話すのが好き、面倒見がいい</p>
+        </div>
+      </div>
+    </div>
+    <div class="phase-team">
+      <table>
+        <thead><tr><th>時期</th><th>人数</th><th>体制</th></tr></thead>
+        <tbody>
+          <tr><td>立ち上げ期</td><td class="n">3〜5人</td><td>学長＋カリキュラム/あそび兼任1〜2人＋広報/運営兼任1〜2人。講師は学長と知人1〜2人。</td></tr>
+          <tr><td>成長期</td><td class="n">8〜12人</td><td>5班に分かれる。ゲスト講師を6〜8人に。修了生からサポーターを募集。</td></tr>
+          <tr><td>拡大期</td><td class="n">15人〜</td><td>班ごとにリーダーを置く。講師育成講座（楽学の型を教える側の講座）を開く。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="site">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Webサイト設計</p>
+      <h2>サイトの構成</h2>
+      <p class="lead">サイト自体も「遊べる」ことが大事。見るだけで楽学の雰囲気が伝わる、サイコロとすごろくのデザインで統一します。</p>
+    </div>
+    <div class="sitemap">
+      <div class="panel page"><p class="path">/</p><h3>トップ</h3><p>サイコロで今日の講座、ミニクイズ、次回の開催日。</p></div>
+      <div class="panel page"><p class="path">/map</p><h3>学びすごろく</h3><p>24マスの講座一覧。マスを押すと詳細と開催日。</p></div>
+      <div class="panel page"><p class="path">/how</p><h3>はじめての方へ</h3><p>90分の型、段位とスタンプ、受講の流れ。</p></div>
+      <div class="panel page"><p class="path">/team</p><h3>講師・チーム</h3><p>りゅう坊と講師団の紹介。一人ずつ「推しマス」付き。</p></div>
+      <div class="panel page"><p class="path">/voice</p><h3>受講生の声</h3><p>ふりかえりカードの言葉をそのまま掲載。</p></div>
+      <div class="panel page"><p class="path">/price</p><h3>料金</h3><p>体験・単発・通し受講の3プラン。</p></div>
+      <div class="panel page"><p class="path">/faq</p><h3>よくある質問</h3><p>オンライン参加、途中参加、領収書など。</p></div>
+      <div class="panel page"><p class="path">/join</p><h3>申込・お問い合わせ</h3><p>日程を選んで申込。講師・スタッフ募集もここ。</p></div>
+    </div>
+    <div class="price">
+      <div class="panel plan"><p class="eyebrow">お試し</p><h3>体験マス</h3><p class="yen">0円</p><p>ステージ1の1マス目を無料で。</p></div>
+      <div class="panel plan pick"><p class="eyebrow">いちばん人気の想定</p><h3>単発受講</h3><p class="yen">2,000円</p><p>好きなマスを1回90分で。</p></div>
+      <div class="panel plan"><p class="eyebrow">しっかり</p><h3>ステージ通し</h3><p class="yen">12,000円</p><p>8マス＋ゴール課題。修了で段位認定。</p></div>
+    </div>
+    <p class="small" style="margin-top:10px">料金は仮の設定です。立ち上げ期のアンケートで決めます。</p>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">トップページに置くミニクイズ（試作）</p>
+      <h2>楽学クイズ</h2>
+    </div>
+    <div class="panel quiz">
+      <div class="qbar"><span class="eyebrow" id="qNo">Q1 / 3</span><span class="small" id="qScore">正解 0</span></div>
+      <p class="q" id="qText"></p>
+      <div class="opts" id="qOpts"></div>
+      <p class="exp" id="qExp" hidden></p>
+      <div><button class="btn" id="qNext" hidden>次の問題</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="road">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">ロードマップ</p>
+      <h2>はじめの1年</h2>
+    </div>
+    <div class="road">
+      <div class="panel step"><p class="when">1〜2か月目</p><h3>準備</h3><ul><li>コアメンバー3人を集める</li><li>ステージ1の最初の3マスを作る</li><li>トップと申込ページだけ公開</li></ul></div>
+      <div class="panel step"><p class="when">3〜4か月目</p><h3>お試し開催</h3><ul><li>知人向けに無料で3回開催</li><li>アンケートで「楽しさ」を点数化</li><li>90分の型を修正</li></ul></div>
+      <div class="panel step"><p class="when">5〜8か月目</p><h3>本開講</h3><ul><li>ステージ1を有料で開講</li><li>ゲスト講師を3人迎える</li><li>サイトを全ページ公開</li></ul></div>
+      <div class="panel step"><p class="when">9〜12か月目</p><h3>広げる</h3><ul><li>ステージ2・3を開講</li><li>修了生サポーター制度</li><li>企業・学校向け出張講座</li></ul></div>
+    </div>
+    <div class="panel next">
+      <h3>まず決めること</h3>
+      <ol>
+        <li>メインの対象は学生か、若手社会人か</li>
+        <li>最初はオンラインか、対面か</li>
+        <li>コアメンバーに声をかける3人</li>
+      </ol>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">楽学講座 企画案 ・ 楽しく学ぶ、りゅう坊</div></footer>
+
+<script>
+const STAGES=[
+ {name:"社会の基礎",color:"var(--mint)",rank:"初段「ひとり立ち」",goal:"一人暮らしの1か月をシミュレーションして、家計簿を黒字で終える",sq:[
+  ["給与明細を読む","手取りと額面の違い、引かれているお金の正体。","明細の空欄を埋める穴埋めパズル"],
+  ["税金と年金","所得税、住民税、年金は何のため？","税金すごろくで1年を過ごしてみる"],
+  ["契約とハンコ","スマホ・賃貸契約で気をつける点。","怪しい契約書から罠を探すゲーム"],
+  ["お金の守り方","詐欺、悪質商法、ネットの落とし穴。","詐欺師役と見破り役のロールプレイ"],
+  ["保険と貯金","入るべき保険、貯金の目安。","人生イベントカードで備えを選ぶ"],
+  ["社会のマナー","敬語、メール、電話の基本。","NGメール添削バトル"],
+  ["情報を見抜く","ニュースやSNSの真偽を確かめる。","フェイクニュース当てクイズ"],
+  ["ゴール：ひとり立ち","1か月の生活を家計簿で乗り切る。","チームで家計簿サバイバル"]]},
+ {name:"仕事の基礎",color:"var(--sky)",rank:"二段「頼れる人」",goal:"架空の職場で、1週間分の仕事を段取りして発表する",sq:[
+  ["報連相","報告・連絡・相談のタイミング。","伝言ゲームで情報のズレを体験"],
+  ["段取り力","タスクの分け方と優先順位。","締切カードを並べ替えるパズル"],
+  ["話す・聞く","伝わる話し方と聞き方。","30秒プレゼン大会"],
+  ["資料づくり","1枚で伝わる資料の作り方。","ダメ資料ビフォーアフター"],
+  ["数字に強くなる","割合、前年比、Excelの基本。","数字で当てる推理クイズ"],
+  ["チームで働く","会議の回し方、意見の出し方。","役割カード付き会議ゲーム"],
+  ["失敗との付き合い方","ミスした時の謝り方と立て直し。","トラブル対応ロールプレイ"],
+  ["ゴール：頼れる人","架空の職場の1週間を段取りする。","チームで職場シミュレーション"]]},
+ {name:"ビジネス",color:"var(--berry)",rank:"三段「つくる人」",goal:"小さな商売を企画し、売上計画つきでピッチする",sq:[
+  ["お金の流れ","売上、原価、利益の関係。","駄菓子屋経営ゲーム"],
+  ["決算書入門","PLとBSをざっくり読む。","有名企業の決算書クイズ"],
+  ["マーケティング","誰に、何を、どう届けるか。","ペルソナ当てゲーム"],
+  ["売る力","営業と接客の基本。","1分セールス対決"],
+  ["企画の立て方","アイデアを形にする手順。","ランダムお題で企画会議"],
+  ["ブランドとSNS","発信で選ばれる理由をつくる。","架空商品のSNS運用バトル"],
+  ["起業と副業","はじめ方、届出、リスク。","起業すごろく"],
+  ["ゴール：つくる人","小さな商売を企画してピッチ。","楽学ピッチコンテスト"]]}
+];
+const board=document.getElementById('board'),note=document.getElementById('stageNote');
+const tabs=[...document.querySelectorAll('.stage-tabs button')];
+function showStage(i){
+  const s=STAGES[i];
+  tabs.forEach((t,j)=>t.setAttribute('aria-selected',j===i?'true':'false'));
+  board.setAttribute('aria-labelledby','t'+i);
+  board.style.setProperty('--c',s.color);
+  board.innerHTML=s.sq.map((q,k)=>`<div class="sq${k===7?' goal':''}" style="--c:${s.color}"><span class="no">${k===7?'GOAL':'マス '+(k+1)}</span><h3>${q[0]}</h3><p>${q[1]}</p><p class="play">${q[2]}</p></div>`).join('');
+  note.style.setProperty('--c',s.color);
+  note.innerHTML=`<b>修了で ${s.rank}</b><span class="small">ゴール課題：${s.goal}</span>`;
+}
+tabs.forEach(t=>t.addEventListener('click',()=>showStage(+t.dataset.i)));
+showStage(0);
+
+/* Dice */
+const PIPS={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const dice=document.getElementById('dice'),out=document.getElementById('diceOut');
+function face(n){[...dice.children].forEach((p,i)=>p.classList.toggle('on',PIPS[n].includes(i)))}
+face(5);
+function roll(){
+  const n=1+Math.floor(Math.random()*6);
+  const st=STAGES[Math.floor(Math.random()*3)];
+  const sq=st.sq[n-1];
+  dice.classList.remove('roll');void dice.offsetWidth;dice.classList.add('roll');
+  face(n);
+  out.innerHTML=`<b>${st.name} マス${n}「${sq[0]}」</b><span class="small">${sq[2]}</span>`;
+}
+dice.addEventListener('click',roll);
+dice.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();roll()}});
+
+/* Quiz */
+const QS=[
+ {q:"月給25万円（額面）の新社会人。手取りはだいたいいくら？",o:["約25万円","約20万円","約15万円"],a:1,e:"社会保険料や所得税が引かれ、手取りは額面の約8割が目安。2年目からは住民税も引かれて、さらに少し減ります。"},
+ {q:"クーリング・オフが使えないのはどれ？",o:["自宅に来た訪問販売","ネット通販での買い物","電話勧誘で契約した教材"],a:1,e:"ネット通販は自分から申し込む取引なので対象外。返品できるかはお店の返品ルール次第です。"},
+ {q:"売上100万円、原価60万円、その他の経費30万円。利益は？",o:["40万円","10万円","70万円"],a:1,e:"売上100 − 原価60 = 粗利40。そこから経費30を引いて、営業利益は10万円です。"}
+];
+let qi=0,score=0;
+const qText=document.getElementById('qText'),qOpts=document.getElementById('qOpts'),qExp=document.getElementById('qExp'),qNext=document.getElementById('qNext'),qNo=document.getElementById('qNo'),qScore=document.getElementById('qScore');
+function showQ(){
+  if(qi>=QS.length){
+    qNo.textContent='結果';qText.textContent=`${QS.length}問中 ${score}問 正解！`;
+    qOpts.innerHTML='';qExp.hidden=false;
+    qExp.textContent=score===3?'全問正解。ステージ1の先輩サポーター候補です。':'知らなかったことこそ、楽学で遊びながら覚えられます。';
+    qNext.textContent='もう一度';qNext.hidden=false;return;
+  }
+  const Q=QS[qi];
+  qNo.textContent=`Q${qi+1} / ${QS.length}`;qText.textContent=Q.q;qExp.hidden=true;qNext.hidden=true;
+  qOpts.innerHTML='';
+  Q.o.forEach((o,i)=>{const b=document.createElement('button');b.id='opt'+i;b.textContent=o;b.onclick=()=>answer(i,b);qOpts.appendChild(b)});
+}
+function answer(i,b){
+  const Q=QS[qi];const btns=[...qOpts.children];
+  btns.forEach(x=>x.disabled=true);
+  btns[Q.a].classList.add('ok');
+  if(i===Q.a)score++;else b.classList.add('ng');
+  qScore.textContent='正解 '+score;
+  qExp.textContent=(i===Q.a?'正解！ ':'おしい！ ')+Q.e;qExp.hidden=false;
+  qNext.textContent=qi===QS.length-1?'結果を見る':'次の問題';qNext.hidden=false;
+}
+qNext.addEventListener('click',()=>{if(qi>=QS.length){qi=0;score=0;qScore.textContent='正解 0'}else qi++;showQ()});
+showQ();
+</script>
