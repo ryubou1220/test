@@ -1,0 +1,22 @@
+【こもれびカフェ AIチーム 保存先一覧】（架空・練習用）
+
+保存フォルダ：
+/home/user/test/cafe-ai-team
+
+開くHTMLファイル（紹介ページ）：
+/home/user/test/cafe-ai-team/index.html
+
+その他：
+/home/user/test/cafe-ai-team/CLAUDE.md
+/home/user/test/cafe-ai-team/.claude/agents/cafe-content-writer.md
+/home/user/test/cafe-ai-team/.claude/agents/cafe-content-reviewer.md
+/home/user/test/cafe-ai-team/team.json
+/home/user/test/cafe-ai-team/inputs/カフェ設定.txt
+/home/user/test/cafe-ai-team/inputs/今回使う材料.txt
+/home/user/test/cafe-ai-team/roles/担当一覧.md
+/home/user/test/cafe-ai-team/最初の依頼.txt
+/home/user/test/cafe-ai-team/resume.txt
+/home/user/test/cafe-ai-team/使い方.md
+/home/user/test/cafe-ai-team/outputs/（発展編の成果物用・現在は空）
+
+※この環境はクラウド上のLinuxです。Windowsのパソコンに保存した場合は、エクスプローラー上部のアドレス欄にフォルダパスを貼り付けて開けます。

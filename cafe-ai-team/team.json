@@ -1,0 +1,33 @@
+{
+  "cafe": "こもれびカフェ（架空・練習用）",
+  "stage": "基本編完了：設定と紹介ページを作成済み。実務は未開始",
+  "route": "sns",
+  "answers": {
+    "q1": {"number": 1, "label": "お店の魅力を届ける：SNS投稿・新メニューのお知らせ"},
+    "q2": {"number": 3, "label": "お店の雰囲気を知ってほしい"},
+    "q3": {"number": 1, "label": "SNS投稿の下書き3本"},
+    "q4": {"number": 1, "label": "最後にまとめて見せてほしい"}
+  },
+  "purpose": "お店の雰囲気を知ってほしい",
+  "deliverable": "SNS投稿の下書き3本",
+  "review_timing": "最後にまとめて確認",
+  "members": [
+    {"role": "発信担当", "id": "cafe-content-writer", "definition": "/home/user/test/cafe-ai-team/.claude/agents/cafe-content-writer.md"},
+    {"role": "伝わり方チェック担当", "id": "cafe-content-reviewer", "definition": "/home/user/test/cafe-ai-team/.claude/agents/cafe-content-reviewer.md"}
+  ],
+  "handoff": "発信担当が作る → 伝わり方チェック担当が確かめる → リーダーが修正して最後にまとめて店長へ",
+  "files": {
+    "folder": "/home/user/test/cafe-ai-team",
+    "operation": "/home/user/test/cafe-ai-team/CLAUDE.md",
+    "index_html": "/home/user/test/cafe-ai-team/index.html",
+    "team_json": "/home/user/test/cafe-ai-team/team.json",
+    "cafe_settings": "/home/user/test/cafe-ai-team/inputs/カフェ設定.txt",
+    "materials": "/home/user/test/cafe-ai-team/inputs/今回使う材料.txt",
+    "roles": "/home/user/test/cafe-ai-team/roles/担当一覧.md",
+    "first_request": "/home/user/test/cafe-ai-team/最初の依頼.txt",
+    "resume": "/home/user/test/cafe-ai-team/resume.txt",
+    "guide": "/home/user/test/cafe-ai-team/使い方.md",
+    "locations": "/home/user/test/cafe-ai-team/保存先一覧.txt",
+    "outputs_dir": "/home/user/test/cafe-ai-team/outputs"
+  }
+}

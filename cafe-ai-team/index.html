@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>こもれびカフェのAI社員</title>
+<style>
+:root{--green:#2f5d4a;--green-d:#22463a;--cream:#faf6ee;--card:#fffdf8;--ink:#2b2b28;--muted:#6b6a63;--accent:#c9844b;--line:#e6dfd0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--green:#8cc4a8;--green-d:#a7d6bd;--cream:#1d211f;--card:#262b28;--ink:#ece8df;--muted:#b3afa5;--accent:#e0a670;--line:#3a403c}}
+:root[data-theme="dark"]{--green:#8cc4a8;--green-d:#a7d6bd;--cream:#1d211f;--card:#262b28;--ink:#ece8df;--muted:#b3afa5;--accent:#e0a670;--line:#3a403c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;line-height:1.8}
+main{max-width:760px;margin:0 auto;padding:32px 16px 48px}
+.note{font-size:.85rem;color:var(--muted);margin:0 0 20px}
+h1{font-size:1.7rem;line-height:1.4;color:var(--green-d);margin:0 0 12px}
+h2{font-size:1.25rem;color:var(--green-d);margin:40px 0 12px;padding-left:10px;border-left:5px solid var(--accent)}
+p{margin:0 0 10px}
+.members{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:640px){.members{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h3{margin:0 0 6px;font-size:1.1rem;color:var(--green)}
+.card .lead{font-size:.95rem}
+.card ul{margin:6px 0 0;padding-left:1.2em}
+.label{font-size:.85rem;font-weight:700;color:var(--accent);margin-top:8px}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;font-weight:700;color:var(--green)}
+textarea{width:100%;min-height:150px;font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);resize:vertical}
+button{margin-top:10px;font:inherit;font-weight:700;padding:10px 20px;border:0;border-radius:999px;background:var(--green);color:var(--cream);cursor:pointer}
+button:disabled{opacity:.6}
+#status{font-size:.9rem;color:var(--muted);margin-top:8px}
+details{margin-top:40px;font-size:.85rem;color:var(--muted)}
+details code{word-break:break-all}
+</style>
+</head>
+<body>
+<main>
+<p class="note">これは架空の「こもれびカフェ」を使った練習用の体験ページです。</p>
+
+<h1>あなたのカフェに、2人のAI社員が仲間入り</h1>
+<p>今回お願いするのは、お店の魅力を届ける仕事です。お店の落ち着いた雰囲気を知ってもらうために、SNS投稿の下書きを3本つくります。</p>
+
+<h2>今回の2人をご紹介</h2>
+<div class="members">
+  <section class="card">
+    <h3>発信担当</h3>
+    <p class="lead">お店の雰囲気が伝わる投稿文を考える係です。店長のメモとお店の事実から、お客さまに届く短い言葉をまとめます。</p>
+    <p class="label">こんな仕事を頼めます</p>
+    <ul>
+      <li>ゆっくり過ごせるカフェ時間を伝えるSNS投稿の下書き3本</li>
+      <li>コーヒーとケーキで過ごすひとときの紹介文</li>
+    </ul>
+  </section>
+  <section class="card">
+    <h3>伝わり方チェック担当</h3>
+    <p class="lead">読む人が迷わないか、値段や営業時間に間違いがないかを確かめる係です。</p>
+    <p class="label">こんな仕事を頼めます</p>
+    <ul>
+      <li>投稿の値段・営業時間・定休日を、お店の情報と照らし合わせる</li>
+      <li>言い過ぎや読みにくい言い回しを見つけて、直し方を伝える</li>
+    </ul>
+  </section>
+</div>
+
+<h2>2人は、こう協力します</h2>
+<p class="flow">発信担当が作る → チェック担当が確かめる → まとめてあなたへ</p>
+<p>確かめた内容をもとにリーダーが直してから届けます。あなたが見るのは最後の1回、仕上がった3本をまとめて確認するだけです。</p>
+
+<h2>まずは、こう頼んでみよう</h2>
+<textarea id="request" readonly aria-label="最初の依頼文">お店の落ち着いた雰囲気を知ってもらうために、SNS投稿の下書きを3本作ってください。発信担当と伝わり方チェック担当で協力して仕上げてください。</textarea>
+<button id="copy" type="button">この依頼文をコピー</button>
+<p id="status" role="status" aria-live="polite">コピーした依頼文を、チームを作った同じ会話に貼り付けてください。</p>
+
+<h2>次は、仕事を任せてみましょう</h2>
+<p>チームができたら、配布サイトのSTEP 02へ。同じ会話に発展編を貼って、仕事一式を任せてみましょう。</p>
+<p>上の短い依頼文は、まず1件だけ小さく試したいときの選択肢です。両方を順番に貼る必要はありません。</p>
+<p>役割の準備ができました。仕事は、次の依頼で始めます。</p>
+
+<details>
+  <summary>ファイルの場所を確認する</summary>
+  <p>保存フォルダ：<code>/home/user/test/cafe-ai-team</code><br>このページ：<code>/home/user/test/cafe-ai-team/index.html</code></p>
+</details>
+</main>
+<script>
+(() => {
+  const area = document.getElementById('request');
+  const button = document.getElementById('copy');
+  const status = document.getElementById('status');
+  if (!area || !button || !status) return;
+  const selectRequest = () => {
+    area.focus();
+    area.select();
+    area.setSelectionRange(0, area.value.length);
+  };
+  button.addEventListener('click', async () => {
+    if (!area.value.trim()) {
+      status.textContent = '依頼文が空です。依頼文を確認してください。';
+      area.focus();
+      return;
+    }
+    button.disabled = true;
+    let copied = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(area.value);
+          copied = true;
+        } catch {}
+      }
+      if (!copied) {
+        selectRequest();
+        try {
+          copied = typeof document.execCommand === 'function' && document.execCommand('copy');
+        } catch {}
+      }
+      if (copied) {
+        status.textContent = 'コピーしました。チームを作った同じ会話に貼り付けてください。';
+      } else {
+        selectRequest();
+        status.textContent = '自動コピーできませんでした。選択中の依頼文をCtrl+C（Macは⌘C）でコピーしてください。';
+      }
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
