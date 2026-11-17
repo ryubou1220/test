@@ -1,0 +1,15 @@
+【こもれびカフェ 仕事一式 保存先一覧】（架空・練習用）
+
+保存フォルダ：
+/home/user/test/cafe-ai-team/outputs/2026-11-17_雰囲気が伝わる発信セット
+
+開くHTMLファイル（成果物）：
+/home/user/test/cafe-ai-team/outputs/2026-11-17_雰囲気が伝わる発信セット/成果物.html
+
+分担ログ：
+/home/user/test/cafe-ai-team/outputs/2026-11-17_雰囲気が伝わる発信セット/分担ログ.md
+
+AI社員の紹介ページ：
+/home/user/test/cafe-ai-team/index.html
+
+※この環境はクラウド上のLinuxです。Windowsのパソコンに保存した場合は、エクスプローラー上部のアドレス欄にフォルダパスを貼り付けて開けます。

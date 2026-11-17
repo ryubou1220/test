@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>こもれびカフェの仕事一式</title>
+<style>
+:root{--green:#2f5d4a;--green-d:#1f4235;--cream:#faf6ee;--paper:#fffdf8;--ink:#2b2b28;--muted:#6b6a63;--accent:#c9844b;--accent-soft:#f3e3d2;--line:#e6dfd0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--green:#8cc4a8;--green-d:#a7d6bd;--cream:#1b1f1d;--paper:#252a27;--ink:#ece8df;--muted:#b3afa5;--accent:#e0a670;--accent-soft:#3b3127;--line:#3a403c}}
+:root[data-theme="dark"]{--green:#8cc4a8;--green-d:#a7d6bd;--cream:#1b1f1d;--paper:#252a27;--ink:#ece8df;--muted:#b3afa5;--accent:#e0a670;--accent-soft:#3b3127;--line:#3a403c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;line-height:1.8}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.hero{background:#2f5d4a;color:#faf6ee;padding:40px 0 36px}
+.hero .wrap{display:flex;gap:24px;align-items:center}
+.hero svg{flex:none}
+.hero .tag{display:inline-block;font-size:.8rem;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:999px;margin-bottom:8px}
+.hero h1{margin:0 0 8px;font-size:2rem;line-height:1.35}
+.hero p{margin:0;opacity:.92}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:0;list-style:none}
+.chips li{background:#faf6ee;color:#1f4235;font-weight:700;font-size:.9rem;padding:4px 12px;border-radius:999px}
+h2{font-size:1.4rem;color:var(--green-d);margin:44px 0 14px;padding-left:12px;border-left:6px solid var(--accent)}
+p{margin:0 0 10px}
+.board{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start}
+.tabs{display:flex;flex-direction:column;gap:8px}
+.tabs .group{font-size:.8rem;color:var(--muted);font-weight:700;margin-top:6px}
+.tabs button{font:inherit;text-align:left;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);cursor:pointer}
+.tabs button small{display:block;color:var(--muted);font-size:.8rem}
+.tabs button[aria-pressed="true"]{border-color:var(--green);background:var(--green);color:#faf6ee}
+.tabs button[aria-pressed="true"] small{color:#dcebe3}
+.stage{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px}
+.stage-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.stage-head h3{margin:0;font-size:1.15rem;color:var(--green)}
+.meta{font-size:.85rem;color:var(--muted)}
+.preview{min-height:280px;display:flex;justify-content:center;align-items:center;padding:16px;background:var(--accent-soft);border-radius:14px}
+.sns{width:100%;max-width:420px;background:#fff;color:#2b2b28;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.08);overflow:hidden}
+.sns .top{display:flex;gap:10px;align-items:center;padding:12px 14px}
+.sns .avatar{width:36px;height:36px;border-radius:50%;background:#2f5d4a;display:grid;place-items:center}
+.sns .name{font-weight:700;font-size:.95rem;line-height:1.3}
+.sns .name span{display:block;font-weight:400;color:#888;font-size:.78rem}
+.sns .band{height:110px;background:linear-gradient(135deg,#2f5d4a,#5f8d74 60%,#c9844b)}
+.sns .body{padding:12px 16px 16px;white-space:pre-wrap;font-size:.95rem}
+.pop{width:100%;max-width:400px;background:#fbf7ec;color:#2b2b28;border:10px solid #2f5d4a;border-radius:6px;padding:26px 22px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.pop .h{font-size:1.75rem;font-weight:800;line-height:1.4;color:#1f4235;margin:0 0 8px}
+.pop .s{margin:0 0 14px;color:#5a574f}
+.pop ul{list-style:none;margin:0 0 12px;padding:12px 0;border-top:2px dashed #c9844b;border-bottom:2px dashed #c9844b}
+.pop li{display:flex;justify-content:space-between;font-size:1.05rem;padding:2px 0}
+.pop li b{font-size:1.2rem}
+.pop .season{background:#c9844b;color:#fff;border-radius:8px;padding:6px 10px;font-weight:700;margin:0 0 10px}
+.pop .hours{font-size:.9rem;margin:0}
+.letter{width:100%;max-width:460px;background:#fff;color:#2b2b28;border-radius:6px;padding:24px 22px;box-shadow:0 4px 14px rgba(0,0,0,.08);border-top:6px solid #c9844b;white-space:pre-wrap}
+.letter .sig{display:block;text-align:right;margin-top:12px;color:#2f5d4a;font-weight:700}
+label.txt{display:block;font-size:.85rem;color:var(--muted);margin:16px 0 4px}
+textarea{width:100%;min-height:150px;font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);resize:vertical}
+.copyrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.copyrow button{font:inherit;font-weight:700;padding:10px 22px;border:0;border-radius:999px;background:var(--green);color:var(--cream);cursor:pointer}
+#copy-status{font-size:.88rem;color:var(--muted);margin:0}
+.improve{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.box h3{margin:0 0 8px;font-size:1rem;color:var(--green)}
+.ba{font-size:.92rem}
+.ba .before{background:var(--accent-soft);padding:6px 10px;border-radius:8px;margin:4px 0}
+.ba .after{background:rgba(47,93,74,.12);padding:6px 10px;border-radius:8px;margin:4px 0}
+.box ul,.decide ol{margin:0;padding-left:1.3em}
+.decide{background:var(--paper);border:2px solid var(--accent);border-radius:16px;padding:18px 22px}
+.decide li{margin-bottom:8px}
+footer{margin:44px 0 40px;font-size:.85rem;color:var(--muted)}
+footer a{color:var(--green)}
+@media (max-width:760px){
+ .hero .wrap{flex-direction:column;align-items:flex-start}
+ .hero h1{font-size:1.6rem}
+ .board,.improve{grid-template-columns:1fr}
+ .tabs{flex-direction:row;flex-wrap:wrap}
+ .tabs .group{width:100%}
+ .tabs button{flex:1 1 30%}
+ .pop .h{font-size:1.45rem}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="wrap">
+  <svg width="88" height="88" viewBox="0 0 88 88" aria-hidden="true"><circle cx="44" cy="44" r="42" fill="#faf6ee"/><path d="M24 40h34v12a14 14 0 0 1-14 14h-6a14 14 0 0 1-14-14z" fill="#2f5d4a"/><path d="M58 44h4a6 6 0 0 1 0 12h-5" fill="none" stroke="#2f5d4a" stroke-width="4"/><path d="M34 22c-4 5 4 7 0 12M44 20c-4 5 4 7 0 12" fill="none" stroke="#c9844b" stroke-width="3" stroke-linecap="round"/></svg>
+  <div>
+   <span class="tag">架空のカフェを使った練習用</span>
+   <h1>こもれびカフェの仕事一式</h1>
+   <p>お店の落ち着いた雰囲気を知ってもらうための、発信の下書きができあがりました。</p>
+   <ul class="chips"><li>SNS投稿 3本</li><li>店頭POP 1枚</li><li>常連さんへのお知らせ 1通</li></ul>
+  </div>
+ </div>
+</header>
+
+<main class="wrap">
+ <h2>今回任せたこと</h2>
+ <p>店長の目的は「お店の落ち着いた雰囲気を知ってほしい」です。発信担当が3つの下書きを書き、伝わり方チェック担当が値段・営業時間・言い過ぎがないかを確かめ、最後にリーダーが直してまとめました。</p>
+
+ <h2>できあがったもの</h2>
+ <p class="meta">左のボタンで原稿を切り替えると、見え方のイメージと原稿が変わります。どれも下書きで、まだどこにも投稿していません。</p>
+ <div class="board">
+  <div class="tabs" role="group" aria-label="表示する原稿">
+   <div class="group">SNS投稿</div>
+   <button type="button" data-key="p1" aria-pressed="true">投稿1<small>小さなカフェで、ひと息</small></button>
+   <button type="button" data-key="p2" aria-pressed="false">投稿2<small>午前も、帰り道にも</small></button>
+   <button type="button" data-key="p3" aria-pressed="false">投稿3<small>定番メニューの組み合わせ</small></button>
+   <div class="group">お店で使う</div>
+   <button type="button" data-key="pop" aria-pressed="false">店頭POP<small>入口に置く1枚</small></button>
+   <button type="button" data-key="note" aria-pressed="false">常連さんへのお知らせ<small>いつものお客さまへ</small></button>
+  </div>
+  <section class="stage" aria-live="polite">
+   <div class="stage-head"><h3 id="stage-title"></h3><span class="meta" id="stage-meta"></span></div>
+   <div class="preview" id="preview"></div>
+   <label class="txt" for="draft">表示中の原稿（選択してコピーもできます）</label>
+   <textarea id="draft" readonly></textarea>
+   <div class="copyrow">
+    <button id="copy" type="button">この原稿をコピー</button>
+    <p id="copy-status" role="status" aria-live="polite">コピーした原稿は、下書きとして使ってください。</p>
+   </div>
+  </section>
+ </div>
+
+ <h2>2人の協力で、ここが良くなりました</h2>
+ <div class="improve">
+  <div class="box">
+   <h3>お知らせ文の「税込」がひと目でわかるように</h3>
+   <p>チェック担当から「税込とあるのはほうじ茶ラテだけで、ほかの品が迷うかもしれない」と指摘がありました。値段そのものは合っていたので、言葉を1つ足しました。</p>
+   <div class="ba">
+    <div class="before">前：…たまごサンド（750円）もあわせてどうぞ。</div>
+    <div class="after">後：…たまごサンド（750円）もあわせてどうぞ（いずれも税込）。</div>
+   </div>
+  </div>
+  <div class="box">
+   <h3>そのほかは、確認した結果、修正は不要でした</h3>
+   <ul>
+    <li>値段・営業時間（10:00〜18:00）・水曜定休が、5つの原稿すべてでお店の情報と一致</li>
+    <li>「一番」「必ず」などの言い過ぎ、割引・限定数・口コミ実績はなし</li>
+    <li>予約・通販の案内はなし（どちらも扱っていないため）</li>
+    <li>3本の投稿は「場所」「時間帯」「メニュー」で切り口が重ならない</li>
+   </ul>
+  </div>
+ </div>
+
+ <h2>最後は、店長のあなたが決めること</h2>
+ <div class="decide">
+  <ol>
+   <li><b>どの投稿から使うか。</b>3本はそれぞれ切り口が違うので、出す順番や使う本数を決めてください。</li>
+   <li><b>お客さまの場面の例えを残すか。</b>「お散歩やお買い物の途中」「午前中／帰り道」は来店場面のたとえで、お店の事実ではありません。合わなければ削れます。</li>
+   <li><b>ほうじ茶ラテの一言をいつまで載せるか。</b>11月限定なので、12月以降にPOPやお知らせを使う場合は、その行を外してください。</li>
+  </ol>
+ </div>
+
+ <footer>
+  <p>これは架空の「こもれびカフェ」の練習用の下書きです。実際の投稿・掲示・送信はしていません。たとえ表現は提案であり、お店の事実として確認したものではありません。</p>
+  <p><a href="../../index.html">AI社員の紹介ページへ戻る</a></p>
+ </footer>
+</main>
+
+<script>
+(() => {
+ const D = {
+  p1:{title:'SNS投稿1',kind:'sns',text:'住宅街の中にある、小さなカフェです。\nお散歩やお買い物の途中に、ふらっと立ち寄っていただけるお店でありたいと思っています。\nコーヒーを一杯飲みながら、ひと息ついていただけたらうれしいです。\n営業 10:00〜18:00／水曜定休'},
+  p2:{title:'SNS投稿2',kind:'sns',text:'午前中のひとときに。夕方、帰り道のちょっとした休憩に。\nこもれびカフェは10:00〜18:00の営業です。\nご自分のペースで、のんびり過ごしていただけたらと思っています。\n水曜日は定休日です。お出かけの際はご注意ください。'},
+  p3:{title:'SNS投稿3',kind:'sns',text:'こもれびカフェの定番メニューです（税込）。\nブレンドコーヒー 450円／カフェラテ 550円\nチーズケーキ 600円／たまごサンド 750円\nコーヒーにケーキを添えて。お昼どきにはサンドとラテで。\n11月は、ほうじ茶ラテ（600円）もご用意しています。\n営業 10:00〜18:00／水曜定休'},
+  pop:{title:'店頭POP',kind:'pop',head:'住宅街の、小さなカフェで ひと息。',sub:'コーヒー一杯から、どうぞお気軽に。',items:[['ブレンドコーヒー','450円'],['カフェラテ','550円'],['チーズケーキ','600円'],['たまごサンド','750円']],season:'11月限定：ほうじ茶ラテ 600円',hours:'営業 10:00〜18:00・水曜定休（価格はすべて税込）'},
+  note:{title:'常連さんへのお知らせ',kind:'note',text:'いつもこもれびカフェにお越しいただき、ありがとうございます。\n住宅街の小さなお店ですが、これからもひと息つける場所でありたいと思っています。\n11月は、ほうじ茶ラテ（600円・税込）を営業時間内にお出ししています。ブレンドコーヒー（450円）、カフェラテ（550円）、チーズケーキ（600円）、たまごサンド（750円）もあわせてどうぞ（いずれも税込）。\n営業は10:00〜18:00、定休日は水曜日です。'}
+ };
+ const popText = d => [d.head, d.sub, ...d.items.map(i => i[0] + ' ' + i[1]), d.season, d.hours].join('\n');
+ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+ const preview = document.getElementById('preview');
+ const area = document.getElementById('draft');
+ const title = document.getElementById('stage-title');
+ const meta = document.getElementById('stage-meta');
+ const status = document.getElementById('copy-status');
+ const buttons = document.querySelectorAll('.tabs button');
+ const show = key => {
+  const d = D[key];
+  buttons.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.key === key)));
+  title.textContent = d.title;
+  preview.replaceChildren();
+  let text;
+  if (d.kind === 'sns') {
+   text = d.text;
+   const c = el('article', 'sns');
+   const top = el('div', 'top');
+   const av = el('div', 'avatar');
+   av.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 8h11v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z" fill="#faf6ee"/></svg>';
+   const nm = el('div', 'name', 'こもれびカフェ'); nm.appendChild(el('span', null, '下書きのプレビュー'));
+   top.append(av, nm);
+   c.append(top, el('div', 'band'), el('div', 'body', d.text));
+   preview.appendChild(c);
+  } else if (d.kind === 'pop') {
+   text = popText(d);
+   const c = el('article', 'pop');
+   c.append(el('p', 'h', d.head), el('p', 's', d.sub));
+   const ul = el('ul');
+   d.items.forEach(i => { const li = el('li'); li.append(el('span', null, i[0]), el('b', null, i[1])); ul.appendChild(li); });
+   c.append(ul, el('p', 'season', d.season), el('p', 'hours', d.hours));
+   preview.appendChild(c);
+  } else {
+   text = d.text;
+   const c = el('article', 'letter', d.text);
+   c.appendChild(el('span', 'sig', 'こもれびカフェ'));
+   preview.appendChild(c);
+  }
+  area.value = text;
+  meta.textContent = '約' + text.replace(/\n/g, '').length + '字';
+  status.textContent = 'コピーした原稿は、下書きとして使ってください。';
+ };
+ buttons.forEach(b => b.addEventListener('click', () => show(b.dataset.key)));
+ show('p1');
+ const btn = document.getElementById('copy');
+ const selectAll = () => { area.focus(); area.select(); area.setSelectionRange(0, area.value.length); };
+ btn.addEventListener('click', async () => {
+  btn.disabled = true;
+  let copied = false;
+  try {
+   if (navigator.clipboard && window.isSecureContext) {
+    try { await navigator.clipboard.writeText(area.value); copied = true; } catch {}
+   }
+   if (!copied) {
+    selectAll();
+    try { copied = typeof document.execCommand === 'function' && document.execCommand('copy'); } catch {}
+   }
+   if (copied) { status.textContent = title.textContent + 'をコピーしました。'; }
+   else { selectAll(); status.textContent = '自動コピーできませんでした。選択中の原稿をCtrl+C（Macは⌘C）でコピーしてください。'; }
+  } finally { btn.disabled = false; }
+ });
+})();
+</script>
+</body>
+</html>
