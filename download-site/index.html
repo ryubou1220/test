@@ -107,12 +107,12 @@
 <script>
 const LECTURES = [
   { no: "第1講義", name: "導入編",           desc: "情報販売・コンテンツ販売の基本を知る",           video: "https://youtu.be/5L72n705MEo", pdf: "files/lecture01.pdf", zukai: "" },
-  { no: "第2講義", name: "基礎知識編",       desc: "ビジネスの全体像をつかむ",                     video: "https://youtu.be/JL7rDvWRYAk", pdf: "files/lecture02.pdf", zukai: "files/zukai-lecture02.png" },
-  { no: "第3講義", name: "商品作成編",       desc: "“たった一人”のための商品を作る３ステップ",      video: "https://youtu.be/TgZDzTGERm0", pdf: "files/lecture03.pdf", zukai: "files/zukai-lecture03.png" },
-  { no: "第4講義", name: "商品販売編",       desc: "商品ページ（セールスレター）の書き方",          video: "https://youtu.be/srBBxvhKQAo", pdf: "files/lecture04.pdf", zukai: "" },
-  { no: "第5講義", name: "集客編",           desc: "人を呼ぶ導線を整える",                         video: "https://youtu.be/gsgxp0kyzGI", pdf: "files/lecture05.pdf", zukai: "" },
-  { no: "第6講義", name: "フォロー編",       desc: "始めた後の壁と、続けていくための考え方",        video: "https://youtu.be/BHLJRidFFO8", pdf: "files/lecture06.pdf", zukai: "files/zukai-lecture06.png" },
-  { no: "第7講義", name: "マインドセット編", desc: "経験を届け続けるための、５つの心の持ち方",      video: "https://youtu.be/IYpy3f333y0", pdf: "files/lecture07.pdf", zukai: "files/zukai-lecture07.png" },
+  { no: "第2講義", name: "マインドセット編", desc: "やり方を学ぶ前に、５つの心の持ち方を整える",    video: "https://youtu.be/IYpy3f333y0", pdf: "files/lecture02.pdf", zukai: "files/zukai-lecture02.png" },
+  { no: "第3講義", name: "基礎知識編",       desc: "ビジネスの全体像をつかむ",                     video: "https://youtu.be/JL7rDvWRYAk", pdf: "files/lecture03.pdf", zukai: "files/zukai-lecture03.png" },
+  { no: "第4講義", name: "商品作成編",       desc: "“たった一人”のための商品を作る３ステップ",      video: "https://youtu.be/TgZDzTGERm0", pdf: "files/lecture04.pdf", zukai: "files/zukai-lecture04.png" },
+  { no: "第5講義", name: "商品販売編",       desc: "商品ページ（セールスレター）の書き方",          video: "https://youtu.be/srBBxvhKQAo", pdf: "files/lecture05.pdf", zukai: "" },
+  { no: "第6講義", name: "集客編",           desc: "人を呼ぶ導線を整える",                         video: "https://youtu.be/gsgxp0kyzGI", pdf: "files/lecture06.pdf", zukai: "" },
+  { no: "第7講義", name: "フォロー編",       desc: "始めた後の壁と、続けていくための考え方",        video: "https://youtu.be/BHLJRidFFO8", pdf: "files/lecture07.pdf", zukai: "files/zukai-lecture07.png" },
 ];
 const BONUSES = [
   { no: "特典1", name: "コンテンツ販売を始める前の順番シート", desc: "何から始めればいいかを、順番に確認できます", pdf: "files/bonus01.pdf" },
@@ -149,14 +149,14 @@ const BONUSES = [
 
   <section>
     <div class="eyebrow">MAP</div>
-    <h2>全７回の地図</h2>
+    <h2>全７講義の地図</h2>
     <p class="lead">いま、どこを学んでいるのかを確かめたいときに見てください。</p>
-    <div class="map"><img src="files/zukai-map.png" alt="全7回の地図。知る（導入編・基礎知識編）、作る（商品作成編）、届ける（商品販売編・集客編）、続ける（フォロー編・マインドセット編）"></div>
+    <div class="map"><img src="files/zukai-map.png" alt="全7講義の地図。知る（導入編）、整える（マインドセット編）、作る（基礎知識編・商品作成編）、届ける（商品販売編・集客編）、続ける（フォロー編）"></div>
   </section>
 
   <section id="lectures">
     <div class="eyebrow">LECTURE</div>
-    <h2>講義（全７回）</h2>
+    <h2>講義（全７本）</h2>
     <p class="lead">動画は第1講義から順番に。講義資料と図解は、復習に使ってください。</p>
     <div class="grid" id="lecture-list"></div>
     <p class="lead" style="font-size:14px;margin-top:14px">※動画のナレーションはAI音声です。台本はすべて監修者りゅう坊が書き、内容を確認しています。</p>
