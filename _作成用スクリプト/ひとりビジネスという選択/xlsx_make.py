@@ -25,7 +25,7 @@ def header(ws, row, titles, widths):
 ws = wb.active; ws.title = "使い方"
 ws.column_dimensions["A"].width = 4; ws.column_dimensions["B"].width = 92
 rows = [("売上・経費管理表（特典6）", Font(name=F, size=16, bold=True, color=RED)),
-        ("ひとりビジネスという選択　第7講義「お金と守り編」", Font(name=F, size=10, color="595959")),
+        ("ひとりビジネスという選択　第5講義「お金と守り編」", Font(name=F, size=10, color="595959")),
         ("", None),
         ("■ 使い方", bfont),
         ("1. 「設定」シートに、年と、月の目標売上を入れます（黄色のセルが入力欄です）。", nfont),
