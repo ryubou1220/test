@@ -1,0 +1,12 @@
+# ── 会員サイトのパスワード設定（ベーシック認証）の見本 ──
+# サーバーの管理画面に「アクセス制限」「パスワード保護」の機能がある場合は、そちらを使うのがかんたんです。
+# 使う場合は、このファイルの名前を「.htaccess」に変えて、index.html と同じ場所に置きます。
+# AuthUserFile には、サーバー上の .htpasswd の「絶対パス」を書きます（サーバー会社のマニュアルで確認してください）。
+
+AuthType Basic
+AuthName "Content Freedom Members"
+AuthUserFile /home/あなたのアカウント/パス/.htpasswd
+Require valid-user
+
+# フォルダの中身を一覧表示させない
+Options -Indexes

@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>コンテンツ・フリーダム｜会員サイト</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #B00000; --red-dark: #7A0000; --ink: #2A1A1A; --sub: #6B5A55;
+    --bg: #FFFBF7; --card: #FFFFFF; --pale: #F6E3DE; --line: #EAD9D2; --ok: #1E7A3C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Meiryo', sans-serif; background: var(--bg); color: var(--ink); font-size: 18px; line-height: 1.75; }
+  a { color: inherit; }
+  img { max-width: 100%; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* top bar + nav */
+  .top { background: linear-gradient(120deg, var(--red-dark), var(--red)); color: #fff; }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; padding-bottom: 14px; }
+  .brand { font-weight: 900; font-size: 18px; line-height: 1.3; text-decoration: none; }
+  .brand small { display: block; font-size: 12px; color: #FFD9D0; letter-spacing: .12em; }
+  .member { font-size: 13px; font-weight: 700; background: rgba(255,255,255,.16); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+  nav.tabs { background: #fff; border-bottom: 2px solid var(--line); position: sticky; top: 0; z-index: 20; }
+  nav.tabs .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+  nav.tabs .wrap::-webkit-scrollbar { display: none; }
+  nav.tabs a { flex: none; text-decoration: none; font-weight: 900; font-size: 16px; color: var(--sub); padding: 14px 14px 12px; border-bottom: 4px solid transparent; }
+  nav.tabs a.on { color: var(--red); border-bottom-color: var(--red); }
+
+  /* common */
+  main.wrap { padding-top: 36px; padding-bottom: 24px; min-height: 60vh; }
+  .page { display: none; }
+  .page.on { display: block; }
+  .eyebrow { color: var(--red); font-weight: 900; letter-spacing: .12em; font-size: 14px; }
+  h1 { font-size: clamp(26px, 5vw, 38px); font-weight: 900; line-height: 1.35; margin: 4px 0 10px; }
+  h2 { font-size: clamp(22px, 4vw, 28px); font-weight: 900; margin: 36px 0 12px; }
+  .lead { color: var(--sub); font-weight: 700; }
+  .small { font-size: 14px; color: var(--sub); font-weight: 700; }
+  .card { background: var(--card); border-radius: 20px; padding: 24px; box-shadow: 0 10px 30px rgba(120,0,0,.08); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .tag { display: inline-block; background: var(--pale); color: var(--red); font-weight: 900; font-size: 14px; border-radius: 999px; padding: 3px 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 10px 22px; border-radius: 999px;
+         font-weight: 900; font-size: 17px; text-decoration: none; border: 2px solid transparent; cursor: pointer; font-family: inherit; background: none; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-line { background: #fff; color: var(--red); border-color: var(--red); }
+  .btn-dark { background: var(--ink); color: #fff; }
+  .btn.is-pending { background: #EFE6E2; color: #9A8A85; border-color: #EFE6E2; pointer-events: none; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+  /* home */
+  .welcome { background: radial-gradient(circle at 85% 10%, #D11A1A 0%, var(--red) 45%, var(--red-dark) 100%); color: #fff; border-radius: 24px; padding: 32px; }
+  .welcome h1 { color: #fff; }
+  .welcome p { color: #FFEDE8; font-weight: 700; }
+  .welcome .btn-line { border-color: #fff; }
+  .progress { margin-top: 18px; }
+  .bar { height: 14px; background: rgba(255,255,255,.25); border-radius: 999px; overflow: hidden; margin-top: 6px; }
+  .bar i { display: block; height: 100%; background: #fff; border-radius: 999px; width: 0; transition: width .4s; }
+  .news li { list-style: none; padding: 12px 0; border-bottom: 1px dashed var(--line); font-weight: 700; }
+  .news time { color: var(--red); font-size: 14px; margin-right: 10px; }
+  .lec-list { display: grid; gap: 10px; }
+  .lec-row { display: flex; align-items: center; gap: 14px; background: #fff; border-radius: 16px; padding: 14px 18px; text-decoration: none; box-shadow: 0 6px 18px rgba(120,0,0,.06); }
+  .lec-row b { flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .lec-row.done b { background: var(--ok); }
+  .lec-row span { flex: 1; font-weight: 900; }
+  .lec-row em { font-style: normal; font-size: 14px; font-weight: 700; color: var(--sub); }
+  .lec-row.done em { color: var(--ok); }
+
+  /* lecture */
+  .video { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 18px; overflow: hidden; margin: 18px 0 8px; }
+  .video iframe, .video button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video button { background: #1A0A0A center/cover no-repeat; cursor: pointer; color: #fff; font: 900 20px/1 inherit; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .video button::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.35); }
+  .video button span { position: relative; background: var(--red); border-radius: 999px; padding: 16px 28px; }
+  .zukai { margin-top: 12px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(120,0,0,.10); background: #fff; }
+  .zukai img { display: block; width: 100%; }
+  .done-box { display: flex; align-items: center; gap: 12px; background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-top: 20px; font-weight: 900; cursor: pointer; }
+  .done-box input { width: 26px; height: 26px; accent-color: var(--ok); }
+  .pager { display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; }
+  .rel li { margin: 6px 0 6px 1.2em; font-weight: 700; }
+
+  /* qa */
+  .search { width: 100%; font: inherit; font-size: 17px; padding: 14px 18px; border: 2px solid var(--line); border-radius: 999px; background: #fff; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+  .chip { font: inherit; font-size: 15px; font-weight: 900; border: 2px solid var(--line); background: #fff; color: var(--sub); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+  .chip.on { border-color: var(--red); color: var(--red); background: var(--pale); }
+  details.qa { background: #fff; border-radius: 16px; padding: 16px 20px; margin-bottom: 10px; box-shadow: 0 6px 18px rgba(120,0,0,.05); }
+  details.qa summary { font-weight: 900; cursor: pointer; list-style: none; padding-left: 2em; position: relative; }
+  details.qa summary::before { content: "Q"; position: absolute; left: 0; color: var(--red); }
+  details.qa div { margin-top: 10px; padding-left: 2em; position: relative; color: var(--ink); }
+  details.qa div::before { content: "A"; position: absolute; left: 0; color: var(--ok); font-weight: 900; }
+  details.qa .meta { font-size: 13px; color: var(--sub); font-weight: 700; margin-top: 6px; }
+
+  /* ask */
+  .form-frame { width: 100%; min-height: 900px; border: 0; border-radius: 16px; background: #fff; }
+  .steps3 { counter-reset: s; }
+  .steps3 li { list-style: none; position: relative; padding-left: 2.4em; margin: 10px 0; font-weight: 700; }
+  .steps3 li::before { counter-increment: s; content: counter(s); position: absolute; left: 0; top: 2px; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  dl.info { display: grid; grid-template-columns: 8em 1fr; gap: 8px 12px; font-weight: 700; }
+  dl.info dd { color: var(--sub); }
+  ul.rules li { margin: 6px 0 6px 1.2em; color: var(--sub); font-weight: 700; }
+
+  footer { margin-top: 48px; padding: 24px 0 36px; border-top: 2px solid var(--line); color: #9A8A85; font-size: 14px; font-weight: 700; text-align: center; }
+
+  /* viewer */
+  .viewer { position: fixed; inset: 0; background: rgba(30,10,10,.72); display: none; z-index: 50; padding: 24px; }
+  .viewer.open { display: flex; align-items: center; justify-content: center; }
+  .viewer-box { background: #fff; border-radius: 20px; width: min(1100px, 100%); height: min(92vh, 100%); display: flex; flex-direction: column; overflow: hidden; }
+  .viewer-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 2px solid var(--line); }
+  .viewer-head h3 { flex: 1; font-size: 17px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .viewer-head .btn { min-height: 42px; padding: 6px 16px; font-size: 15px; }
+  .viewer-body { flex: 1; background: #F3EEEC; min-height: 0; }
+  .viewer-body iframe { width: 100%; height: 100%; border: 0; }
+
+  @media (max-width: 760px) {
+    body { font-size: 17px; }
+    .grid { grid-template-columns: 1fr; }
+    .welcome { padding: 24px; border-radius: 18px; }
+    .btn { width: 100%; }
+    .pager .btn { width: auto; flex: 1; }
+    dl.info { grid-template-columns: 1fr; }
+    dl.info dd { margin-bottom: 8px; }
+    .viewer { padding: 0; } .viewer-box { border-radius: 0; height: 100%; }
+    .member { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  ─────────────────────────────────────────────────────────────
+  りゅう坊さんへ：このすぐ下の「設定」を書き換えるだけで更新できます。
+   ・お知らせを出す ………… NEWS に1行足す（新しいものを上に）
+   ・質問に回答する ………… QA に1件足す（質問フォームに届いた質問を、名前を出さずに載せる）
+   ・質問フォーム ……………… SUPPORT.formUrl に Googleフォームの「埋め込み用URL」を入れる
+   ・動画を差し替える ……… LECTURES の video を書き換える
+   くわしくは「はじめにお読みください.md」をご覧ください。
+  ─────────────────────────────────────────────────────────────
+-->
+<script>
+const SUPPORT = {
+  formUrl: "",                 // 例："https://docs.google.com/forms/d/e/XXXXXXXX/viewform?embedded=true"
+  period: "ご購入日から90日間",
+  reply: "3営業日以内に、このサイトの「Q&A」ページに回答を掲載します",
+};
+
+const NEWS = [
+  { date: "2026-11-25", text: "会員サイトをオープンしました。まずは「受講ガイド」と第1講義からご覧ください。" },
+];
+
+const LECTURES = [
+  { no: 1, name: "導入編",           desc: "情報販売・コンテンツ販売の基本を知る",           video: "https://youtu.be/SLSdRzcqa4U", pdf: "files/lecture01.pdf", zukai: "",                         bonus: [1, 4] },
+  { no: 2, name: "マインドセット編", desc: "やり方を学ぶ前に、５つの心の持ち方を整える",    video: "https://youtu.be/IYpy3f333y0", pdf: "files/lecture02.pdf", zukai: "files/zukai-lecture02.png", bonus: [5, 6] },
+  { no: 3, name: "基礎知識編",       desc: "ビジネスの全体像をつかむ",                     video: "https://youtu.be/JL7rDvWRYAk", pdf: "files/lecture03.pdf", zukai: "files/zukai-lecture03.png", bonus: [] },
+  { no: 4, name: "商品作成編",       desc: "“たった一人”のための商品を作る３ステップ",      video: "https://youtu.be/jbncqZ6azzo", pdf: "files/lecture04.pdf", zukai: "files/zukai-lecture04.png", bonus: [2] },
+  { no: 5, name: "商品販売編",       desc: "商品ページ（セールスレター）の書き方",          video: "https://youtu.be/srBBxvhKQAo", pdf: "files/lecture05.pdf", zukai: "",                         bonus: [3] },
+  { no: 6, name: "集客編",           desc: "人を呼ぶ導線を整える",                         video: "https://youtu.be/gsgxp0kyzGI", pdf: "files/lecture06.pdf", zukai: "",                         bonus: [] },
+  { no: 7, name: "フォロー編",       desc: "始めた後の壁と、続けていくための考え方",        video: "https://youtu.be/BHLJRidFFO8", pdf: "files/lecture07.pdf", zukai: "files/zukai-lecture07.png", bonus: [7, 8] },
+];
+
+const BONUSES = [
+  { no: 1, name: "コンテンツ販売を始める前の順番シート", desc: "何から始めればいいかを、順番に確認できます", pdf: "files/bonus01.pdf" },
+  { no: 2, name: "ペルソナ作成オリジナルシート", desc: "“たった一人”のお客様を浮き彫りにします（作成例つき）", pdf: "files/bonus02.pdf" },
+  { no: 3, name: "商品ページがかんたんに作れる下書きシート", desc: "埋めていくだけで、商品ページの下書きができます", pdf: "files/bonus03.pdf" },
+  { no: 4, name: "電子書籍『ひとりビジネスという選択』", desc: "ひとりビジネスという働き方を知るための一冊です", pdf: "files/bonus04.pdf" },
+  { no: 5, name: "マインドセット・ワークブック（７日間）", desc: "１日１テーマ、書き込んで心を整えます", pdf: "files/bonus05.pdf" },
+  { no: 6, name: "経験の棚卸しシート", desc: "経験を書き出して、商品のタネを見つけます", pdf: "files/bonus06.pdf" },
+  { no: 7, name: "つまずいたときの立て直しガイド", desc: "手が止まったときに開く、場面別のヒント集です", pdf: "files/bonus07.pdf" },
+  { no: 8, name: "よくある質問集", desc: "受講中によくいただく質問と、その答えです", pdf: "files/bonus08.pdf" },
+];
+
+// Q&A：質問フォームに届いた質問は、名前を出さずにここへ足していきます（新しいものを上に）
+const QA = [
+  { cat: "商品づくり", q: "特別な経験や資格がなくても、商品は作れますか？", a: "作れます。大切なのは専門性よりも、「誰かの悩みを解決できるかどうか」です。あなたが相手より少しだけ先を歩いている分野、たとえば失敗して乗り越えたことや、長く続けてきたことが、商品のタネになります。第3講義「基礎知識編」の「専門性を強調しない」も思い出してください。" },
+  { cat: "商品づくり", q: "何を商品にすればいいか、決められません。", a: "①これまでに人から相談されたこと、②お金や時間をかけて学んだこと、③失敗から立ち直った経験、の３つを書き出してみましょう。特典6「経験の棚卸しシート」が使えます。そのうえで、第4講義「商品作成編」の「悩みのリサーチ先」で、同じ悩みを持つ人がいるかを確かめます。" },
+  { cat: "商品づくり", q: "ペルソナは、どこまで細かく決めればいいですか？", a: "特典2「ペルソナ作成オリジナルシート」のSTEP6の一文が言い切れて、声に出して読んだときに顔が思い浮かぶところまでが目安です。年齢は「30〜40代」ではなく「42歳」のように、１つに決めましょう。" },
+  { cat: "商品づくり", q: "ペルソナを一人にしぼると、買ってくれる人が減りませんか？", a: "むしろ逆です。万人向けの商品は、誰の心にも届きにくくなります。一人に向けて作ると、似た悩みを持つ人が「これは自分のことだ」と感じてくれます。" },
+  { cat: "商品づくり", q: "60点で世に出して、評判が悪くなりませんか？", a: "完璧を待っていると、いつまでも完成しません。購入者の声を聞きながら、少しずつ改善していけば大丈夫です。ただし、ゴールの一文・ステップ・サポートの約束は、守れる状態にしてから出しましょう。改訂版を購入者に無料で届けると、信頼にもつながります。" },
+  { cat: "商品づくり", q: "商品の形式は、PDF・動画・音声のどれがいいですか？", a: "第3講義「基礎知識編」の「提供が容易なものを選ぶ」が基本です。まずはPDFや電子書籍など、あなたが作りやすく、相手が受け取りやすい形から始めましょう。" },
+  { cat: "安心とルール", q: "返金保証は付けたほうがいいですか？", a: "購入のハードルを下げる効果があります。付ける場合は、条件・期間・手続きの方法をはっきり書き、必ず守れる約束にしましょう。" },
+  { cat: "安心とルール", q: "販売するときに、法律で気をつけることはありますか？", a: "ネットで商品を販売するときは、特定商取引法にもとづく表記（販売者名・連絡先・価格・支払い時期・返品の条件など）が必要です。また、「必ず月○万円稼げる」など結果を断定する表現は、景品表示法などに触れるおそれがあります。不安な点は、消費者庁の情報や専門家に確認してください。" },
+  { cat: "集客と販売", q: "集客は、何から始めればいいですか？", a: "入口は、まず１つに集中しましょう。書くのが得意ならブログ、話すのが得意なら音声や動画など、あなたの得意に合う入口を選んでください。くわしくは第6講義「集客編」をご覧ください。" },
+  { cat: "集客と販売", q: "SNS・ブログ・メルマガは、全部やるべきですか？", a: "全部やる必要はありません。どれも「集客・教育・販売」のための手段のひとつです。ただ、商品を買ってくれた人とは、メールなどでつながり続けることをおすすめします。" },
+  { cat: "集客と販売", q: "ステップメールは、何通くらい必要ですか？", a: "最初は３〜７通くらいが目安です。登録のお礼、価値を伝える回、商品の案内、締切のお知らせ、という流れが基本です。" },
+  { cat: "集客と販売", q: "商品が売れません。どこを見直せばいいですか？", a: "集客・教育・販売のどこで止まっているかを確かめましょう。人が来ていない → 集客を見直す。来ているのに申し込まれない → 教育と販売（価値・理由・不安への答え）を見直す。買ってもらえても満足されない → 商品そのものを見直す。" },
+  { cat: "取り組み方", q: "パソコンが苦手でも、できますか？", a: "できる範囲から始めれば大丈夫です。たとえば、Wordで文章を書いてPDFにするだけでも、立派な商品になります。わからない操作は、「質問する」ページから気軽にご質問ください。" },
+  { cat: "取り組み方", q: "なかなか時間が取れません。", a: "１日30分でも十分です。朝など、あなたの「腐らない時間帯」に固定すると、続けやすくなります。" },
+  { cat: "取り組み方", q: "途中で、やる気がなくなってしまいました。", a: "誰にでもあることです。完璧を目指さず、できたことを振り返ってみてください。特典7「つまずいたときの立て直しガイド」もおすすめです。ワクワクしながら、リラックスして、また一歩ずつ進めていきましょう。" },
+];
+</script>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home"><small>CONTENT FREEDOM</small>コンテンツ・フリーダム　会員サイト</a>
+    <span class="member">購入者専用</span>
+  </div>
+</header>
+<nav class="tabs" aria-label="会員サイトのメニュー">
+  <div class="wrap">
+    <a href="#home" data-tab="home">ホーム</a>
+    <a href="#lectures" data-tab="lectures">講義</a>
+    <a href="#bonus" data-tab="bonus">特典・教材</a>
+    <a href="#qa" data-tab="qa">Q&amp;A</a>
+    <a href="#ask" data-tab="ask">質問する</a>
+    <a href="#info" data-tab="info">ご利用案内</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ホーム -->
+  <section class="page" id="p-home">
+    <div class="welcome">
+      <div class="eyebrow" style="color:#FFD9D0">WELCOME</div>
+      <h1>ようこそ、会員サイトへ</h1>
+      <p>講義の動画・教材・質問サポートは、すべてこのサイトにまとまっています。<br>あなたの「当たり前」が、誰かの「知りたかった」になる。一歩ずつ、一緒に進めていきましょう。</p>
+      <div class="progress">
+        <div style="font-weight:900">あなたの進み具合：<span id="prog-text">0 / 7 講義</span></div>
+        <div class="bar"><i id="prog-bar"></i></div>
+      </div>
+      <div class="btns">
+        <a class="btn btn-line" id="next-btn" href="#lecture-1">第1講義から始める</a>
+        <a class="btn btn-line" href="files/guide.pdf" target="_blank" rel="noopener">受講ガイド（PDF）</a>
+      </div>
+      <p class="small" style="color:#FFD9D0;margin-top:10px">※進み具合は、お使いの端末（ブラウザ）ごとに記録されます。</p>
+    </div>
+
+    <h2>お知らせ</h2>
+    <div class="card"><ul class="news" id="news"></ul></div>
+
+    <h2>講義の一覧</h2>
+    <div class="lec-list" id="home-lectures"></div>
+
+    <h2>全７講義の地図</h2>
+    <div class="zukai"><img src="files/zukai-map.png" alt="全7講義の地図。知る（導入編）、整える（マインドセット編）、作る（基礎知識編・商品作成編）、届ける（商品販売編・集客編）、続ける（フォロー編）" loading="lazy"></div>
+  </section>
+
+  <!-- 講義一覧 -->
+  <section class="page" id="p-lectures">
+    <div class="eyebrow">LECTURE</div>
+    <h1>講義（全７本）</h1>
+    <p class="lead">第1講義から順番に見ていきましょう。見終わったら「受講済み」にチェックを入れてください。</p>
+    <div class="lec-list" id="lecture-index" style="margin-top:18px"></div>
+    <p class="small" style="margin-top:14px">※動画のナレーションはAI音声です。台本はすべて監修者りゅう坊が書き、内容を確認しています。</p>
+  </section>
+
+  <!-- 講義ページ（1本ずつ） -->
+  <section class="page" id="p-lecture"></section>
+
+  <!-- 特典・教材 -->
+  <section class="page" id="p-bonus">
+    <div class="eyebrow">BONUS</div>
+    <h1>特典・教材</h1>
+    <p class="lead">書き込み式のシートは、印刷して手で書き込むのがおすすめです。</p>
+    <div class="grid" id="bonus-list" style="margin-top:18px"></div>
+    <div class="card" style="margin-top:18px;background:var(--ink);color:#fff">
+      <h3 style="font-size:22px">まとめてダウンロード</h3>
+      <p style="color:#E6D8D3;font-weight:700">講義資料・特典・受講ガイド・図解を、１つのZIPファイルで受け取れます。</p>
+      <div class="btns"><a class="btn btn-line" href="files/content-freedom-materials.zip" download>ZIPをダウンロード</a></div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="page" id="p-qa">
+    <div class="eyebrow">Q&amp;A</div>
+    <h1>Q&amp;A（質問と回答）</h1>
+    <p class="lead">受講者のみなさんからいただいた質問と、その回答です。同じところで迷ったら、まずここを探してみてください。</p>
+    <input class="search" id="qa-search" type="search" placeholder="キーワードで探す（例：ペルソナ、時間、価格）" style="margin-top:16px" aria-label="Q&Aを検索">
+    <div class="chips" id="qa-chips"></div>
+    <div id="qa-list"></div>
+    <p class="small" id="qa-empty" style="display:none">見つかりませんでした。「質問する」ページから、お気軽にご質問ください。</p>
+  </section>
+
+  <!-- 質問する -->
+  <section class="page" id="p-ask">
+    <div class="eyebrow">SUPPORT</div>
+    <h1>質問する</h1>
+    <p class="lead">質問やサポートは、すべてこのページ（Web）で受け付けています。</p>
+    <div class="grid" style="margin-top:18px">
+      <div class="card">
+        <h3 style="color:var(--red)">質問の流れ</h3>
+        <ol class="steps3">
+          <li>まず「Q&amp;A」に、同じ質問がないか探す</li>
+          <li>なければ、下のフォームから質問する</li>
+          <li>回答は、このサイトの「Q&amp;A」ページに掲載</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--red)">サポートについて</h3>
+        <dl class="info">
+          <dt>受付期間</dt><dd id="sup-period"></dd>
+          <dt>回答</dt><dd id="sup-reply"></dd>
+          <dt>書き方</dt><dd>「どの講義（教材）の、どの部分か」を書いていただくと、スムーズにお答えできます。</dd>
+        </dl>
+      </div>
+    </div>
+    <p class="small" style="margin-top:12px">※回答は、お名前を出さずにQ&amp;Aへ掲載します。ほかの受講者の方の参考にもなります。個人的な内容など、掲載を望まない場合は、その旨をフォームにお書きください。</p>
+    <div id="form-area" style="margin-top:18px"></div>
+  </section>
+
+  <!-- ご利用案内 -->
+  <section class="page" id="p-info">
+    <div class="eyebrow">INFORMATION</div>
+    <h1>ご利用案内</h1>
+    <div class="card" style="margin-top:16px">
+      <h3 style="color:var(--red)">このサイトの使い方</h3>
+      <ul class="rules">
+        <li>「講義」から、動画を順番に見ていきます。動画の下に、講義資料（PDF）と図解があります。</li>
+        <li>見終わった講義は「受講済み」にチェックを入れると、ホームに進み具合が表示されます。</li>
+        <li>「特典・教材」から、特典のPDFや、教材をまとめたZIPをダウンロードできます。</li>
+        <li>わからないことは、「Q&amp;A」を探し、なければ「質問する」から質問してください。</li>
+      </ul>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="color:var(--red)">ご利用にあたってのお願い</h3>
+      <ul class="rules">
+        <li>このサイトと教材は、ご購入いただいたご本人だけがご利用ください。ログイン情報や教材の、第三者への共有・転載・転売は禁止です。</li>
+        <li>講座の内容は、結果や収入を約束するものではありません。成果には個人差があります。</li>
+        <li>動画のナレーションはAI音声です。台本はすべて監修者りゅう坊が書き、内容を確認しています。</li>
+        <li>特典の記入例・作成例に登場する人物は、架空のものです。</li>
+        <li>教材の作成やデザインの一部に、AIツールを活用しています。</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>Copyright © りゅう坊 All Rights Reserved.</footer>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title">
+  <div class="viewer-box">
+    <div class="viewer-head">
+      <h3 id="viewer-title"></h3>
+      <a class="btn btn-line" id="viewer-open" href="#" target="_blank" rel="noopener">別の画面で開く</a>
+      <button class="btn btn-red" id="viewer-close" type="button">閉じる ✕</button>
+    </div>
+    <div class="viewer-body" id="viewer-body"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const yt = (url) => { const m = (url || "").match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{11})/); return m && m[1]; };
+  const btn = (label, href, cls, extra = "") => href ? `<a class="btn ${cls}" href="${href}" target="_blank" rel="noopener"${extra}>${label}</a>` : `<span class="btn ${cls} is-pending">${label}（準備中）</span>`;
+
+  // ---- 受講済みの記録（この端末のブラウザだけに保存）
+  const KEY = "cf-member-done";
+  let done = [];
+  try { done = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { done = []; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} };
+  const isDone = (n) => done.includes(n);
+
+  function renderProgress() {
+    $("prog-text").textContent = `${done.length} / ${LECTURES.length} 講義`;
+    $("prog-bar").style.width = (done.length / LECTURES.length * 100) + "%";
+    const next = LECTURES.find((l) => !isDone(l.no));
+    $("next-btn").textContent = next ? (done.length ? `つづき：第${next.no}講義 ${next.name}` : "第1講義から始める") : "全講義を見終わりました！復習する";
+    $("next-btn").href = next ? `#lecture-${next.no}` : "#lectures";
+    const rows = LECTURES.map((l) => `
+      <a class="lec-row${isDone(l.no) ? " done" : ""}" href="#lecture-${l.no}">
+        <b>${isDone(l.no) ? "✓" : l.no}</b><span>第${l.no}講義　${esc(l.name)}<br><em style="font-weight:700">${esc(l.desc)}</em></span>
+        <em>${isDone(l.no) ? "受講済み" : "未受講"}</em>
+      </a>`).join("");
+    $("home-lectures").innerHTML = rows; $("lecture-index").innerHTML = rows;
+  }
+
+  // ---- 講義ページ
+  function renderLecture(n) {
+    const l = LECTURES.find((x) => x.no === n); if (!l) return false;
+    const id = yt(l.video);
+    const prev = LECTURES.find((x) => x.no === n - 1), next = LECTURES.find((x) => x.no === n + 1);
+    const rel = l.bonus.map((b) => BONUSES.find((x) => x.no === b)).filter(Boolean);
+    $("p-lecture").innerHTML = `
+      <div class="eyebrow">LECTURE ${l.no}</div>
+      <h1>第${l.no}講義　${esc(l.name)}</h1>
+      <p class="lead">${esc(l.desc)}</p>
+      <div class="video">${id ? `<button type="button" data-yt="${id}" style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)" aria-label="動画を再生"><span>▶ 動画を再生</span></button>` : `<button type="button" disabled><span>動画は準備中です</span></button>`}</div>
+      <p class="small">※ナレーションはAI音声です（台本・監修：りゅう坊）</p>
+      <div class="btns">${btn("講義資料（PDF）", l.pdf, "btn-red")}${l.zukai ? btn("図解を大きく見る", l.zukai, "btn-line") : ""}</div>
+      ${l.zukai ? `<div class="zukai"><img src="${l.zukai}" alt="第${l.no}講義 ${esc(l.name)}の図解" loading="lazy"></div>` : ""}
+      ${rel.length ? `<h2>この講義と一緒に使う特典</h2><div class="card"><ul class="rel">${rel.map((b) => `<li><a href="${b.pdf}" target="_blank" rel="noopener">特典${b.no}　${esc(b.name)}</a></li>`).join("")}</ul></div>` : ""}
+      <label class="done-box"><input type="checkbox" id="done-check" ${isDone(n) ? "checked" : ""}> この講義を受講済みにする</label>
+      <div class="pager">
+        ${prev ? `<a class="btn btn-line" href="#lecture-${prev.no}">← 第${prev.no}講義</a>` : `<a class="btn btn-line" href="#lectures">← 講義一覧</a>`}
+        ${next ? `<a class="btn btn-red" href="#lecture-${next.no}">第${next.no}講義 →</a>` : `<a class="btn btn-red" href="#ask">質問する →</a>`}
+      </div>`;
+    $("done-check").addEventListener("change", (e) => {
+      done = e.target.checked ? [...new Set([...done, n])].sort((a, b) => a - b) : done.filter((x) => x !== n);
+      save(); renderProgress();
+    });
+    const play = $("p-lecture").querySelector("button[data-yt]");
+    if (play) play.addEventListener("click", () => {
+      play.parentNode.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${play.dataset.yt}?rel=0&autoplay=1" title="第${l.no}講義 ${esc(l.name)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    });
+    return true;
+  }
+
+  // ---- 特典
+  $("bonus-list").innerHTML = BONUSES.map((b) => `
+    <div class="card"><span class="tag">特典${b.no}</span><h3 style="font-size:21px;margin-top:8px">${esc(b.name)}</h3>
+    <p class="small">${esc(b.desc)}</p><div class="btns">${btn("PDFで見る", b.pdf, "btn-red")}</div></div>`).join("");
+
+  // ---- お知らせ
+  $("news").innerHTML = NEWS.map((n) => `<li><time>${esc(n.date)}</time>${esc(n.text)}</li>`).join("") || "<li>お知らせはありません。</li>";
+
+  // ---- Q&A
+  const cats = ["すべて", ...new Set(QA.map((x) => x.cat))];
+  let cat = "すべて";
+  $("qa-chips").innerHTML = cats.map((c) => `<button type="button" class="chip${c === cat ? " on" : ""}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+  function renderQA() {
+    const kw = $("qa-search").value.trim();
+    const list = QA.filter((x) => (cat === "すべて" || x.cat === cat) && (!kw || (x.q + x.a).includes(kw)));
+    $("qa-list").innerHTML = list.map((x) => `<details class="qa"><summary>${esc(x.q)}</summary><div>${esc(x.a)}<p class="meta">${esc(x.cat)}${x.date ? "｜" + esc(x.date) : ""}</p></div></details>`).join("");
+    $("qa-empty").style.display = list.length ? "none" : "block";
+  }
+  $("qa-chips").addEventListener("click", (e) => {
+    const c = e.target.closest(".chip"); if (!c) return;
+    cat = c.dataset.cat; document.querySelectorAll(".chip").forEach((x) => x.classList.toggle("on", x === c)); renderQA();
+  });
+  $("qa-search").addEventListener("input", renderQA);
+
+  // ---- 質問フォーム
+  $("sup-period").textContent = SUPPORT.period; $("sup-reply").textContent = SUPPORT.reply;
+  $("form-area").innerHTML = SUPPORT.formUrl
+    ? `<iframe class="form-frame" src="${SUPPORT.formUrl}" title="質問フォーム" loading="lazy">読み込んでいます…</iframe>`
+    : `<div class="card" style="border:2px dashed var(--line);box-shadow:none"><h3 style="color:var(--red)">質問フォームは準備中です</h3><p class="small">もうしばらくお待ちください。</p></div>`;
+
+  // ---- ページの切り替え
+  function route() {
+    const h = (location.hash || "#home").slice(1);
+    let tab = h, page = h;
+    const m = h.match(/^lecture-(\d+)$/);
+    if (m && renderLecture(+m[1])) { tab = "lectures"; page = "lecture"; }
+    if (!$("p-" + page)) { tab = page = "home"; }
+    document.querySelectorAll(".page").forEach((p) => p.classList.toggle("on", p.id === "p-" + page));
+    document.querySelectorAll("nav.tabs a").forEach((a) => a.classList.toggle("on", a.dataset.tab === tab));
+    if (page === "qa") renderQA();
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  renderProgress(); route();
+
+  // ---- PDF・図解をその場で開く（パソコンのみ。スマホは標準の表示）
+  const viewer = $("viewer"), body = $("viewer-body");
+  const narrow = () => window.matchMedia("(max-width: 760px)").matches;
+  function hide() { viewer.classList.remove("open"); body.innerHTML = ""; document.body.style.overflow = ""; }
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]");
+    if (!a || a.id === "viewer-open" || a.hasAttribute("download") || narrow()) return;
+    const href = a.getAttribute("href");
+    if (!/\.(pdf|png|jpe?g)$/i.test(href)) return;
+    e.preventDefault();
+    body.innerHTML = /\.pdf$/i.test(href) ? `<iframe src="${href}#view=FitH" title="${esc(a.textContent)}"></iframe>`
+      : `<div style="height:100%;display:flex;align-items:center;justify-content:center"><img src="${href}" alt="" style="max-height:100%;object-fit:contain"></div>`;
+    $("viewer-title").textContent = a.textContent.trim(); $("viewer-open").href = href;
+    viewer.classList.add("open"); document.body.style.overflow = "hidden"; $("viewer-close").focus();
+  });
+  $("viewer-close").addEventListener("click", hide);
+  viewer.addEventListener("click", (e) => { if (e.target === viewer) hide(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && viewer.classList.contains("open")) hide(); });
+})();
+</script>
+</body>
+</html>
