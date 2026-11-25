@@ -379,7 +379,7 @@ const QA = [
       <h1>第${l.no}講義　${esc(l.name)}</h1>
       <p class="lead">${esc(l.desc)}</p>
       <div class="video">${id ? `<button type="button" data-yt="${id}" style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)" aria-label="動画を再生"><span>▶ 動画を再生</span></button>` : `<button type="button" disabled><span>動画は準備中です</span></button>`}</div>
-      <p class="small">※ナレーションはAI音声です（台本・監修：りゅう坊）</p>
+      <p class="small">※ナレーションはAI音声です（台本・監修：りゅう坊）${id ? `　<a href="https://youtu.be/${id}" target="_blank" rel="noopener">うまく再生できないときは、YouTubeで開く</a>` : ""}</p>
       <div class="btns">${btn("講義資料（PDF）", l.pdf, "btn-red")}${l.zukai ? btn("図解を大きく見る", l.zukai, "btn-line") : ""}</div>
       ${l.zukai ? `<div class="zukai"><img src="${l.zukai}" alt="第${l.no}講義 ${esc(l.name)}の図解" loading="lazy"></div>` : ""}
       ${rel.length ? `<h2>この講義と一緒に使う特典</h2><div class="card"><ul class="rel">${rel.map((b) => `<li><a href="${b.pdf}" target="_blank" rel="noopener">特典${b.no}　${esc(b.name)}</a></li>`).join("")}</ul></div>` : ""}
