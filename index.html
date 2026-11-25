@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ひとりビジネス戦略室</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">◆</span>
+      <h1>ひとりビジネス戦略室</h1>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="overview" aria-selected="true">概要</button>
+      <button role="tab" data-tab="goals">目標</button>
+      <button role="tab" data-tab="kpi">KPI</button>
+      <button role="tab" data-tab="tasks">施策</button>
+      <button role="tab" data-tab="reviews">週次レビュー</button>
+    </nav>
+    <div class="io">
+      <button class="ghost" id="btn-export" title="データをJSONで書き出す">書き出し</button>
+      <label class="ghost btn-like" title="JSONから読み込む">読み込み<input type="file" id="file-import" accept="application/json" hidden></label>
+    </div>
+  </header>
+
+  <main>
+    <!-- 概要 -->
+    <section id="tab-overview" class="tab-panel">
+      <div class="vision card">
+        <div class="vision-head">
+          <h2>ビジョン</h2>
+          <button class="ghost small" id="btn-edit-vision">編集</button>
+        </div>
+        <p id="vision-text" class="vision-text"></p>
+        <p id="mission-text" class="mission-text"></p>
+      </div>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>今週のフォーカス</h2>
+          <p class="hint">進行中の施策を「インパクト ÷ 工数」の高い順に表示</p>
+          <ol id="focus-list" class="focus-list"></ol>
+        </div>
+        <div class="card">
+          <h2>目標の進捗</h2>
+          <div id="goal-progress"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>KPI</h2>
+        <div id="kpi-overview" class="kpi-grid"></div>
+      </div>
+
+      <div class="card">
+        <h2>直近の振り返り</h2>
+        <div id="latest-review" class="review"></div>
+      </div>
+    </section>
+
+    <!-- 目標 -->
+    <section id="tab-goals" class="tab-panel" hidden>
+      <div class="panel-head">
+        <h2>目標と主要な成果（OKR）</h2>
+        <button id="btn-add-goal">＋ 目標を追加</button>
+      </div>
+      <div id="goal-list" class="stack"></div>
+    </section>
+
+    <!-- KPI -->
+    <section id="tab-kpi" class="tab-panel" hidden>
+      <div class="panel-head">
+        <h2>KPI トラッカー</h2>
+        <button id="btn-add-kpi">＋ KPIを追加</button>
+      </div>
+      <div id="kpi-list" class="kpi-grid wide"></div>
+    </section>
+
+    <!-- 施策 -->
+    <section id="tab-tasks" class="tab-panel" hidden>
+      <div class="panel-head">
+        <h2>施策ボード</h2>
+        <button id="btn-add-task">＋ 施策を追加</button>
+      </div>
+      <div class="board" id="board">
+        <div class="column" data-status="idea"><h3>アイデア <span class="count"></span></h3><div class="cards"></div></div>
+        <div class="column" data-status="doing"><h3>進行中 <span class="count"></span></h3><div class="cards"></div></div>
+        <div class="column" data-status="done"><h3>完了 <span class="count"></span></h3><div class="cards"></div></div>
+      </div>
+    </section>
+
+    <!-- 週次レビュー -->
+    <section id="tab-reviews" class="tab-panel" hidden>
+      <div class="panel-head">
+        <h2>週次レビュー</h2>
+        <button id="btn-add-review">＋ 今週の振り返り</button>
+      </div>
+      <div id="review-list" class="stack"></div>
+    </section>
+  </main>
+
+  <dialog id="modal">
+    <form method="dialog" id="modal-form">
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+      <div class="modal-actions">
+        <button type="button" class="danger ghost" id="modal-delete" hidden>削除</button>
+        <span class="spacer"></span>
+        <button type="button" class="ghost" id="modal-cancel">キャンセル</button>
+        <button type="submit" id="modal-save">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
