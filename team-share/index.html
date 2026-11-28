@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>三日会 チーム共有ページ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: 紺のヘッダー帯 → 次の予定カード → タブ切替の1カラム（最大幅760px） */
+:root {
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --sunken: #eaeef4;
+  --ink: #172033;
+  --muted: #5b6577;
+  --line: #d9dfe8;
+  --accent: #1d4ea8;
+  --accent-ink: #ffffff;
+  --ball: #f2c40f;
+  --ball-ink: #1a1a12;
+  --stitch: #d0392b;
+  --head-bg: #14305c;
+  --head-ink: #ffffff;
+  --head-muted: #b9c7de;
+  --ok: #23824c;  --ok-bg: #e2f3e9;
+  --maybe: #9a6a00; --maybe-bg: #fbf0d2;
+  --ng: #c0392b;  --ng-bg: #fbe5e2;
+  --focus: #f2c40f;
+  --font-display: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Noto Sans JP", sans-serif;
+  --font-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --radius: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1520; --surface: #182233; --sunken: #121a27; --ink: #e8edf5; --muted: #9ca8bb; --line: #2a374c;
+    --accent: #7fa8ff; --accent-ink: #0f1520; --head-bg: #0b1a33; --head-ink: #ffffff; --head-muted: #94a6c4;
+    --ok: #5fd08f; --ok-bg: #173526; --maybe: #f0c14b; --maybe-bg: #3a2f12; --ng: #ff7f6e; --ng-bg: #3d1d1a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1520; --surface: #182233; --sunken: #121a27; --ink: #e8edf5; --muted: #9ca8bb; --line: #2a374c;
+  --accent: #7fa8ff; --accent-ink: #0f1520; --head-bg: #0b1a33; --head-ink: #ffffff; --head-muted: #94a6c4;
+  --ok: #5fd08f; --ok-bg: #173526; --maybe: #f0c14b; --maybe-bg: #3a2f12; --ng: #ff7f6e; --ng-bg: #3d1d1a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.7; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--head-bg); }
+.wrap { max-width: 760px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* ヘッダー */
+.head { background: var(--head-bg); color: var(--head-ink); margin-top: calc(-1 * env(safe-area-inset-top, 0px)); padding-top: env(safe-area-inset-top, 0px); }
+.head .wrap { padding-block: 22px 0; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.ball { width: 40px; height: 40px; border-radius: 50%; background: var(--ball); position: relative; overflow: hidden; flex-shrink: 0; }
+.ball::before, .ball::after { content: ""; position: absolute; top: -6px; width: 30px; height: 52px; border: 2px dashed var(--stitch); border-radius: 50%; }
+.ball::before { left: -21px; } .ball::after { right: -21px; }
+.brand h1 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; letter-spacing: .08em; line-height: 1.1; }
+.brand p { margin: 2px 0 0; font-size: .8rem; color: var(--head-muted); letter-spacing: .06em; }
+.tabs { display: flex; gap: 4px; margin-top: 20px; overflow-x: auto; scrollbar-width: none; }
+.tabs a { flex: 1 0 auto; text-align: center; padding: 10px 14px; color: var(--head-muted); text-decoration: none; font-weight: 700; font-size: .92rem; border-radius: 10px 10px 0 0; white-space: nowrap; }
+.tabs a:hover { color: var(--head-ink); }
+.tabs a[aria-current="page"] { background: var(--bg); color: var(--ink); }
+
+main .wrap { padding-block: 20px 64px; display: grid; gap: 16px; }
+.status { font-size: .85rem; color: var(--muted); background: var(--sunken); border-radius: 8px; padding: 8px 12px; }
+.status.warn { color: var(--ng); background: var(--ng-bg); }
+
+/* 次の予定 */
+.next { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.next .lbl { font-size: .75rem; font-weight: 700; letter-spacing: .1em; color: var(--stitch); }
+.next .ttl { font-weight: 700; }
+.next > div { min-width: 0; flex: 1 1 220px; }
+
+/* 共通パーツ */
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bar h2 { margin: 0; font-family: var(--font-display); font-size: 1.25rem; text-wrap: balance; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 16px; cursor: pointer; font-weight: 500; font-size: .88rem; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+.btn.danger { color: var(--ng); border-color: var(--ng); }
+.btn.small { padding: 3px 12px; font-size: .8rem; }
+.list { display: grid; gap: 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; min-width: 0; }
+.card.pinned { border-color: var(--ball); box-shadow: inset 4px 0 0 var(--ball); }
+.meta { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.card h3 { margin: 2px 0 4px; font-size: 1.05rem; }
+.body { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+.actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.empty { text-align: center; color: var(--muted); padding: 28px 16px; border: 2px dashed var(--line); border-radius: var(--radius); }
+.pill { display: inline-block; font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 4px; background: var(--sunken); color: var(--muted); }
+.pill.game { background: var(--ng-bg); color: var(--ng); }
+.pill.practice { background: var(--ok-bg); color: var(--ok); }
+.pill.event { background: var(--maybe-bg); color: var(--maybe); }
+.pill.pin { background: var(--ball); color: var(--ball-ink); }
+
+/* フォーム */
+form.edit { background: var(--surface); border: 2px solid var(--accent); border-radius: var(--radius); padding: 16px; display: grid; gap: 12px; }
+form.edit h3 { margin: 0; font-size: 1rem; }
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field.wide { grid-column: 1 / -1; }
+.field label { font-size: .8rem; font-weight: 700; color: var(--muted); }
+.field input, .field select, .field textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.field textarea { min-height: 96px; resize: vertical; }
+.check { display: flex; align-items: center; gap: 8px; font-size: .9rem; }
+.err { color: var(--ng); font-size: .85rem; margin: 0; }
+
+/* 予定・出欠 */
+.event { display: grid; grid-template-columns: 64px 1fr; gap: 14px; }
+.date { text-align: center; background: var(--head-bg); color: var(--head-ink); border-radius: 10px; padding: 8px 0; line-height: 1.15; align-self: start; font-variant-numeric: tabular-nums; }
+.date .m { font-size: .75rem; color: var(--ball); display: block; }
+.date .d { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; display: block; }
+.date .w { font-size: .75rem; color: var(--head-muted); display: block; }
+.event .info { min-width: 0; }
+.tally { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; font-variant-numeric: tabular-nums; }
+.tally span { font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+.t-o { background: var(--ok-bg); color: var(--ok); } .t-m { background: var(--maybe-bg); color: var(--maybe); }
+.t-x { background: var(--ng-bg); color: var(--ng); } .t-n { background: var(--sunken); color: var(--muted); }
+.mine { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; font-size: .85rem; }
+.ans { display: inline-flex; gap: 4px; }
+.ans button { width: 38px; height: 32px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; }
+.ans button[aria-pressed="true"].o { background: var(--ok); color: var(--surface); border-color: var(--ok); }
+.ans button[aria-pressed="true"].m { background: var(--maybe); color: var(--surface); border-color: var(--maybe); }
+.ans button[aria-pressed="true"].x { background: var(--ng); color: var(--surface); border-color: var(--ng); }
+.ans button:disabled { cursor: default; opacity: .6; }
+details.roster { margin-top: 10px; }
+details.roster summary { cursor: pointer; font-size: .85rem; color: var(--accent); font-weight: 500; }
+.roster-grid { display: grid; gap: 6px; margin-top: 8px; }
+.roster-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 8px; background: var(--sunken); }
+.roster-row .nm { min-width: 0; overflow-wrap: anywhere; font-size: .9rem; }
+.roster-row .nm small { color: var(--muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.me-pick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .88rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; }
+.me-pick select { padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+details.past > summary { cursor: pointer; color: var(--muted); font-weight: 700; padding: 6px 0; }
+details.past .list { margin-top: 8px; }
+
+/* 試合結果 */
+.record { display: flex; gap: 10px; flex-wrap: wrap; }
+.record div { flex: 1 1 80px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); text-align: center; padding: 10px; }
+.record b { display: block; font-family: var(--font-display); font-size: 1.8rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.record span { font-size: .8rem; color: var(--muted); }
+.result { display: flex; align-items: center; gap: 14px; }
+.result .info { flex: 1; min-width: 0; }
+.score { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wl { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; flex-shrink: 0; }
+.wl.w { background: var(--ng-bg); color: var(--ng); } .wl.l { background: var(--sunken); color: var(--muted); } .wl.d { background: var(--ok-bg); color: var(--ok); }
+
+/* メンバー */
+.members { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.member { display: flex; gap: 12px; align-items: center; }
+.num { width: 46px; height: 46px; border-radius: 50%; background: var(--ball); color: var(--ball-ink); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.member .info { min-width: 0; }
+.member h3 { margin: 0; font-size: 1rem; overflow-wrap: anywhere; }
+
+@media (max-width: 480px) {
+  .event { grid-template-columns: 52px 1fr; gap: 10px; }
+  .date .d { font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+.gate { max-width: 380px; margin: 40px auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: grid; gap: 12px; }
+.gate h2 { margin: 0; font-family: var(--font-display); }
+.gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.tabs button { flex: 1 0 auto; text-align: center; padding: 10px 14px; color: var(--head-muted); background: none; border: 0; cursor: pointer; font-weight: 700; font-size: .92rem; border-radius: 10px 10px 0 0; white-space: nowrap; }
+.tabs button:hover { color: var(--head-ink); }
+.tabs button[aria-current="page"] { background: var(--bg); color: var(--ink); }
+.refresh { font-size: .75rem; color: var(--muted); text-align: right; }
+.refresh button { background: none; border: 0; color: var(--accent); cursor: pointer; font-size: .75rem; padding: 0 0 0 6px; }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brand">
+      <div class="ball" aria-hidden="true"></div>
+      <div>
+        <h1>三日会</h1>
+        <p>チーム共有ページ ・ メンバー専用</p>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="ページ切り替え">
+      <button type="button" data-tab="news">お知らせ</button>
+      <button type="button" data-tab="schedule">予定・出欠</button>
+      <button type="button" data-tab="results">試合結果</button>
+      <button type="button" data-tab="members">メンバー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div id="status" class="status">データを読み込んでいます…</div>
+    <div id="next"></div>
+    <section id="view"></section>
+    <div class="refresh" id="refresh"></div>
+  </div>
+</main>
+
+<script>
+(() => {
+  // ---------- 小さなDOMヘルパー（値は必ず textContent で入れる） ----------
+  function h(tag, attrs, ...kids) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v == null || v === false) continue;
+      if (k === "class") el.className = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const kid of kids.flat()) {
+      if (kid == null || kid === false) continue;
+      el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+    }
+    return el;
+  }
+  const $ = (s) => document.querySelector(s);
+  const WEEK = ["日", "月", "火", "水", "木", "金", "土"];
+  const pad = (n) => String(n).padStart(2, "0");
+  const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+  function parseDate(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || "");
+    return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+  }
+  function fmtDate(s) {
+    const d = parseDate(s);
+    return d ? `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}（${WEEK[d.getDay()]}）` : (s || "");
+  }
+  function fmtStamp(ms) {
+    if (typeof ms !== "number") return "";
+    const d = new Date(ms);
+    return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+  }
+  const str = (v) => (typeof v === "string" ? v : v == null ? "" : String(v));
+
+  // ---------- 状態 ----------
+  const S = {
+    db: null, canWrite: true, tab: "news", pw: "", fetchedAt: 0,
+    data: { notices: [], events: [], results: [], members: [] },
+    loaded: { notices: false, events: false, results: false, members: false },
+    form: null,          // { kind, id }  開いている編集フォーム
+    confirm: null,       // 削除確認中の "kind:id"
+    me: "",              // 自分のメンバーID（この端末だけに保存）
+  };
+  try { S.me = localStorage.getItem("mikkakai-me") || ""; S.pw = localStorage.getItem("mikkakai-pw") || ""; S.tab = localStorage.getItem("mikkakai-tab") || "news"; } catch (e) {}
+  function saveMe(id) { S.me = id; try { localStorage.setItem("mikkakai-me", id); } catch (e) {} }
+
+  // ---------- 各データの項目定義 ----------
+  const KINDS = {
+    notices: {
+      label: "お知らせ",
+      fields: [
+        { k: "title", label: "タイトル", required: true, wide: true },
+        { k: "body", label: "本文", type: "textarea", wide: true },
+        { k: "pinned", label: "上に固定する", type: "checkbox" },
+      ],
+    },
+    events: {
+      label: "予定",
+      fields: [
+        { k: "date", label: "日付", type: "date", required: true },
+        { k: "time", label: "時間", placeholder: "例：9:00 集合" },
+        { k: "kind", label: "種類", type: "select", options: ["試合", "練習", "イベント", "その他"] },
+        { k: "title", label: "内容", required: true, placeholder: "例：冬季親善大会 1回戦 vs ○○クラブ" },
+        { k: "place", label: "場所", wide: true },
+        { k: "note", label: "メモ（持ち物・集合場所など）", type: "textarea", wide: true },
+      ],
+    },
+    results: {
+      label: "試合結果",
+      fields: [
+        { k: "date", label: "日付", type: "date", required: true },
+        { k: "competition", label: "大会", placeholder: "例：秋季リーグ" },
+        { k: "opponent", label: "対戦相手", required: true },
+        { k: "our", label: "三日会の得点", type: "number", required: true },
+        { k: "their", label: "相手の得点", type: "number", required: true },
+        { k: "note", label: "ひとこと（勝利投手・ホームランなど）", type: "textarea", wide: true },
+      ],
+    },
+    members: {
+      label: "メンバー",
+      fields: [
+        { k: "name", label: "名前", required: true },
+        { k: "number", label: "背番号", type: "number" },
+        { k: "position", label: "ポジション", placeholder: "例：投手、外野手" },
+        { k: "role", label: "役職", placeholder: "例：監督、主将、会計" },
+        { k: "note", label: "ひとこと", wide: true },
+      ],
+    },
+  };
+
+  // ---------- タブ ----------
+  const TABS = ["news", "schedule", "results", "members"];
+  const tab = () => (TABS.includes(S.tab) ? S.tab : "news");
+  function goTab(t) { S.tab = t; S.form = null; S.confirm = null; try { localStorage.setItem("mikkakai-tab", t); } catch (e) {} render(); window.scrollTo(0, 0); }
+  document.querySelectorAll(".tabs button").forEach((b) => b.addEventListener("click", () => goTab(b.dataset.tab)));
+
+  // ---------- 書き込み ----------
+  // google.script.run を Promise で呼ぶ
+  function api(name, ...args) {
+    return new Promise((resolve, reject) => {
+      const run = window.google && google.script && google.script.run;
+      if (!run) { reject(new Error("NO_BACKEND")); return; }
+      run.withSuccessHandler(resolve).withFailureHandler(reject)[name](...args);
+    });
+  }
+  function applyData(d) {
+    if (!d) return;
+    for (const k of Object.keys(S.data)) { S.data[k] = Array.isArray(d[k]) ? d[k] : []; S.loaded[k] = true; }
+    S.fetchedAt = d.fetchedAt || Date.now();
+  }
+  let saving = 0;
+  async function guarded(fn) {
+    saving++; setStatus("保存しています…");
+    try { applyData(await fn()); setStatus(""); render(); }
+    catch (e) {
+      if (e && String(e.message).includes("PASSWORD")) { showGate("合言葉が変わったようです。もう一度入力してください。"); }
+      else setStatus("保存できませんでした。" + (e && e.message && !/NO_BACKEND/.test(e.message) ? e.message.replace(/^Error: /, "") : "通信状況を確認して、もう一度お試しください。"), true);
+      render();
+    } finally { saving--; }
+  }
+  function readForm(kind, form) {
+    const out = {};
+    for (const f of KINDS[kind].fields) {
+      const el = form.elements[f.k];
+      if (f.type === "checkbox") out[f.k] = el.checked;
+      else if (f.type === "number") out[f.k] = el.value === "" ? null : Number(el.value);
+      else out[f.k] = el.value.trim();
+    }
+    return out;
+  }
+  async function submitForm(kind, id, form) {
+    const data = readForm(kind, form);
+    const missing = KINDS[kind].fields.filter((f) => f.required && (data[f.k] === "" || data[f.k] == null));
+    if (missing.length) { form.querySelector(".err").textContent = `「${missing.map((f) => f.label).join("」「")}」を入力してください。`; return; }
+    const btn = form.querySelector('button[type="submit"]'); btn.disabled = true; btn.textContent = "保存中…";
+    S.form = null;
+    await guarded(() => api("apiSave", S.pw, kind, id, data));
+  }
+  async function remove(kind, id) {
+    S.confirm = null;
+    await guarded(() => api("apiRemove", S.pw, kind, id));
+  }
+  const busy = new Set();
+  async function answer(eventId, memberId, val) {
+    const key = eventId + ":" + memberId;
+    if (busy.has(key)) return;
+    busy.add(key);
+    // 先に画面へ反映してから保存する
+    const ev = S.data.events.find((e) => e.id === eventId);
+    if (ev) { ev.attendance = { ...(ev.attendance || {}), [memberId]: val }; render(); }
+    await guarded(() => api("apiSetAttendance", S.pw, eventId, memberId, val));
+    busy.delete(key);
+  }
+
+  // ---------- 描画パーツ ----------
+  function formEl(kind, item) {
+    const id = item ? item.id : null;
+    const form = h("form", { class: "edit", "data-form": kind + ":" + (id || "new"), novalidate: true, onsubmit: (e) => { e.preventDefault(); submitForm(kind, id, form); } },
+      h("h3", {}, `${KINDS[kind].label}を${id ? "編集" : "追加"}`),
+      h("div", { class: "fields" }, KINDS[kind].fields.map((f) => {
+        const fid = `f-${kind}-${f.k}`;
+        const v = item ? item[f.k] : undefined;
+        if (f.type === "checkbox") return h("label", { class: "check field wide" }, h("input", { type: "checkbox", id: fid, name: f.k, checked: !!v }), f.label);
+        let input;
+        if (f.type === "textarea") { input = h("textarea", { id: fid, name: f.k, placeholder: f.placeholder }); input.value = str(v); }
+        else if (f.type === "select") { input = h("select", { id: fid, name: f.k }, f.options.map((o) => h("option", { value: o }, o))); input.value = v || f.options[0]; }
+        else { input = h("input", { id: fid, name: f.k, type: f.type || "text", placeholder: f.placeholder, inputmode: f.type === "number" ? "numeric" : null }); input.value = v == null ? (f.type === "date" && !item ? todayStr() : "") : str(v); }
+        return h("div", { class: "field" + (f.wide ? " wide" : "") }, h("label", { for: fid }, f.label + (f.required ? "（必須）" : "")), input);
+      })),
+      h("p", { class: "err", role: "alert" }),
+      h("div", { class: "actions" },
+        h("button", { class: "btn primary", type: "submit" }, "保存する"),
+        h("button", { class: "btn", type: "button", onclick: () => { S.form = null; render(); } }, "キャンセル")));
+    return form;
+  }
+  function itemActions(kind, item) {
+    if (!S.canWrite) return null;
+    const key = `${kind}:${item.id}`;
+    if (S.confirm === key) {
+      return h("div", { class: "actions" },
+        h("span", { class: "meta" }, "削除すると元に戻せません。"),
+        h("button", { class: "btn small danger", onclick: () => remove(kind, item.id) }, "削除する"),
+        h("button", { class: "btn small", onclick: () => { S.confirm = null; render(); } }, "やめる"));
+    }
+    return h("div", { class: "actions" },
+      h("button", { class: "btn small", onclick: () => { S.form = { kind, id: item.id }; S.confirm = null; render(); } }, "編集"),
+      h("button", { class: "btn small", onclick: () => { S.confirm = key; render(); } }, "削除"));
+  }
+  function section(kind, title, listNode, emptyText, extraTop) {
+    const isAdding = S.form && S.form.kind === kind && !S.form.id;
+    return [
+      h("div", { class: "bar" }, h("h2", {}, title),
+        S.canWrite && !isAdding ? h("button", { class: "btn primary", onclick: () => { S.form = { kind, id: null }; render(); } }, `＋ ${KINDS[kind].label}を追加`) : null),
+      isAdding ? formEl(kind, null) : null,
+      extraTop || null,
+      S.loaded[kind] && S.data[kind].length === 0 ? h("div", { class: "empty" }, emptyText) : listNode,
+    ];
+  }
+  // 編集中のアイテムはフォームに置き換える
+  const editingOr = (kind, item, node) => (S.form && S.form.kind === kind && S.form.id === item.id ? formEl(kind, item) : node);
+
+  // ---------- お知らせ ----------
+  function viewNews() {
+    const items = [...S.data.notices].sort((a, b) => (!!b.pinned - !!a.pinned) || ((b.createdAt || 0) - (a.createdAt || 0)));
+    const list = h("div", { class: "list" }, items.map((n) => editingOr("notices", n,
+      h("article", { class: "card" + (n.pinned ? " pinned" : "") },
+        h("div", { class: "meta" }, n.pinned ? h("span", { class: "pill pin" }, "固定") : null, n.pinned ? " " : null, fmtStamp(n.createdAt)),
+        h("h3", {}, str(n.title)),
+        n.body ? h("p", { class: "body" }, str(n.body)) : null,
+        itemActions("notices", n)))));
+    return section("notices", "お知らせ", list, "まだお知らせはありません。「＋ お知らせを追加」から最初の連絡を書きましょう。");
+  }
+
+  // ---------- 予定・出欠 ----------
+  const memberName = (m) => str(m.name) || "（名前なし）";
+  function sortedMembers() { return [...S.data.members].sort((a, b) => (a.number ?? 9999) - (b.number ?? 9999) || memberName(a).localeCompare(memberName(b), "ja")); }
+  function tally(ev) {
+    const att = (ev.attendance && typeof ev.attendance === "object") ? ev.attendance : {};
+    const t = { o: 0, m: 0, x: 0, n: 0 };
+    for (const m of S.data.members) { const v = att[m.id]; if (v === "o" || v === "m" || v === "x") t[v]++; else t.n++; }
+    return t;
+  }
+  function tallyEl(ev) {
+    const t = tally(ev);
+    return h("div", { class: "tally", "aria-label": "出欠の集計" },
+      h("span", { class: "t-o" }, `○ 参加 ${t.o}`), h("span", { class: "t-m" }, `△ 未定 ${t.m}`),
+      h("span", { class: "t-x" }, `× 不参加 ${t.x}`), h("span", { class: "t-n" }, `未回答 ${t.n}`));
+  }
+  function ansButtons(ev, memberId, label) {
+    const cur = (ev.attendance || {})[memberId] || "";
+    const dis = !S.canWrite;
+    return h("span", { class: "ans", role: "group", "aria-label": label },
+      [["o", "○", "参加"], ["m", "△", "未定"], ["x", "×", "不参加"]].map(([v, sym, word]) =>
+        h("button", { class: v, type: "button", "aria-pressed": String(cur === v), "aria-label": word, title: word, disabled: dis,
+          onclick: () => answer(ev.id, memberId, cur === v ? "" : v) }, sym)));
+  }
+  function eventCard(ev, past) {
+    const d = parseDate(ev.date);
+    const kindClass = { 試合: "game", 練習: "practice", イベント: "event" }[ev.kind] || "";
+    const me = S.data.members.find((m) => m.id === S.me);
+    const members = sortedMembers();
+    return editingOr("events", ev, h("article", { class: "card event" },
+      h("div", { class: "date", "aria-label": fmtDate(ev.date) },
+        h("span", { class: "m" }, d ? `${d.getMonth() + 1}月` : ""), h("span", { class: "d" }, d ? d.getDate() : "?"), h("span", { class: "w" }, d ? WEEK[d.getDay()] : "")),
+      h("div", { class: "info" },
+        h("div", { class: "meta" }, ev.kind ? h("span", { class: "pill " + kindClass }, str(ev.kind)) : null, " ", [str(ev.time), str(ev.place)].filter(Boolean).join(" ／ ")),
+        h("h3", {}, str(ev.title)),
+        ev.note ? h("p", { class: "body meta" }, str(ev.note)) : null,
+        members.length ? tallyEl(ev) : null,
+        !past && me ? h("div", { class: "mine" }, h("span", {}, `${memberName(me)} さんの出欠：`), ansButtons(ev, me.id, `${memberName(me)}の出欠`)) : null,
+        members.length ? h("details", { class: "roster", "data-key": "r-" + ev.id },
+          h("summary", {}, "全員の出欠を見る・代理で入力する"),
+          h("div", { class: "roster-grid" }, members.map((m) =>
+            h("div", { class: "roster-row" },
+              h("span", { class: "nm" }, m.number != null ? h("small", {}, `#${m.number}`) : null, memberName(m)),
+              ansButtons(ev, m.id, `${memberName(m)}の出欠`))))) : null,
+        itemActions("events", ev))));
+  }
+  function viewSchedule() {
+    const today = todayStr();
+    const ev = S.data.events;
+    const upcoming = ev.filter((e) => str(e.date) >= today).sort((a, b) => str(a.date).localeCompare(str(b.date)));
+    const past = ev.filter((e) => str(e.date) < today).sort((a, b) => str(b.date).localeCompare(str(a.date)));
+    const members = sortedMembers();
+    const pick = members.length ? h("div", { class: "me-pick" },
+      h("label", { for: "me-select" }, "あなたは："),
+      (() => {
+        const sel = h("select", { id: "me-select", onchange: (e) => { saveMe(e.target.value); render(); } },
+          h("option", { value: "" }, "選んでください"), members.map((m) => h("option", { value: m.id }, memberName(m))));
+        sel.value = members.some((m) => m.id === S.me) ? S.me : "";
+        return sel;
+      })(),
+      h("span", { class: "meta" }, "選ぶと各予定に自分の出欠ボタンが出ます（この端末に記憶）")) :
+      (S.loaded.members ? h("div", { class: "status" }, "出欠を取るには、先に「メンバー」タブでメンバーを登録してください。") : null);
+    const list = h("div", { class: "list" },
+      upcoming.length ? upcoming.map((e) => eventCard(e, false)) : (ev.length ? h("div", { class: "empty" }, "これからの予定はありません。") : null),
+      past.length ? h("details", { class: "past", "data-key": "past" }, h("summary", {}, `終わった予定（${past.length}件）`), h("div", { class: "list" }, past.map((e) => eventCard(e, true)))) : null);
+    return section("events", "予定・出欠", list, "まだ予定はありません。「＋ 予定を追加」から試合や練習の日程を入れましょう。", pick);
+  }
+
+  // ---------- 試合結果 ----------
+  function outcome(r) { const a = Number(r.our), b = Number(r.their); if (!isFinite(a) || !isFinite(b)) return null; return a > b ? "w" : a < b ? "l" : "d"; }
+  function viewResults() {
+    const items = [...S.data.results].sort((a, b) => str(b.date).localeCompare(str(a.date)));
+    const year = String(new Date().getFullYear());
+    const thisYear = items.filter((r) => str(r.date).startsWith(year));
+    const c = { w: 0, l: 0, d: 0 }; thisYear.forEach((r) => { const o = outcome(r); if (o) c[o]++; });
+    const record = items.length ? h("div", { class: "record", "aria-label": `${year}年の成績` },
+      h("div", {}, h("b", {}, c.w), h("span", {}, `${year}年 勝`)), h("div", {}, h("b", {}, c.l), h("span", {}, "敗")),
+      h("div", {}, h("b", {}, c.d), h("span", {}, "分")), h("div", {}, h("b", {}, thisYear.length), h("span", {}, "試合"))) : null;
+    const list = h("div", { class: "list" }, items.map((r) => {
+      const o = outcome(r);
+      return editingOr("results", r, h("article", { class: "card" },
+        h("div", { class: "result" },
+          h("div", { class: "wl " + (o || "d"), "aria-label": { w: "勝ち", l: "負け", d: "引き分け" }[o] || "" }, { w: "勝", l: "敗", d: "分" }[o] || "-"),
+          h("div", { class: "info" }, h("div", { class: "meta" }, fmtDate(r.date), r.competition ? ` ・ ${str(r.competition)}` : ""), h("h3", {}, `vs ${str(r.opponent)}`)),
+          h("div", { class: "score" }, `${r.our ?? "-"} - ${r.their ?? "-"}`)),
+        r.note ? h("p", { class: "body meta" }, str(r.note)) : null,
+        itemActions("results", r)));
+    }));
+    return section("results", "試合結果", list, "まだ試合結果はありません。試合が終わったら「＋ 試合結果を追加」から記録しましょう。", record);
+  }
+
+  // ---------- メンバー ----------
+  function viewMembers() {
+    const list = h("div", { class: "members" }, sortedMembers().map((m) => editingOr("members", m,
+      h("article", { class: "card" },
+        h("div", { class: "member" },
+          h("div", { class: "num", "aria-label": "背番号" }, m.number != null ? m.number : "-"),
+          h("div", { class: "info" },
+            h("h3", {}, memberName(m)),
+            h("div", { class: "meta" }, [str(m.role), str(m.position)].filter(Boolean).join(" ／ ")))),
+        m.note ? h("p", { class: "body meta" }, str(m.note)) : null,
+        itemActions("members", m)))));
+    return section("members", `メンバー（${S.data.members.length}人）`, list, "まだメンバーが登録されていません。「＋ メンバーを追加」から登録すると、予定ごとに出欠が取れます。");
+  }
+
+  // ---------- 次の予定 ----------
+  function renderNext() {
+    const box = $("#next"); box.replaceChildren();
+    const today = todayStr();
+    const nx = S.data.events.filter((e) => str(e.date) >= today).sort((a, b) => str(a.date).localeCompare(str(b.date)))[0];
+    if (!nx || tab() === "schedule") return;
+    box.append(h("button", { type: "button", class: "next", style: "text-align:left;width:100%;cursor:pointer;font:inherit;color:inherit", onclick: () => goTab("schedule") },
+      h("div", {}, h("div", { class: "lbl" }, "次の予定"), h("div", { class: "ttl" }, `${fmtDate(nx.date)} ${str(nx.title)}`),
+        h("div", { class: "meta" }, [str(nx.time), str(nx.place)].filter(Boolean).join(" ／ "))),
+      S.data.members.length ? tallyEl(nx) : null));
+  }
+
+  let render = function () {
+    const t = tab();
+    document.querySelectorAll(".tabs button").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === t ? "page" : "false"));
+    const rf = $("#refresh"); rf.replaceChildren();
+    if (S.fetchedAt) { const d = new Date(S.fetchedAt); rf.append(`${d.getHours()}:${pad(d.getMinutes())} 時点の内容`, h("button", { type: "button", onclick: () => load(true) }, "最新にする")); }
+    const view = $("#view");
+    const focusedId = document.activeElement && document.activeElement.id;
+    // 他の人の更新で描き直しても、入力中の内容と開いている一覧を保つ
+    const openKeys = new Set([...view.querySelectorAll("details[open]")].map((d) => d.dataset.key));
+    const draft = {};
+    const oldForm = view.querySelector("form.edit");
+    const formKey = oldForm && oldForm.dataset.form;
+    view.querySelectorAll("form.edit [id]").forEach((el) => { draft[el.id] = el.type === "checkbox" ? el.checked : el.value; });
+    const hadForm = !!oldForm;
+    const nodes = { news: viewNews, schedule: viewSchedule, results: viewResults, members: viewMembers }[t]();
+    view.replaceChildren(h("div", { class: "list" }, nodes));
+    view.querySelectorAll("details[data-key]").forEach((d) => { if (openKeys.has(d.dataset.key)) d.open = true; });
+    const newForm = view.querySelector("form.edit");
+    if (newForm && newForm.dataset.form === formKey) newForm.querySelectorAll("[id]").forEach((el) => { if (el.id in draft) { if (el.type === "checkbox") el.checked = draft[el.id]; else el.value = draft[el.id]; } });
+    renderNext();
+    if (hadForm && newForm && newForm.dataset.form === formKey && !focusedId) return;
+    if (focusedId) { const el = document.getElementById(focusedId); if (el) el.focus(); }
+    else if (S.form) { const first = view.querySelector("form.edit input, form.edit select, form.edit textarea"); if (first) first.focus(); }
+  };
+
+  // ---------- ステータス表示 ----------
+  function setStatus(msg, warn) {
+    const el = $("#status");
+    el.hidden = !msg; el.textContent = msg || ""; el.classList.toggle("warn", !!warn);
+  }
+
+  // ---------- 合言葉 ----------
+  function showGate(msg) {
+    S.pw = ""; try { localStorage.removeItem("mikkakai-pw"); } catch (e) {}
+    $("#next").replaceChildren(); $("#refresh").replaceChildren(); setStatus("");
+    const input = h("input", { id: "pw", type: "password", autocomplete: "current-password", placeholder: "合言葉" });
+    const err = h("p", { class: "err", role: "alert" }, msg || "");
+    const form = h("form", { class: "gate", onsubmit: async (e) => {
+        e.preventDefault(); S.pw = input.value.trim(); err.textContent = "確認しています…";
+        try { applyData(await api("apiGetAll", S.pw)); try { localStorage.setItem("mikkakai-pw", S.pw); } catch (x) {} S.ready = true; render(); startPolling(); }
+        catch (x) { err.textContent = String(x && x.message).includes("PASSWORD") ? "合言葉が違います。" : "つながりませんでした。もう一度お試しください。"; }
+      } },
+      h("h2", {}, "合言葉を入力"),
+      h("p", { class: "meta" }, "チームの合言葉を入れてください。この端末では次回から入力不要です。"),
+      input, err, h("button", { class: "btn primary", type: "submit" }, "入る"));
+    S.ready = false;
+    $("#view").replaceChildren(form); input.focus();
+  }
+
+  // ---------- 読み込み・自動更新 ----------
+  let loading = false;
+  async function load(manual) {
+    if (loading || saving || (!manual && S.form)) return;
+    loading = true;
+    try { applyData(await api("apiGetAll", S.pw)); setStatus(""); render(); }
+    catch (e) {
+      if (String(e && e.message).includes("PASSWORD")) showGate("合言葉を入力してください。");
+      else if (!S.fetchedAt) setStatus("データを読み込めませんでした。電波の良いところで開き直してください。", true);
+      else if (manual) setStatus("最新の内容を取得できませんでした。少し待ってからお試しください。", true);
+    } finally { loading = false; }
+  }
+  let timer = null;
+  function startPolling() {
+    if (timer) return;
+    // 30秒ごとにほかの人の更新を取り込む（画面を見ているときだけ）
+    timer = setInterval(() => { if (document.visibilityState === "visible" && S.ready) load(false); }, 30000);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.ready) load(false); });
+  }
+
+  // ---------- 起動 ----------
+  const origRender = render;
+  render = function () { if (S.ready) origRender(); };
+  S.ready = true; origRender(); S.ready = false;
+  (async () => {
+    try {
+      const needPw = await api("apiHasPassword");
+      if (needPw && !S.pw) { showGate(""); return; }
+      S.ready = true;
+      await load(true);
+      startPolling();
+    } catch (e) {
+      setStatus("この画面ではデータを読み込めません。チームで共有されたリンクから開いてください。", true);
+    }
+  })();
+})();
+</script>
+</body>
+</html>
