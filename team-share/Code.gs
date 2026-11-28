@@ -2,22 +2,25 @@
  * 三日会 チーム共有ページ（Google Apps Script 版）
  *
  * ・このファイルを Apps Script の「コード.gs」に貼り付けます
- * ・データは、初めてページを開いたときに自動で作られる
- *   スプレッドシート「三日会 共有データ」に保存されます（あなたの Google ドライブ）
+ * ・データは、Google ドライブのスプレッドシート「三日会 共有データ」に保存されます
+ *   （SHEET_ID が空の場合は、初めて開いたときに自動で作られます）
  * ・合言葉を使う場合は、下の PASSWORD に好きな言葉を入れてください
  *   （空のままなら合言葉なしで、リンクを知っている人は誰でも使えます）
  */
 const PASSWORD = '';
 
+// データを保存するスプレッドシートのID（「三日会 共有データ」）
+const SHEET_ID = '1uMDPTE9VTumjFtwZQqFI311PAjMIhQBXlZ9885yfxD8';
+
 const TEAM_NAME = '三日会';
 
 // シートごとの列（この順番でスプレッドシートに保存されます）
 const SHEETS = {
-  notices:    ['id', 'title', 'body', 'pinned', 'createdAt'],
-  events:     ['id', 'date', 'time', 'kind', 'title', 'place', 'note', 'createdAt'],
+  notices:    ['title', 'body', 'pinned', 'id', 'createdAt'],
+  events:     ['date', 'time', 'kind', 'title', 'place', 'note', 'id', 'createdAt'],
   attendance: ['eventId', 'memberId', 'value', 'updatedAt'],
-  results:    ['id', 'date', 'competition', 'opponent', 'our', 'their', 'note', 'createdAt'],
-  members:    ['id', 'name', 'number', 'position', 'role', 'note', 'createdAt'],
+  results:    ['date', 'competition', 'opponent', 'our', 'their', 'note', 'id', 'createdAt'],
+  members:    ['name', 'number', 'position', 'role', 'note', 'id', 'createdAt'],
 };
 const SHEET_TITLES = {
   notices: 'お知らせ', events: '予定', attendance: '出欠', results: '試合結果', members: 'メンバー',
@@ -52,7 +55,7 @@ function apiSave(pw, kind, id, data) {
     const row = {};
     cols.forEach(function (c) { row[c] = data && data[c] != null ? data[c] : ''; });
     if (id) {
-      const idx = findRow_(sheet, 0, id);
+      const idx = findRow_(sheet, cols.indexOf('id'), id);
       if (idx < 0) throw new Error('対象のデータが見つかりません。ほかの人が削除した可能性があります。');
       const old = sheet.getRange(idx, 1, 1, cols.length).getValues()[0];
       row.id = id;
@@ -72,7 +75,7 @@ function apiRemove(pw, kind, id) {
   if (EDITABLE.indexOf(kind) < 0) throw new Error('不正な種類です');
   return withLock_(function () {
     const sheet = sheet_(kind);
-    const idx = findRow_(sheet, 0, id);
+    const idx = findRow_(sheet, SHEETS[kind].indexOf('id'), id);
     if (idx > 0) sheet.deleteRow(idx);
     // 予定やメンバーを消したら、その出欠も消す
     if (kind === 'events' || kind === 'members') {
@@ -110,12 +113,15 @@ function checkPassword_(pw) {
 }
 
 function withLock_(fn) {
+  if (withLock_.held) return fn();
   const lock = LockService.getScriptLock();
   lock.waitLock(20000);
-  try { return fn(); } finally { lock.releaseLock(); }
+  withLock_.held = true; readAll_.inLock = true;
+  try { return fn(); } finally { withLock_.held = false; readAll_.inLock = false; lock.releaseLock(); }
 }
 
 function spreadsheet_() {
+  if (SHEET_ID) return SpreadsheetApp.openById(SHEET_ID);
   const props = PropertiesService.getScriptProperties();
   const id = props.getProperty('SHEET_ID');
   if (id) {
@@ -172,7 +178,7 @@ function readSheet_(kind) {
       if (v instanceof Date) v = Utilities.formatDate(v, Session.getScriptTimeZone(), 'yyyy-MM-dd');
       v = v == null ? '' : String(v);
       if (NUMBER_FIELDS.indexOf(c) >= 0) v = v === '' || isNaN(Number(v)) ? null : Number(v);
-      if (BOOL_FIELDS.indexOf(c) >= 0) v = v.toUpperCase() === 'TRUE';
+      if (BOOL_FIELDS.indexOf(c) >= 0) v = ['TRUE', '○', 'はい', '1', 'YES'].indexOf(v.trim().toUpperCase()) >= 0;
       o[c] = v;
     });
     if (o.id !== '' || kind === 'attendance') out.push(o);
@@ -180,7 +186,32 @@ function readSheet_(kind) {
   return out;
 }
 
+// スプレッドシートに直接書き込まれた行に、IDと登録日時をつける
+function ensureIds_() {
+  EDITABLE.forEach(function (kind) {
+    const cols = SHEETS[kind];
+    const idCol = cols.indexOf('id'), atCol = cols.indexOf('createdAt');
+    const sh = sheet_(kind);
+    const values = sh.getDataRange().getValues();
+    const missing = [];
+    for (let r = 1; r < values.length; r++) {
+      const hasContent = values[r].some(function (v, i) { return i !== idCol && i !== atCol && String(v).trim() !== ''; });
+      if (hasContent && String(values[r][idCol]).trim() === '') missing.push(r + 1);
+    }
+    if (!missing.length) return;
+    withLock_(function () {
+      const again = sh.getDataRange().getValues();
+      missing.forEach(function (rowNo) {
+        if (String(again[rowNo - 1][idCol]).trim() !== '') return;
+        sh.getRange(rowNo, idCol + 1).setValue(Utilities.getUuid().slice(0, 8));
+        sh.getRange(rowNo, atCol + 1).setValue(String(Date.now()));
+      });
+    });
+  });
+}
+
 function readAll_() {
+  if (!readAll_.inLock) ensureIds_();
   const att = readSheet_('attendance');
   const events = readSheet_('events').map(function (e) {
     e.attendance = {};
