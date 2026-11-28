@@ -1,0 +1,677 @@
+<title>新生弓木神楽組</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: 黒地に紅。上に次の予定と自分の出欠、下はタブで予定・出欠表・お知らせ・連絡・組について。 */
+:root {
+  color-scheme: dark;
+  --bg: #0e0b0b;
+  --bg-alt: #161010;
+  --surface: #1e1616;
+  --surface-2: #281c1c;
+  --ink: #f3ece6;
+  --ink-soft: #b8a9a3;
+  --line: #3a2626;
+  --accent: #c8161d;
+  --accent-bright: #ff4a4f;
+  --accent-ink: #ffffff;
+  --gold: #d4a94f;
+  --ok: #6fcf8e;
+  --ng: #ff6b6b;
+  --maybe: #e8c35a;
+  --serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--sans); font-size: 15px; line-height: 1.7; -webkit-text-size-adjust: 100%; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
+.wrap { max-width: 880px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-weight: 700; line-height: 1.15; min-width: 0; }
+.brand small { display: block; font-size: .68rem; font-weight: 500; color: var(--ink-soft); }
+.mark { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
+.hero-logo { width: 88px; height: 88px; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 0 0 4px rgba(200,22,29,.25), 0 8px 30px rgba(200,22,29,.35); }
+.me { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--ink-soft); min-width: 0; }
+.me img { width: 26px; height: 26px; border-radius: 50%; }
+.me span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 9em; }
+.pill-edit { border: 1px solid var(--gold); color: var(--gold); background: none; border-radius: 99px; padding: 2px 10px; font-size: .78rem; white-space: nowrap; }
+.pill-edit[aria-pressed="true"] { background: var(--gold); color: #1a1208; }
+
+/* hero */
+.hero { background: radial-gradient(ellipse at 90% 0%, rgba(200,22,29,.55), transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200,22,29,.2), transparent 55%), #070505; border-bottom: 3px solid var(--accent); }
+.hero .wrap { padding-block: 28px 24px; display: grid; gap: 14px; }
+.hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(1.7rem, 6vw, 2.4rem); letter-spacing: .08em; line-height: 1.3; text-wrap: balance; }
+.kicker { margin: 0; color: var(--gold); font-size: .78rem; letter-spacing: .28em; }
+.next { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 10px; }
+.next .label { font-size: .74rem; letter-spacing: .12em; color: var(--gold); }
+.next .ttl { font-weight: 700; font-size: 1.05rem; }
+.next .when { color: var(--ink-soft); font-size: .9rem; }
+
+/* status banner */
+.banner { margin: 16px 0 0; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); font-size: .88rem; }
+.banner.warn { border-color: var(--accent); color: var(--ink); }
+
+/* register */
+.register { margin-top: 16px; background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius); padding: 16px; display: grid; gap: 10px; }
+.register h2 { margin: 0; font-size: 1rem; }
+.register p { margin: 0; color: var(--ink-soft); font-size: .88rem; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.row > input { flex: 1 1 180px; min-width: 0; }
+
+input[type=text], input[type=date], input[type=number], select, textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; width: 100%; }
+textarea { min-height: 90px; resize: vertical; }
+.btn { border: 1px solid var(--line); background: var(--surface-2); border-radius: 8px; padding: 8px 14px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.btn.danger { border-color: var(--accent-bright); color: var(--accent-bright); background: none; }
+.btn.small { padding: 4px 10px; font-size: .8rem; }
+.btn:disabled { opacity: .5; cursor: default; }
+
+/* tabs */
+.tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 56px); z-index: 15; background: var(--bg); border-bottom: 1px solid var(--line); }
+.tabs .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs a { flex: none; padding: 12px 12px 10px; color: var(--ink-soft); text-decoration: none; border-bottom: 2px solid transparent; font-size: .92rem; white-space: nowrap; }
+.tabs a[aria-current="page"] { color: var(--ink); border-color: var(--accent-bright); font-weight: 700; }
+
+main .wrap { padding-block: 22px 56px; }
+.view { display: grid; gap: 14px; }
+.view-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.view-head h2 { margin: 0; font-family: var(--serif); font-size: 1.35rem; display: flex; align-items: center; gap: 10px; }
+.view-head h2::before { content: ""; width: 5px; height: 1.2em; background: var(--accent); border-radius: 2px; }
+.empty { color: var(--ink-soft); background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius); padding: 18px; margin: 0; }
+
+/* events */
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--surface); padding: 3px 13px; border-radius: 99px; font-size: .85rem; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+.event { display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.event.past { opacity: .6; }
+.edate { text-align: center; border-right: 1px solid var(--line); padding-right: 10px; line-height: 1.15; }
+.edate .m { font-size: .76rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.edate .d { font-family: var(--serif); font-size: 1.9rem; font-weight: 700; }
+.edate .w { font-size: .76rem; color: var(--ink-soft); }
+.edate .w.sun { color: var(--accent-bright); }
+.ebody { display: grid; gap: 6px; min-width: 0; }
+.ebody h3 { margin: 0; font-size: 1.02rem; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.meta { margin: 0; color: var(--ink-soft); font-size: .86rem; overflow-wrap: anywhere; }
+.note { margin: 0; font-size: .88rem; overflow-wrap: anywhere; white-space: pre-wrap; }
+.tag { font-size: .7rem; border: 1px solid var(--accent-bright); color: var(--accent-bright); padding: 0 8px; border-radius: 99px; white-space: nowrap; font-weight: 500; }
+.tag.t-稽古 { border-color: #cfc3bd; color: #cfc3bd; }
+.tag.t-会合 { border-color: var(--gold); color: var(--gold); }
+
+.rsvp { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 4px; }
+.rsvp .lbl { font-size: .76rem; color: var(--ink-soft); margin-right: 2px; }
+.rb { border: 1px solid var(--line); background: var(--bg); border-radius: 99px; padding: 4px 14px; font-size: .86rem; min-height: 34px; }
+.rb[aria-pressed="true"][data-s="出"] { background: var(--ok); border-color: var(--ok); color: #08210f; font-weight: 700; }
+.rb[aria-pressed="true"][data-s="欠"] { background: var(--ng); border-color: var(--ng); color: #2a0606; font-weight: 700; }
+.rb[aria-pressed="true"][data-s="未"] { background: var(--maybe); border-color: var(--maybe); color: #241a02; font-weight: 700; }
+.counts { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: .82rem; color: var(--ink-soft); align-items: center; }
+.counts b { font-variant-numeric: tabular-nums; }
+.c-ok { color: var(--ok); } .c-ng { color: var(--ng); } .c-maybe { color: var(--maybe); }
+details.who summary { cursor: pointer; font-size: .82rem; color: var(--ink-soft); }
+.who ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 2px; font-size: .86rem; }
+.who li { display: flex; gap: 8px; }
+.who li .n { min-width: 0; overflow-wrap: anywhere; }
+.memo-in { display: flex; gap: 6px; }
+.memo-in input { flex: 1; min-width: 0; padding: 6px 10px; font-size: .86rem; }
+.edit-row { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* roster */
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table.roster { border-collapse: collapse; font-size: .85rem; min-width: 100%; }
+.roster th, .roster td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: center; white-space: nowrap; }
+.roster th:first-child, .roster td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; border-right: 1px solid var(--line); }
+.roster thead th { font-weight: 500; color: var(--ink-soft); font-size: .76rem; line-height: 1.3; }
+.roster thead th b { display: block; color: var(--ink); font-size: .85rem; }
+.roster tfoot td { color: var(--ink-soft); font-size: .78rem; border-bottom: 0; }
+.roster tr.mine td { background: var(--surface-2); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .8rem; color: var(--ink-soft); margin: 0; }
+
+/* cards */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 6px; }
+.card.important { border-left: 4px solid var(--accent-bright); }
+.card h3 { margin: 0; font-size: 1rem; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.card p { margin: 0; color: var(--ink-soft); white-space: pre-wrap; overflow-wrap: anywhere; }
+.card time { font-size: .8rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.badge { font-size: .68rem; background: var(--accent); color: #fff; padding: 0 8px; border-radius: 99px; }
+.prose p { margin: 0 0 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.prose h3 { font-family: var(--serif); margin: 8px 0 8px; font-size: 1.1rem; color: var(--gold); }
+dl.facts { display: grid; grid-template-columns: max-content minmax(0,1fr); margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.facts dt, .facts dd { margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.facts dt { font-weight: 700; background: var(--bg-alt); }
+.facts dd { overflow-wrap: anywhere; }
+.facts > :nth-last-child(-n+2) { border-bottom: 0; }
+
+/* editor sheet */
+.sheet-bg { position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 50; display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--bg-alt); border: 1px solid var(--line); border-radius: 14px 14px 0 0; width: min(640px, 100%); max-height: 90vh; overflow-y: auto; padding: 18px max(16px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 12px; }
+@media (min-width: 700px) { .sheet-bg { align-items: center; } .sheet { border-radius: 14px; } }
+.sheet h2 { margin: 0; font-size: 1.1rem; }
+.field { display: grid; gap: 4px; }
+.field label { font-size: .82rem; color: var(--ink-soft); }
+.field .hint { font-size: .76rem; color: var(--ink-soft); }
+.check { display: flex; gap: 8px; align-items: center; }
+.sheet .actions { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--surface-2); border: 1px solid var(--line); padding: 10px 16px; border-radius: 99px; z-index: 60; font-size: .88rem; max-width: calc(100% - 32px); }
+footer { border-top: 3px solid var(--accent); background: #070505; color: var(--ink-soft); font-size: .8rem; }
+footer .wrap { padding-block: 18px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><img class="mark" src="data:image/webp;base64,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" alt="" width="34" height="34"><span><small>弓木神楽保存会</small>新生弓木神楽組</span></div>
+    <div class="me" id="me"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <img class="hero-logo" src="data:image/webp;base64,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" alt="弓木神楽の獅子頭" width="88" height="88">
+    <p class="kicker">組員専用ページ</p>
+    <h1>新生弓木神楽組</h1>
+    <div class="next" id="next" hidden></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="banner" id="banner" hidden></div>
+  <form class="register" id="register" hidden>
+    <h2>はじめに、お名前を登録してください</h2>
+    <p>出欠表に表示される名前です。あとから変更できます。</p>
+    <div class="row">
+      <input type="text" id="reg-name" maxlength="30" placeholder="例：弓木 太郎" required>
+      <button class="btn primary" type="submit">登録する</button>
+    </div>
+  </form>
+</div>
+
+<nav class="tabs" aria-label="ページ切り替え">
+  <div class="wrap" id="tabs">
+    <a href="#schedule" data-view="schedule">予定・出欠</a>
+    <a href="#roster" data-view="roster">出欠表</a>
+    <a href="#news" data-view="news">お知らせ</a>
+    <a href="#notices" data-view="notices">連絡事項</a>
+    <a href="#about" data-view="about">組について</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <section class="view" id="v-schedule">
+      <div class="view-head"><h2>稽古・奉納の予定</h2><span id="add-event"></span></div>
+      <div class="filters" id="filters"></div>
+      <div class="view" id="events"><p class="empty">予定を読み込んでいます…</p></div>
+      <details id="past-wrap" hidden><summary class="meta" style="cursor:pointer">終わった予定を見る</summary><div class="view" id="past" style="margin-top:12px"></div></details>
+    </section>
+
+    <section class="view" id="v-roster" hidden>
+      <div class="view-head"><h2>出欠表</h2></div>
+      <p class="legend"><span class="c-ok">○ 出席</span><span class="c-ng">× 欠席</span><span class="c-maybe">△ 未定</span><span>－ 未回答</span></p>
+      <div id="roster"><p class="empty">読み込んでいます…</p></div>
+    </section>
+
+    <section class="view" id="v-news" hidden>
+      <div class="view-head"><h2>お知らせ</h2><span id="add-news"></span></div>
+      <div class="view" id="news"><p class="empty">読み込んでいます…</p></div>
+    </section>
+
+    <section class="view" id="v-notices" hidden>
+      <div class="view-head"><h2>組員への連絡事項</h2><span id="add-notice"></span></div>
+      <div class="view" id="notices"><p class="empty">読み込んでいます…</p></div>
+    </section>
+
+    <section class="view" id="v-about" hidden>
+      <div class="view-head"><h2>組について</h2><span id="edit-about"></span></div>
+      <div id="about"><p class="empty">読み込んでいます…</p></div>
+    </section>
+  </div>
+</main>
+
+<footer><div class="wrap">弓木神楽保存会 新生弓木神楽組 ― 組員専用</div></footer>
+
+<script>
+(function () {
+  "use strict";
+  var WEEK = ["日","月","火","水","木","金","土"];
+  var TYPES = ["稽古","奉納","会合"];
+  var S_LABEL = { "出": "出席", "欠": "欠席", "未": "未定" };
+  var S_MARK = { "出": "○", "欠": "×", "未": "△" };
+
+  var state = {
+    db: null, user: null, uid: null, canEdit: false, isOwner: false, canWrite: null,
+    editMode: false, filter: "all",
+    events: [], news: [], notices: [], about: null, members: {},
+    loaded: { events: false, members: false }
+  };
+
+  // ---------- helpers ----------
+  function $(id) { return document.getElementById(id); }
+  function el(tag, attrs, kids) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      var v = attrs[k];
+      if (v == null || v === false) continue;
+      if (k === "text") n.textContent = v;
+      else if (k === "class") n.className = v;
+      else if (k.slice(0, 2) === "on") n.addEventListener(k.slice(2), v);
+      else n.setAttribute(k, v === true ? "" : v);
+    }
+    (kids || []).forEach(function (c) { if (c != null && c !== false) n.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function str(v) { return typeof v === "string" ? v : (v == null ? "" : String(v)); }
+  function parseDate(s) { var p = str(s).split("-").map(Number); return new Date(p[0] || 2000, (p[1] || 1) - 1, p[2] || 1); }
+  function fmtDate(s) { var d = parseDate(s); return (d.getMonth() + 1) + "月" + d.getDate() + "日（" + WEEK[d.getDay()] + "）"; }
+  function todayStr() { var d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  var toastTimer;
+  function toast(msg) {
+    var t = document.querySelector(".toast"); if (t) t.remove();
+    t = el("div", { class: "toast", role: "status", text: msg }); document.body.appendChild(t);
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.remove(); }, 2600);
+  }
+  function banner(msg, warn) { var b = $("banner"); b.hidden = !msg; b.textContent = msg || ""; b.className = "banner" + (warn ? " warn" : ""); }
+  function errMsg(e) {
+    var c = e && e.code;
+    if (c === "invalid_argument") return "保存できませんでした。この操作の権限がない可能性があります。";
+    if (c === "quota_exceeded") return "保存容量の上限に達しました。古い予定を削除してください。";
+    if (c === "resource_exhausted") return "操作が多すぎます。少し待ってからもう一度お試しください。";
+    return "保存できませんでした。通信状況を確認して、もう一度お試しください。";
+  }
+  async function write(fn, okMsg) {
+    try { await fn(); if (okMsg) toast(okMsg); return true; }
+    catch (e) {
+      if (e && e.code === "unavailable") { await new Promise(function (r) { setTimeout(r, 600 + Math.random() * 600); }); try { await fn(); if (okMsg) toast(okMsg); return true; } catch (e2) { e = e2; } }
+      toast(errMsg(e)); return false;
+    }
+  }
+
+  // ---------- identity ----------
+  function myDoc() { return state.uid ? state.members[state.uid] : null; }
+  function myName() { var m = myDoc(); return m && str(m.name); }
+  function memberCanAnswer() { return !!(state.db && state.uid && state.canWrite !== false); }
+
+  function renderMe() {
+    var box = $("me"); box.innerHTML = "";
+    if (state.canEdit) {
+      box.appendChild(el("button", { class: "pill-edit", type: "button", "aria-pressed": String(state.editMode), text: state.editMode ? "編集中" : "編集", onclick: function () { state.editMode = !state.editMode; renderAll(); } }));
+    }
+    var n = myName();
+    if (n) box.appendChild(el("span", { text: n + " さん", title: "名前を変更", style: "cursor:pointer", onclick: openRename }));
+  }
+
+  function renderRegister() {
+    var f = $("register");
+    f.hidden = !(memberCanAnswer() && state.loaded.members && !myName());
+  }
+  $("register").addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    var name = $("reg-name").value.trim(); if (!name) return;
+    var ref = state.db.collection("members").doc(state.uid);
+    var ok = await write(function () {
+      return myDoc() ? ref.update({ name: name }) : ref.set({ name: name, responses: {} });
+    }, "登録しました");
+    if (ok) $("register").hidden = true;
+  });
+
+  function openRename() {
+    if (!memberCanAnswer()) return;
+    openSheet("名前の変更", [{ key: "name", label: "出欠表に表示される名前", type: "text", value: myName() }], async function (v) {
+      if (!v.name.trim()) return false;
+      return write(function () { return state.db.collection("members").doc(state.uid).update({ name: v.name.trim() }); }, "名前を変更しました");
+    });
+  }
+
+  // ---------- attendance ----------
+  function responsesFor(eventId) {
+    var out = [];
+    Object.keys(state.members).forEach(function (id) {
+      var m = state.members[id]; var r = m.responses && m.responses[eventId];
+      out.push({ id: id, name: str(m.name) || "（名前未登録）", s: r && r.s, memo: r && str(r.memo) });
+    });
+    out.sort(function (a, b) { return a.name.localeCompare(b.name, "ja"); });
+    return out;
+  }
+  function myResponse(eventId) { var m = myDoc(); return (m && m.responses && m.responses[eventId]) || null; }
+
+  var writing = {};
+  async function answer(eventId, s, memo) {
+    if (!memberCanAnswer()) return;
+    if (!myName()) { toast("先にお名前を登録してください"); $("reg-name").focus(); return; }
+    if (writing[eventId]) return;
+    writing[eventId] = true;
+    var cur = myResponse(eventId) || {};
+    var val = { s: s != null ? s : (cur.s || "未"), memo: memo != null ? memo : str(cur.memo), at: new Date().toISOString() };
+    var patch = { responses: {} }; patch.responses[eventId] = val;
+    await write(function () { return state.db.collection("members").doc(state.uid).update(patch); }, s ? S_LABEL[s] + "で登録しました" : "メモを保存しました");
+    writing[eventId] = false;
+  }
+
+  function rsvpNode(e) {
+    var wrap = el("div", { class: "view", style: "gap:8px" });
+    var mine = myResponse(e.id);
+    if (memberCanAnswer()) {
+      var row = el("div", { class: "rsvp" }, [el("span", { class: "lbl", text: "わたしの出欠" })]);
+      ["出","欠","未"].forEach(function (s) {
+        row.appendChild(el("button", { class: "rb", type: "button", "data-s": s, "aria-pressed": String(!!(mine && mine.s === s)), text: S_LABEL[s], onclick: function () { answer(e.id, s); } }));
+      });
+      wrap.appendChild(row);
+      if (mine && mine.s) {
+        var inp = el("input", { type: "text", maxlength: "60", placeholder: "ひとこと（遅刻・早退など）", value: str(mine.memo), id: "memo-" + e.id });
+        wrap.appendChild(el("form", { class: "memo-in", onsubmit: function (ev) { ev.preventDefault(); answer(e.id, null, inp.value.trim()); } }, [inp, el("button", { class: "btn small", type: "submit", text: "保存" })]));
+      }
+    }
+    var list = responsesFor(e.id);
+    var c = { "出": 0, "欠": 0, "未": 0, none: 0 };
+    list.forEach(function (r) { c[r.s || "none"] = (c[r.s || "none"] || 0) + 1; });
+    wrap.appendChild(el("div", { class: "counts" }, [
+      el("span", { class: "c-ok" }, ["出席 ", el("b", { text: String(c["出"]) })]),
+      el("span", { class: "c-ng" }, ["欠席 ", el("b", { text: String(c["欠"]) })]),
+      el("span", { class: "c-maybe" }, ["未定 ", el("b", { text: String(c["未"]) })]),
+      el("span", null, ["未回答 ", el("b", { text: String(c.none) })])
+    ]));
+    if (list.length) {
+      var ul = el("ul");
+      list.forEach(function (r) {
+        var cls = r.s === "出" ? "c-ok" : r.s === "欠" ? "c-ng" : r.s === "未" ? "c-maybe" : "";
+        ul.appendChild(el("li", null, [el("span", { class: cls, text: r.s ? S_MARK[r.s] : "－" }), el("span", { class: "n", text: r.name + (r.memo ? "（" + r.memo + "）" : "") })]));
+      });
+      wrap.appendChild(el("details", { class: "who" }, [el("summary", { text: "誰が出席するか見る" }), ul]));
+    }
+    return wrap;
+  }
+
+  // ---------- schedule ----------
+  function eventNode(e, past) {
+    var d = parseDate(e.date);
+    var meta = [str(e.time), str(e.place)].filter(Boolean).join("　｜　");
+    var body = el("div", { class: "ebody" }, [
+      el("h3", null, [e.type ? el("span", { class: "tag t-" + str(e.type), text: str(e.type) }) : null, el("span", { text: str(e.title) || "（無題）" })]),
+      meta ? el("p", { class: "meta", text: meta }) : null,
+      e.note ? el("p", { class: "note", text: str(e.note) }) : null,
+      past ? null : rsvpNode(e)
+    ]);
+    if (state.editMode) body.appendChild(editRow("events", e));
+    return el("article", { class: "event" + (past ? " past" : "") }, [
+      el("div", { class: "edate" }, [
+        el("div", { class: "m", text: d.getFullYear() + "." + (d.getMonth() + 1) }),
+        el("div", { class: "d", text: String(d.getDate()) }),
+        el("div", { class: "w" + (d.getDay() === 0 ? " sun" : ""), text: WEEK[d.getDay()] + "曜" })
+      ]), body
+    ]);
+  }
+  function splitEvents() {
+    var t = todayStr();
+    var list = state.events.slice().sort(function (a, b) { return str(a.date).localeCompare(str(b.date)) || str(a.time).localeCompare(str(b.time)); });
+    return { up: list.filter(function (e) { return str(e.date) >= t; }), past: list.filter(function (e) { return str(e.date) < t; }).reverse() };
+  }
+  function renderFilters() {
+    var f = $("filters"); f.innerHTML = "";
+    [["all","すべて"],["稽古","稽古"],["奉納","奉納・公演"],["会合","会合"]].forEach(function (p) {
+      f.appendChild(el("button", { class: "chip", type: "button", "aria-pressed": String(state.filter === p[0]), text: p[1], onclick: function () { state.filter = p[0]; renderSchedule(); } }));
+    });
+  }
+  function renderSchedule() {
+    renderFilters();
+    var sp = splitEvents();
+    var match = function (e) { return state.filter === "all" || e.type === state.filter; };
+    var box = $("events"); box.innerHTML = "";
+    var up = sp.up.filter(match);
+    if (!state.loaded.events) box.appendChild(el("p", { class: "empty", text: "予定を読み込んでいます…" }));
+    else if (!up.length) box.appendChild(el("p", { class: "empty", text: state.events.length ? "これからの予定はありません。" : "予定はまだ登録されていません。" + (state.canEdit ? "右上の「編集」から追加できます。" : "") }));
+    up.forEach(function (e) { box.appendChild(eventNode(e, false)); });
+    var pastBox = $("past"); pastBox.innerHTML = "";
+    var past = sp.past.filter(match);
+    $("past-wrap").hidden = !past.length;
+    past.forEach(function (e) { pastBox.appendChild(eventNode(e, true)); });
+    setAddButton("add-event", "予定を追加", function () { openEditor("events", null); });
+    renderNext(sp.up);
+  }
+  function renderNext(up) {
+    var box = $("next"); box.innerHTML = "";
+    if (!up.length) { box.hidden = true; return; }
+    var e = up[0]; box.hidden = false;
+    box.appendChild(el("div", null, [
+      el("div", { class: "label", text: "次の予定" }),
+      el("div", { class: "ttl", text: str(e.title) }),
+      el("div", { class: "when", text: fmtDate(e.date) + (e.time ? "　" + str(e.time) : "") + (e.place ? "　" + str(e.place) : "") })
+    ]));
+    box.appendChild(rsvpNode(e));
+  }
+
+  // ---------- roster ----------
+  function renderRoster() {
+    var box = $("roster"); box.innerHTML = "";
+    if (!state.loaded.members || !state.loaded.events) { box.appendChild(el("p", { class: "empty", text: "読み込んでいます…" })); return; }
+    var ev = splitEvents().up.slice(0, 12);
+    var ids = Object.keys(state.members);
+    if (!ev.length) { box.appendChild(el("p", { class: "empty", text: "これからの予定がありません。" })); return; }
+    if (!ids.length) { box.appendChild(el("p", { class: "empty", text: "まだ誰も登録していません。組員がこのページを開いて名前を登録すると、ここに並びます。" })); return; }
+    ids.sort(function (a, b) { return str(state.members[a].name).localeCompare(str(state.members[b].name), "ja"); });
+    var head = el("tr", null, [el("th", { text: "名前" })]);
+    ev.forEach(function (e) { var d = parseDate(e.date); head.appendChild(el("th", null, [el("b", { text: (d.getMonth() + 1) + "/" + d.getDate() }), str(e.type) || ""])); });
+    var tb = el("tbody");
+    ids.forEach(function (id) {
+      var m = state.members[id];
+      var tr = el("tr", { class: id === state.uid ? "mine" : null }, [el("td", { text: str(m.name) || "（未登録）" })]);
+      ev.forEach(function (e) {
+        var r = m.responses && m.responses[e.id]; var s = r && r.s;
+        tr.appendChild(el("td", { class: s === "出" ? "c-ok" : s === "欠" ? "c-ng" : s === "未" ? "c-maybe" : "", title: r && r.memo ? str(r.memo) : null, text: s ? S_MARK[s] + (r.memo ? "*" : "") : "－" }));
+      });
+      tb.appendChild(tr);
+    });
+    var foot = el("tr", null, [el("td", { text: "出席数" })]);
+    ev.forEach(function (e) { var n = responsesFor(e.id).filter(function (r) { return r.s === "出"; }).length; foot.appendChild(el("td", { text: String(n) })); });
+    box.appendChild(el("div", { class: "scroll" }, [el("table", { class: "roster" }, [el("thead", null, [head]), tb, el("tfoot", null, [foot])])]));
+    box.appendChild(el("p", { class: "legend", style: "margin-top:8px", text: "* はひとことメモあり（予定・出欠タブで見られます）" }));
+  }
+
+  // ---------- news / notices ----------
+  function renderNews() {
+    var box = $("news"); box.innerHTML = "";
+    var list = state.news.slice().sort(function (a, b) { return str(b.date).localeCompare(str(a.date)); });
+    if (!list.length) box.appendChild(el("p", { class: "empty", text: "お知らせはまだありません。" }));
+    list.forEach(function (n) {
+      box.appendChild(el("article", { class: "card" }, [
+        el("h3", null, [n.date ? el("time", { text: str(n.date).replace(/-/g, ".") }) : null, n.tag ? el("span", { class: "tag", text: str(n.tag) }) : null]),
+        el("h3", { text: str(n.title) }),
+        n.body ? el("p", { text: str(n.body) }) : null,
+        state.editMode ? editRow("news", n) : null
+      ]));
+    });
+    setAddButton("add-news", "お知らせを追加", function () { openEditor("news", null); });
+  }
+  function renderNotices() {
+    var box = $("notices"); box.innerHTML = "";
+    var list = state.notices.slice().sort(function (a, b) { return (Number(a.order) || 0) - (Number(b.order) || 0); });
+    if (!list.length) box.appendChild(el("p", { class: "empty", text: "連絡事項はまだありません。" }));
+    list.forEach(function (n) {
+      box.appendChild(el("article", { class: "card" + (n.important ? " important" : "") }, [
+        el("h3", null, [n.important ? el("span", { class: "badge", text: "重要" }) : null, el("span", { text: str(n.title) })]),
+        el("p", { text: str(n.body) }),
+        state.editMode ? editRow("notices", n) : null
+      ]));
+    });
+    setAddButton("add-notice", "連絡事項を追加", function () { openEditor("notices", null); });
+  }
+
+  // ---------- about ----------
+  function pairs(arr) { return Array.isArray(arr) ? arr.filter(function (p) { return p && (p.label || p.value); }) : []; }
+  function renderAbout() {
+    var box = $("about"); box.innerHTML = "";
+    var a = state.about || {};
+    var prose = el("div", { class: "prose view", style: "gap:4px" });
+    if (a.intro) prose.appendChild(el("p", { text: str(a.intro) }));
+    prose.appendChild(el("h3", { text: "弓木神楽の歴史" }));
+    prose.appendChild(el("p", { class: a.history ? null : "meta", text: a.history ? str(a.history) : "準備中です。後日掲載します。" }));
+    box.appendChild(prose);
+    var facts = pairs(a.facts);
+    if (facts.length) { var dl = el("dl", { class: "facts", style: "margin-top:14px" }); facts.forEach(function (p) { dl.appendChild(el("dt", { text: str(p.label) })); dl.appendChild(el("dd", { text: str(p.value) })); }); box.appendChild(dl); }
+    var contact = pairs(a.contact);
+    if (contact.length) {
+      box.appendChild(el("div", { class: "view-head", style: "margin-top:24px" }, [el("h2", { text: "連絡先" })]));
+      var dl2 = el("dl", { class: "facts", style: "margin-top:12px" }); contact.forEach(function (p) { dl2.appendChild(el("dt", { text: str(p.label) })); dl2.appendChild(el("dd", { text: str(p.value) })); }); box.appendChild(dl2);
+    }
+    setAddButton("edit-about", "内容を編集", openAboutEditor);
+  }
+
+  // ---------- editors ----------
+  var SCHEMAS = {
+    events: { title: "予定", fields: [
+      { key: "date", label: "日付", type: "date", required: true },
+      { key: "time", label: "時間", type: "text", placeholder: "19:00〜21:00" },
+      { key: "type", label: "種類", type: "select", options: TYPES },
+      { key: "title", label: "内容", type: "text", placeholder: "定例稽古", required: true },
+      { key: "place", label: "場所", type: "text" },
+      { key: "note", label: "備考", type: "textarea" } ] },
+    news: { title: "お知らせ", fields: [
+      { key: "date", label: "日付", type: "date", required: true },
+      { key: "tag", label: "分類", type: "text", placeholder: "お知らせ" },
+      { key: "title", label: "見出し", type: "text", required: true },
+      { key: "body", label: "本文", type: "textarea" } ] },
+    notices: { title: "連絡事項", fields: [
+      { key: "title", label: "見出し", type: "text", required: true },
+      { key: "body", label: "本文", type: "textarea" },
+      { key: "important", label: "重要として目立たせる", type: "check" },
+      { key: "order", label: "表示順（小さい順）", type: "number" } ] }
+  };
+  function setAddButton(id, label, fn) {
+    var host = $(id); host.innerHTML = "";
+    if (state.editMode) host.appendChild(el("button", { class: "btn small primary", type: "button", text: "＋ " + label, onclick: fn }));
+  }
+  function editRow(coll, item) {
+    return el("div", { class: "edit-row" }, [el("button", { class: "btn small", type: "button", text: "編集", onclick: function () { openEditor(coll, item); } })]);
+  }
+  function openEditor(coll, item) {
+    var sc = SCHEMAS[coll];
+    var fields = sc.fields.map(function (f) {
+      var v = item ? item[f.key] : (f.type === "date" ? todayStr() : f.type === "select" ? f.options[0] : "");
+      return Object.assign({}, f, { value: v });
+    });
+    openSheet(sc.title + (item ? "を編集" : "を追加"), fields, async function (v) {
+      var data = {};
+      sc.fields.forEach(function (f) { data[f.key] = f.type === "check" ? !!v[f.key] : f.type === "number" ? (Number(v[f.key]) || 0) : str(v[f.key]).trim(); });
+      for (var i = 0; i < sc.fields.length; i++) if (sc.fields[i].required && !data[sc.fields[i].key]) { toast(sc.fields[i].label + "を入力してください"); return false; }
+      var col = state.db.collection(coll);
+      return write(function () { return item ? col.doc(item.id).set(data) : col.add(data); }, "保存しました");
+    }, item ? async function () {
+      return write(function () { return state.db.collection(coll).doc(item.id).delete(); }, "削除しました");
+    } : null);
+  }
+  function linesFrom(arr) { return pairs(arr).map(function (p) { return str(p.label) + "｜" + str(p.value); }).join("\n"); }
+  function linesTo(text) {
+    return str(text).split("\n").map(function (l) { l = l.trim(); if (!l) return null; var i = l.search(/[｜|:：]/); return i < 0 ? { label: l, value: "" } : { label: l.slice(0, i).trim(), value: l.slice(i + 1).trim() }; }).filter(Boolean);
+  }
+  function openAboutEditor() {
+    var a = state.about || {};
+    openSheet("組についてを編集", [
+      { key: "intro", label: "紹介文", type: "textarea", value: a.intro },
+      { key: "history", label: "弓木神楽の歴史", type: "textarea", value: a.history, hint: "空欄のときは「準備中」と表示されます。" },
+      { key: "facts", label: "基本情報（1行に「項目｜内容」）", type: "textarea", value: linesFrom(a.facts) },
+      { key: "contact", label: "連絡先（1行に「項目｜内容」）", type: "textarea", value: linesFrom(a.contact) }
+    ], async function (v) {
+      var data = { intro: str(v.intro).trim(), history: str(v.history).trim(), facts: linesTo(v.facts), contact: linesTo(v.contact) };
+      return write(function () { return state.db.doc("info/about").set(data); }, "保存しました");
+    });
+  }
+
+  function openSheet(title, fields, onSave, onDelete) {
+    var inputs = {};
+    var form = el("form", { class: "sheet", role: "dialog", "aria-modal": "true", "aria-label": title });
+    form.appendChild(el("h2", { text: title }));
+    fields.forEach(function (f, i) {
+      var id = "f-" + f.key; var input;
+      if (f.type === "textarea") input = el("textarea", { id: id });
+      else if (f.type === "select") { input = el("select", { id: id }); f.options.forEach(function (o) { input.appendChild(el("option", { value: o, text: o })); }); }
+      else if (f.type === "check") input = el("input", { id: id, type: "checkbox" });
+      else input = el("input", { id: id, type: f.type, placeholder: f.placeholder || null, maxlength: f.type === "text" ? "80" : null });
+      if (f.type === "check") input.checked = !!f.value; else input.value = f.value == null ? "" : str(f.value);
+      inputs[f.key] = input;
+      form.appendChild(f.type === "check"
+        ? el("label", { class: "check", for: id }, [input, f.label])
+        : el("div", { class: "field" }, [el("label", { for: id, text: f.label + (f.required ? "（必須）" : "") }), input, f.hint ? el("span", { class: "hint", text: f.hint }) : null]));
+    });
+    var bg = el("div", { class: "sheet-bg", onclick: function (ev) { if (ev.target === bg) close(); } }, [form]);
+    function close() { bg.remove(); document.removeEventListener("keydown", esc); }
+    function esc(ev) { if (ev.key === "Escape") close(); }
+    document.addEventListener("keydown", esc);
+    var saveBtn = el("button", { class: "btn primary", type: "submit", text: "保存" });
+    var left = el("div", { class: "row" });
+    if (onDelete) {
+      var armed = false;
+      var del = el("button", { class: "btn danger", type: "button", text: "削除", onclick: async function () {
+        if (!armed) { armed = true; del.textContent = "本当に削除する"; return; }
+        del.disabled = true; if (await onDelete()) close(); else del.disabled = false;
+      } });
+      left.appendChild(del);
+    }
+    form.appendChild(el("div", { class: "actions" }, [left, el("div", { class: "row" }, [el("button", { class: "btn", type: "button", text: "やめる", onclick: close }), saveBtn])]));
+    form.addEventListener("submit", async function (ev) {
+      ev.preventDefault();
+      var v = {}; Object.keys(inputs).forEach(function (k) { v[k] = inputs[k].type === "checkbox" ? inputs[k].checked : inputs[k].value; });
+      saveBtn.disabled = true;
+      var ok = await onSave(v); saveBtn.disabled = false;
+      if (ok !== false) close();
+    });
+    document.body.appendChild(bg);
+    var first = form.querySelector("input,textarea,select"); if (first) first.focus();
+  }
+
+  // ---------- tabs ----------
+  var VIEWS = ["schedule","roster","news","notices","about"];
+  function route() {
+    var v = location.hash.replace("#", ""); if (VIEWS.indexOf(v) < 0) v = "schedule";
+    VIEWS.forEach(function (n) { $("v-" + n).hidden = n !== v; });
+    document.querySelectorAll("#tabs a").forEach(function (a) { if (a.dataset.view === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  }
+  window.addEventListener("hashchange", route);
+
+  function renderAll() { renderMe(); renderRegister(); renderSchedule(); renderRoster(); renderNews(); renderNotices(); renderAbout(); }
+
+  // ---------- boot ----------
+  route(); renderAll();
+  var loadTimer = setTimeout(function () { if (!state.loaded.events) banner("データに接続できていません。通信状況を確認してください。", true); }, 10000);
+
+  function listen(path, onDocs, key) {
+    state.db.collection(path).onSnapshot(function (snap) {
+      onDocs(snap.docs.filter(function (d) { return d.exists; }));
+      if (key && !snap.metadata.fromCache) { state.loaded[key] = true; }
+      if (key) state.loaded[key] = true;
+      if (key === "events" && !snap.metadata.fromCache) { clearTimeout(loadTimer); banner(""); }
+      renderAll();
+    }, function () { clearTimeout(loadTimer); banner("データを読み込めませんでした。ページを開き直してください。", true); });
+  }
+  function rows(docs) { return docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); }); }
+
+  (async function () {
+    if (!window.claude || !window.claude.use) { clearTimeout(loadTimer); banner("このページは claude.ai 上で開いてください。", true); return; }
+    var [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    if (!db) { clearTimeout(loadTimer); banner("このページを見るには、招待されたアカウントでログインしてください。", true); state.loaded.events = state.loaded.members = true; renderAll(); return; }
+    state.db = db; state.user = user;
+    if (user) {
+      try {
+        var r = await Promise.all([user.id(), user.canEdit(), user.isOwner(), user.can("data.write")]);
+        state.uid = r[0]; state.canEdit = !!r[1]; state.isOwner = !!r[2]; state.canWrite = r[3];
+        if (!state.uid) banner("閲覧のみのアカウントです。出欠を入力するには、管理者に招待してもらってください。");
+        else if (state.canWrite === false) banner("閲覧のみの権限です。出欠を入力するには、管理者に権限を変更してもらってください。");
+        if (state.uid && !myName()) { var nm = await user.name(); if (nm && !$("reg-name").value) $("reg-name").value = nm; }
+      } catch (e) {}
+    }
+    listen("events", function (d) { state.events = rows(d); }, "events");
+    listen("members", function (d) { state.members = {}; d.forEach(function (x) { state.members[x.id] = x.data(); }); }, "members");
+    listen("news", function (d) { state.news = rows(d); });
+    listen("notices", function (d) { state.notices = rows(d); });
+    db.doc("info/about").onSnapshot(function (s) { state.about = s.exists ? s.data() : {}; renderAbout(); }, function () {});
+  })();
+})();
+</script>
