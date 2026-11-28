@@ -13,9 +13,18 @@ GitHub 上でファイルを開き、鉛筆アイコン（Edit）から直接書
 
 日付が過ぎた予定は自動で「終わった予定」に移り、直近の予定がトップに表示されます。
 
+## 出欠入力
+
+出欠はGoogleフォームで受け付けます（組員はアカウント不要）。作り方は `docs/出欠フォームの作り方.md`。
+フォームのURLを `data/site-data.js` の `attendance.formUrl` に貼ると、「出欠を入力する」ボタンが表示されます。
+
 ## 公開方法（GitHub Pages）
 
-リポジトリの Settings → Pages で、公開するブランチとフォルダ（`/ (root)`）を選ぶと公開されます。
+1. リポジトリが非公開の場合は、Settings → General の一番下「Change visibility」で Public にする（無料プランでは公開リポジトリのみPagesが使えます）
+2. Settings → Pages →「Deploy from a branch」で公開するブランチと `/ (root)` を選んで Save
+3. 数分後に `https://<ユーザー名>.github.io/<リポジトリ名>/` で見られます
+
+検索エンジンには載らない設定（noindex）にしてあるので、URLを知っている人だけが見る運用になります。
 ローカルでは `index.html` をブラウザで開くだけで確認できます。
 
 ## 構成
@@ -25,10 +34,9 @@ GitHub 上でファイルを開き、鉛筆アイコン（Edit）から直接書
 - `assets/style.css` … デザイン
 - `assets/main.js` … 表示処理
 
-## 組員専用ページ（出欠入力）
+## （参考）Claudeアカウント向けの組員専用ページ
 
-`members/kagura-members.html` は claude.ai 上で公開している組員専用ページの元ファイルです。
-予定・お知らせ・出欠のデータはページ側のデータベースに保存されるため、内容の更新はページ上の「編集」から行います。
+`members/kagura-members.html` は claude.ai 上の非公開ページの元ファイルです（閲覧にClaudeアカウントが必要なため、現在は上の公開サイト＋Googleフォームを基本としています）。
 
 ## Word版
 

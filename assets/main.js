@@ -24,6 +24,10 @@
     return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + "日（" + WEEK[d.getDay()] + "）";
   }
   var today = new Date(); today.setHours(0, 0, 0, 0);
+  var att = data.attendance || {};
+  function safeUrl(u) { return /^https:\/\//.test(String(u || "")) ? u : ""; }
+  var formUrl = safeUrl(att.formUrl), resultUrl = safeUrl(att.resultUrl);
+  function linkBtn(href, text, cls) { return el("a", { class: "btn-rsvp " + (cls || ""), href: href, target: "_blank", rel: "noopener", text: text }); }
 
   // お知らせ
   var newsList = document.getElementById("news-list");
@@ -63,7 +67,8 @@
           el("span", { text: e.title })
         ]),
         meta ? el("p", { class: "meta", text: meta }) : null,
-        e.note ? el("p", { class: "note", text: e.note }) : null
+        e.note ? el("p", { class: "note", text: e.note }) : null,
+        (formUrl && parseDate(e.date) >= today) ? el("div", { class: "actions" }, [linkBtn(formUrl, "出欠を入力する", "small")]) : null
       ])
     ]);
   }
@@ -88,6 +93,12 @@
       renderAll(btn.getAttribute("data-filter"));
     });
   });
+
+  // 出欠ボタン（ヒーロー）
+  var ha = document.getElementById("hero-actions");
+  if (formUrl) ha.appendChild(linkBtn(formUrl, "出欠を入力する"));
+  if (resultUrl) ha.appendChild(linkBtn(resultUrl, "出欠状況を見る", "ghost"));
+  if (!formUrl) schedEl.parentNode.insertBefore(el("p", { class: "rsvp-note", text: "出欠入力フォームは準備中です。" }), schedEl.nextSibling);
 
   // 次の予定（ヒーロー）
   if (upcoming.length) {
@@ -117,6 +128,10 @@
     });
   }
   facts(document.getElementById("about-facts"), about.facts);
+  var hist = document.getElementById("history-body");
+  var hs = (about.history || []).filter(Boolean);
+  if (hs.length) hs.forEach(function (t) { hist.appendChild(el("p", { text: t })); });
+  else hist.appendChild(el("p", { class: "muted", text: "準備中です。後日掲載します。" }));
   facts(document.getElementById("contact-list"), data.contact);
 
   // フッター

@@ -143,3 +143,20 @@ a { color: var(--accent-bright); }
 .site-footer { border-top: 4px solid var(--accent); background: var(--hero-bg); color: var(--hero-ink); padding: 24px 0; font-size: .85rem; }
 .site-footer p { margin: 0; }
 .site-footer .updated { opacity: .7; }
+
+/* 出欠ボタン */
+.hero-actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; }
+.hero-actions:empty { display: none; }
+.btn-rsvp {
+  display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  background: var(--accent); color: var(--accent-ink); font-weight: 700;
+  padding: 10px 20px; border-radius: 99px; border: 1px solid var(--accent); min-height: 44px;
+}
+.btn-rsvp:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn-rsvp.ghost { background: none; color: var(--ink); border-color: var(--line); font-weight: 500; }
+.btn-rsvp.ghost:hover { border-color: var(--accent-bright); background: none; }
+.btn-rsvp.small { padding: 5px 14px; min-height: 36px; font-size: .88rem; }
+.event .actions { margin-top: 10px; }
+.rsvp-note { margin: 10px 0 0; font-size: .85rem; color: var(--ink-soft); }
+.sub-title { font-family: var(--serif); color: var(--gold); font-size: 1.15rem; margin: 28px 0 10px; }
+.muted { color: var(--ink-soft); }
